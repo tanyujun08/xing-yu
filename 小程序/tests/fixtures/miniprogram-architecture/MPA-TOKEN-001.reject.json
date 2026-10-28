@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "1.0",
+  "ruleId": "MPA-TOKEN-001",
+  "case": "reject",
+  "cases": [
+    {
+      "name": "raw-visual-values",
+      "files": {
+        "miniprogram/components/probe/index.wxss": ".card { color: #123456; margin: 12px; padding: 16rpx; gap: 8px; border-radius: 6px; box-shadow: 0 2px 8px #000; z-index: 99; }\n"
+      }
+    },
+    {
+      "name": "parallel-token-namespace",
+      "files": {
+        "miniprogram/components/probe/index.wxss": ".card { --brand: red; color: var(--brand); }\n"
+      }
+    },
+    {
+      "name": "mixed-token-and-raw-values",
+      "files": {
+        "miniprogram/components/probe/index.wxss": ".card { background: linear-gradient(var(--xy-color-surface), #123456); padding: var(--xy-space-1) 999px; }\n"
+      }
+    },
+    {
+      "name": "member-compatibility-token-authority",
+      "files": {
+        "miniprogram/shared/design/member-tokens.wxss": "page { --xy-member-color-hero: #075f48; }\n"
+      }
+    },
+    {
+      "name": "raw-named-elevation-values",
+      "files": {
+        "miniprogram/components/probe/index.wxss": ".banner { box-shadow: 0 4px 12px rgba(18, 28, 26, .08); }\n.floating-action { box-shadow: 0 8px 20px rgba(18, 28, 26, .12); }\n.overlap-card { box-shadow: 0 8px 24px rgba(0, 0, 0, .14); }\n"
+      }
+    }
+  ]
+}

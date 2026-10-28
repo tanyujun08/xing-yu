@@ -1,0 +1,31 @@
+.fees-page { padding:var(--xy-space-3) var(--xy-space-4); color:var(--xy-color-text-primary); font-size:var(--xy-order-body-size); line-height:var(--xy-order-body-line-height); }
+.fees-card { padding:var(--xy-space-4); border-radius:var(--xy-radius-container); background:var(--xy-color-surface); }
+.fees-card + .fees-card { margin-top:var(--xy-space-3); }
+.fees-summary { display:flex; align-items:center; gap:var(--xy-space-3); min-height:96px; box-sizing:border-box; background:var(--xy-color-brand-soft); }
+.fees-summary > view { min-width:0; }
+.fees-success { width:48px; height:48px; flex:none; }
+.fees-status { display:block; font-size:var(--xy-order-status-size); line-height:var(--xy-order-status-line-height); font-weight:var(--xy-text-weight-semibold); }
+.fees-title { display:block; font-size:var(--xy-text-section-title-size); line-height:var(--xy-text-section-title-line-height); font-weight:var(--xy-text-weight-semibold); }
+.fees-copy { display:block; margin-top:var(--xy-space-1); color:var(--xy-color-text-secondary); overflow-wrap:anywhere; }
+.fees-row { display:flex; align-items:flex-start; justify-content:space-between; gap:var(--xy-space-3); padding:var(--xy-space-3) 0; border-bottom:1rpx solid var(--xy-color-divider); }
+.fees-row:last-child { border-bottom:0; padding-bottom:0; }
+.fees-label { flex:1; min-width:0; color:var(--xy-color-text-secondary); }
+.fees-value { flex:1; min-width:0; text-align:right; overflow-wrap:anywhere; font-variant-numeric:tabular-nums; }
+.fees-label--wide { flex:2; }
+.fees-row--plain { border-bottom:0; }
+.fees-description { white-space:pre-wrap; overflow-wrap:anywhere; }
+.fees-caption { display:block; color:var(--xy-color-text-secondary); font-size:var(--xy-text-caption-size); line-height:var(--xy-text-caption-line-height); margin-top:var(--xy-space-1); overflow-wrap:anywhere; }
+.fees-evidence { display:flex; flex-wrap:wrap; gap:var(--xy-space-2); margin:var(--xy-space-2) 0; }
+.fees-proof-action { position:relative; width:var(--xy-order-thumbnail-size); min-height:var(--xy-size-touch-min); height:var(--xy-order-thumbnail-size); border-radius:var(--xy-radius-container); overflow:hidden; }
+.fees-proof-action media-state { display:block; width:100%; height:100%; }
+.fees-proof { max-width:100%; }
+.fees-video-label { position:absolute; bottom:0; left:0; right:0; color:var(--xy-color-text-inverse); background:var(--xy-color-text-primary); text-align:center; font-size:var(--xy-text-caption-size); line-height:var(--xy-text-caption-line-height); pointer-events:none; }
+.fees-total { margin-top:var(--xy-space-3); border-top:1rpx solid var(--xy-color-divider); font-weight:var(--xy-text-weight-semibold); }
+.fees-result { align-items:center; }
+.fees-result .fees-value { color:var(--xy-color-brand); font-size:var(--xy-order-amount-size); line-height:var(--xy-order-amount-line-height); font-weight:var(--xy-text-weight-bold); }
+.fees-footer { padding:var(--xy-space-4); }
+.fees-return { display:flex; align-items:center; justify-content:center; width:100%; min-height:var(--xy-control-height-order); margin:0; padding:0 var(--xy-space-3); border:1rpx solid var(--xy-color-border-strong); border-radius:var(--xy-radius-container); background:var(--xy-color-surface); color:var(--xy-color-brand); font-size:var(--xy-text-section-title-size); line-height:var(--xy-text-section-title-line-height); font-weight:var(--xy-text-weight-semibold); }
+.fees-link { display:flex; align-items:center; justify-content:center; min-height:var(--xy-size-touch-min); margin:var(--xy-space-3) 0 0; padding:0 var(--xy-space-2); background:transparent; color:var(--xy-color-brand); font-size:var(--xy-order-body-size); line-height:var(--xy-order-body-line-height); }
+.fees-state { padding:var(--xy-space-6) var(--xy-space-4); text-align:center; background:var(--xy-color-surface); border-radius:var(--xy-radius-container); }
+.fees-state > text { display:block; }
+.fees-error { color:var(--xy-color-danger); font-size:var(--xy-text-caption-size); line-height:var(--xy-text-caption-line-height); }

@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "1.0",
+  "ruleId": "MPA-ASYNC-001",
+  "case": "reject",
+  "cases": [
+    {
+      "name": "raw-page-timer",
+      "files": {
+        "miniprogram/pages/cabinet-pickup/index.ts": "setTimeout(() => wx.scanCode({}), 100);\n"
+      }
+    },
+    {
+      "name": "unrelated-single-flight-blanket",
+      "files": {
+        "miniprogram/pages/cabinet-pickup/index.ts": "scope.singleFlight('other', () => Promise.resolve());\nwx.scanCode({});\n"
+      }
+    },
+    {
+      "name": "governed-command-without-scope",
+      "files": {
+        "miniprogram/pages/cabinet-pickup/index.wxml": "<page-meta root-font-size=\"system\" />\n<view>取件</view>\n",
+        "miniprogram/pages/cabinet-pickup/index.ts": "Page({ submit() { return mockApi.command.orderAction('1', 'open'); } });\n"
+      }
+    },
+    {
+      "name": "governed-navigation-without-wrapper",
+      "files": {
+        "miniprogram/pages/cabinet-pickup/index.wxml": "<page-meta root-font-size=\"system\" />\n<view>取件</view>\n",
+        "miniprogram/pages/cabinet-pickup/index.ts": "Page({ next() { wx.navigateTo({ url: '/pages/orders/index' }); } });\n"
+      }
+    },
+    {
+      "name": "single-flight-is-not-navigation-guard",
+      "files": {
+        "miniprogram/pages/cabinet-pickup/index.wxml": "<page-meta root-font-size=\"system\" />\n<view>取件</view>\n",
+        "miniprogram/pages/cabinet-pickup/index.ts": "const scope = createOperationScope();\nPage({ onUnload() { scope.dispose(); }, next() { return scope.singleFlight('nav', () => wx.navigateTo({ url: '/pages/orders/index' })); } });\n"
+      }
+    },
+    {
+      "name": "guarded-operation-without-disposal",
+      "files": {
+        "miniprogram/pages/cabinet-pickup/index.wxml": "<page-meta root-font-size=\"system\" />\n<view>取件</view>\n",
+        "miniprogram/pages/cabinet-pickup/index.ts": "const scope = createOperationScope();\nPage({ scan() { return scope.singleFlight('scan', () => wx.scanCode({})); } });\n"
+      }
+    }
+  ]
+}

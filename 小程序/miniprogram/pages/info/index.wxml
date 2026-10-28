@@ -1,0 +1,29 @@
+<page-meta root-font-size="system" />
+<view class="info-page">
+  <page-header variant="order-primary" title="沟通" show-back="{{false}}" />
+  <view class="info-content">
+    <button class="xy-button-reset support-row" bindtap="demoSupport" binderror="contactError" aria-label="官方客服，点击进入微信客服">
+      <view class="conversation-main"><view class="conversation-avatar support-avatar"><image src="{{icons.orderSupport}}" class="support-icon" mode="aspectFit" aria-hidden="true" /></view><view class="conversation-copy"><text class="conversation-name">官方客服 <text class="support-badge">官方</text></text><text class="support-copy">微信小程序客服</text><text class="support-copy">点击进入微信客服</text></view><text class="support-arrow" aria-hidden="true">›</text></view>
+    </button>
+    <text wx:if="{{supportError}}" class="info-feedback">{{supportError}}</text>
+    <view class="directory-heading"><text>订单会话</text><button class="xy-button-reset info-text-action" bindtap="refresh" disabled="{{loading || !loggedIn}}" aria-disabled="{{loading || !loggedIn}}" aria-label="刷新订单会话">{{loading ? '读取中…' : '刷新'}}</button></view>
+    <view wx:if="{{errorText}}" class="info-feedback" role="alert"><text>{{errorText}}</text><button class="xy-button-reset info-text-action" bindtap="refresh">重试</button></view>
+    <view wx:if="{{!loggedIn}}" class="xy-empty-page info-empty"><image class="xy-empty-page__illustration" src="{{icons.orderEmptyMessages}}" mode="aspectFit" aria-hidden="true" /><text class="xy-empty-page__title">登录后查看订单会话</text><text class="xy-empty-page__copy">与出租方或承租方继续沟通</text><button class="xy-button-reset info-text-action" bindtap="openLogin">登录</button></view>
+    <view wx:elif="{{loading && !loaded}}" class="info-loading">正在读取订单会话…</view>
+    <view wx:elif="{{loaded && !errorText && !conversations.length}}" class="xy-empty-page info-empty"><image class="xy-empty-page__illustration" src="{{icons.orderEmptyMessages}}" mode="aspectFit" aria-hidden="true" /><text class="xy-empty-page__title">暂无订单会话</text><text class="xy-empty-page__copy">与订单相关的聊天会显示在这里</text><button class="xy-button-reset info-order-action" bindtap="openOrders">去查看订单</button></view>
+    <view wx:else class="conversation-list">
+      <button wx:for="{{conversations}}" wx:key="id" class="xy-button-reset conversation-row" data-id="{{item.id}}" bindtap="openConversation" aria-label="{{item.counterpartName}} {{item.counterpartRoleText}} {{item.deviceName}} {{item.lastMessage}} {{item.unreadText ? item.unreadText + '条未读' : ''}}">
+        <view class="conversation-avatar"><image wx:if="{{item.avatarURL}}" src="{{item.avatarURL}}" mode="aspectFill" /><text wx:else>{{item.avatarText}}</text></view>
+        <view class="conversation-copy">
+          <view class="conversation-head"><text class="conversation-name">{{item.counterpartName}}</text><text class="conversation-role">{{item.counterpartRoleText}}</text></view>
+          <text class="conversation-preview">{{item.deviceName}} · {{item.statusText}}</text>
+          <text class="conversation-meta">{{item.rentalPeriod}}</text>
+          <text class="conversation-preview">{{item.lastMessage}}</text>
+        </view>
+        <view class="conversation-trailing"><text wx:if="{{item.shortTimeText}}" class="conversation-time" aria-label="{{item.timeText}}">{{item.shortTimeText}}</text><text wx:if="{{item.unreadText}}" class="conversation-unread">{{item.unreadText}}</text></view>
+      </button>
+      <button wx:if="{{hasMore}}" class="xy-button-reset info-text-action directory-more" bindtap="loadMore" disabled="{{loadingMore}}" aria-disabled="{{loadingMore}}">{{loadingMore ? '读取中…' : '加载更多会话'}}</button>
+      <text wx:elif="{{loaded && conversations.length}}" class="directory-end">已显示全部会话</text>
+    </view>
+  </view>
+</view>

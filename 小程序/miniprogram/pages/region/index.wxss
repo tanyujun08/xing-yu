@@ -1,0 +1,36 @@
+.region-page { display:flex; flex-direction:column; height:100vh; min-height:0; background:var(--xy-color-surface); color:var(--xy-color-text-primary); }
+.region-search-wrap { flex:none; padding:var(--xy-space-4) var(--xy-space-4) var(--xy-space-4); }
+.region-search { display:flex; align-items:center; min-height:44px; padding-left:var(--xy-space-3); border-radius:var(--xy-radius-md); background:var(--xy-color-page); }
+.region-search > image { flex:none; width:20px; height:20px; margin-right:var(--xy-space-2); }
+.region-search input { flex:1; min-width:0; font-size:var(--xy-text-body-size); line-height:var(--xy-text-body-line-height); }
+.search-clear { display:flex; align-items:center; justify-content:center; min-width:44px; min-height:44px; }
+.search-clear image { width:16px; height:16px; }
+.region-body { position:relative; flex:1; min-height:0; }
+.region-scroll { width:100%; height:100%; }
+.city-content { padding:0 var(--xy-space-4) calc(var(--xy-space-4) + env(safe-area-inset-bottom)); }
+.city-content.has-alpha-index { padding-right:calc(var(--xy-size-touch-min) + var(--xy-space-2)); }
+.current-city { display:flex; align-items:center; gap:var(--xy-space-3); min-height:44px; }
+.current-city-label { color:var(--xy-color-text-secondary); font-size:var(--xy-text-body-size); line-height:var(--xy-text-body-line-height); }
+.current-city-value { flex:1; min-width:0; overflow-wrap:anywhere; color:var(--xy-color-brand); font-size:var(--xy-text-body-size); line-height:var(--xy-text-body-line-height); font-weight:var(--xy-text-weight-semibold); }
+.current-city image { flex:none; width:16px; height:16px; }
+.city-section { margin-top:var(--xy-space-4); }
+.city-section-title { display:block; color:var(--xy-color-text-muted); font-size:var(--xy-text-body-size); line-height:var(--xy-text-body-line-height); font-weight:var(--xy-text-weight-semibold); }
+.city-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--xy-space-1) var(--xy-space-2); margin-top:var(--xy-space-2); }
+.city-option { display:flex; align-items:stretch; min-width:0; min-height:44px; padding:calc(var(--xy-space-1) / 2) 0; }
+.city-option-label { display:flex; align-items:center; justify-content:center; width:100%; min-height:40px; box-sizing:border-box; padding:var(--xy-space-1) var(--xy-space-2); border:1rpx solid var(--xy-color-border); border-radius:var(--xy-radius-md); color:var(--xy-color-text-secondary); font-size:var(--xy-text-body-size); line-height:var(--xy-text-body-line-height); overflow-wrap:anywhere; text-align:center; }
+.city-default-sections + .city-directory { margin-top:var(--xy-space-6); }
+.city-group + .city-group { margin-top:var(--xy-space-4); }
+.is-searching .city-group + .city-group { margin-top:0; }
+.search-title { margin-bottom:var(--xy-space-2); }
+.city-letter { display:block; margin-bottom:var(--xy-space-2); font-size:var(--xy-text-section-title-size); line-height:var(--xy-text-section-title-line-height); font-weight:var(--xy-text-weight-semibold); }
+.city-row { display:flex; align-items:center; justify-content:space-between; gap:var(--xy-space-3); min-height:44px; box-sizing:border-box; padding:var(--xy-space-3) 0; border-bottom:1rpx solid var(--xy-color-divider); }
+.city-row-name { min-width:0; overflow-wrap:anywhere; font-size:var(--xy-text-body-size); line-height:var(--xy-text-body-line-height); }
+.city-current-mark { flex:none; color:var(--xy-color-text-muted); font-size:var(--xy-text-caption-size); line-height:var(--xy-text-caption-line-height); }
+.city-empty { display:flex; flex-direction:column; align-items:center; padding:var(--xy-space-6) 0; text-align:center; }
+.city-empty-title { color:var(--xy-color-text-secondary); font-size:var(--xy-text-body-size); line-height:var(--xy-text-body-line-height); }
+.city-empty-help { margin-top:var(--xy-space-1); color:var(--xy-color-text-muted); font-size:var(--xy-text-caption-size); line-height:var(--xy-text-caption-line-height); }
+.alpha-index { position:absolute; top:0; right:0; bottom:calc(16px + env(safe-area-inset-bottom)); width:44px; }
+.alpha-index-track { width:44px; }
+.alpha-index-item { display:flex; align-items:center; justify-content:center; min-height:24px; color:var(--xy-color-text-secondary); font-size:var(--xy-text-caption-size); line-height:var(--xy-text-caption-line-height); }
+/* Keep the existing visual carrier; constrain only its interaction box. */
+.alpha-index-track { min-height:var(--xy-size-touch-min); }

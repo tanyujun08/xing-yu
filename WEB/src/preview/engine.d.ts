@@ -1,0 +1,12 @@
+import type { ApiClient } from '../shared/api/client';
+import type { MemberSummary, UserDossier, DashboardSummary } from '../shared/services/contracts';
+export function previewMembers(template: MemberSummary): Promise<MemberSummary[]>;
+export function previewDossier(template: UserDossier, id: string): Promise<UserDossier>;
+export function previewDashboard(): DashboardSummary;
+export function createPreviewClient(config?: { linked?: boolean }): ApiClient;
+export function bootstrapPreview(): void;
+export function getPreviewInfo(): { scenario: string; latency: number; counts: Record<string, number>; requests: number };
+export function setPreviewScenario(scenario: string, latency?: number): void;
+export function resetPreview(): void;
+export function exportPreview(): string;
+export const requestLog: {path:string;method:string;at:string;status:string}[];

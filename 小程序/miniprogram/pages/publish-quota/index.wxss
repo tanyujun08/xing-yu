@@ -1,0 +1,17 @@
+.quota-page { min-height: 100%; box-sizing: border-box; padding: var(--xy-layout-first-block-gap) var(--xy-layout-page-padding-x) var(--xy-space-6); background: var(--xy-color-surface-subtle); 
+  padding-top: var(--xy-layout-card-stack-start-gap);
+}
+.quota-summary { padding: var(--xy-inset-card); border: 0; border-radius: var(--xy-radius-container); background: var(--xy-color-surface); }
+.summary-label { display: block; color: var(--xy-color-text-secondary); font-size: var(--xy-text-body-small-size); line-height: var(--xy-text-body-small-line-height); }
+.summary-number { display: block; margin-top: var(--xy-gap-label-value); font-family: var(--xy-font-family-numeric); font-size: var(--xy-price-value-size); font-weight: var(--xy-text-weight-semibold); line-height: var(--xy-price-value-line-height); }
+.summary-foot { display: flex; flex-wrap: wrap; gap: var(--xy-space-2); justify-content: space-between; margin-top: var(--xy-space-3); padding-top: var(--xy-space-3); border-top: 1rpx solid var(--xy-color-divider); color: var(--xy-color-text-muted); font-size: var(--xy-text-caption-size); }
+.quota-list { margin-top: var(--xy-layout-content-gap); overflow: hidden; border: 0; border-radius: var(--xy-radius-container); background: var(--xy-color-surface); }
+.quota-card { display: flex; min-height: var(--xy-size-touch-min); align-items: center; justify-content: space-between; gap: var(--xy-gap-content-action); padding: var(--xy-inset-card); border-bottom: 1rpx solid var(--xy-color-divider); }
+.quota-card:last-child { border-bottom: 0; }
+.quota-card-content { min-width: 0; flex: 1; }
+.quota-card-head { display: flex; flex-direction: column; }
+.quota-title { font-size: var(--xy-text-item-title-size); font-weight: var(--xy-text-weight-semibold); }
+.quota-price { margin-top: var(--xy-space-1); color: var(--xy-color-text-primary); font-family: var(--xy-font-family-numeric); font-size: var(--xy-text-body-small-size); }
+.quota-copy { display: block; margin-top: var(--xy-space-1); color: var(--xy-color-text-muted); font-size: var(--xy-text-caption-size); }
+.quota-button { display: flex; min-width: var(--xy-size-touch-min); min-height: var(--xy-size-touch-min); flex: none; align-items: center; justify-content: flex-end; }
+.quota-button-shell { display: flex; min-width: var(--xy-size-touch-min); min-height: var(--xy-button-height-standard); align-items: center; justify-content: center; padding: 0 var(--xy-space-3); border: 1rpx solid var(--xy-color-brand); border-radius: var(--xy-radius-md); background: var(--xy-color-brand); color: var(--xy-color-text-inverse); font-size: var(--xy-text-body-size);  line-height: var(--xy-text-body-line-height);}

@@ -1,0 +1,9 @@
+{
+  "schemaVersion": "1.0",
+  "ruleId": "MPA-COMP-001",
+  "case": "accept",
+  "files": {
+    "miniprogram/components/status-view/index.json": "{\"component\":true}",
+    "miniprogram/components/status-view/index.ts": "Component({ options: { styleIsolation: 'isolated' } });\n"
+  }
+}

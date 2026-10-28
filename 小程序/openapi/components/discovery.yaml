@@ -1,0 +1,108 @@
+Schemas:
+  DiscoveryMedia:
+    $ref: './common.yaml#/PublicMaterialMedia'
+  DiscoveryRegion:
+    type: object
+    additionalProperties: false
+    required: [city_id, city_name]
+    properties:
+      city_id: {type: string, minLength: 1, maxLength: 64}
+      city_name: {type: string, minLength: 1, maxLength: 80}
+      district_id: {type: string, minLength: 1, maxLength: 64}
+      district_name: {type: string, minLength: 1, maxLength: 80}
+  DiscoveryCategory:
+    type: object
+    additionalProperties: false
+    required: [category_id, name]
+    properties:
+      category_id: {type: string, minLength: 1, maxLength: 64}
+      name: {type: string, minLength: 1, maxLength: 128}
+  DiscoverySupply:
+    type: object
+    additionalProperties: false
+    required: [asset_id, display_name, category, supply_type, rental_mode, currency, unit_price_fen, deposit_fen, condition, description, availability_status, region, media]
+    properties:
+      asset_id: {type: string, minLength: 1, maxLength: 64}
+      display_name: {type: string, minLength: 1, maxLength: 128}
+      category: {$ref: '#/Schemas/DiscoveryCategory'}
+      supply_type: {type: string, enum: [PERSONAL, STORE, CABINET]}
+      rental_mode: {type: string, enum: [DAY, HOUR]}
+      currency: {type: string, const: CNY}
+      unit_price_fen: {type: string, pattern: '^[0-9]+$'}
+      deposit_fen: {type: string, pattern: '^[0-9]+$'}
+      condition: {type: string}
+      description: {type: string}
+      availability_status: {type: string, enum: [AVAILABLE, UNAVAILABLE]}
+      region: {$ref: '#/Schemas/DiscoveryRegion'}
+      media:
+        type: array
+        items: {$ref: '#/Schemas/DiscoveryMedia'}
+  DiscoverySupplyPage:
+    type: object
+    additionalProperties: false
+    required: [items, page, facets, filters]
+    properties:
+      items: {type: array, items: {$ref: '#/Schemas/DiscoverySupply'}}
+      page: {$ref: './pagination.yaml#/CursorPageMeta'}
+      facets:
+        type: object
+        additionalProperties: false
+        required: [categories]
+        properties:
+          categories: {type: array, items: {$ref: '#/Schemas/DiscoveryCategory'}}
+      filters:
+        type: object
+        additionalProperties: false
+        required: [city_id, category_id, supply_type, query]
+        properties:
+          city_id: {type: string}
+          category_id: {type: string}
+          supply_type: {type: string}
+          query: {type: string}
+  DiscoveryStoreSummary:
+    type: object
+    additionalProperties: false
+    required: [store_id, name, region, status, cover]
+    properties:
+      store_id: {type: string, minLength: 1, maxLength: 64}
+      name: {type: string, minLength: 1, maxLength: 128}
+      region: {$ref: '#/Schemas/DiscoveryRegion'}
+      status: {type: string, const: ACTIVE}
+      cover:
+        anyOf:
+          - {$ref: '#/Schemas/DiscoveryMedia'}
+          - {type: 'null'}
+  DiscoveryStore:
+    type: object
+    additionalProperties: false
+    required: [store_id, name, region, status, cover, business_hours, public_address, public_phone, supplies, media]
+    properties:
+      store_id: {type: string, minLength: 1, maxLength: 64}
+      name: {type: string, minLength: 1, maxLength: 128}
+      region: {$ref: '#/Schemas/DiscoveryRegion'}
+      status: {type: string, const: ACTIVE}
+      cover:
+        anyOf:
+          - {$ref: '#/Schemas/DiscoveryMedia'}
+          - {type: 'null'}
+      business_hours:
+        anyOf:
+          - {$ref: './stores.yaml#/Schemas/BusinessHours'}
+          - {type: 'null'}
+      public_address: {type: string}
+      public_phone: {type: string}
+      supplies: {type: array, items: {$ref: '#/Schemas/DiscoverySupply'}}
+      media: {type: array, items: {$ref: '#/Schemas/DiscoveryMedia'}}
+  DiscoveryStorePage:
+    type: object
+    additionalProperties: false
+    required: [items, page, filters]
+    properties:
+      items: {type: array, items: {$ref: '#/Schemas/DiscoveryStoreSummary'}}
+      page: {$ref: './pagination.yaml#/CursorPageMeta'}
+      filters:
+        type: object
+        additionalProperties: false
+        required: [city_id]
+        properties:
+          city_id: {type: string}

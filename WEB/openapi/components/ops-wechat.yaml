@@ -1,0 +1,38 @@
+Challenge:
+  type: object
+  additionalProperties: false
+  required: [challenge_id, purpose, status, expires_at]
+  properties:
+    challenge_id: { $ref: ./common.yaml#/OpaqueID }
+    purpose: { type: string, enum: [LOGIN, BIND] }
+    status: { type: string, enum: [PENDING, APPROVED, REJECTED, CONSUMED, EXPIRED] }
+    expires_at: { type: string, format: date-time }
+    display_name: { type: string, maxLength: 64 }
+    phone_masked: { type: string, pattern: '^1[0-9]{2}\*{4}[0-9]{4}$' }
+    poll_token: { type: string, pattern: '^[A-Za-z0-9_-]{43}$', readOnly: true }
+    code_image: { type: string, pattern: '^data:image/(png|jpeg|svg\+xml);base64,[A-Za-z0-9+/]+=*$', readOnly: true, description: Local provider returns an explicitly labelled non-scannable fixture. Real WeChat provider is not enabled. }
+
+EmptyRequest:
+  type: object
+  additionalProperties: false
+
+InspectRequest:
+  type: object
+  additionalProperties: false
+  required: [scan_token]
+  properties:
+    scan_token: { type: string, pattern: '^[A-Za-z0-9_-]{24,32}$', writeOnly: true }
+
+DecisionRequest:
+  type: object
+  additionalProperties: false
+  required: [scan_token, approve]
+  properties:
+    scan_token: { type: string, pattern: '^[A-Za-z0-9_-]{24,32}$', writeOnly: true }
+    approve: { type: boolean }
+
+PollTokenParameter:
+  name: X-Challenge-Token
+  in: header
+  required: true
+  schema: { type: string, pattern: '^[A-Za-z0-9_-]{43}$', writeOnly: true }

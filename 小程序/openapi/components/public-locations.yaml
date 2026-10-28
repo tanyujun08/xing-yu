@@ -1,0 +1,465 @@
+Schemas:
+  PublicLocationPoint:
+    type: object
+    additionalProperties: false
+    required:
+      - latitude
+      - longitude
+      - coordinate_system
+    properties:
+      latitude:
+        type: string
+        pattern: ^-?(?:(?:[0-9]|[1-8][0-9])\.[0-9]{6}|90\.000000)$
+      longitude:
+        type: string
+        pattern: ^-?(?:(?:[0-9]|[1-9][0-9]|1[0-7][0-9])\.[0-9]{6}|180\.000000)$
+      coordinate_system:
+        type: string
+        const: GCJ02
+    description: Navigable GCJ-02 position of a public rental location, exactly six decimal places. Provider and verification provenance deliberately stay private, so this projection never carries the private location source, an owner identity or a raw dataset row.
+  PublicRentalStoreAddress:
+    type: object
+    additionalProperties: false
+    required:
+      - dataset_id
+      - province_id
+      - city_id
+      - district_id
+      - province_name
+      - city_name
+      - district_name
+      - detail_address
+      - contact_name
+      - phone_dial
+      - location
+    properties:
+      dataset_id:
+        type: string
+        minLength: 1
+        maxLength: 64
+        pattern: ^[!-~]{1,64}$
+      province_id:
+        type: string
+        minLength: 1
+        maxLength: 64
+        pattern: ^[!-~]{1,64}$
+      city_id:
+        type: string
+        minLength: 1
+        maxLength: 64
+        pattern: ^[!-~]{1,64}$
+      district_id:
+        type: string
+        minLength: 1
+        maxLength: 64
+        pattern: ^[!-~]{1,64}$
+      province_name:
+        type: string
+        minLength: 1
+        maxLength: 64
+      city_name:
+        type: string
+        minLength: 1
+        maxLength: 64
+      district_name:
+        type: string
+        minLength: 1
+        maxLength: 64
+      detail_address:
+        type: string
+        minLength: 1
+        maxLength: 256
+      contact_name:
+        type: string
+        minLength: 1
+        maxLength: 64
+      phone_dial:
+        type: string
+        minLength: 5
+        maxLength: 32
+        pattern: ^\+?[0-9]{5,31}$
+      location:
+        anyOf:
+          - $ref: "#/Schemas/PublicLocationPoint"
+          - type: "null"
+    description: "Public operating address of a store: phone_dial is canonical dial text, never a split private-phone projection. Region names are the published dataset projection, not a client-supplied label. location is null when the stored coordinates carry no navigable provenance."
+  PublicRentalCabinetAddress:
+    type: object
+    additionalProperties: false
+    required:
+      - dataset_id
+      - province_id
+      - city_id
+      - district_id
+      - province_name
+      - city_name
+      - district_name
+      - detail_address
+      - phone_dial
+      - location
+    properties:
+      dataset_id:
+        type: string
+        minLength: 1
+        maxLength: 64
+        pattern: ^[!-~]{1,64}$
+      province_id:
+        type: string
+        minLength: 1
+        maxLength: 64
+        pattern: ^[!-~]{1,64}$
+      city_id:
+        type: string
+        minLength: 1
+        maxLength: 64
+        pattern: ^[!-~]{1,64}$
+      district_id:
+        type: string
+        minLength: 1
+        maxLength: 64
+        pattern: ^[!-~]{1,64}$
+      province_name:
+        type: string
+        minLength: 1
+        maxLength: 64
+      city_name:
+        type: string
+        minLength: 1
+        maxLength: 64
+      district_name:
+        type: string
+        minLength: 1
+        maxLength: 64
+      detail_address:
+        type: string
+        minLength: 1
+        maxLength: 256
+      phone_dial:
+        type: string
+        minLength: 5
+        maxLength: 32
+        pattern: ^\+?[0-9]{5,31}$
+      location:
+        anyOf:
+          - $ref: "#/Schemas/PublicLocationPoint"
+          - type: "null"
+    description: "Public operating address of a cabinet: no contact name is projected, and phone_dial is canonical dial text. location is null when the stored coordinates carry no navigable provenance."
+  PublicRentalStoreReference:
+    type: object
+    additionalProperties: false
+    required:
+      - store_id
+      - name
+    properties:
+      store_id:
+        type: string
+        minLength: 1
+        maxLength: 64
+        pattern: ^[!-~]{1,64}$
+      name:
+        type: string
+        minLength: 1
+        maxLength: 64
+    description: Owning store of a cabinet, projected as identity plus display name only. Merchant, lessor and approval data stay out of the public projection.
+  PublicLocationSupply:
+    required:
+      - asset_id
+      - asset_revision_id
+      - product_id
+      - display_name
+      - condition
+      - description
+      - defect_description
+      - accessories_text
+      - supply_type
+      - rental_mode
+      - currency
+      - unit_price_fen
+      - deposit_fen
+      - reference_value_fen
+      - minimum_units
+      - version
+      - available_from
+      - available_until
+      - region
+      - media
+      - delivery_methods
+      - allowed_actions
+      - pickup_location
+      - placement_confirmed_at
+    additionalProperties: false
+    type: object
+    properties:
+      asset_id:
+        minLength: 1
+        type: string
+        maxLength: 64
+      asset_revision_id:
+        minLength: 1
+        type: string
+        maxLength: 64
+      product_id:
+        minLength: 1
+        type: string
+        maxLength: 64
+      display_name:
+        type: string
+      condition:
+        type: string
+      description:
+        type: string
+      defect_description:
+        type: string
+      accessories_text:
+        type: string
+      supply_type:
+        type: string
+        enum:
+          - PERSONAL
+          - STORE
+          - CABINET
+      rental_mode:
+        type: string
+        enum:
+          - DAY
+          - HOUR
+      currency:
+        type: string
+        const: CNY
+      unit_price_fen:
+        type: string
+        pattern: ^(0|[1-9][0-9]{0,18})$
+      deposit_fen:
+        type: string
+        pattern: ^(0|[1-9][0-9]{0,18})$
+      reference_value_fen:
+        type: string
+        pattern: ^(0|[1-9][0-9]{0,18})$
+      minimum_units:
+        type: string
+        pattern: ^(0|[1-9][0-9]{0,18})$
+      version:
+        type: string
+        pattern: ^(0|[1-9][0-9]{0,18})$
+      available_from:
+        format: date-time
+        type: string
+      available_until:
+        format: date-time
+        type: string
+      region:
+        required:
+          - dataset_id
+          - province_id
+          - city_id
+          - district_id
+          - province_name
+          - city_name
+          - district_name
+        additionalProperties: false
+        type: object
+        properties:
+          dataset_id:
+            type: string
+          province_id:
+            type: string
+          city_id:
+            type: string
+          district_id:
+            type: string
+          province_name:
+            type: string
+          city_name:
+            type: string
+          district_name:
+            type: string
+      media:
+        type: array
+        items: { $ref: './supplies.yaml#/Schemas/RentalSupplyMedia' }
+      delivery_methods:
+        type: array
+        items:
+          type: string
+          enum:
+            - CABINET
+            - STORE
+            - MEET
+            - EXPRESS
+            - RUNNER
+      pickup_location:
+        anyOf:
+          - $ref: './supplies.yaml#/Schemas/RentalSupplyPickupLocation'
+          - type: 'null'
+      allowed_actions:
+        type: array
+        items:
+          required:
+            - code
+            - enabled
+            - blocked_reasons
+          additionalProperties: false
+          type: object
+          properties:
+            code:
+              type: string
+              const: QUOTE
+            enabled:
+              type: boolean
+            blocked_reasons:
+              type: array
+              items:
+                type: string
+      placement_confirmed_at:
+        type: string
+        format: date-time
+    description: A store or cabinet supply is the same approved ONLINE projection as RentalSupply plus the time its current placement at this public location was confirmed. Placement identity, compartment numbers, evidence and scan metadata are not part of this projection.
+  PublicRentalStore:
+    type: object
+    additionalProperties: false
+    required:
+      - photo_material_ids
+      - photos
+      - cover
+      - store_id
+      - name
+      - address
+      - business_hours
+      - status
+      - supplies
+      - version
+      - created_at
+      - updated_at
+    properties:
+      store_id:
+        type: string
+        minLength: 1
+        maxLength: 64
+        pattern: ^[!-~]{1,64}$
+      name:
+        type: string
+        minLength: 1
+        maxLength: 64
+      address:
+        $ref: "#/Schemas/PublicRentalStoreAddress"
+      business_hours:
+        anyOf:
+          - $ref: ./stores.yaml#/Schemas/BusinessHours
+          - type: 'null'
+      photos:
+        type: array
+        maxItems: 9
+        items: { $ref: './common.yaml#/MaterialPhoto' }
+      cover:
+        anyOf: [{ $ref: './common.yaml#/MaterialPhoto' }, { type: 'null' }]
+      photo_material_ids:
+        type: array
+        maxItems: 9
+        uniqueItems: true
+        items:
+          type: string
+        description: Ordered scanned photos bound to this currently discoverable store.
+      status:
+        type: string
+      supplies:
+        type: array
+        items:
+          $ref: "#/Schemas/PublicLocationSupply"
+      version:
+        type: string
+        pattern: ^[1-9][0-9]{0,19}$
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+    description: "Public store projection for the MINIPROGRAM channel: only the approved operating address, published business hours, lifecycle status and the supplies currently offered at this location. Merchant, lessor, approval, archive and moderation data are never projected."
+  PublicRentalCabinet:
+    type: object
+    additionalProperties: false
+    required:
+      - cabinet_id
+      - name
+      - description
+      - deployment_site_name
+      - address
+      - store
+      - status
+      - supplies
+      - version
+      - created_at
+      - updated_at
+    properties:
+      pickup_scene:
+        type: string
+        pattern: ^cab_[A-Za-z0-9]{20}$
+        description: Public pickup page reference; the service still verifies the tenant, order and six-digit pickup credential.
+      cabinet_id:
+        type: string
+        minLength: 1
+        maxLength: 64
+        pattern: ^[!-~]{1,64}$
+      name:
+        type: string
+        minLength: 1
+        maxLength: 64
+      description:
+        anyOf:
+          - type: string
+            maxLength: 512
+          - type: "null"
+      deployment_site_name:
+        anyOf:
+          - type: string
+            maxLength: 128
+          - type: "null"
+      address:
+        $ref: "#/Schemas/PublicRentalCabinetAddress"
+      store:
+        anyOf:
+          - $ref: "#/Schemas/PublicRentalStoreReference"
+          - type: "null"
+      status:
+        type: string
+      supplies:
+        type: array
+        items:
+          $ref: "#/Schemas/PublicLocationSupply"
+      version:
+        type: string
+        pattern: ^[1-9][0-9]{0,19}$
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+    description: Public cabinet projection for the MINIPROGRAM channel. Deployment site and description are optional display text; compartments, stocking, credentials, commands and observation data are operational fields and never appear here.
+  PublicRentalStorePage:
+    type: object
+    additionalProperties: false
+    required:
+      - items
+      - page
+    properties:
+      items:
+        type: array
+        items:
+          $ref: "#/Schemas/PublicRentalStore"
+      page:
+        $ref: ./pagination.yaml#/CursorPageMeta
+    description: Cursor page of public stores. The cursor binds the caller subject and the city filter, so a page may legitimately contain zero items while has_more stays true.
+  PublicRentalCabinetPage:
+    type: object
+    additionalProperties: false
+    required:
+      - items
+      - page
+    properties:
+      items:
+        type: array
+        items:
+          $ref: "#/Schemas/PublicRentalCabinet"
+      page:
+        $ref: ./pagination.yaml#/CursorPageMeta
+    description: Cursor page of public cabinets. The cursor binds the caller subject and the city filter, so a page may legitimately contain zero items while has_more stays true.

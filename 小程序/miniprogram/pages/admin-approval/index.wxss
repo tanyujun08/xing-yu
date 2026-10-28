@@ -1,0 +1,3 @@
+.approval { display: flex; flex-direction: column; gap: var(--xy-space-4); padding: var(--xy-layout-page-padding-x); color: var(--xy-color-text-primary); font-size: var(--xy-text-body-size); line-height: var(--xy-text-body-line-height); }
+.approval-title { font-size: var(--xy-text-page-title-size); line-height: var(--xy-text-page-title-line-height); font-weight: var(--xy-text-weight-semibold); }
+.approval-action { display: flex; align-items: center; justify-content: center; min-width: var(--xy-size-touch-min); min-height: var(--xy-size-touch-min); padding: 0 var(--xy-space-3); color: var(--xy-color-brand); font-size: var(--xy-text-body-size); line-height: var(--xy-text-body-line-height); white-space: normal; }

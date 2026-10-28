@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "1.0",
+  "ruleId": "MPA-TYPE-001",
+  "case": "accept",
+  "files": {
+    "miniprogram/app.wxss": "page { --xy-font-family-sans: -apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Microsoft YaHei\", sans-serif; }\n",
+    "miniprogram/pages/orders/index.wxss": ".primary-button { min-height: var(--xy-control-height); font-family: var(--xy-font-family-sans); font-size: var(--xy-text-page-title-size); font-weight: var(--xy-text-weight-semibold); line-height: var(--xy-text-page-title-line-height); }\n.tap-row, .compact-hit, .compact-entry { min-height: var(--xy-size-touch-min); }\n.compact-shell { min-height: var(--xy-control-height-compact); }\n.compact-carrier { width: var(--xy-size-icon-entry-block-compact); height: var(--xy-size-icon-entry-block-compact); }\n",
+    "miniprogram/pages/orders/index.wxml": "<page-meta root-font-size=\"system\" />\n<view>订单</view>\n<button class=\"primary-button\">查看订单</button>\n<view class=\"tap-row\" bindtap=\"openOrder\" role=\"button\">订单详情</view>\n<button class=\"compact-hit\"><view class=\"compact-shell\">签到</view></button>\n<button class=\"compact-entry\"><view class=\"compact-carrier\" /></button>\n",
+    "miniprogram/pages/orders/index.ts": "const windowInfo = wx.getWindowInfo();\nvoid windowInfo;\n"
+  }
+}

@@ -1,0 +1,242 @@
+[
+  {
+    "coupon_id": "coupon-1",
+    "account_id": "demo-tenant",
+    "coupon_type": "DEPOSIT_WAIVER",
+    "rights_snapshot": {
+      "kind": "DEPOSIT_WAIVER",
+      "deposit_waiver": "FULL"
+    },
+    "status": "AVAILABLE",
+    "source_grant_id": "demo-source_grant",
+    "source_kind": "CHECK_IN",
+    "source_id": "check-in-demo",
+    "source_draw_id": "demo-source_draw",
+    "coupon_config_version_id": "1",
+    "issued_at": "2026-10-14T13:28:23.279Z",
+    "version": "1",
+    "allowed_actions": {
+      "can_redeem": false
+    }
+  },
+  {
+    "coupon_id": "coupon-2",
+    "account_id": "demo-tenant",
+    "coupon_type": "PUBLISH_ONCE",
+    "rights_snapshot": {
+      "kind": "PUBLISH_ONCE",
+      "publish_quota_quantity": "1"
+    },
+    "status": "AVAILABLE",
+    "source_grant_id": "demo-source_grant",
+    "source_kind": "CHECK_IN",
+    "source_id": "check-in-demo",
+    "source_draw_id": "demo-source_draw",
+    "coupon_config_version_id": "1",
+    "issued_at": "2026-10-14T13:28:23.279Z",
+    "version": "1",
+    "allowed_actions": {
+      "can_redeem": true
+    }
+  },
+  {
+    "coupon_id": "coupon-3",
+    "account_id": "demo-tenant",
+    "coupon_type": "ONE_DAY_RENT",
+    "rights_snapshot": {
+      "kind": "ONE_DAY_RENT",
+      "rental_days": "1"
+    },
+    "status": "AVAILABLE",
+    "source_grant_id": "demo-source_grant",
+    "source_kind": "CHECK_IN",
+    "source_id": "check-in-demo",
+    "source_draw_id": "demo-source_draw",
+    "coupon_config_version_id": "1",
+    "issued_at": "2026-10-14T13:28:23.279Z",
+    "version": "1",
+    "allowed_actions": {
+      "can_redeem": true
+    }
+  },
+  {
+    "coupon_id": "coupon-4",
+    "account_id": "demo-tenant",
+    "coupon_type": "DEPOSIT_WAIVER",
+    "rights_snapshot": {
+      "kind": "DEPOSIT_WAIVER",
+      "deposit_waiver": "FULL"
+    },
+    "status": "AVAILABLE",
+    "source_grant_id": "demo-source_grant",
+    "source_kind": "CHECK_IN",
+    "source_id": "check-in-demo",
+    "source_draw_id": "demo-source_draw",
+    "coupon_config_version_id": "1",
+    "issued_at": "2026-10-14T13:28:23.279Z",
+    "version": "1",
+    "allowed_actions": {
+      "can_redeem": false
+    }
+  },
+  {
+    "coupon_id": "coupon-5",
+    "account_id": "demo-tenant",
+    "coupon_type": "PUBLISH_ONCE",
+    "rights_snapshot": {
+      "kind": "PUBLISH_ONCE",
+      "publish_quota_quantity": "1"
+    },
+    "status": "AVAILABLE",
+    "source_grant_id": "demo-source_grant",
+    "source_kind": "CHECK_IN",
+    "source_id": "check-in-demo",
+    "source_draw_id": "demo-source_draw",
+    "coupon_config_version_id": "1",
+    "issued_at": "2026-10-14T13:28:23.279Z",
+    "version": "1",
+    "allowed_actions": {
+      "can_redeem": true
+    }
+  },
+  {
+    "coupon_id": "coupon-6",
+    "account_id": "demo-tenant",
+    "coupon_type": "ONE_DAY_RENT",
+    "rights_snapshot": {
+      "kind": "ONE_DAY_RENT",
+      "rental_days": "1"
+    },
+    "status": "AVAILABLE",
+    "source_grant_id": "demo-source_grant",
+    "source_kind": "CHECK_IN",
+    "source_id": "check-in-demo",
+    "source_draw_id": "demo-source_draw",
+    "coupon_config_version_id": "1",
+    "issued_at": "2026-10-14T13:28:23.279Z",
+    "version": "1",
+    "allowed_actions": {
+      "can_redeem": true
+    }
+  },
+  {
+    "coupon_id": "coupon-7",
+    "account_id": "demo-tenant",
+    "coupon_type": "DEPOSIT_WAIVER",
+    "rights_snapshot": {
+      "kind": "DEPOSIT_WAIVER",
+      "deposit_waiver": "FULL"
+    },
+    "status": "AVAILABLE",
+    "source_grant_id": "demo-source_grant",
+    "source_kind": "CHECK_IN",
+    "source_id": "check-in-demo",
+    "source_draw_id": "demo-source_draw",
+    "coupon_config_version_id": "1",
+    "issued_at": "2026-10-14T13:28:23.279Z",
+    "version": "1",
+    "allowed_actions": {
+      "can_redeem": false
+    }
+  },
+  {
+    "coupon_id": "coupon-8",
+    "account_id": "demo-tenant",
+    "coupon_type": "PUBLISH_ONCE",
+    "rights_snapshot": {
+      "kind": "PUBLISH_ONCE",
+      "publish_quota_quantity": "1"
+    },
+    "status": "AVAILABLE",
+    "source_grant_id": "demo-source_grant",
+    "source_kind": "CHECK_IN",
+    "source_id": "check-in-demo",
+    "source_draw_id": "demo-source_draw",
+    "coupon_config_version_id": "1",
+    "issued_at": "2026-10-14T13:28:23.279Z",
+    "version": "1",
+    "allowed_actions": {
+      "can_redeem": true
+    }
+  },
+  {
+    "coupon_id": "coupon-9",
+    "account_id": "demo-tenant",
+    "coupon_type": "ONE_DAY_RENT",
+    "rights_snapshot": {
+      "kind": "ONE_DAY_RENT",
+      "rental_days": "1"
+    },
+    "status": "REDEEMED",
+    "source_grant_id": "demo-source_grant",
+    "source_kind": "CHECK_IN",
+    "source_id": "check-in-demo",
+    "source_draw_id": "demo-source_draw",
+    "coupon_config_version_id": "1",
+    "issued_at": "2026-10-14T13:28:23.279Z",
+    "version": "1",
+    "allowed_actions": {
+      "can_redeem": false
+    }
+  },
+  {
+    "coupon_id": "coupon-10",
+    "account_id": "demo-tenant",
+    "coupon_type": "DEPOSIT_WAIVER",
+    "rights_snapshot": {
+      "kind": "DEPOSIT_WAIVER",
+      "deposit_waiver": "FULL"
+    },
+    "status": "REDEEMED",
+    "source_grant_id": "demo-source_grant",
+    "source_kind": "CHECK_IN",
+    "source_id": "check-in-demo",
+    "source_draw_id": "demo-source_draw",
+    "coupon_config_version_id": "1",
+    "issued_at": "2026-10-14T13:28:23.279Z",
+    "version": "1",
+    "allowed_actions": {
+      "can_redeem": false
+    }
+  },
+  {
+    "coupon_id": "coupon-11",
+    "account_id": "demo-tenant",
+    "coupon_type": "PUBLISH_ONCE",
+    "rights_snapshot": {
+      "kind": "PUBLISH_ONCE",
+      "publish_quota_quantity": "1"
+    },
+    "status": "EXPIRED",
+    "source_grant_id": "demo-source_grant",
+    "source_kind": "CHECK_IN",
+    "source_id": "check-in-demo",
+    "source_draw_id": "demo-source_draw",
+    "coupon_config_version_id": "1",
+    "issued_at": "2026-10-14T13:28:23.279Z",
+    "version": "1",
+    "allowed_actions": {
+      "can_redeem": false
+    }
+  },
+  {
+    "coupon_id": "coupon-12",
+    "account_id": "demo-tenant",
+    "coupon_type": "ONE_DAY_RENT",
+    "rights_snapshot": {
+      "kind": "ONE_DAY_RENT",
+      "rental_days": "1"
+    },
+    "status": "EXPIRED",
+    "source_grant_id": "demo-source_grant",
+    "source_kind": "CHECK_IN",
+    "source_id": "check-in-demo",
+    "source_draw_id": "demo-source_draw",
+    "coupon_config_version_id": "1",
+    "issued_at": "2026-10-14T13:28:23.279Z",
+    "version": "1",
+    "allowed_actions": {
+      "can_redeem": false
+    }
+  }
+]

@@ -1,0 +1,38 @@
+RequestIDHeader:
+  description: Request correlation identifier.
+  required: true
+  schema:
+    type: string
+    pattern: ^[A-Za-z0-9._:-]{1,64}$
+
+ContractRevisionHeader:
+  description: Exact Change-backed API contract revision.
+  required: true
+  schema:
+    type: string
+    pattern: ^XY-[0-9]{8}-(?:[0-9]{3}|[a-f0-9]{32})$
+
+ETagHeader:
+  description: Strong entity tag used with If-Match.
+  required: true
+  schema:
+    type: string
+    pattern: '^"[A-Za-z0-9._:-]{1,128}"$'
+
+IdempotencyKeyParameter:
+  name: Idempotency-Key
+  in: header
+  required: true
+  schema:
+    type: string
+    minLength: 16
+    maxLength: 64
+    pattern: ^[!-~]+$
+
+IfMatchParameter:
+  name: If-Match
+  in: header
+  required: true
+  schema:
+    type: string
+    pattern: '^"[A-Za-z0-9._:-]{1,128}"$'

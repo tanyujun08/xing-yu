@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "粉钻商城",
+  "navigationBarBackgroundColor": "#EEF8F4",
+  "navigationBarTextStyle": "black",
+  "backgroundColor": "#F8FAF9",
+  "backgroundTextStyle": "light",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "page-header": "../../components/page-header/index"
+  }
+}

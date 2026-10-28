@@ -1,0 +1,58 @@
+.loyalty-save-review,
+.loyalty-reason-field,
+.loyalty-text-field,
+.loyalty-text-field > label {
+  display: grid;
+  gap: var(--xy-space-3);
+}
+
+.loyalty-save-review p,
+.loyalty-save-review h3 {
+  margin: 0;
+}
+
+.loyalty-difference-table caption {
+  padding-bottom: var(--xy-space-2);
+  text-align: left;
+  font-weight: 600;
+}
+
+.loyalty-difference-table thead {
+  background: var(--xy-bg-container-subtle);
+}
+
+.loyalty-reason-field {
+  color: var(--xy-text-primary);
+}
+
+.loyalty-text-field small {
+  color: var(--xy-text-secondary);
+}
+
+.loyalty-text-field small[role='alert'] {
+  color: var(--xy-status-danger);
+}
+
+.loyalty-original-fields {
+  display: grid;
+  gap: var(--xy-space-2);
+  margin: 0;
+}
+
+.loyalty-original-fields > div {
+  display: grid;
+  grid-template-columns: minmax(140px, 1fr) minmax(0, 2fr);
+  gap: var(--xy-space-3);
+}
+
+.loyalty-original-fields dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.loyalty-policy-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--xy-space-4); }
+.loyalty-policy-card { display: grid; align-content: start; gap: var(--xy-space-3); padding: var(--xy-space-4); border: 1px solid var(--xy-border-subtle); border-radius: var(--xy-radius-md); }
+.loyalty-policy-card h3, .loyalty-policy-card p { margin: 0; }
+.loyalty-switch-label { display: flex; gap: var(--xy-space-3); align-items: center; }
+.loyalty-edit-footer { position: sticky; bottom: 0; display: flex; justify-content: flex-end; gap: var(--xy-space-3); padding: var(--xy-space-4); background: var(--xy-bg-container); border-top: 1px solid var(--xy-border-subtle); z-index: 2; }
+.loyalty-detail-array { display: grid; gap: var(--xy-space-3); }

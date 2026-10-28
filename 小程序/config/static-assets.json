@@ -1,0 +1,1377 @@
+{
+  "schema_version": 1,
+  "bucket": "xyuprj",
+  "prefix": "miniprogram-static/v1.0.1.3/",
+  "base_url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com",
+  "source_baseline": "662b9ed9a286b111c875c0685c218914da6865c1",
+  "assets": [
+    {
+      "path": "assets/order-contract/closed.svg",
+      "sha256": "8d951e0866a09c4c3811c73587d93866476af119e048abd51cbb500844238868",
+      "bytes": 353,
+      "key": "miniprogram-static/v1.0.1.3/8d951e0866a09c4c3811c73587d93866476af119e048abd51cbb500844238868/assets/order-contract/closed.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/8d951e0866a09c4c3811c73587d93866476af119e048abd51cbb500844238868/assets/order-contract/closed.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/action-contact.svg",
+      "sha256": "a26e56817af63b7315701f8591f6cb827ae604d3937bdbc9d18e92badde2258a",
+      "bytes": 500,
+      "key": "miniprogram-static/v1.0.1.3/a26e56817af63b7315701f8591f6cb827ae604d3937bdbc9d18e92badde2258a/assets/figma-icons/action-contact.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/a26e56817af63b7315701f8591f6cb827ae604d3937bdbc9d18e92badde2258a/assets/figma-icons/action-contact.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/action-reject.svg",
+      "sha256": "232d3a92b03bed7e1cbb50e86588938b6953212e6f6eccd028bd6401a5603b32",
+      "bytes": 269,
+      "key": "miniprogram-static/v1.0.1.3/232d3a92b03bed7e1cbb50e86588938b6953212e6f6eccd028bd6401a5603b32/assets/figma-icons/action-reject.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/232d3a92b03bed7e1cbb50e86588938b6953212e6f6eccd028bd6401a5603b32/assets/figma-icons/action-reject.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/arrow-right.svg",
+      "sha256": "79829ef5cf868b9dd1adba7dffb9c8b161a790b46c4bc6c484d20a16b744f4d5",
+      "bytes": 216,
+      "key": "miniprogram-static/v1.0.1.3/79829ef5cf868b9dd1adba7dffb9c8b161a790b46c4bc6c484d20a16b744f4d5/assets/figma-icons/arrow-right.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/79829ef5cf868b9dd1adba7dffb9c8b161a790b46c4bc6c484d20a16b744f4d5/assets/figma-icons/arrow-right.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/delivery-check.svg",
+      "sha256": "40c223eadd810f489bba5e9c9443f013f7f46bc4e8c708c5b6ec9d198035bf23",
+      "bytes": 276,
+      "key": "miniprogram-static/v1.0.1.3/40c223eadd810f489bba5e9c9443f013f7f46bc4e8c708c5b6ec9d198035bf23/assets/figma-icons/delivery-check.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/40c223eadd810f489bba5e9c9443f013f7f46bc4e8c708c5b6ec9d198035bf23/assets/figma-icons/delivery-check.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/device-mark.svg",
+      "sha256": "d1263d95586e37c88a74503ce9c751f55c2e521eb3251d964cc7be46391a898d",
+      "bytes": 324,
+      "key": "miniprogram-static/v1.0.1.3/d1263d95586e37c88a74503ce9c751f55c2e521eb3251d964cc7be46391a898d/assets/figma-icons/device-mark.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/d1263d95586e37c88a74503ce9c751f55c2e521eb3251d964cc7be46391a898d/assets/figma-icons/device-mark.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/discovery-box.svg",
+      "sha256": "4dde2690a3b85e02dd2d084d86cf6bdd64b26701d6eb1e7ebb6cfe5f7c7d32fb",
+      "bytes": 252,
+      "key": "miniprogram-static/v1.0.1.3/4dde2690a3b85e02dd2d084d86cf6bdd64b26701d6eb1e7ebb6cfe5f7c7d32fb/assets/figma-icons/discovery-box.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/4dde2690a3b85e02dd2d084d86cf6bdd64b26701d6eb1e7ebb6cfe5f7c7d32fb/assets/figma-icons/discovery-box.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/discovery-call.svg",
+      "sha256": "fdfe60c5dc06349d1c9d3b786a257dbd13f2be763cae2e28781320559ba8b806",
+      "bytes": 274,
+      "key": "miniprogram-static/v1.0.1.3/fdfe60c5dc06349d1c9d3b786a257dbd13f2be763cae2e28781320559ba8b806/assets/figma-icons/discovery-call.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/fdfe60c5dc06349d1c9d3b786a257dbd13f2be763cae2e28781320559ba8b806/assets/figma-icons/discovery-call.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/discovery-camera.svg",
+      "sha256": "a4b35a8272828773639b4907c31242ba9fbc57c09acd3fb5312ab303de18a511",
+      "bytes": 281,
+      "key": "miniprogram-static/v1.0.1.3/a4b35a8272828773639b4907c31242ba9fbc57c09acd3fb5312ab303de18a511/assets/figma-icons/discovery-camera.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/a4b35a8272828773639b4907c31242ba9fbc57c09acd3fb5312ab303de18a511/assets/figma-icons/discovery-camera.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/discovery-clock.svg",
+      "sha256": "9bb5b78ea13290a2b743ce8e4a4b48d131826c2b6896a2604955735214bea0a2",
+      "bytes": 240,
+      "key": "miniprogram-static/v1.0.1.3/9bb5b78ea13290a2b743ce8e4a4b48d131826c2b6896a2604955735214bea0a2/assets/figma-icons/discovery-clock.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/9bb5b78ea13290a2b743ce8e4a4b48d131826c2b6896a2604955735214bea0a2/assets/figma-icons/discovery-clock.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/discovery-document.svg",
+      "sha256": "cfa4cc63fc901ce7fdecd9d63f50b8cdd5d4919de462b039a4e3269cea34db58",
+      "bytes": 237,
+      "key": "miniprogram-static/v1.0.1.3/cfa4cc63fc901ce7fdecd9d63f50b8cdd5d4919de462b039a4e3269cea34db58/assets/figma-icons/discovery-document.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/cfa4cc63fc901ce7fdecd9d63f50b8cdd5d4919de462b039a4e3269cea34db58/assets/figma-icons/discovery-document.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/discovery-location.svg",
+      "sha256": "95fb6b87b443d6287e914a552a61c913d04860558b169322b802da99cd5294db",
+      "bytes": 275,
+      "key": "miniprogram-static/v1.0.1.3/95fb6b87b443d6287e914a552a61c913d04860558b169322b802da99cd5294db/assets/figma-icons/discovery-location.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/95fb6b87b443d6287e914a552a61c913d04860558b169322b802da99cd5294db/assets/figma-icons/discovery-location.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/discovery-navigate.svg",
+      "sha256": "c28548f1ac6678a9318c6d5c2bd9e600a04544e3866e9efc74e3c7a87030e943",
+      "bytes": 223,
+      "key": "miniprogram-static/v1.0.1.3/c28548f1ac6678a9318c6d5c2bd9e600a04544e3866e9efc74e3c7a87030e943/assets/figma-icons/discovery-navigate.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/c28548f1ac6678a9318c6d5c2bd9e600a04544e3866e9efc74e3c7a87030e943/assets/figma-icons/discovery-navigate.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/discovery-phone.svg",
+      "sha256": "eb83b1d507ac25cdf4617f265ee6c18ce7a3c1fa778740d1752bced549043d52",
+      "bytes": 274,
+      "key": "miniprogram-static/v1.0.1.3/eb83b1d507ac25cdf4617f265ee6c18ce7a3c1fa778740d1752bced549043d52/assets/figma-icons/discovery-phone.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/eb83b1d507ac25cdf4617f265ee6c18ce7a3c1fa778740d1752bced549043d52/assets/figma-icons/discovery-phone.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/discovery-service.svg",
+      "sha256": "86a2b01732899fe7c2877ed982c1d08b2c0e039e4c7b97b1d8ea0bbfea72189e",
+      "bytes": 289,
+      "key": "miniprogram-static/v1.0.1.3/86a2b01732899fe7c2877ed982c1d08b2c0e039e4c7b97b1d8ea0bbfea72189e/assets/figma-icons/discovery-service.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/86a2b01732899fe7c2877ed982c1d08b2c0e039e4c7b97b1d8ea0bbfea72189e/assets/figma-icons/discovery-service.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/guide-deposit.svg",
+      "sha256": "94ecaf6c79b8d7f1227435ddbc6643894857d55d96dca358a0996488fc578e1c",
+      "bytes": 548,
+      "key": "miniprogram-static/v1.0.1.3/94ecaf6c79b8d7f1227435ddbc6643894857d55d96dca358a0996488fc578e1c/assets/figma-icons/guide-deposit.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/94ecaf6c79b8d7f1227435ddbc6643894857d55d96dca358a0996488fc578e1c/assets/figma-icons/guide-deposit.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/guide-protection.svg",
+      "sha256": "e81f6d9305344b042fc8281449ee340235322e66e3d3fdc58eced28095718860",
+      "bytes": 384,
+      "key": "miniprogram-static/v1.0.1.3/e81f6d9305344b042fc8281449ee340235322e66e3d3fdc58eced28095718860/assets/figma-icons/guide-protection.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/e81f6d9305344b042fc8281449ee340235322e66e3d3fdc58eced28095718860/assets/figma-icons/guide-protection.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/guide-rental.svg",
+      "sha256": "c484894c01e936fbe155d124e0b54e0a53aba20eb8e76c90beb86a88abf40432",
+      "bytes": 495,
+      "key": "miniprogram-static/v1.0.1.3/c484894c01e936fbe155d124e0b54e0a53aba20eb8e76c90beb86a88abf40432/assets/figma-icons/guide-rental.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/c484894c01e936fbe155d124e0b54e0a53aba20eb8e76c90beb86a88abf40432/assets/figma-icons/guide-rental.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/info-order.svg",
+      "sha256": "a0d63b3c4da9e09740e6e2c6ea4d6659a533a4bfad115505a23674808f3d3101",
+      "bytes": 529,
+      "key": "miniprogram-static/v1.0.1.3/a0d63b3c4da9e09740e6e2c6ea4d6659a533a4bfad115505a23674808f3d3101/assets/figma-icons/info-order.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/a0d63b3c4da9e09740e6e2c6ea4d6659a533a4bfad115505a23674808f3d3101/assets/figma-icons/info-order.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/info-private.svg",
+      "sha256": "a28ab10163c120444c39d636149d87456d31f441b8929f4b7de6418ecc71f20c",
+      "bytes": 708,
+      "key": "miniprogram-static/v1.0.1.3/a28ab10163c120444c39d636149d87456d31f441b8929f4b7de6418ecc71f20c/assets/figma-icons/info-private.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/a28ab10163c120444c39d636149d87456d31f441b8929f4b7de6418ecc71f20c/assets/figma-icons/info-private.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/info-service.svg",
+      "sha256": "73f4ba96f036e15c8b7ef2f02f640683290b785b410192d61180b10ac5c2e78e",
+      "bytes": 485,
+      "key": "miniprogram-static/v1.0.1.3/73f4ba96f036e15c8b7ef2f02f640683290b785b410192d61180b10ac5c2e78e/assets/figma-icons/info-service.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/73f4ba96f036e15c8b7ef2f02f640683290b785b410192d61180b10ac5c2e78e/assets/figma-icons/info-service.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/info-support.svg",
+      "sha256": "944760753f52042320fdcbbea42a5dbab95b2b8f880262dfedecc3c7df05c1d2",
+      "bytes": 446,
+      "key": "miniprogram-static/v1.0.1.3/944760753f52042320fdcbbea42a5dbab95b2b8f880262dfedecc3c7df05c1d2/assets/figma-icons/info-support.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/944760753f52042320fdcbbea42a5dbab95b2b8f880262dfedecc3c7df05c1d2/assets/figma-icons/info-support.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/login-chevron.svg",
+      "sha256": "e3d79d19f3236b62866f7f64470b4300aaf1dfe801d82a4c70b81fbea45af7ea",
+      "bytes": 216,
+      "key": "miniprogram-static/v1.0.1.3/e3d79d19f3236b62866f7f64470b4300aaf1dfe801d82a4c70b81fbea45af7ea/assets/figma-icons/login-chevron.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/e3d79d19f3236b62866f7f64470b4300aaf1dfe801d82a4c70b81fbea45af7ea/assets/figma-icons/login-chevron.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/login-clear.svg",
+      "sha256": "ceefc11f42025a1df8d847509ed99b3d53814c1d460c9917e3674eb2d5f1407a",
+      "bytes": 246,
+      "key": "miniprogram-static/v1.0.1.3/ceefc11f42025a1df8d847509ed99b3d53814c1d460c9917e3674eb2d5f1407a/assets/figma-icons/login-clear.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/ceefc11f42025a1df8d847509ed99b3d53814c1d460c9917e3674eb2d5f1407a/assets/figma-icons/login-clear.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/login-phone.svg",
+      "sha256": "f935279f9778e9316f57758c4291b3f668265e36e1580a0d5582af3582b94bea",
+      "bytes": 372,
+      "key": "miniprogram-static/v1.0.1.3/f935279f9778e9316f57758c4291b3f668265e36e1580a0d5582af3582b94bea/assets/figma-icons/login-phone.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/f935279f9778e9316f57758c4291b3f668265e36e1580a0d5582af3582b94bea/assets/figma-icons/login-phone.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/login-shield.svg",
+      "sha256": "5a61c01dd36e99c08954efc3fd9634d3d361b7d48b6ae93358f7fdb3b6611e50",
+      "bytes": 392,
+      "key": "miniprogram-static/v1.0.1.3/5a61c01dd36e99c08954efc3fd9634d3d361b7d48b6ae93358f7fdb3b6611e50/assets/figma-icons/login-shield.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/5a61c01dd36e99c08954efc3fd9634d3d361b7d48b6ae93358f7fdb3b6611e50/assets/figma-icons/login-shield.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/login-wechat.svg",
+      "sha256": "3e7dd1cfb6ba2ac49dd68adbb672ffb5c60464afd200ab65877595a0891a37a7",
+      "bytes": 850,
+      "key": "miniprogram-static/v1.0.1.3/3e7dd1cfb6ba2ac49dd68adbb672ffb5c60464afd200ab65877595a0891a37a7/assets/figma-icons/login-wechat.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/3e7dd1cfb6ba2ac49dd68adbb672ffb5c60464afd200ab65877595a0891a37a7/assets/figma-icons/login-wechat.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/membership-arrow-right.svg",
+      "sha256": "d560ec453d9c547dbef85e45e3e01fa0123b3f5e6a7338e472120c52b359ec4d",
+      "bytes": 313,
+      "key": "miniprogram-static/v1.0.1.3/d560ec453d9c547dbef85e45e3e01fa0123b3f5e6a7338e472120c52b359ec4d/assets/figma-icons/membership-arrow-right.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/d560ec453d9c547dbef85e45e3e01fa0123b3f5e6a7338e472120c52b359ec4d/assets/figma-icons/membership-arrow-right.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/membership-balance-arrow.svg",
+      "sha256": "a4fa50358c7e250e722b6d8032fba6ab0d09f02e811cf98631591e4abd2c9e57",
+      "bytes": 222,
+      "key": "miniprogram-static/v1.0.1.3/a4fa50358c7e250e722b6d8032fba6ab0d09f02e811cf98631591e4abd2c9e57/assets/figma-icons/membership-balance-arrow.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/a4fa50358c7e250e722b6d8032fba6ab0d09f02e811cf98631591e4abd2c9e57/assets/figma-icons/membership-balance-arrow.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/membership-balance-checkin.svg",
+      "sha256": "ecd64bb17624f9cd050565323af671ca6e9fbc7fd550a7fbacd3fcdc86047f7a",
+      "bytes": 1139,
+      "key": "miniprogram-static/v1.0.1.3/ecd64bb17624f9cd050565323af671ca6e9fbc7fd550a7fbacd3fcdc86047f7a/assets/figma-icons/membership-balance-checkin.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/ecd64bb17624f9cd050565323af671ca6e9fbc7fd550a7fbacd3fcdc86047f7a/assets/figma-icons/membership-balance-checkin.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/membership-balance-diamond.svg",
+      "sha256": "6b2734fd472c0edd4346248a2721b1c25da58cf359ac6c04c2ae6cc2d40f5659",
+      "bytes": 889,
+      "key": "miniprogram-static/v1.0.1.3/6b2734fd472c0edd4346248a2721b1c25da58cf359ac6c04c2ae6cc2d40f5659/assets/figma-icons/membership-balance-diamond.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/6b2734fd472c0edd4346248a2721b1c25da58cf359ac6c04c2ae6cc2d40f5659/assets/figma-icons/membership-balance-diamond.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/membership-balance-shop.svg",
+      "sha256": "93bb839f4a18ed33bda917c56159a48600b3cc60e980e7c6b60f56b54bd68936",
+      "bytes": 853,
+      "key": "miniprogram-static/v1.0.1.3/93bb839f4a18ed33bda917c56159a48600b3cc60e980e7c6b60f56b54bd68936/assets/figma-icons/membership-balance-shop.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/93bb839f4a18ed33bda917c56159a48600b3cc60e980e7c6b60f56b54bd68936/assets/figma-icons/membership-balance-shop.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/membership-checkin.svg",
+      "sha256": "102f07c508c1b553fd09a7699b7cb0117eba65a4d0692560b7d2c4bafc5e804f",
+      "bytes": 408,
+      "key": "miniprogram-static/v1.0.1.3/102f07c508c1b553fd09a7699b7cb0117eba65a4d0692560b7d2c4bafc5e804f/assets/figma-icons/membership-checkin.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/102f07c508c1b553fd09a7699b7cb0117eba65a4d0692560b7d2c4bafc5e804f/assets/figma-icons/membership-checkin.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/membership-diamond.svg",
+      "sha256": "74f9efc921cfeaed2b5eb1416126fe69d3f8106a417b3442e722dfb50104a4c2",
+      "bytes": 438,
+      "key": "miniprogram-static/v1.0.1.3/74f9efc921cfeaed2b5eb1416126fe69d3f8106a417b3442e722dfb50104a4c2/assets/figma-icons/membership-diamond.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/74f9efc921cfeaed2b5eb1416126fe69d3f8106a417b3442e722dfb50104a4c2/assets/figma-icons/membership-diamond.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/membership-hero-decoration.svg",
+      "sha256": "aad78fa5bb6eb8428e04a7d5ec9dab0bfb0f0b6c10a19cfcb6cbf4d00a7aabe5",
+      "bytes": 2011,
+      "key": "miniprogram-static/v1.0.1.3/aad78fa5bb6eb8428e04a7d5ec9dab0bfb0f0b6c10a19cfcb6cbf4d00a7aabe5/assets/figma-icons/membership-hero-decoration.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/aad78fa5bb6eb8428e04a7d5ec9dab0bfb0f0b6c10a19cfcb6cbf4d00a7aabe5/assets/figma-icons/membership-hero-decoration.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/membership-link-arrow.svg",
+      "sha256": "2bd56eab683bf696e0ba5f295fbf366097135435456396e4f2cec041282fc2f3",
+      "bytes": 216,
+      "key": "miniprogram-static/v1.0.1.3/2bd56eab683bf696e0ba5f295fbf366097135435456396e4f2cec041282fc2f3/assets/figma-icons/membership-link-arrow.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/2bd56eab683bf696e0ba5f295fbf366097135435456396e4f2cec041282fc2f3/assets/figma-icons/membership-link-arrow.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/membership-shop.svg",
+      "sha256": "0c3a4c38162db5c3f471c2df8ab87fabf2d68da6d2853f1df7bb9137be65491f",
+      "bytes": 531,
+      "key": "miniprogram-static/v1.0.1.3/0c3a4c38162db5c3f471c2df8ab87fabf2d68da6d2853f1df7bb9137be65491f/assets/figma-icons/membership-shop.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/0c3a4c38162db5c3f471c2df8ab87fabf2d68da6d2853f1df7bb9137be65491f/assets/figma-icons/membership-shop.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/membership-task-checkin.svg",
+      "sha256": "98681d63e7bad4f84dc24ae831ceb43d3b2027a8dcf777e1ca9c7ef3905979c1",
+      "bytes": 655,
+      "key": "miniprogram-static/v1.0.1.3/98681d63e7bad4f84dc24ae831ceb43d3b2027a8dcf777e1ca9c7ef3905979c1/assets/figma-icons/membership-task-checkin.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/98681d63e7bad4f84dc24ae831ceb43d3b2027a8dcf777e1ca9c7ef3905979c1/assets/figma-icons/membership-task-checkin.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/membership-task-quota.svg",
+      "sha256": "907091f44db134688232ed5a434558c4fcfc4f1df67f92b604ea48ac26355242",
+      "bytes": 743,
+      "key": "miniprogram-static/v1.0.1.3/907091f44db134688232ed5a434558c4fcfc4f1df67f92b604ea48ac26355242/assets/figma-icons/membership-task-quota.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/907091f44db134688232ed5a434558c4fcfc4f1df67f92b604ea48ac26355242/assets/figma-icons/membership-task-quota.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/membership-task-upgrade.svg",
+      "sha256": "d04312d9e5ea39db04ccc4c1ffa7f9684ef7e429a2bfdcb00f218792af8eabfa",
+      "bytes": 863,
+      "key": "miniprogram-static/v1.0.1.3/d04312d9e5ea39db04ccc4c1ffa7f9684ef7e429a2bfdcb00f218792af8eabfa/assets/figma-icons/membership-task-upgrade.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/d04312d9e5ea39db04ccc4c1ffa7f9684ef7e429a2bfdcb00f218792af8eabfa/assets/figma-icons/membership-task-upgrade.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/membership-task-waiver.svg",
+      "sha256": "a68a7318c09096dd2992d7747b339ca7196edae4088fc0709cfda9b65ed7ce2d",
+      "bytes": 484,
+      "key": "miniprogram-static/v1.0.1.3/a68a7318c09096dd2992d7747b339ca7196edae4088fc0709cfda9b65ed7ce2d/assets/figma-icons/membership-task-waiver.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/a68a7318c09096dd2992d7747b339ca7196edae4088fc0709cfda9b65ed7ce2d/assets/figma-icons/membership-task-waiver.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/navigation.svg",
+      "sha256": "69e4a92c360fbb05f2f8b9eab3cedb7c1b6dab03382e70f2a8486006475e9911",
+      "bytes": 220,
+      "key": "miniprogram-static/v1.0.1.3/69e4a92c360fbb05f2f8b9eab3cedb7c1b6dab03382e70f2a8486006475e9911/assets/figma-icons/navigation.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/69e4a92c360fbb05f2f8b9eab3cedb7c1b6dab03382e70f2a8486006475e9911/assets/figma-icons/navigation.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/profile-about.svg",
+      "sha256": "829d16a1a9310d301488510180f3663c538b63f94b7c8456e6797a49cb9d4e3b",
+      "bytes": 453,
+      "key": "miniprogram-static/v1.0.1.3/829d16a1a9310d301488510180f3663c538b63f94b7c8456e6797a49cb9d4e3b/assets/figma-icons/profile-about.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/829d16a1a9310d301488510180f3663c538b63f94b7c8456e6797a49cb9d4e3b/assets/figma-icons/profile-about.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/profile-avatar-default.svg",
+      "sha256": "77df7c963531a520d441995a8e29e66c16dbf5c9b4e82c14beb6bc3d8bca4f7a",
+      "bytes": 1076,
+      "key": "miniprogram-static/v1.0.1.3/77df7c963531a520d441995a8e29e66c16dbf5c9b4e82c14beb6bc3d8bca4f7a/assets/figma-icons/profile-avatar-default.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/77df7c963531a520d441995a8e29e66c16dbf5c9b4e82c14beb6bc3d8bca4f7a/assets/figma-icons/profile-avatar-default.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/profile-cash.svg",
+      "sha256": "7479206a9b0138b33e4abbf1ecb7a1754e789dc1f46e610e6f593fe6bb290b41",
+      "bytes": 577,
+      "key": "miniprogram-static/v1.0.1.3/7479206a9b0138b33e4abbf1ecb7a1754e789dc1f46e610e6f593fe6bb290b41/assets/figma-icons/profile-cash.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/7479206a9b0138b33e4abbf1ecb7a1754e789dc1f46e610e6f593fe6bb290b41/assets/figma-icons/profile-cash.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/profile-chart-pie.svg",
+      "sha256": "323f523cf274be69b31383ee6c8d5163f87f8dc47d35bee9b05f33774054f673",
+      "bytes": 528,
+      "key": "miniprogram-static/v1.0.1.3/323f523cf274be69b31383ee6c8d5163f87f8dc47d35bee9b05f33774054f673/assets/figma-icons/profile-chart-pie.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/323f523cf274be69b31383ee6c8d5163f87f8dc47d35bee9b05f33774054f673/assets/figma-icons/profile-chart-pie.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/profile-coins.svg",
+      "sha256": "ffc96c53ece9cbb92b6c3b48f43a31011a06e0a5b3f6fd85998f67608c2ad0a8",
+      "bytes": 762,
+      "key": "miniprogram-static/v1.0.1.3/ffc96c53ece9cbb92b6c3b48f43a31011a06e0a5b3f6fd85998f67608c2ad0a8/assets/figma-icons/profile-coins.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/ffc96c53ece9cbb92b6c3b48f43a31011a06e0a5b3f6fd85998f67608c2ad0a8/assets/figma-icons/profile-coins.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/profile-lend.svg",
+      "sha256": "fffd8d4501e64231455cb91700592ecccbf91936b0e2fc0f805474aa0878be9e",
+      "bytes": 290,
+      "key": "miniprogram-static/v1.0.1.3/fffd8d4501e64231455cb91700592ecccbf91936b0e2fc0f805474aa0878be9e/assets/figma-icons/profile-lend.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/fffd8d4501e64231455cb91700592ecccbf91936b0e2fc0f805474aa0878be9e/assets/figma-icons/profile-lend.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/profile-list.svg",
+      "sha256": "c0312b710bf2faa56a1108ec86a05701cb14de40b440638e593bb4600cfa96b8",
+      "bytes": 628,
+      "key": "miniprogram-static/v1.0.1.3/c0312b710bf2faa56a1108ec86a05701cb14de40b440638e593bb4600cfa96b8/assets/figma-icons/profile-list.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/c0312b710bf2faa56a1108ec86a05701cb14de40b440638e593bb4600cfa96b8/assets/figma-icons/profile-list.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/profile-location.svg",
+      "sha256": "46a169cbd019ad094e498c582b5e6eedc52ce10f7520105f2cfee0a8b37debc7",
+      "bytes": 488,
+      "key": "miniprogram-static/v1.0.1.3/46a169cbd019ad094e498c582b5e6eedc52ce10f7520105f2cfee0a8b37debc7/assets/figma-icons/profile-location.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/46a169cbd019ad094e498c582b5e6eedc52ce10f7520105f2cfee0a8b37debc7/assets/figma-icons/profile-location.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/profile-member-star.svg",
+      "sha256": "cea6653082f457f109515ce3ddb2df6692e2ef9fa8cb387d98fd8bee05e4eec5",
+      "bytes": 486,
+      "key": "miniprogram-static/v1.0.1.3/cea6653082f457f109515ce3ddb2df6692e2ef9fa8cb387d98fd8bee05e4eec5/assets/figma-icons/profile-member-star.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/cea6653082f457f109515ce3ddb2df6692e2ef9fa8cb387d98fd8bee05e4eec5/assets/figma-icons/profile-member-star.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/profile-publish-filled.svg",
+      "sha256": "3c129381570a2ad1c56259539ca749162a04378c124fd16ffa0978afabef51cb",
+      "bytes": 328,
+      "key": "miniprogram-static/v1.0.1.3/3c129381570a2ad1c56259539ca749162a04378c124fd16ffa0978afabef51cb/assets/figma-icons/profile-publish-filled.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/3c129381570a2ad1c56259539ca749162a04378c124fd16ffa0978afabef51cb/assets/figma-icons/profile-publish-filled.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/profile-publish.svg",
+      "sha256": "c9fe2dd214822498669c28441670eb0d902b6376c80479895cbe902ecd8962ff",
+      "bytes": 442,
+      "key": "miniprogram-static/v1.0.1.3/c9fe2dd214822498669c28441670eb0d902b6376c80479895cbe902ecd8962ff/assets/figma-icons/profile-publish.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/c9fe2dd214822498669c28441670eb0d902b6376c80479895cbe902ecd8962ff/assets/figma-icons/profile-publish.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/profile-rental-camera.svg",
+      "sha256": "e194bca3593fc86f065e48da31b30a93e24b12233a08ffe1f51c77ec3a785519",
+      "bytes": 420,
+      "key": "miniprogram-static/v1.0.1.3/e194bca3593fc86f065e48da31b30a93e24b12233a08ffe1f51c77ec3a785519/assets/figma-icons/profile-rental-camera.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/e194bca3593fc86f065e48da31b30a93e24b12233a08ffe1f51c77ec3a785519/assets/figma-icons/profile-rental-camera.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/profile-rental-guide.svg",
+      "sha256": "882c8e8b01a6c745102e822b73b2d4e71065d6cfe481f7c3425187aabf86d7cb",
+      "bytes": 369,
+      "key": "miniprogram-static/v1.0.1.3/882c8e8b01a6c745102e822b73b2d4e71065d6cfe481f7c3425187aabf86d7cb/assets/figma-icons/profile-rental-guide.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/882c8e8b01a6c745102e822b73b2d4e71065d6cfe481f7c3425187aabf86d7cb/assets/figma-icons/profile-rental-guide.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/profile-rental-service.svg",
+      "sha256": "d6b8085e10b8390a2ab4c75ad523bf6b739197bbfe7a6344aec1fe2f8c89eb33",
+      "bytes": 322,
+      "key": "miniprogram-static/v1.0.1.3/d6b8085e10b8390a2ab4c75ad523bf6b739197bbfe7a6344aec1fe2f8c89eb33/assets/figma-icons/profile-rental-service.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/d6b8085e10b8390a2ab4c75ad523bf6b739197bbfe7a6344aec1fe2f8c89eb33/assets/figma-icons/profile-rental-service.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/profile-security.svg",
+      "sha256": "6c96307a6140853aaa44a4f72b2eba1b1444754297ff9e2f64da777f3932c96d",
+      "bytes": 545,
+      "key": "miniprogram-static/v1.0.1.3/6c96307a6140853aaa44a4f72b2eba1b1444754297ff9e2f64da777f3932c96d/assets/figma-icons/profile-security.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/6c96307a6140853aaa44a4f72b2eba1b1444754297ff9e2f64da777f3932c96d/assets/figma-icons/profile-security.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/profile-support.svg",
+      "sha256": "3f125b6863248d0e11b48c5352eb2f7f2db19b337ff1e175aa2b5f6d06b186f0",
+      "bytes": 635,
+      "key": "miniprogram-static/v1.0.1.3/3f125b6863248d0e11b48c5352eb2f7f2db19b337ff1e175aa2b5f6d06b186f0/assets/figma-icons/profile-support.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/3f125b6863248d0e11b48c5352eb2f7f2db19b337ff1e175aa2b5f6d06b186f0/assets/figma-icons/profile-support.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/profile-verified.svg",
+      "sha256": "6a4bf756c7aae5f2342ed433564bde4460c2734476e825453284d18434b39aff",
+      "bytes": 499,
+      "key": "miniprogram-static/v1.0.1.3/6a4bf756c7aae5f2342ed433564bde4460c2734476e825453284d18434b39aff/assets/figma-icons/profile-verified.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/6a4bf756c7aae5f2342ed433564bde4460c2734476e825453284d18434b39aff/assets/figma-icons/profile-verified.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/profile-wallet.svg",
+      "sha256": "ee9a8ad0e5540dc57606025304f85212636b9b9f75922ab5fe64681c69fc2c70",
+      "bytes": 490,
+      "key": "miniprogram-static/v1.0.1.3/ee9a8ad0e5540dc57606025304f85212636b9b9f75922ab5fe64681c69fc2c70/assets/figma-icons/profile-wallet.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/ee9a8ad0e5540dc57606025304f85212636b9b9f75922ab5fe64681c69fc2c70/assets/figma-icons/profile-wallet.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/search.svg",
+      "sha256": "0a95d119ff15c5c8ebf769bcbb24368c54a4eaa894743c2ac267395e1e02764a",
+      "bytes": 269,
+      "key": "miniprogram-static/v1.0.1.3/0a95d119ff15c5c8ebf769bcbb24368c54a4eaa894743c2ac267395e1e02764a/assets/figma-icons/search.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/0a95d119ff15c5c8ebf769bcbb24368c54a4eaa894743c2ac267395e1e02764a/assets/figma-icons/search.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/wallet-deposit.svg",
+      "sha256": "d731a4c6d5fe78d50539f35bded567777f95bdec8cc469d606bae88077f73b91",
+      "bytes": 306,
+      "key": "miniprogram-static/v1.0.1.3/d731a4c6d5fe78d50539f35bded567777f95bdec8cc469d606bae88077f73b91/assets/figma-icons/wallet-deposit.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/d731a4c6d5fe78d50539f35bded567777f95bdec8cc469d606bae88077f73b91/assets/figma-icons/wallet-deposit.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/wallet-frozen.svg",
+      "sha256": "5dc96adbdaf0019873e5b885cc9babfd6077c14c0993b14454f965052a61f8fe",
+      "bytes": 345,
+      "key": "miniprogram-static/v1.0.1.3/5dc96adbdaf0019873e5b885cc9babfd6077c14c0993b14454f965052a61f8fe/assets/figma-icons/wallet-frozen.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/5dc96adbdaf0019873e5b885cc9babfd6077c14c0993b14454f965052a61f8fe/assets/figma-icons/wallet-frozen.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/wallet-processing.svg",
+      "sha256": "f433838f7de241150c69de6ae4e3df9d96b5a1500348a5840d9a3ed9e50976af",
+      "bytes": 283,
+      "key": "miniprogram-static/v1.0.1.3/f433838f7de241150c69de6ae4e3df9d96b5a1500348a5840d9a3ed9e50976af/assets/figma-icons/wallet-processing.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/f433838f7de241150c69de6ae4e3df9d96b5a1500348a5840d9a3ed9e50976af/assets/figma-icons/wallet-processing.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/wallet-receivable.svg",
+      "sha256": "9b435e5be320f0af73aa714518edb3a16da000fea7d9f86d56aeeaa5e71712db",
+      "bytes": 313,
+      "key": "miniprogram-static/v1.0.1.3/9b435e5be320f0af73aa714518edb3a16da000fea7d9f86d56aeeaa5e71712db/assets/figma-icons/wallet-receivable.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/9b435e5be320f0af73aa714518edb3a16da000fea7d9f86d56aeeaa5e71712db/assets/figma-icons/wallet-receivable.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/wallet-records.svg",
+      "sha256": "845255409db8c734f259071649ae630289df873e9b9b1cc9f014de10f76b01c5",
+      "bytes": 287,
+      "key": "miniprogram-static/v1.0.1.3/845255409db8c734f259071649ae630289df873e9b9b1cc9f014de10f76b01c5/assets/figma-icons/wallet-records.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/845255409db8c734f259071649ae630289df873e9b9b1cc9f014de10f76b01c5/assets/figma-icons/wallet-records.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/wallet-reserve.svg",
+      "sha256": "fd737eeeb20aeb28f3a844eda9eaa197fad6b03848918ee3f0451d4ea81ccb49",
+      "bytes": 426,
+      "key": "miniprogram-static/v1.0.1.3/fd737eeeb20aeb28f3a844eda9eaa197fad6b03848918ee3f0451d4ea81ccb49/assets/figma-icons/wallet-reserve.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/fd737eeeb20aeb28f3a844eda9eaa197fad6b03848918ee3f0451d4ea81ccb49/assets/figma-icons/wallet-reserve.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/withdrawal-help.svg",
+      "sha256": "4e4c02fe50508b3c7a70f25f2c419ccd8734d2478663f16912ec883f9428662e",
+      "bytes": 327,
+      "key": "miniprogram-static/v1.0.1.3/4e4c02fe50508b3c7a70f25f2c419ccd8734d2478663f16912ec883f9428662e/assets/figma-icons/withdrawal-help.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/4e4c02fe50508b3c7a70f25f2c419ccd8734d2478663f16912ec883f9428662e/assets/figma-icons/withdrawal-help.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/withdrawal-status-completed.svg",
+      "sha256": "dd4dea4b94ab76ac74946f98213bb871d877b7d6097cd21188d2a1e5b9f9c422",
+      "bytes": 220,
+      "key": "miniprogram-static/v1.0.1.3/dd4dea4b94ab76ac74946f98213bb871d877b7d6097cd21188d2a1e5b9f9c422/assets/figma-icons/withdrawal-status-completed.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/dd4dea4b94ab76ac74946f98213bb871d877b7d6097cd21188d2a1e5b9f9c422/assets/figma-icons/withdrawal-status-completed.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/withdrawal-status-failed.svg",
+      "sha256": "3c81c3cfd39547f3ae6f5663dae09edada186cd021298e5434dfce8a483e2711",
+      "bytes": 278,
+      "key": "miniprogram-static/v1.0.1.3/3c81c3cfd39547f3ae6f5663dae09edada186cd021298e5434dfce8a483e2711/assets/figma-icons/withdrawal-status-failed.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/3c81c3cfd39547f3ae6f5663dae09edada186cd021298e5434dfce8a483e2711/assets/figma-icons/withdrawal-status-failed.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/withdrawal-status-pending.svg",
+      "sha256": "2a36380f521e4cf7730afbc54d530c06f2c0cca0449da9d4736180bd9266d295",
+      "bytes": 284,
+      "key": "miniprogram-static/v1.0.1.3/2a36380f521e4cf7730afbc54d530c06f2c0cca0449da9d4736180bd9266d295/assets/figma-icons/withdrawal-status-pending.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/2a36380f521e4cf7730afbc54d530c06f2c0cca0449da9d4736180bd9266d295/assets/figma-icons/withdrawal-status-pending.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/withdrawal-step-completed.svg",
+      "sha256": "4025834ac99114e509d8f9220dcfff9f4a801e45d31ee949e0f3204edbb1d0f8",
+      "bytes": 267,
+      "key": "miniprogram-static/v1.0.1.3/4025834ac99114e509d8f9220dcfff9f4a801e45d31ee949e0f3204edbb1d0f8/assets/figma-icons/withdrawal-step-completed.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/4025834ac99114e509d8f9220dcfff9f4a801e45d31ee949e0f3204edbb1d0f8/assets/figma-icons/withdrawal-step-completed.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/withdrawal-step-current.svg",
+      "sha256": "56f69e5dca3e6a6ef3a11bc53ef96b8209c2aa3027480e0b56e7fa6d72bf7ca1",
+      "bytes": 138,
+      "key": "miniprogram-static/v1.0.1.3/56f69e5dca3e6a6ef3a11bc53ef96b8209c2aa3027480e0b56e7fa6d72bf7ca1/assets/figma-icons/withdrawal-step-current.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/56f69e5dca3e6a6ef3a11bc53ef96b8209c2aa3027480e0b56e7fa6d72bf7ca1/assets/figma-icons/withdrawal-step-current.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/withdrawal-step-unknown.svg",
+      "sha256": "4a9ec97b5c46aece07fa72d1e8fdac7519892b20b8ba8bc16bd1762309a96307",
+      "bytes": 138,
+      "key": "miniprogram-static/v1.0.1.3/4a9ec97b5c46aece07fa72d1e8fdac7519892b20b8ba8bc16bd1762309a96307/assets/figma-icons/withdrawal-step-unknown.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/4a9ec97b5c46aece07fa72d1e8fdac7519892b20b8ba8bc16bd1762309a96307/assets/figma-icons/withdrawal-step-unknown.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/withdrawal-step-waiting.svg",
+      "sha256": "1363e91f51924d29df76939d6ffee892c95d858ee54918f2a9e72392d236b9cf",
+      "bytes": 172,
+      "key": "miniprogram-static/v1.0.1.3/1363e91f51924d29df76939d6ffee892c95d858ee54918f2a9e72392d236b9cf/assets/figma-icons/withdrawal-step-waiting.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/1363e91f51924d29df76939d6ffee892c95d858ee54918f2a9e72392d236b9cf/assets/figma-icons/withdrawal-step-waiting.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/xy-agreement-check.svg",
+      "sha256": "48703c205d27f0e4b846d392736f8e4548844994310657015fee0bc454ea3a15",
+      "bytes": 225,
+      "key": "miniprogram-static/v1.0.1.3/48703c205d27f0e4b846d392736f8e4548844994310657015fee0bc454ea3a15/assets/figma-icons/xy-agreement-check.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/48703c205d27f0e4b846d392736f8e4548844994310657015fee0bc454ea3a15/assets/figma-icons/xy-agreement-check.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/xy-home-check-in.svg",
+      "sha256": "9e2d2cbd9b5c029283ac2d96f195926b80122a6a74970526f7f7ab05cc534389",
+      "bytes": 327,
+      "key": "miniprogram-static/v1.0.1.3/9e2d2cbd9b5c029283ac2d96f195926b80122a6a74970526f7f7ab05cc534389/assets/figma-icons/xy-home-check-in.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/9e2d2cbd9b5c029283ac2d96f195926b80122a6a74970526f7f7ab05cc534389/assets/figma-icons/xy-home-check-in.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/xy-home-chevron-down.svg",
+      "sha256": "c4374aaf58fcf6602929b6c42acd7cdc79c55d62dcf08c8d2e0e09fc5b7cc092",
+      "bytes": 216,
+      "key": "miniprogram-static/v1.0.1.3/c4374aaf58fcf6602929b6c42acd7cdc79c55d62dcf08c8d2e0e09fc5b7cc092/assets/figma-icons/xy-home-chevron-down.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/c4374aaf58fcf6602929b6c42acd7cdc79c55d62dcf08c8d2e0e09fc5b7cc092/assets/figma-icons/xy-home-chevron-down.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/xy-home-location.svg",
+      "sha256": "fa66ba0fe9748fa432754459fbbb3ae0aec57a5dbd85d9347dd125bd822f920b",
+      "bytes": 336,
+      "key": "miniprogram-static/v1.0.1.3/fa66ba0fe9748fa432754459fbbb3ae0aec57a5dbd85d9347dd125bd822f920b/assets/figma-icons/xy-home-location.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/fa66ba0fe9748fa432754459fbbb3ae0aec57a5dbd85d9347dd125bd822f920b/assets/figma-icons/xy-home-location.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/xy-home-publish.svg",
+      "sha256": "56fe200ec7eb683ff7949f509fc3d04cca823006b8def6f7fd51a1a1ff778191",
+      "bytes": 273,
+      "key": "miniprogram-static/v1.0.1.3/56fe200ec7eb683ff7949f509fc3d04cca823006b8def6f7fd51a1a1ff778191/assets/figma-icons/xy-home-publish.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/56fe200ec7eb683ff7949f509fc3d04cca823006b8def6f7fd51a1a1ff778191/assets/figma-icons/xy-home-publish.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/xy-tab-communication-selected.svg",
+      "sha256": "fa84c573ed5451c4bd3ff142cb33ed8c181a5ced4baf12e0141bd8d037576c4e",
+      "bytes": 1104,
+      "key": "miniprogram-static/v1.0.1.3/fa84c573ed5451c4bd3ff142cb33ed8c181a5ced4baf12e0141bd8d037576c4e/assets/figma-icons/xy-tab-communication-selected.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/fa84c573ed5451c4bd3ff142cb33ed8c181a5ced4baf12e0141bd8d037576c4e/assets/figma-icons/xy-tab-communication-selected.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/xy-tab-communication.svg",
+      "sha256": "00ff15f40ba5e54ca18105e473cda518f6d5241b26157d4508b3bf919547f3d9",
+      "bytes": 529,
+      "key": "miniprogram-static/v1.0.1.3/00ff15f40ba5e54ca18105e473cda518f6d5241b26157d4508b3bf919547f3d9/assets/figma-icons/xy-tab-communication.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/00ff15f40ba5e54ca18105e473cda518f6d5241b26157d4508b3bf919547f3d9/assets/figma-icons/xy-tab-communication.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/xy-tab-home-selected.svg",
+      "sha256": "a8468052d7ad09873e7431fe5b9e07f8ea395066045dbee2913b5271a7ec382d",
+      "bytes": 480,
+      "key": "miniprogram-static/v1.0.1.3/a8468052d7ad09873e7431fe5b9e07f8ea395066045dbee2913b5271a7ec382d/assets/figma-icons/xy-tab-home-selected.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/a8468052d7ad09873e7431fe5b9e07f8ea395066045dbee2913b5271a7ec382d/assets/figma-icons/xy-tab-home-selected.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/xy-tab-home.svg",
+      "sha256": "07d1b13cd2ba5f5671ab93fa491e348bf22be473e92b160e85f9536a7e79d6df",
+      "bytes": 451,
+      "key": "miniprogram-static/v1.0.1.3/07d1b13cd2ba5f5671ab93fa491e348bf22be473e92b160e85f9536a7e79d6df/assets/figma-icons/xy-tab-home.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/07d1b13cd2ba5f5671ab93fa491e348bf22be473e92b160e85f9536a7e79d6df/assets/figma-icons/xy-tab-home.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/xy-tab-orders-selected.svg",
+      "sha256": "45ac46a6264d86946288488c88fd3feef167fb63a84a5961a43d83a7cfe1637d",
+      "bytes": 719,
+      "key": "miniprogram-static/v1.0.1.3/45ac46a6264d86946288488c88fd3feef167fb63a84a5961a43d83a7cfe1637d/assets/figma-icons/xy-tab-orders-selected.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/45ac46a6264d86946288488c88fd3feef167fb63a84a5961a43d83a7cfe1637d/assets/figma-icons/xy-tab-orders-selected.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/xy-tab-orders.svg",
+      "sha256": "3f79aebcfb464f09034d70d1cb2c4281467f3ae5f8b0fff845bbb86edc937050",
+      "bytes": 619,
+      "key": "miniprogram-static/v1.0.1.3/3f79aebcfb464f09034d70d1cb2c4281467f3ae5f8b0fff845bbb86edc937050/assets/figma-icons/xy-tab-orders.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/3f79aebcfb464f09034d70d1cb2c4281467f3ae5f8b0fff845bbb86edc937050/assets/figma-icons/xy-tab-orders.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/xy-tab-profile-selected.svg",
+      "sha256": "06a0691e489d741407c01befa06e6a9ec90e984774fe3b5846d132584c350e2d",
+      "bytes": 418,
+      "key": "miniprogram-static/v1.0.1.3/06a0691e489d741407c01befa06e6a9ec90e984774fe3b5846d132584c350e2d/assets/figma-icons/xy-tab-profile-selected.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/06a0691e489d741407c01befa06e6a9ec90e984774fe3b5846d132584c350e2d/assets/figma-icons/xy-tab-profile-selected.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-icons/xy-tab-profile.svg",
+      "sha256": "8570431f4ab06acce3f59773420982fec87170b0a36e2f73cbc5e8b8a9f17f27",
+      "bytes": 449,
+      "key": "miniprogram-static/v1.0.1.3/8570431f4ab06acce3f59773420982fec87170b0a36e2f73cbc5e8b8a9f17f27/assets/figma-icons/xy-tab-profile.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/8570431f4ab06acce3f59773420982fec87170b0a36e2f73cbc5e8b8a9f17f27/assets/figma-icons/xy-tab-profile.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/figma-media/check-in-hero.webp",
+      "sha256": "7318982115ddec75e8cb952e12ae188332a68742b1ed4ef395173719f2a8b0dc",
+      "bytes": 87444,
+      "key": "miniprogram-static/v1.0.1.3/7318982115ddec75e8cb952e12ae188332a68742b1ed4ef395173719f2a8b0dc/assets/figma-media/check-in-hero.webp",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/7318982115ddec75e8cb952e12ae188332a68742b1ed4ef395173719f2a8b0dc/assets/figma-media/check-in-hero.webp",
+      "mime": "image/webp"
+    },
+    {
+      "path": "assets/figma-media/discovery-reference-cabinet.jpg",
+      "sha256": "001b166535d52f04fd0cfac1fff128db2ef15d533cc8cee6f623af85ff6adc63",
+      "bytes": 33747,
+      "key": "miniprogram-static/v1.0.1.3/001b166535d52f04fd0cfac1fff128db2ef15d533cc8cee6f623af85ff6adc63/assets/figma-media/discovery-reference-cabinet.jpg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/001b166535d52f04fd0cfac1fff128db2ef15d533cc8cee6f623af85ff6adc63/assets/figma-media/discovery-reference-cabinet.jpg",
+      "mime": "image/jpeg"
+    },
+    {
+      "path": "assets/figma-media/discovery-reference-canon.jpg",
+      "sha256": "f98e53fa9ec9a2b2d80f67f6ea7c15e3a853c4140b2c0a95ec15a02cd7e8459c",
+      "bytes": 3484,
+      "key": "miniprogram-static/v1.0.1.3/f98e53fa9ec9a2b2d80f67f6ea7c15e3a853c4140b2c0a95ec15a02cd7e8459c/assets/figma-media/discovery-reference-canon.jpg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/f98e53fa9ec9a2b2d80f67f6ea7c15e3a853c4140b2c0a95ec15a02cd7e8459c/assets/figma-media/discovery-reference-canon.jpg",
+      "mime": "image/jpeg"
+    },
+    {
+      "path": "assets/figma-media/discovery-reference-fuji.jpg",
+      "sha256": "54da7981b540bee101a6f1e7fbfb5f88535184ba53f959c1013d558479a02c1d",
+      "bytes": 3454,
+      "key": "miniprogram-static/v1.0.1.3/54da7981b540bee101a6f1e7fbfb5f88535184ba53f959c1013d558479a02c1d/assets/figma-media/discovery-reference-fuji.jpg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/54da7981b540bee101a6f1e7fbfb5f88535184ba53f959c1013d558479a02c1d/assets/figma-media/discovery-reference-fuji.jpg",
+      "mime": "image/jpeg"
+    },
+    {
+      "path": "assets/figma-media/discovery-reference-gopro.jpg",
+      "sha256": "52f41addc448ba7d05b61ef8b5873a3064f497bb56b368b6e2afd289d8c9b5f2",
+      "bytes": 2621,
+      "key": "miniprogram-static/v1.0.1.3/52f41addc448ba7d05b61ef8b5873a3064f497bb56b368b6e2afd289d8c9b5f2/assets/figma-media/discovery-reference-gopro.jpg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/52f41addc448ba7d05b61ef8b5873a3064f497bb56b368b6e2afd289d8c9b5f2/assets/figma-media/discovery-reference-gopro.jpg",
+      "mime": "image/jpeg"
+    },
+    {
+      "path": "assets/figma-media/discovery-reference-nikon.jpg",
+      "sha256": "f78b80df6e35e8a3e5d871bd1c326bde6a714ad89ba4b0ead0a4e988cebe4d78",
+      "bytes": 3257,
+      "key": "miniprogram-static/v1.0.1.3/f78b80df6e35e8a3e5d871bd1c326bde6a714ad89ba4b0ead0a4e988cebe4d78/assets/figma-media/discovery-reference-nikon.jpg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/f78b80df6e35e8a3e5d871bd1c326bde6a714ad89ba4b0ead0a4e988cebe4d78/assets/figma-media/discovery-reference-nikon.jpg",
+      "mime": "image/jpeg"
+    },
+    {
+      "path": "assets/figma-media/discovery-reference-olympus.jpg",
+      "sha256": "4638ee18b006f5f19b4a514134f8daceb3a1acb7ec56d821cfa7c8efc2ad394e",
+      "bytes": 3566,
+      "key": "miniprogram-static/v1.0.1.3/4638ee18b006f5f19b4a514134f8daceb3a1acb7ec56d821cfa7c8efc2ad394e/assets/figma-media/discovery-reference-olympus.jpg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/4638ee18b006f5f19b4a514134f8daceb3a1acb7ec56d821cfa7c8efc2ad394e/assets/figma-media/discovery-reference-olympus.jpg",
+      "mime": "image/jpeg"
+    },
+    {
+      "path": "assets/figma-media/discovery-reference-panasonic.jpg",
+      "sha256": "57af8fdb12da25624a05eb854c576f0e809dc0fc81d767593aa92c0cd2210d16",
+      "bytes": 3398,
+      "key": "miniprogram-static/v1.0.1.3/57af8fdb12da25624a05eb854c576f0e809dc0fc81d767593aa92c0cd2210d16/assets/figma-media/discovery-reference-panasonic.jpg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/57af8fdb12da25624a05eb854c576f0e809dc0fc81d767593aa92c0cd2210d16/assets/figma-media/discovery-reference-panasonic.jpg",
+      "mime": "image/jpeg"
+    },
+    {
+      "path": "assets/figma-media/discovery-reference-ricoh.jpg",
+      "sha256": "e5ffaeaa1c89c2a3954a66adadca7b97b1e5718f3145a029b012f4dfe7936f12",
+      "bytes": 2767,
+      "key": "miniprogram-static/v1.0.1.3/e5ffaeaa1c89c2a3954a66adadca7b97b1e5718f3145a029b012f4dfe7936f12/assets/figma-media/discovery-reference-ricoh.jpg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/e5ffaeaa1c89c2a3954a66adadca7b97b1e5718f3145a029b012f4dfe7936f12/assets/figma-media/discovery-reference-ricoh.jpg",
+      "mime": "image/jpeg"
+    },
+    {
+      "path": "assets/figma-media/discovery-reference-sigma.jpg",
+      "sha256": "3dcc42dedc1a870a48bc0b2488803a5b11bf82f9ab980184eccf49741c2b3c8e",
+      "bytes": 2484,
+      "key": "miniprogram-static/v1.0.1.3/3dcc42dedc1a870a48bc0b2488803a5b11bf82f9ab980184eccf49741c2b3c8e/assets/figma-media/discovery-reference-sigma.jpg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/3dcc42dedc1a870a48bc0b2488803a5b11bf82f9ab980184eccf49741c2b3c8e/assets/figma-media/discovery-reference-sigma.jpg",
+      "mime": "image/jpeg"
+    },
+    {
+      "path": "assets/figma-media/figma-cabinet-detail-1.jpg",
+      "sha256": "1682b9b1e6504757a7b79576b9cd1b8a1348dca10d3d1e8461182de3c8bc5d8c",
+      "bytes": 33415,
+      "key": "miniprogram-static/v1.0.1.3/1682b9b1e6504757a7b79576b9cd1b8a1348dca10d3d1e8461182de3c8bc5d8c/assets/figma-media/figma-cabinet-detail-1.jpg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/1682b9b1e6504757a7b79576b9cd1b8a1348dca10d3d1e8461182de3c8bc5d8c/assets/figma-media/figma-cabinet-detail-1.jpg",
+      "mime": "image/jpeg"
+    },
+    {
+      "path": "assets/figma-media/figma-cabinet-detail-2.jpg",
+      "sha256": "065baec5e41b7f9b6f2580762bcf273c0f8cdf20770972ed7780c582efb89ea6",
+      "bytes": 20440,
+      "key": "miniprogram-static/v1.0.1.3/065baec5e41b7f9b6f2580762bcf273c0f8cdf20770972ed7780c582efb89ea6/assets/figma-media/figma-cabinet-detail-2.jpg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/065baec5e41b7f9b6f2580762bcf273c0f8cdf20770972ed7780c582efb89ea6/assets/figma-media/figma-cabinet-detail-2.jpg",
+      "mime": "image/jpeg"
+    },
+    {
+      "path": "assets/figma-media/figma-cabinet-list.png",
+      "sha256": "aa17122f29af5028aed72dd3562ac705d9dedd00f09172a43adddab3594664e7",
+      "bytes": 20281,
+      "key": "miniprogram-static/v1.0.1.3/aa17122f29af5028aed72dd3562ac705d9dedd00f09172a43adddab3594664e7/assets/figma-media/figma-cabinet-list.png",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/aa17122f29af5028aed72dd3562ac705d9dedd00f09172a43adddab3594664e7/assets/figma-media/figma-cabinet-list.png",
+      "mime": "image/png"
+    },
+    {
+      "path": "assets/figma-media/figma-confirm-product.png",
+      "sha256": "aa17122f29af5028aed72dd3562ac705d9dedd00f09172a43adddab3594664e7",
+      "bytes": 20281,
+      "key": "miniprogram-static/v1.0.1.3/aa17122f29af5028aed72dd3562ac705d9dedd00f09172a43adddab3594664e7/assets/figma-media/figma-confirm-product.png",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/aa17122f29af5028aed72dd3562ac705d9dedd00f09172a43adddab3594664e7/assets/figma-media/figma-confirm-product.png",
+      "mime": "image/png"
+    },
+    {
+      "path": "assets/figma-media/figma-home-banner.jpg",
+      "sha256": "91182a32c33bcec10a62da50410f92a3f2688d8a203c1a26ad590868f5ca293b",
+      "bytes": 46575,
+      "key": "miniprogram-static/v1.0.1.3/91182a32c33bcec10a62da50410f92a3f2688d8a203c1a26ad590868f5ca293b/assets/figma-media/figma-home-banner.jpg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/91182a32c33bcec10a62da50410f92a3f2688d8a203c1a26ad590868f5ca293b/assets/figma-media/figma-home-banner.jpg",
+      "mime": "image/jpeg"
+    },
+    {
+      "path": "assets/figma-media/figma-home-store.jpg",
+      "sha256": "a61b862d9492549d096357e29f391cdacd1abc93a859516f829d4b1d9415ca10",
+      "bytes": 34789,
+      "key": "miniprogram-static/v1.0.1.3/a61b862d9492549d096357e29f391cdacd1abc93a859516f829d4b1d9415ca10/assets/figma-media/figma-home-store.jpg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/a61b862d9492549d096357e29f391cdacd1abc93a859516f829d4b1d9415ca10/assets/figma-media/figma-home-store.jpg",
+      "mime": "image/jpeg"
+    },
+    {
+      "path": "assets/figma-media/figma-login-logo.jpg",
+      "sha256": "5fa411dff67325da7fb6e33b24d06a1fdd9edd0913c72611ec162ea9a843e2fc",
+      "bytes": 11877,
+      "key": "miniprogram-static/v1.0.1.3/5fa411dff67325da7fb6e33b24d06a1fdd9edd0913c72611ec162ea9a843e2fc/assets/figma-media/figma-login-logo.jpg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/5fa411dff67325da7fb6e33b24d06a1fdd9edd0913c72611ec162ea9a843e2fc/assets/figma-media/figma-login-logo.jpg",
+      "mime": "image/jpeg"
+    },
+    {
+      "path": "assets/figma-media/figma-order-product.png",
+      "sha256": "aa17122f29af5028aed72dd3562ac705d9dedd00f09172a43adddab3594664e7",
+      "bytes": 20281,
+      "key": "miniprogram-static/v1.0.1.3/aa17122f29af5028aed72dd3562ac705d9dedd00f09172a43adddab3594664e7/assets/figma-media/figma-order-product.png",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/aa17122f29af5028aed72dd3562ac705d9dedd00f09172a43adddab3594664e7/assets/figma-media/figma-order-product.png",
+      "mime": "image/png"
+    },
+    {
+      "path": "assets/figma-media/figma-store-detail-1.jpg",
+      "sha256": "065baec5e41b7f9b6f2580762bcf273c0f8cdf20770972ed7780c582efb89ea6",
+      "bytes": 20440,
+      "key": "miniprogram-static/v1.0.1.3/065baec5e41b7f9b6f2580762bcf273c0f8cdf20770972ed7780c582efb89ea6/assets/figma-media/figma-store-detail-1.jpg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/065baec5e41b7f9b6f2580762bcf273c0f8cdf20770972ed7780c582efb89ea6/assets/figma-media/figma-store-detail-1.jpg",
+      "mime": "image/jpeg"
+    },
+    {
+      "path": "assets/figma-media/figma-store-detail-2.jpg",
+      "sha256": "bc9827df6dc48e5c1ed06380ab4a3173fd097e9eafb6497d920ecdc2e91fd4de",
+      "bytes": 49808,
+      "key": "miniprogram-static/v1.0.1.3/bc9827df6dc48e5c1ed06380ab4a3173fd097e9eafb6497d920ecdc2e91fd4de/assets/figma-media/figma-store-detail-2.jpg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/bc9827df6dc48e5c1ed06380ab4a3173fd097e9eafb6497d920ecdc2e91fd4de/assets/figma-media/figma-store-detail-2.jpg",
+      "mime": "image/jpeg"
+    },
+    {
+      "path": "assets/figma-media/figma-store-list-1.jpg",
+      "sha256": "49b5f960c0a5de3dd2ba761fdaec3ae93fcdb70749807adff7947480649d295b",
+      "bytes": 67443,
+      "key": "miniprogram-static/v1.0.1.3/49b5f960c0a5de3dd2ba761fdaec3ae93fcdb70749807adff7947480649d295b/assets/figma-media/figma-store-list-1.jpg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/49b5f960c0a5de3dd2ba761fdaec3ae93fcdb70749807adff7947480649d295b/assets/figma-media/figma-store-list-1.jpg",
+      "mime": "image/jpeg"
+    },
+    {
+      "path": "assets/figma-media/figma-store-list-2.jpg",
+      "sha256": "7c99cb43e356e8f31ea0d06d54fbc821fe5b898623d037552203e408a01333fa",
+      "bytes": 69195,
+      "key": "miniprogram-static/v1.0.1.3/7c99cb43e356e8f31ea0d06d54fbc821fe5b898623d037552203e408a01333fa/assets/figma-media/figma-store-list-2.jpg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/7c99cb43e356e8f31ea0d06d54fbc821fe5b898623d037552203e408a01333fa/assets/figma-media/figma-store-list-2.jpg",
+      "mime": "image/jpeg"
+    },
+    {
+      "path": "assets/figma-media/figma-store-list-3.png",
+      "sha256": "aa17122f29af5028aed72dd3562ac705d9dedd00f09172a43adddab3594664e7",
+      "bytes": 20281,
+      "key": "miniprogram-static/v1.0.1.3/aa17122f29af5028aed72dd3562ac705d9dedd00f09172a43adddab3594664e7/assets/figma-media/figma-store-list-3.png",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/aa17122f29af5028aed72dd3562ac705d9dedd00f09172a43adddab3594664e7/assets/figma-media/figma-store-list-3.png",
+      "mime": "image/png"
+    },
+    {
+      "path": "assets/figma-media/lottery-hero.webp",
+      "sha256": "57b266b3c37a4103c50a157828dbc35899ac506575efb8ee6f0a4e32ada5305b",
+      "bytes": 79882,
+      "key": "miniprogram-static/v1.0.1.3/57b266b3c37a4103c50a157828dbc35899ac506575efb8ee6f0a4e32ada5305b/assets/figma-media/lottery-hero.webp",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/57b266b3c37a4103c50a157828dbc35899ac506575efb8ee6f0a4e32ada5305b/assets/figma-media/lottery-hero.webp",
+      "mime": "image/webp"
+    },
+    {
+      "path": "assets/figma-media/official-canon-eos-r8.jpg",
+      "sha256": "77bd9842e52ae9adc93efde036069f46ac3fe80682506c54fde5585b2df44403",
+      "bytes": 48958,
+      "key": "miniprogram-static/v1.0.1.3/77bd9842e52ae9adc93efde036069f46ac3fe80682506c54fde5585b2df44403/assets/figma-media/official-canon-eos-r8.jpg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/77bd9842e52ae9adc93efde036069f46ac3fe80682506c54fde5585b2df44403/assets/figma-media/official-canon-eos-r8.jpg",
+      "mime": "image/jpeg"
+    },
+    {
+      "path": "assets/figma-media/official-sony-a7c.jpg",
+      "sha256": "d351f89bbeb201cc72f7556c7a7a62d3607b1c011da83ad54558b7fc6307715b",
+      "bytes": 132411,
+      "key": "miniprogram-static/v1.0.1.3/d351f89bbeb201cc72f7556c7a7a62d3607b1c011da83ad54558b7fc6307715b/assets/figma-media/official-sony-a7c.jpg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/d351f89bbeb201cc72f7556c7a7a62d3607b1c011da83ad54558b7fc6307715b/assets/figma-media/official-sony-a7c.jpg",
+      "mime": "image/jpeg"
+    },
+    {
+      "path": "assets/figma-media/powder-ledger-hero.webp",
+      "sha256": "96e70e04165ed4ac1d618b33a00615b5015b8effeb9c123d369c9f6960671473",
+      "bytes": 50724,
+      "key": "miniprogram-static/v1.0.1.3/96e70e04165ed4ac1d618b33a00615b5015b8effeb9c123d369c9f6960671473/assets/figma-media/powder-ledger-hero.webp",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/96e70e04165ed4ac1d618b33a00615b5015b8effeb9c123d369c9f6960671473/assets/figma-media/powder-ledger-hero.webp",
+      "mime": "image/webp"
+    },
+    {
+      "path": "assets/figma-media/powder-mall-after-sale.webp",
+      "sha256": "97d6d00634fea9eea9a04d0ffffc733735a49f62d26cd39c38481c0795bf3cd9",
+      "bytes": 46620,
+      "key": "miniprogram-static/v1.0.1.3/97d6d00634fea9eea9a04d0ffffc733735a49f62d26cd39c38481c0795bf3cd9/assets/figma-media/powder-mall-after-sale.webp",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/97d6d00634fea9eea9a04d0ffffc733735a49f62d26cd39c38481c0795bf3cd9/assets/figma-media/powder-mall-after-sale.webp",
+      "mime": "image/webp"
+    },
+    {
+      "path": "assets/figma-media/powder-mall-coupon-10.webp",
+      "sha256": "e8ec8ce68f7a523abb9c0a42bc9e85cfee4b8259c00b6f8b7f6c02f8b655c752",
+      "bytes": 23468,
+      "key": "miniprogram-static/v1.0.1.3/e8ec8ce68f7a523abb9c0a42bc9e85cfee4b8259c00b6f8b7f6c02f8b655c752/assets/figma-media/powder-mall-coupon-10.webp",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/e8ec8ce68f7a523abb9c0a42bc9e85cfee4b8259c00b6f8b7f6c02f8b655c752/assets/figma-media/powder-mall-coupon-10.webp",
+      "mime": "image/webp"
+    },
+    {
+      "path": "assets/figma-media/powder-mall-coupon-20.webp",
+      "sha256": "2b07dbab027671ff10d73610e77d03c5d5b5537f97523d4374100518e819ffb0",
+      "bytes": 30570,
+      "key": "miniprogram-static/v1.0.1.3/2b07dbab027671ff10d73610e77d03c5d5b5537f97523d4374100518e819ffb0/assets/figma-media/powder-mall-coupon-20.webp",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/2b07dbab027671ff10d73610e77d03c5d5b5537f97523d4374100518e819ffb0/assets/figma-media/powder-mall-coupon-20.webp",
+      "mime": "image/webp"
+    },
+    {
+      "path": "assets/figma-media/powder-mall-express-10.webp",
+      "sha256": "00c6521d7404143e39307aa53aa95746cca0c620cfc94689265919f0b45d6745",
+      "bytes": 56072,
+      "key": "miniprogram-static/v1.0.1.3/00c6521d7404143e39307aa53aa95746cca0c620cfc94689265919f0b45d6745/assets/figma-media/powder-mall-express-10.webp",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/00c6521d7404143e39307aa53aa95746cca0c620cfc94689265919f0b45d6745/assets/figma-media/powder-mall-express-10.webp",
+      "mime": "image/webp"
+    },
+    {
+      "path": "assets/figma-media/powder-mall-hero.webp",
+      "sha256": "b10a266c7814446195ee388b9685e3277fb3e0f7a44f1b8b67f06db1e4dc6331",
+      "bytes": 75700,
+      "key": "miniprogram-static/v1.0.1.3/b10a266c7814446195ee388b9685e3277fb3e0f7a44f1b8b67f06db1e4dc6331/assets/figma-media/powder-mall-hero.webp",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/b10a266c7814446195ee388b9685e3277fb3e0f7a44f1b8b67f06db1e4dc6331/assets/figma-media/powder-mall-hero.webp",
+      "mime": "image/webp"
+    },
+    {
+      "path": "assets/figma-media/profile-avatar-default.png",
+      "sha256": "36978c7d77211e9517ccc36d6caff68cfd28f8184c9c485ad030849d0c83d67e",
+      "bytes": 451672,
+      "key": "miniprogram-static/v1.0.1.3/36978c7d77211e9517ccc36d6caff68cfd28f8184c9c485ad030849d0c83d67e/assets/figma-media/profile-avatar-default.png",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/36978c7d77211e9517ccc36d6caff68cfd28f8184c9c485ad030849d0c83d67e/assets/figma-media/profile-avatar-default.png",
+      "mime": "image/png"
+    },
+    {
+      "path": "assets/figma-media/profile-avatar.jpg",
+      "sha256": "97b0bb4af5e136138bac669570663019df1a83d5033124ef846e7718fab77e04",
+      "bytes": 17714,
+      "key": "miniprogram-static/v1.0.1.3/97b0bb4af5e136138bac669570663019df1a83d5033124ef846e7718fab77e04/assets/figma-media/profile-avatar.jpg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/97b0bb4af5e136138bac669570663019df1a83d5033124ef846e7718fab77e04/assets/figma-media/profile-avatar.jpg",
+      "mime": "image/jpeg"
+    },
+    {
+      "path": "assets/figma-media/profile-scene.webp",
+      "sha256": "ddbdfe019417a5cc312b307c879598bee313a52fb125c2f1222a944c34cb632d",
+      "bytes": 35856,
+      "key": "miniprogram-static/v1.0.1.3/ddbdfe019417a5cc312b307c879598bee313a52fb125c2f1222a944c34cb632d/assets/figma-media/profile-scene.webp",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/ddbdfe019417a5cc312b307c879598bee313a52fb125c2f1222a944c34cb632d/assets/figma-media/profile-scene.webp",
+      "mime": "image/webp"
+    },
+    {
+      "path": "assets/icons/login-mark.svg",
+      "sha256": "c0e00f83c2d951569fbc63956df6d3c37b4ff0141af2edd57cd07f361abbadbb",
+      "bytes": 782,
+      "key": "miniprogram-static/v1.0.1.3/c0e00f83c2d951569fbc63956df6d3c37b4ff0141af2edd57cd07f361abbadbb/assets/icons/login-mark.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/c0e00f83c2d951569fbc63956df6d3c37b4ff0141af2edd57cd07f361abbadbb/assets/icons/login-mark.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/icons/navigation-back-white.svg",
+      "sha256": "ce7bfc5135a1c4b6f685909487a74da6364996a93cb593cb2748c7c2497027ea",
+      "bytes": 234,
+      "key": "miniprogram-static/v1.0.1.3/ce7bfc5135a1c4b6f685909487a74da6364996a93cb593cb2748c7c2497027ea/assets/icons/navigation-back-white.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/ce7bfc5135a1c4b6f685909487a74da6364996a93cb593cb2748c7c2497027ea/assets/icons/navigation-back-white.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/icons/navigation-back.svg",
+      "sha256": "4c5e78e9ddd16ee21c8a7ee17d10b58ee5507f558886f1a5c565cfa096b51b85",
+      "bytes": 234,
+      "key": "miniprogram-static/v1.0.1.3/4c5e78e9ddd16ee21c8a7ee17d10b58ee5507f558886f1a5c565cfa096b51b85/assets/icons/navigation-back.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/4c5e78e9ddd16ee21c8a7ee17d10b58ee5507f558886f1a5c565cfa096b51b85/assets/icons/navigation-back.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/illustrations/empty-contract.webp",
+      "sha256": "968bd2276958d30a7a871c2565d8c1ed6f29a0a2dca21c16234a440885ad42ad",
+      "bytes": 41054,
+      "key": "miniprogram-static/v1.0.1.3/968bd2276958d30a7a871c2565d8c1ed6f29a0a2dca21c16234a440885ad42ad/assets/illustrations/empty-contract.webp",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/968bd2276958d30a7a871c2565d8c1ed6f29a0a2dca21c16234a440885ad42ad/assets/illustrations/empty-contract.webp",
+      "mime": "image/webp"
+    },
+    {
+      "path": "assets/illustrations/empty-devices.webp",
+      "sha256": "d1f17066f2aeb8808f72bd161444434885425f571039745cbeb6f6724f6a2f7c",
+      "bytes": 50478,
+      "key": "miniprogram-static/v1.0.1.3/d1f17066f2aeb8808f72bd161444434885425f571039745cbeb6f6724f6a2f7c/assets/illustrations/empty-devices.webp",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/d1f17066f2aeb8808f72bd161444434885425f571039745cbeb6f6724f6a2f7c/assets/illustrations/empty-devices.webp",
+      "mime": "image/webp"
+    },
+    {
+      "path": "assets/illustrations/empty-generic.png",
+      "sha256": "fd5b1dc9e26a5728321409530a144dbbc25497b19cd27de7713047cfcb0dcc50",
+      "bytes": 55740,
+      "key": "miniprogram-static/v1.0.1.3/fd5b1dc9e26a5728321409530a144dbbc25497b19cd27de7713047cfcb0dcc50/assets/illustrations/empty-generic.png",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/fd5b1dc9e26a5728321409530a144dbbc25497b19cd27de7713047cfcb0dcc50/assets/illustrations/empty-generic.png",
+      "mime": "image/png"
+    },
+    {
+      "path": "assets/illustrations/empty-ledger.webp",
+      "sha256": "27e6b591b78c6d80ec9dfe0873fbfa5d31b45142b91bd4a03a08f98a65764745",
+      "bytes": 38286,
+      "key": "miniprogram-static/v1.0.1.3/27e6b591b78c6d80ec9dfe0873fbfa5d31b45142b91bd4a03a08f98a65764745/assets/illustrations/empty-ledger.webp",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/27e6b591b78c6d80ec9dfe0873fbfa5d31b45142b91bd4a03a08f98a65764745/assets/illustrations/empty-ledger.webp",
+      "mime": "image/webp"
+    },
+    {
+      "path": "assets/illustrations/empty-location.png",
+      "sha256": "598498fca9e90ebd403b87b532ccf3c8a22bd347dd4f3977e689b4c0ff85356f",
+      "bytes": 66262,
+      "key": "miniprogram-static/v1.0.1.3/598498fca9e90ebd403b87b532ccf3c8a22bd347dd4f3977e689b4c0ff85356f/assets/illustrations/empty-location.png",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/598498fca9e90ebd403b87b532ccf3c8a22bd347dd4f3977e689b4c0ff85356f/assets/illustrations/empty-location.png",
+      "mime": "image/png"
+    },
+    {
+      "path": "assets/illustrations/empty-messages.webp",
+      "sha256": "efd9f5ec40a510525735d712ee71ebb2271d2a8262d4c7221f9f40a801ab0fd3",
+      "bytes": 64346,
+      "key": "miniprogram-static/v1.0.1.3/efd9f5ec40a510525735d712ee71ebb2271d2a8262d4c7221f9f40a801ab0fd3/assets/illustrations/empty-messages.webp",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/efd9f5ec40a510525735d712ee71ebb2271d2a8262d4c7221f9f40a801ab0fd3/assets/illustrations/empty-messages.webp",
+      "mime": "image/webp"
+    },
+    {
+      "path": "assets/illustrations/empty-orders.webp",
+      "sha256": "6f7e945809d27823061ff0f5b737da45e8fc4a22b487cc564f3f882d3540b704",
+      "bytes": 44734,
+      "key": "miniprogram-static/v1.0.1.3/6f7e945809d27823061ff0f5b737da45e8fc4a22b487cc564f3f882d3540b704/assets/illustrations/empty-orders.webp",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/6f7e945809d27823061ff0f5b737da45e8fc4a22b487cc564f3f882d3540b704/assets/illustrations/empty-orders.webp",
+      "mime": "image/webp"
+    },
+    {
+      "path": "assets/illustrations/empty-search.webp",
+      "sha256": "02b680b07e62dac5594e5d1a3d5b2fae0bf74277466b7a72c6bb5abe77382993",
+      "bytes": 48412,
+      "key": "miniprogram-static/v1.0.1.3/02b680b07e62dac5594e5d1a3d5b2fae0bf74277466b7a72c6bb5abe77382993/assets/illustrations/empty-search.webp",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/02b680b07e62dac5594e5d1a3d5b2fae0bf74277466b7a72c6bb5abe77382993/assets/illustrations/empty-search.webp",
+      "mime": "image/webp"
+    },
+    {
+      "path": "assets/illustrations/withdrawal-available.svg",
+      "sha256": "ecd910d43149090205b6690f1543495bb1fe515908de3bad46b108a4a2a6bab8",
+      "bytes": 2966,
+      "key": "miniprogram-static/v1.0.1.3/ecd910d43149090205b6690f1543495bb1fe515908de3bad46b108a4a2a6bab8/assets/illustrations/withdrawal-available.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/ecd910d43149090205b6690f1543495bb1fe515908de3bad46b108a4a2a6bab8/assets/illustrations/withdrawal-available.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/illustrations/withdrawal-balance.svg",
+      "sha256": "59512bdc5929ce7c9368a2b1bf99417884e9ea2f8f831b409a5b5f098f80351f",
+      "bytes": 2367,
+      "key": "miniprogram-static/v1.0.1.3/59512bdc5929ce7c9368a2b1bf99417884e9ea2f8f831b409a5b5f098f80351f/assets/illustrations/withdrawal-balance.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/59512bdc5929ce7c9368a2b1bf99417884e9ea2f8f831b409a5b5f098f80351f/assets/illustrations/withdrawal-balance.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/order-communication/empty-order-conversations.png",
+      "sha256": "617a14fb4b106b3c5e6922a3de2212f145adbfe2807e99be400b7d563e0523aa",
+      "bytes": 473879,
+      "key": "miniprogram-static/v1.0.1.3/617a14fb4b106b3c5e6922a3de2212f145adbfe2807e99be400b7d563e0523aa/assets/order-communication/empty-order-conversations.png",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/617a14fb4b106b3c5e6922a3de2212f145adbfe2807e99be400b7d563e0523aa/assets/order-communication/empty-order-conversations.png",
+      "mime": "image/png"
+    },
+    {
+      "path": "assets/order-communication/official-support.svg",
+      "sha256": "5d608e22ed3d7879ae3c67a714aa9a7020c153c9cba9f920da4c1639bf21cdf1",
+      "bytes": 635,
+      "key": "miniprogram-static/v1.0.1.3/5d608e22ed3d7879ae3c67a714aa9a7020c153c9cba9f920da4c1639bf21cdf1/assets/order-communication/official-support.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/5d608e22ed3d7879ae3c67a714aa9a7020c153c9cba9f920da4c1639bf21cdf1/assets/order-communication/official-support.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/order-delivery/calendar.svg",
+      "sha256": "0882a3d9f4e5f0fbde8802cf14b49e4b515fcfba5409a54975d12f1e859b4aaf",
+      "bytes": 1107,
+      "key": "miniprogram-static/v1.0.1.3/0882a3d9f4e5f0fbde8802cf14b49e4b515fcfba5409a54975d12f1e859b4aaf/assets/order-delivery/calendar.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/0882a3d9f4e5f0fbde8802cf14b49e4b515fcfba5409a54975d12f1e859b4aaf/assets/order-delivery/calendar.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/order-delivery/truck.png",
+      "sha256": "80da9d3730bf4a0f1522c4fc50de827f6832ee4c52b7ae8213fb961280578c4c",
+      "bytes": 516137,
+      "key": "miniprogram-static/v1.0.1.3/80da9d3730bf4a0f1522c4fc50de827f6832ee4c52b7ae8213fb961280578c4c/assets/order-delivery/truck.png",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/80da9d3730bf4a0f1522c4fc50de827f6832ee4c52b7ae8213fb961280578c4c/assets/order-delivery/truck.png",
+      "mime": "image/png"
+    },
+    {
+      "path": "assets/order-delivery/user.svg",
+      "sha256": "ff5629e81d89b1b4ebca1e21c99eee9603c8e1f44cec62ef260cb224a26d5f1d",
+      "bytes": 1256,
+      "key": "miniprogram-static/v1.0.1.3/ff5629e81d89b1b4ebca1e21c99eee9603c8e1f44cec62ef260cb224a26d5f1d/assets/order-delivery/user.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/ff5629e81d89b1b4ebca1e21c99eee9603c8e1f44cec62ef260cb224a26d5f1d/assets/order-delivery/user.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/order-states/order-load-failed.png",
+      "sha256": "8544e5f8fb734c69add907d030b161e9197ad97686f6fab258a7d81f4d7f033c",
+      "bytes": 416966,
+      "key": "miniprogram-static/v1.0.1.3/8544e5f8fb734c69add907d030b161e9197ad97686f6fab258a7d81f4d7f033c/assets/order-states/order-load-failed.png",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/8544e5f8fb734c69add907d030b161e9197ad97686f6fab258a7d81f4d7f033c/assets/order-states/order-load-failed.png",
+      "mime": "image/png"
+    },
+    {
+      "path": "assets/return-icons/add-circle-filled.svg",
+      "sha256": "3acf2b6fdacca2bbb1d386eba0e0ddfe225f0f011591079ac79e648af8622910",
+      "bytes": 370,
+      "key": "miniprogram-static/v1.0.1.3/3acf2b6fdacca2bbb1d386eba0e0ddfe225f0f011591079ac79e648af8622910/assets/return-icons/add-circle-filled.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/3acf2b6fdacca2bbb1d386eba0e0ddfe225f0f011591079ac79e648af8622910/assets/return-icons/add-circle-filled.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/return-icons/article.svg",
+      "sha256": "bc13f6ee2f0c851196e87375f367b05241a2bd24773aa003fe14e4a528d33adb",
+      "bytes": 1074,
+      "key": "miniprogram-static/v1.0.1.3/bc13f6ee2f0c851196e87375f367b05241a2bd24773aa003fe14e4a528d33adb/assets/return-icons/article.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/bc13f6ee2f0c851196e87375f367b05241a2bd24773aa003fe14e4a528d33adb/assets/return-icons/article.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/return-icons/camera.svg",
+      "sha256": "49d9989175854d6e5a06e0bfbacb529e44a25299da5adb5e1d902e915bb2690c",
+      "bytes": 1999,
+      "key": "miniprogram-static/v1.0.1.3/49d9989175854d6e5a06e0bfbacb529e44a25299da5adb5e1d902e915bb2690c/assets/return-icons/camera.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/49d9989175854d6e5a06e0bfbacb529e44a25299da5adb5e1d902e915bb2690c/assets/return-icons/camera.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/return-icons/check-circle-filled.svg",
+      "sha256": "a329cef28457abbda1371b3f9b45fedfffed3f3b6abb7eba199904e5f5376a92",
+      "bytes": 432,
+      "key": "miniprogram-static/v1.0.1.3/a329cef28457abbda1371b3f9b45fedfffed3f3b6abb7eba199904e5f5376a92/assets/return-icons/check-circle-filled.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/a329cef28457abbda1371b3f9b45fedfffed3f3b6abb7eba199904e5f5376a92/assets/return-icons/check-circle-filled.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/return-icons/chevron-right.svg",
+      "sha256": "25465f1e1d4c356f8c681e9bde195d8dd681f848bde9218924b9b7c1b6b52b75",
+      "bytes": 312,
+      "key": "miniprogram-static/v1.0.1.3/25465f1e1d4c356f8c681e9bde195d8dd681f848bde9218924b9b7c1b6b52b75/assets/return-icons/chevron-right.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/25465f1e1d4c356f8c681e9bde195d8dd681f848bde9218924b9b7c1b6b52b75/assets/return-icons/chevron-right.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/return-icons/close-circle-filled.svg",
+      "sha256": "7b8f79b87b1112264d3cd763da43433712ee462d5e13c88358a0cbf480f42997",
+      "bytes": 523,
+      "key": "miniprogram-static/v1.0.1.3/7b8f79b87b1112264d3cd763da43433712ee462d5e13c88358a0cbf480f42997/assets/return-icons/close-circle-filled.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/7b8f79b87b1112264d3cd763da43433712ee462d5e13c88358a0cbf480f42997/assets/return-icons/close-circle-filled.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/return-icons/image.svg",
+      "sha256": "18b056b34237797c3e1ca9a10002bf1ddf3a177e88e8e4c9f09a16befa8bacbc",
+      "bytes": 1309,
+      "key": "miniprogram-static/v1.0.1.3/18b056b34237797c3e1ca9a10002bf1ddf3a177e88e8e4c9f09a16befa8bacbc/assets/return-icons/image.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/18b056b34237797c3e1ca9a10002bf1ddf3a177e88e8e4c9f09a16befa8bacbc/assets/return-icons/image.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/return-icons/info-circle-warning.svg",
+      "sha256": "1454222dc102cdc6a8b97b971614be12f8436565767e1e244e9d6044367375cb",
+      "bytes": 1381,
+      "key": "miniprogram-static/v1.0.1.3/1454222dc102cdc6a8b97b971614be12f8436565767e1e244e9d6044367375cb/assets/return-icons/info-circle-warning.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/1454222dc102cdc6a8b97b971614be12f8436565767e1e244e9d6044367375cb/assets/return-icons/info-circle-warning.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/return-icons/info-circle.svg",
+      "sha256": "8ea2abb051f7d871e59d6940e0300f8f553e2243c7d569aacb67d608af4e1aca",
+      "bytes": 1381,
+      "key": "miniprogram-static/v1.0.1.3/8ea2abb051f7d871e59d6940e0300f8f553e2243c7d569aacb67d608af4e1aca/assets/return-icons/info-circle.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/8ea2abb051f7d871e59d6940e0300f8f553e2243c7d569aacb67d608af4e1aca/assets/return-icons/info-circle.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/return-icons/lighting-circle.svg",
+      "sha256": "2034ec6e0e17bf669c33303f8fbcf1c8dead4637d59265ca6a85ce0f7fffc970",
+      "bytes": 2311,
+      "key": "miniprogram-static/v1.0.1.3/2034ec6e0e17bf669c33303f8fbcf1c8dead4637d59265ca6a85ce0f7fffc970/assets/return-icons/lighting-circle.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/2034ec6e0e17bf669c33303f8fbcf1c8dead4637d59265ca6a85ce0f7fffc970/assets/return-icons/lighting-circle.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/return-icons/play-circle.svg",
+      "sha256": "e6ece647321890b77b689e09bc4de9d992c3323c00d4118d3f32b5d8ed3c8854",
+      "bytes": 521,
+      "key": "miniprogram-static/v1.0.1.3/e6ece647321890b77b689e09bc4de9d992c3323c00d4118d3f32b5d8ed3c8854/assets/return-icons/play-circle.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/e6ece647321890b77b689e09bc4de9d992c3323c00d4118d3f32b5d8ed3c8854/assets/return-icons/play-circle.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/return-icons/play-rectangle.svg",
+      "sha256": "ebfa9c602f789bb4d7531141d99d314d127f2debae8b748444daa8fe18ac28ba",
+      "bytes": 1574,
+      "key": "miniprogram-static/v1.0.1.3/ebfa9c602f789bb4d7531141d99d314d127f2debae8b748444daa8fe18ac28ba/assets/return-icons/play-rectangle.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/ebfa9c602f789bb4d7531141d99d314d127f2debae8b748444daa8fe18ac28ba/assets/return-icons/play-rectangle.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/return-icons/refresh.svg",
+      "sha256": "6ab3256ab07ad75ee72cc43e0aed2e0933f4c0f65516ac28ba614e831f3c9891",
+      "bytes": 493,
+      "key": "miniprogram-static/v1.0.1.3/6ab3256ab07ad75ee72cc43e0aed2e0933f4c0f65516ac28ba614e831f3c9891/assets/return-icons/refresh.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/6ab3256ab07ad75ee72cc43e0aed2e0933f4c0f65516ac28ba614e831f3c9891/assets/return-icons/refresh.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/return-icons/scan.svg",
+      "sha256": "aef9fc2c2a5471c97a690dc5a2b4c0d8e318d048bc2555c5936fd91edc8093cc",
+      "bytes": 410,
+      "key": "miniprogram-static/v1.0.1.3/aef9fc2c2a5471c97a690dc5a2b4c0d8e318d048bc2555c5936fd91edc8093cc/assets/return-icons/scan.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/aef9fc2c2a5471c97a690dc5a2b4c0d8e318d048bc2555c5936fd91edc8093cc/assets/return-icons/scan.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/return-icons/send.svg",
+      "sha256": "d32f440caa820a93a3c65ca24b3cfc72fa9a015a7cc30ab9155224fa6afd0110",
+      "bytes": 849,
+      "key": "miniprogram-static/v1.0.1.3/d32f440caa820a93a3c65ca24b3cfc72fa9a015a7cc30ab9155224fa6afd0110/assets/return-icons/send.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/d32f440caa820a93a3c65ca24b3cfc72fa9a015a7cc30ab9155224fa6afd0110/assets/return-icons/send.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/return-icons/sound.svg",
+      "sha256": "d71345fb119ae94b5fda160135da4c54d41e15ced1094054c6cae7e11bcff745",
+      "bytes": 1802,
+      "key": "miniprogram-static/v1.0.1.3/d71345fb119ae94b5fda160135da4c54d41e15ced1094054c6cae7e11bcff745/assets/return-icons/sound.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/d71345fb119ae94b5fda160135da4c54d41e15ced1094054c6cae7e11bcff745/assets/return-icons/sound.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/return-icons/time-filled.svg",
+      "sha256": "b0fbd86e56cbc97c64ef17f61e9b3c13b61d1149dabc6416fff32afcc6dc245b",
+      "bytes": 408,
+      "key": "miniprogram-static/v1.0.1.3/b0fbd86e56cbc97c64ef17f61e9b3c13b61d1149dabc6416fff32afcc6dc245b/assets/return-icons/time-filled.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/b0fbd86e56cbc97c64ef17f61e9b3c13b61d1149dabc6416fff32afcc6dc245b/assets/return-icons/time-filled.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/return-icons/time.svg",
+      "sha256": "ba17acd15319800f469bbb0ab0bb8ae2c86c82939d523defde2cacb94f61e0b8",
+      "bytes": 1255,
+      "key": "miniprogram-static/v1.0.1.3/ba17acd15319800f469bbb0ab0bb8ae2c86c82939d523defde2cacb94f61e0b8/assets/return-icons/time.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/ba17acd15319800f469bbb0ab0bb8ae2c86c82939d523defde2cacb94f61e0b8/assets/return-icons/time.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/return-icons/video-camera-2-filled.svg",
+      "sha256": "71c09ce34dd505a91d3d51f0dacb838d7c12adf38af9940c22c2676e47a4d092",
+      "bytes": 590,
+      "key": "miniprogram-static/v1.0.1.3/71c09ce34dd505a91d3d51f0dacb838d7c12adf38af9940c22c2676e47a4d092/assets/return-icons/video-camera-2-filled.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/71c09ce34dd505a91d3d51f0dacb838d7c12adf38af9940c22c2676e47a4d092/assets/return-icons/video-camera-2-filled.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/return-icons/video-camera.svg",
+      "sha256": "66a13227ed5c178b40026b3e307963821af15962cda95b2b137ad640d209f7f6",
+      "bytes": 1392,
+      "key": "miniprogram-static/v1.0.1.3/66a13227ed5c178b40026b3e307963821af15962cda95b2b137ad640d209f7f6/assets/return-icons/video-camera.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/66a13227ed5c178b40026b3e307963821af15962cda95b2b137ad640d209f7f6/assets/return-icons/video-camera.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/return-illustrations/cabinet-icon.png",
+      "sha256": "7c866d89e147b8ae5f2bd8d6faee4fc721e69f7c5b91ab3bd79bbf815f4aa226",
+      "bytes": 433325,
+      "key": "miniprogram-static/v1.0.1.3/7c866d89e147b8ae5f2bd8d6faee4fc721e69f7c5b91ab3bd79bbf815f4aa226/assets/return-illustrations/cabinet-icon.png",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/7c866d89e147b8ae5f2bd8d6faee4fc721e69f7c5b91ab3bd79bbf815f4aa226/assets/return-illustrations/cabinet-icon.png",
+      "mime": "image/png"
+    },
+    {
+      "path": "assets/return-illustrations/empty-cabinet.png",
+      "sha256": "2112177f15528115fd85366b8d7d95692a3fcc7016c31656b8d9b5c881f27bf1",
+      "bytes": 765155,
+      "key": "miniprogram-static/v1.0.1.3/2112177f15528115fd85366b8d7d95692a3fcc7016c31656b8d9b5c881f27bf1/assets/return-illustrations/empty-cabinet.png",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/2112177f15528115fd85366b8d7d95692a3fcc7016c31656b8d9b5c881f27bf1/assets/return-illustrations/empty-cabinet.png",
+      "mime": "image/png"
+    },
+    {
+      "path": "assets/return-illustrations/opening-cabinet.png",
+      "sha256": "cb52e19b80380d93b616d55bc967b29e23eebf9924fd9fc13a5472dd6ceb2fdf",
+      "bytes": 635968,
+      "key": "miniprogram-static/v1.0.1.3/cb52e19b80380d93b616d55bc967b29e23eebf9924fd9fc13a5472dd6ceb2fdf/assets/return-illustrations/opening-cabinet.png",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/cb52e19b80380d93b616d55bc967b29e23eebf9924fd9fc13a5472dd6ceb2fdf/assets/return-illustrations/opening-cabinet.png",
+      "mime": "image/png"
+    },
+    {
+      "path": "assets/return-illustrations/scanning-device.png",
+      "sha256": "9c65a9422eced2c21de241a9ff70ce4ecfe3e5a81e631a18efb4bf3099ccc9af",
+      "bytes": 979905,
+      "key": "miniprogram-static/v1.0.1.3/9c65a9422eced2c21de241a9ff70ce4ecfe3e5a81e631a18efb4bf3099ccc9af/assets/return-illustrations/scanning-device.png",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/9c65a9422eced2c21de241a9ff70ce4ecfe3e5a81e631a18efb4bf3099ccc9af/assets/return-illustrations/scanning-device.png",
+      "mime": "image/png"
+    },
+    {
+      "path": "assets/order-contract/signature.svg",
+      "sha256": "8bf50abc42ba5d7de08c217e208d6a523c7e48ee7d9ee3d31bbf4891c9e96c94",
+      "bytes": 358,
+      "key": "miniprogram-static/v1.0.1.3/8bf50abc42ba5d7de08c217e208d6a523c7e48ee7d9ee3d31bbf4891c9e96c94/assets/order-contract/signature.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/8bf50abc42ba5d7de08c217e208d6a523c7e48ee7d9ee3d31bbf4891c9e96c94/assets/order-contract/signature.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/order-contract/undo.svg",
+      "sha256": "4092bfad2431b993b849a0352765efd4ed81c8819494da9d97e69394b88ea7e0",
+      "bytes": 257,
+      "key": "miniprogram-static/v1.0.1.3/4092bfad2431b993b849a0352765efd4ed81c8819494da9d97e69394b88ea7e0/assets/order-contract/undo.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/4092bfad2431b993b849a0352765efd4ed81c8819494da9d97e69394b88ea7e0/assets/order-contract/undo.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/order-contract/trash.svg",
+      "sha256": "3a7a66fe52ffbf6fdf49a20048940034230b01d0fed16da3d85933143f9b6905",
+      "bytes": 246,
+      "key": "miniprogram-static/v1.0.1.3/3a7a66fe52ffbf6fdf49a20048940034230b01d0fed16da3d85933143f9b6905/assets/order-contract/trash.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/3a7a66fe52ffbf6fdf49a20048940034230b01d0fed16da3d85933143f9b6905/assets/order-contract/trash.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/order-contract/preview.svg",
+      "sha256": "b898596c1af657eaec41d9e0c1c38eca9de0e3104180940175082d1609e4ea6f",
+      "bytes": 262,
+      "key": "miniprogram-static/v1.0.1.3/b898596c1af657eaec41d9e0c1c38eca9de0e3104180940175082d1609e4ea6f/assets/order-contract/preview.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/b898596c1af657eaec41d9e0c1c38eca9de0e3104180940175082d1609e4ea6f/assets/order-contract/preview.svg",
+      "mime": "image/svg+xml"
+    },
+    {
+      "path": "assets/order-contract/pending.svg",
+      "sha256": "cdea57c7aaa2ebcd5e8c8df55d56f14485adf5e2816887471608274f9aa1e710",
+      "bytes": 371,
+      "key": "miniprogram-static/v1.0.1.3/cdea57c7aaa2ebcd5e8c8df55d56f14485adf5e2816887471608274f9aa1e710/assets/order-contract/pending.svg",
+      "url": "https://xyuprj.oss-cn-hangzhou.aliyuncs.com/miniprogram-static/v1.0.1.3/cdea57c7aaa2ebcd5e8c8df55d56f14485adf5e2816887471608274f9aa1e710/assets/order-contract/pending.svg",
+      "mime": "image/svg+xml"
+    }
+  ]
+}

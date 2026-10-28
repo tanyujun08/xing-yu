@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "我要出租",
+  "navigationStyle": "custom",
+  "navigationBarTextStyle": "black",
+  "usingComponents": {
+    "page-header": "../../components/page-header/index"
+  }
+}

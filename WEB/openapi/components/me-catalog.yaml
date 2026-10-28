@@ -1,0 +1,95 @@
+Schemas:
+  OwnCatalogCategory:
+    type: object
+    additionalProperties: false
+    required: [category_id, name]
+    properties:
+      category_id:
+        type: string
+        minLength: 1
+        maxLength: 64
+        pattern: '^[!-~]{1,64}$'
+      name:
+        type: string
+        minLength: 1
+        maxLength: 80
+  OwnCatalogCategoryList:
+    type: object
+    additionalProperties: false
+    required: [items]
+    properties:
+      items:
+        type: array
+        items:
+          $ref: '#/Schemas/OwnCatalogCategory'
+  OwnCatalogMedia:
+    $ref: './common.yaml#/PublicMaterialMedia'
+  OwnCatalogProduct:
+    type: object
+    additionalProperties: false
+    required: [product_id, name, model, description, brand_id, brand_name, category_id, category_name, tags, media, updated_at]
+    properties:
+      product_id:
+        type: string
+        minLength: 1
+        maxLength: 64
+        pattern: '^[!-~]{1,64}$'
+      name:
+        type: string
+        minLength: 1
+        maxLength: 128
+      model:
+        type: string
+        minLength: 1
+        maxLength: 128
+      description:
+        type: string
+        minLength: 1
+        maxLength: 2000
+      brand_id:
+        type: string
+        minLength: 1
+        maxLength: 64
+        pattern: '^[!-~]{1,64}$'
+      brand_name:
+        type: string
+        minLength: 1
+        maxLength: 80
+      category_id:
+        type: string
+        minLength: 1
+        maxLength: 64
+        pattern: '^[!-~]{1,64}$'
+      category_name:
+        type: string
+        minLength: 1
+        maxLength: 80
+      tags:
+        type: array
+        minItems: 0
+        maxItems: 20
+        items:
+          type: string
+          minLength: 1
+          maxLength: 32
+      media:
+        type: array
+        minItems: 0
+        maxItems: 20
+        items:
+          $ref: '#/Schemas/OwnCatalogMedia'
+      updated_at:
+        type: string
+        format: date-time
+  OwnCatalogProductPage:
+    type: object
+    additionalProperties: false
+    required: [items, page]
+    properties:
+      items:
+        type: array
+        maxItems: 100
+        items:
+          $ref: '#/Schemas/OwnCatalogProduct'
+      page:
+        $ref: './pagination.yaml#/CursorPageMeta'

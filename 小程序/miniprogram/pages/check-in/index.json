@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "签到",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "page-header": "../../components/page-header/index"
+  }
+}

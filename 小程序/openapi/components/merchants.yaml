@@ -1,0 +1,582 @@
+{
+  "Schemas": {
+    "Merchant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "merchant_id",
+        "name",
+        "contact_name",
+        "phone_dial",
+        "responsible_lessor_id",
+        "status",
+        "archive_reason",
+        "version",
+        "created_at",
+        "updated_at",
+        "business_profile",
+        "photo_material_ids",
+        "cover_material_id",
+        "photos",
+        "cover"
+      ],
+      "properties": {
+        "merchant_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "contact_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "phone_dial": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 32,
+          "pattern": "^\\+?[0-9]{5,31}$"
+        },
+        "responsible_lessor_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "ACTIVE",
+            "INACTIVE",
+            "ARCHIVED"
+          ]
+        },
+        "archive_reason": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,19}$",
+          "description": "Positive uint64 decimal string, maximum 18446744073709551615."
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "business_profile": {
+          "anyOf": [
+            {
+              "$ref": "#/Schemas/MerchantBusinessProfile"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "photo_material_ids": {
+          "type": "array",
+          "maxItems": 9,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^mat_[!-~]{1,60}$"
+          }
+        },
+        "cover_material_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^mat_[!-~]{1,60}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "photos": {
+          "maxItems": 9,
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/MerchantPhoto"
+          }
+        },
+        "cover": {
+          "anyOf": [
+            {
+              "$ref": "#/Schemas/MerchantPhoto"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "description": "Command response is an immutable snapshot for that successful intention; replay preserves it even after subsequent mutations. GET detail returns current version and action eligibility."
+    },
+    "MerchantInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "contact_name",
+        "phone_dial"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "contact_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "phone_dial": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 32,
+          "pattern": "^\\+?[0-9]{5,31}$"
+        },
+        "business_profile": {
+          "$ref": "#/Schemas/MerchantBusinessProfileInput"
+        },
+        "photo_material_ids": {
+          "type": "array",
+          "maxItems": 9,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^mat_[!-~]{1,60}$"
+          }
+        }
+      },
+      "description": "Public business contact. API resolves the single active PLATFORM lessor; missing or ambiguous platform configuration blocks creation."
+    },
+    "MerchantPatch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reason"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "contact_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "phone_dial": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 32,
+          "pattern": "^\\+?[0-9]{5,31}$"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "business_profile": {
+          "$ref": "#/Schemas/MerchantBusinessProfileInput"
+        },
+        "photo_material_ids": {
+          "type": "array",
+          "maxItems": 9,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^mat_[!-~]{1,60}$"
+          }
+        }
+      },
+      "description": "At least one editable field is required in addition to reason. Responsibility is immutable in normal edits. Null, unknown and duplicate fields are rejected.",
+      "anyOf": [
+        {
+          "required": [
+            "name"
+          ]
+        },
+        {
+          "required": [
+            "contact_name"
+          ]
+        },
+        {
+          "required": [
+            "phone_dial"
+          ]
+        },
+        {
+          "required": [
+            "business_profile"
+          ]
+        },
+        {
+          "required": [
+            "photo_material_ids"
+          ]
+        }
+      ]
+    },
+    "MerchantAction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "code",
+        "enabled",
+        "blocked_reasons"
+      ],
+      "properties": {
+        "code": {
+          "type": "string",
+          "enum": [
+            "UPDATE",
+            "ARCHIVE",
+            "RESTORE"
+          ]
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "blocked_reasons": {
+          "type": "array",
+          "items": {
+            "$ref": "./addresses.yaml#/Schemas/ReasonItem"
+          }
+        }
+      }
+    },
+    "MerchantView": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "merchant_id",
+        "name",
+        "contact_name",
+        "phone_dial",
+        "responsible_lessor_id",
+        "status",
+        "archive_reason",
+        "version",
+        "created_at",
+        "updated_at",
+        "allowed_actions",
+        "blocked_reasons",
+        "business_profile",
+        "cabinet_count"
+      ],
+      "properties": {
+        "merchant_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "contact_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "phone_dial": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 32,
+          "pattern": "^\\+?[0-9]{5,31}$"
+        },
+        "responsible_lessor_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "ACTIVE",
+            "INACTIVE",
+            "ARCHIVED"
+          ]
+        },
+        "archive_reason": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,19}$",
+          "description": "Positive uint64 decimal string, maximum 18446744073709551615."
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_actions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/MerchantAction"
+          }
+        },
+        "blocked_reasons": {
+          "type": "array",
+          "items": {
+            "$ref": "./addresses.yaml#/Schemas/ReasonItem"
+          }
+        },
+        "business_profile": {
+          "anyOf": [
+            {
+              "$ref": "#/Schemas/MerchantBusinessProfile"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "cabinet_count": {
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "type": "string"
+        }
+      },
+      "description": "List actions requiring association checks remain disabled until detail is loaded. Detail reports live store/cabinet/task blockers and responsibility eligibility. Lack of manage permission omits mutation actions."
+    },
+    "MerchantPage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "items",
+        "page"
+      ],
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/MerchantView"
+          },
+          "maxItems": 100
+        },
+        "page": {
+          "$ref": "./pagination.yaml#/CursorPageMeta"
+        }
+      }
+    },
+    "MerchantReason": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reason"
+      ],
+      "properties": {
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
+      }
+    },
+    "PlatformLessor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "lessor_id",
+        "display_name",
+        "version",
+        "created_at"
+      ],
+      "properties": {
+        "lessor_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "display_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,19}$",
+          "description": "Positive uint64 decimal string, maximum 18446744073709551615."
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "PlatformLessorPage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "items",
+        "page"
+      ],
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/PlatformLessor"
+          },
+          "maxItems": 100
+        },
+        "page": {
+          "$ref": "./pagination.yaml#/CursorPageMeta"
+        }
+      }
+    },
+    "MerchantBusinessProfileInput": {
+      "additionalProperties": false,
+      "required": [
+        "address",
+        "poi_name",
+        "share_basis_points",
+        "settlement_cycle",
+        "settlement_account"
+      ],
+      "properties": {
+        "address": {
+          "$ref": "./stores.yaml#/Schemas/StoreAddress"
+        },
+        "poi_name": {
+          "type": "string",
+          "maxLength": 160
+        },
+        "share_basis_points": {
+          "minimum": 0,
+          "maximum": 10000,
+          "type": "integer"
+        },
+        "settlement_cycle": {
+          "type": "string",
+          "enum": [
+            "MONTHLY"
+          ]
+        },
+        "settlement_account": {
+          "description": "Complete settlement account. Returned only by the authorized OPS merchant projection and encrypted at rest; never exposed by public store projections.",
+          "maxLength": 128,
+          "type": "string",
+          "minLength": 1
+        },
+        "business_hours": {
+          "$ref": "./stores.yaml#/Schemas/BusinessHours"
+        }
+      },
+      "type": "object"
+    },
+    "MerchantBusinessProfile": {
+      "additionalProperties": false,
+      "required": [
+        "address",
+        "poi_name",
+        "share_basis_points",
+        "settlement_cycle",
+        "settlement_account",
+        "province_name",
+        "city_name",
+        "district_name",
+        "business_hours",
+        "store_id"
+      ],
+      "properties": {
+        "address": {
+          "$ref": "./stores.yaml#/Schemas/StoreAddress"
+        },
+        "poi_name": {
+          "type": "string",
+          "maxLength": 160
+        },
+        "share_basis_points": {
+          "minimum": 0,
+          "maximum": 10000,
+          "type": "integer"
+        },
+        "settlement_cycle": {
+          "type": "string",
+          "enum": [
+            "MONTHLY"
+          ]
+        },
+        "settlement_account": {
+          "description": "Complete settlement account for authorized OPS display and editing; encrypted at rest and omitted from public projections.",
+          "maxLength": 128,
+          "type": "string",
+          "minLength": 1
+        },
+        "province_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "city_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "district_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "business_hours": {
+          "anyOf": [
+            {
+              "$ref": "./stores.yaml#/Schemas/BusinessHours"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "store_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        }
+      },
+      "type": "object"
+    },
+    "MerchantPhoto": {
+      "$ref": "./common.yaml#/MaterialPhoto"
+    }
+  }
+}

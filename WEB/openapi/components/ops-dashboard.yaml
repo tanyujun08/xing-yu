@@ -1,0 +1,83 @@
+{
+  "Schemas": {
+    "OpsDashboardSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "as_of_at",
+        "merchant_count",
+        "operating_store_count",
+        "cabinet_total",
+        "cabinet_online",
+        "cabinet_offline",
+        "cabinet_unknown",
+        "box_total",
+        "box_available",
+        "box_reserved",
+        "box_occupied",
+        "box_unavailable",
+        "asset_total",
+        "asset_in_cabinet"
+      ],
+      "properties": {
+        "as_of_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "merchant_count": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        },
+        "operating_store_count": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        },
+        "cabinet_total": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        },
+        "cabinet_online": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        },
+        "cabinet_offline": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        },
+        "cabinet_unknown": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        },
+        "box_total": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        },
+        "box_available": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        },
+        "box_reserved": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        },
+        "box_occupied": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        },
+        "box_unavailable": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        },
+        "asset_total": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        },
+        "asset_in_cabinet": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        }
+      }
+    }
+  }
+}

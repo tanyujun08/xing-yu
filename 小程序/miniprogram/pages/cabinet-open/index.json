@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "柜机操作",
+  "navigationStyle": "custom",
+  "navigationBarTextStyle": "black",
+  "usingComponents": {
+    "page-header": "../../components/page-header/index",
+    "page-shell": "../../components/page-shell/index",
+    "bottom-actions": "../../components/bottom-actions/index",
+    "confirmation-dialog": "../../components/confirmation-dialog/index"
+  }
+}

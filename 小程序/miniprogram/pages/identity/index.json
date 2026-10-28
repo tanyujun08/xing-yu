@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "实名信息",
+  "usingComponents": {
+    "page-shell": "../../components/page-shell/index",
+    "bottom-actions": "../../components/bottom-actions/index",
+    "page-header": "../../components/page-header/index"
+  },
+  "navigationStyle": "custom",
+  "navigationBarTextStyle": "black"
+}

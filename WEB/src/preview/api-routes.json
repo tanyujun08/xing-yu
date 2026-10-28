@@ -1,0 +1,1230 @@
+[
+  {
+    "method": "GET",
+    "path": "/v1/client/resources"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/discovery/rental-supplies"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/discovery/rental-supplies/{id}"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/discovery/stores"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/discovery/stores/{id}"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/rental-supplies"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/rental-supplies/{asset_id}"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/cash-entries"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/finance/summary"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/withdrawals"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/withdrawals/{withdrawal_id}"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/payouts/{payout_id}"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/payouts/{payout_id}/queries"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/reconciliations"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/reconciliations"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/reconciliation-items/{item_id}/resolutions"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/cash-balance"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/withdrawals"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/withdrawals"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/withdrawals/{withdrawal_id}/decisions"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/entitlement-purchases"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/entitlement-purchases/{purchase_id}"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/entitlement-offers"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/entitlement-purchases"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/entitlement-purchases/{purchase_id}"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/dashboard/summary"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/cabinet-credentials/{credential_id}"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/cabinet-credentials/{credential_id}/replacements"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/point-entries"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/wechat-subscription-observations"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/catalog/categories"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/catalog/products"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/catalog/products/{product_id}"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/coupons"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/members/{account_id}/coupons"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/assets/{asset_id}/placements"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/asset-placements/{placement_id}/end"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/assets/platform-publication-context"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/assets/{asset_id}/freeze"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/assets/{asset_id}/unfreeze"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/assets/{asset_id}/revisions/{revision_id}/private-details"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/assets/{asset_id}/revisions/{revision_id}/edit-details"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/assets/platform-batches"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/assets"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/assets/{asset_id}"
+  },
+  {
+    "method": "PATCH",
+    "path": "/v1/ops/assets/{asset_id}/rfid"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/assets/{asset_id}/revisions"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/assets/{asset_id}/revisions"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/assets/{asset_id}/revisions/{revision_id}"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/assets/{asset_id}/revisions/{revision_id}/decisions"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/assets/{asset_id}/publish"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/assets/{asset_id}/unpublish"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/asset-publication-context"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/publication-eligibility"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/rental-assets"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/rental-assets/{asset_id}"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/asset-drafts/{id}/submissions"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/assets/{id}/drafts"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/check-ins"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/check-ins"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/check-in-rule"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/benefits"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/members"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/members/{account_id}"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/members/{account_id}/point-entries"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/members/{account_id}/entitlement-movements"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/members/{account_id}/check-ins"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/members/{account_id}/addresses"
+  },
+  {
+    "method": "PATCH",
+    "path": "/v1/evidence-sets/{id}"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/evidence-sets/{id}"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/evidence-sets/{id}/submissions"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/asset-drafts"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/asset-drafts/{id}/updates"
+  },
+  {
+    "method": "PATCH",
+    "path": "/v1/me/asset-drafts/{id}"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/asset-drafts/{id}"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/evidence-sets"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/catalog/brands"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/catalog/brands"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/catalog/brands/{brand_id}"
+  },
+  {
+    "method": "PATCH",
+    "path": "/v1/ops/catalog/brands/{brand_id}"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/catalog/brands/{brand_id}/deactivate"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/catalog/categories"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/catalog/categories"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/catalog/categories/{category_id}"
+  },
+  {
+    "method": "PATCH",
+    "path": "/v1/ops/catalog/categories/{category_id}"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/catalog/categories/{category_id}/deactivate"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/merchants"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/merchants"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/merchants/{merchant_id}"
+  },
+  {
+    "method": "PATCH",
+    "path": "/v1/ops/merchants/{merchant_id}"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/merchants/{merchant_id}/archive"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/merchants/{merchant_id}/activate"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/merchants/{merchant_id}/deactivate"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/merchants/{merchant_id}/restore"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/platform-lessors"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/addresses"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/addresses"
+  },
+  {
+    "method": "PATCH",
+    "path": "/v1/me/addresses/{address_id}"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/addresses/{address_id}/archive"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/addresses/{address_id}/default"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/regions"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/cabinets/{cabinet_id}/open-all-challenges"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/cabinets/{cabinet_id}/open-all-challenges/{challenge_id}"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/cabinet-commands/{command_id}/recovery-records"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/cabinets/{cabinet_id}/observation-refreshes"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/cabinets/{cabinet_id}/compartments/{compartment_no}/maintenance-open-commands"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/cabinets/{cabinet_id}/open-all-commands"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/cabinet-commands/{command_id}"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/cabinets/{cabinet_id}/cover-syncs"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/rental-cabinets/by-scene"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/cabinets"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/cabinets"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/cabinets/{cabinet_id}"
+  },
+  {
+    "method": "PATCH",
+    "path": "/v1/ops/cabinets/{cabinet_id}"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/cabinets/{cabinet_id}/activate"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/cabinets/{cabinet_id}/deactivate"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/cabinets/{cabinet_id}/archive"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/cabinets/{cabinet_id}/restore"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/cabinets/{cabinet_id}/compartments"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/cabinets/{cabinet_id}/provider-actions"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/cabinets/{cabinet_id}/provider-queries/online"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/cabinets/{cabinet_id}/compartments/{compartment_no}/provider-queries/door"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/cabinets/{cabinet_id}/provider-queries/{query_id}"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/cabinets/{cabinet_id}/provider-operations"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/cabinets/{cabinet_id}/stocking-options"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/cabinets/{cabinet_id}/compartment-adjustments"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/sms/deliveries"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/catalog/products"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/catalog/products"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/catalog/products/{product_id}"
+  },
+  {
+    "method": "PATCH",
+    "path": "/v1/ops/catalog/products/{product_id}"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/catalog/products/{product_id}/activate"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/catalog/products/{product_id}/deactivate"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/materials/files"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/materials/{material_id}"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/system-config/definitions"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/system-config/effective"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/system-config/versions"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/system-config/versions"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/system-config/versions/{config_version_id}/validate"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/system-config/versions/{config_version_id}/approve"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/system-config/versions/{config_version_id}/publish"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/auth/wechat-mini/sessions"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/auth/wechat-mini/phone-sessions"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/auth/token/refresh"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/auth/logout"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/auth/me"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/authenticators"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/phone-binding"
+  },
+  {
+    "method": "DELETE",
+    "path": "/v1/me/phone-binding"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/wechat-binding"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/identity"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/profile"
+  },
+  {
+    "method": "PATCH",
+    "path": "/v1/me/profile"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/addresses/{address_id}/updates"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/profile/updates"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/auth/phone/challenges"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/auth/phone/sessions"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/auth/qr/challenges"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/auth/qr/challenges/{challenge_id}"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/auth/qr/sessions"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/auth/token/refresh"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/auth/logout"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/auth/me"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/iam/roles"
+  },
+  {
+    "method": "PUT",
+    "path": "/v1/ops/iam/roles/{role_id}/permissions"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/iam/accounts"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/iam/accounts"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/iam/accounts/{account_id}"
+  },
+  {
+    "method": "PATCH",
+    "path": "/v1/ops/iam/accounts/{account_id}"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/iam/accounts/{account_id}/deactivate"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/iam/accounts/{account_id}/reactivate"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/iam/accounts/{account_id}/archive"
+  },
+  {
+    "method": "PUT",
+    "path": "/v1/ops/iam/accounts/{account_id}/authorization"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/iam/security-policy-versions"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/iam/security-policy-versions"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/iam/security-policy-versions/{policy_version_id}/validate"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/iam/security-policy-versions/{policy_version_id}/approve"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/iam/security-policy-versions/{policy_version_id}/publish"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/iam/login-events"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/iam/operation-events"
+  },
+  {
+    "method": "GET",
+    "path": "/healthz"
+  },
+  {
+    "method": "GET",
+    "path": "/readyz"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/rental-stores"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/rental-stores/{store_id}"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/rental-cabinets"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/rental-cabinets/{cabinet_id}"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/auth/wechat-binding/challenges"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/auth/wechat-binding/challenges/{challenge_id}"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/ops-wechat-challenges/inspect"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/ops-wechat-challenges/decisions"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/system-config/business-publications"
+  },
+  {
+    "method": "PUT",
+    "path": "/v1/ops/system-config/effective/{config_key}"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/system-config/versions/{config_version_id}"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/lottery"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/lottery-draws"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/lottery-attempts"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/lottery-attempts/{attempt_id}"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/lottery-draws/{draw_id}"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/lottery-intent"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/lottery-attempts"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/lottery-attempts/{attempt_id}"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/lottery-prizes/inventory"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/lottery-prizes/movements"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/lottery-prizes/movements/{movement_id}"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/benefit-grants/{grant_id}"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/coupons/{coupon_id}"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/point-entries/{entry_id}"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/entitlement-movements/{movement_id}"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/coupon-redemptions/{redemption_id}"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/coupon-redemption-attempts"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/coupon-redemption-attempts/{attempt_id}"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/benefit-grants/{grant_id}"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/coupons/{coupon_id}"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/point-entries/{entry_id}"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/entitlement-movements/{movement_id}"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/coupon-redemptions/{redemption_id}"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/coupon-redemption-attempts"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/coupon-redemption-attempts/{attempt_id}"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/coupons"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/coupons/{coupon_id}/redemptions"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/coupon-redemption-intent"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/entitlement-movements"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/operation-events/{event_id}"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/check-ins/{check_in_id}"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/check-ins/{check_in_id}"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/growth-tasks"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/growth-tasks/{benefit_code}/claims"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/rental-quotes"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/rental-orders/preparations"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/rental-orders/{order_id}/confirm"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/rental-orders/{order_id}/payments"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/rental-orders/{order_id}/payments"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/rental-payments/{payment_id}/invocation"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/rental-payments/{payment_id}"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/rental-payments/{payment_id}/reconciliation"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/rental-orders/{order_id}"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/rental-orders/{order_id}/cancel-unpaid"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/rental-orders/{order_id}/refund"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/rental-orders/{order_id}/reviews"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/rental-orders/{order_id}/reviews"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/rental-orders/{order_id}/review-preview"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/rental-orders/{order_id}"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/rental-refunds/{refund_id}/reconciliation"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/rental-payments"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/rental-refunds"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/rental-payments/{payment_id}/reconciliation"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/rental-orders"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/rental-orders"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/rental-refunds/{refund_id}"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/rental-refunds/{refund_id}/reconciliation"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/rental-orders/{order_id}/contract"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/rental-orders/{order_id}/contract"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/rental-orders/{order_id}/shipment"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/rental-orders/{order_id}/shipment/corrections"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/rental-orders/{order_id}/delivery-confirmations"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/rental-orders/{order_id}/return-draft"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/rental-orders/{order_id}/return"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/rental-orders/{order_id}/return/address"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/rental-orders/{order_id}/return/shipment"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/rental-orders/{order_id}/return/shipment/corrections"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/rental-orders/{order_id}/return/receipt"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/rental-orders/{order_id}/return"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/rental-orders/{order_id}/return/receipt"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/rental-orders/{order_id}/return/receipt-corrections"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/rental-orders/{order_id}/cabinet-options"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/rental-orders/{order_id}/cabinet-tasks"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/rental-cabinet-tasks/{task_id}"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/rental-cabinet-tasks/{task_id}/open"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/rental-cabinet-tasks/{task_id}/cancel"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/rental-cabinet-tasks/{task_id}/reconciliation"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/rental-orders/{order_id}/pickup-credential"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/rental-orders/{order_id}/cabinet-tasks"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/rental-income"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/rental-earnings"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/rental-earnings/{earning_id}"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/rental-earnings"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/rental-earnings/{earning_id}"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/rental-command-results/lookup"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/rental-orders/{order_id}/return-draft"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/merchant-income/export"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/cabinet-entry"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/cabinet-pickups"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/cabinets/{cabinet_id}/mini-program-code"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/callbacks/wechat/payments"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/callbacks/wechat/refunds"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/identity/verifications"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/identity/verifications/{verification_id}"
+  },
+  {
+    "method": "PUT",
+    "path": "/v1/me/rental-orders/{order_id}/return/evidence-slots/{slot_key}/items/{item_no}"
+  },
+  {
+    "method": "PUT",
+    "path": "/v1/ops/rental-orders/{order_id}/return/evidence-slots/{slot_key}/items/{item_no}"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/rental-cabinet-tasks/{task_id}/confirm-return"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/rental-cabinet-tasks/{task_id}/return-resolution"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/rental-orders/{order_id}/contract/signature-attempts"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/rental-orders/{order_id}/contract/signature-attempts/{client_signature_id}"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/rental-orders/{order_id}/contract/signature-attempts/{client_signature_id}/confirm"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/rental-orders/{order_id}/contract/signature-attempts/{client_signature_id}/render-retry"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/rental-orders/{order_id}/contract/artifacts/{artifact_id}"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/rental-conversations"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/rental-orders/{order_id}/conversation"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/rental-conversations/{conversation_id}/messages"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/rental-conversations/{conversation_id}/messages"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/rental-conversations/{conversation_id}/message-results/{client_message_id}"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/me/rental-conversations/{conversation_id}/read-cursor"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/me/rental-orders/{order_id}/refunds"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/rental-orders/{order_id}/payments"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ops/rental-orders/{order_id}/refunds"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ops/rental-payments/{payment_id}/external-refund-verifications"
+  }
+]

@@ -1,0 +1,61 @@
+<page-meta root-font-size="system" />
+<view class="member-subpage level-page"><text wx:if="{{errorText}}">{{errorText}}</text>
+<page-header title="{{secondaryNavigationTitle || '等级与权益'}}" background="#F7F9F8" inverse="{{false}}" bindback="onSecondaryNavigationBack" />
+  <view class="member-subpage__hero member-subpage__hero--dark">
+    <text class="member-subpage__eyebrow">当前会员</text>
+    <view class="member-subpage__hero-top">
+      <text class="member-subpage__title">{{currentLevelName}}</text>
+      <view class="level-badge">当前等级</view>
+    </view>
+    <text class="member-subpage__hero-copy">等级以当前账户回读为准，演示升级规则。</text>
+    <view class="member-subpage__balance"><text class="member-subpage__balance-value">{{starPoints}}</text><text class="member-subpage__balance-unit">星光</text></view>
+    <view class="member-subpage__progress"><view class="member-subpage__progress-fill" style="width: {{progress}}%;"></view></view>
+    <view class="member-subpage__progress-caption"><text>{{currentLevelName}} {{currentThresholdText}}</text><text>{{hasNextLevel ? '距离' + nextLevel + '还差 ' + remainingPoints : '演示升级规则'}}</text></view>
+    <view class="member-subpage__actions">
+      <button class="member-subpage__button member-subpage__button--primary xy-button-reset xy-button-fluid" bindtap="openGrowthTasks" role="button">去做升级任务</button>
+      <button class="member-subpage__button xy-button-reset xy-button-fluid" bindtap="openStarLedger" role="button">查看星光明细</button>
+    </view>
+  </view>
+
+  <view class="member-subpage__section">
+    <view class="member-subpage__section-head"><text class="member-subpage__section-title">等级路线</text><text class="member-subpage__section-note">共 7 级</text></view>
+    <scroll-view class="level-rail" scroll-x="true" show-scrollbar="false">
+      <view class="level-rail__inner">
+        <view wx:for="{{levels}}" wx:key="name" class="level-node level-node--{{item.state}}">
+          <view class="level-node__dot">{{item.state === 'passed' ? '✓' : item.state === 'current' ? '✦' : ''}}</view>
+          <text class="level-node__name">{{item.name}}</text>
+          <text class="level-node__threshold">{{item.threshold}}</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <view class="member-subpage__section">
+    <view wx:if="{{hasNextLevel}}" class="member-subpage__section-head"><text class="member-subpage__section-title">下一等级权益</text><text class="member-subpage__section-note">{{nextLevel}}</text></view>
+    <view class="member-subpage__surface">
+      <text wx:if="{{hasNextLevel && nextBenefits.length === 0}}" class="member-subpage__row-detail">该等级权益详情暂未提供</text><view wx:for="{{nextBenefits}}" wx:key="title" class="member-subpage__row">
+        <view class="member-subpage__row-main">
+          <view class="member-subpage__icon-box member-subpage__icon-box--gold"><image class="member-subpage__icon" src="{{item.icon}}" mode="aspectFit" /></view>
+          <view class="member-subpage__copy"><text class="member-subpage__row-title">{{item.title}}</text><text class="member-subpage__row-detail">{{item.detail}}</text></view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="member-subpage__section">
+    <view class="member-subpage__section-head"><text class="member-subpage__section-title">等级规则</text><text class="member-subpage__section-note">离线演示规则</text></view>
+    <view class="member-subpage__surface level-rules">
+      <view wx:for="{{levels}}" wx:key="name" class="member-subpage__row level-rule {{item.state === 'current' ? 'level-rule--current' : ''}}">
+        <view class="member-subpage__row-main"><view class="level-rule__mark level-rule__mark--{{item.state}}">{{item.state === 'passed' ? '✓' : item.state === 'current' ? '✦' : '·'}}</view><view class="member-subpage__copy"><text class="member-subpage__row-title">{{item.name}}会员</text><text class="member-subpage__row-detail">{{item.threshold}} 星光起</text></view></view>
+        <text class="member-subpage__status {{item.state === 'current' ? 'member-subpage__status--gold' : item.state === 'locked' ? 'member-subpage__status--muted' : ''}}">{{item.state === 'passed' ? '已通过' : item.state === 'current' ? '当前等级' : '未解锁'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="member-subpage__section">
+    <view class="member-subpage__section-head"><text class="member-subpage__section-title">当前权益</text><text class="member-subpage__section-note">{{currentBenefits.length}} 项</text></view>
+    <text wx:if="{{currentBenefits.length === 0}}" class="member-subpage__row-detail">当前等级权益详情暂未提供</text><view class="benefit-chip-list">
+      <view wx:for="{{currentBenefits}}" wx:key="id" class="benefit-chip"><image src="{{icons.membershipCheckin}}" mode="aspectFit" /><text>{{item.label}}</text></view>
+    </view>
+  </view>
+</view>

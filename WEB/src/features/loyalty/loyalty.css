@@ -1,0 +1,196 @@
+.loyalty-version-time {
+  color: var(--xy-text-tertiary);
+  font-size: var(--xy-font-size-caption);
+}
+
+.loyalty-card {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+.loyalty-card .t-card__body {
+  padding: 0;
+}
+
+.loyalty-tabs .t-tabs__bar {
+  bottom: 0;
+}
+
+.loyalty-panel {
+  min-height: 228px;
+  padding: 0;
+}
+
+.loyalty-panel__heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--xy-space-4);
+  margin-bottom: var(--xy-space-4);
+}
+
+.loyalty-panel__heading h3,
+.loyalty-panel__heading p,
+.loyalty-state p {
+  margin: 0;
+}
+
+.loyalty-panel__heading h3 {
+  color: var(--xy-text-primary);
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.loyalty-panel__heading p {
+  margin-top: var(--xy-space-1);
+  color: var(--xy-text-secondary);
+  font-size: var(--xy-font-size-caption);
+  line-height: 20px;
+}
+
+.loyalty-summary-card {
+  display: grid;
+  max-width: 560px;
+  gap: var(--xy-space-1);
+  padding: var(--xy-space-4);
+  border: 1px solid var(--xy-border-subtle);
+  border-radius: var(--xy-radius-md);
+  background: var(--xy-bg-container-subtle);
+}
+
+.loyalty-summary-card > span,
+.loyalty-summary-card > small,
+.loyalty-level-card > span,
+.loyalty-level-card > small {
+  color: var(--xy-text-tertiary);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.loyalty-summary-card > strong {
+  color: var(--xy-text-primary);
+  font-size: 20px;
+  line-height: 30px;
+  font-variant-numeric: tabular-nums;
+}
+
+.loyalty-level-grid,
+.loyalty-streak-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--xy-space-3);
+}
+
+.loyalty-level-card,
+.loyalty-streak-card {
+  display: grid;
+  min-width: 0;
+  gap: var(--xy-space-1);
+  padding: var(--xy-space-3);
+  border: 1px solid var(--xy-border-subtle);
+  border-radius: var(--xy-radius-md);
+  background: var(--xy-bg-container-subtle);
+}
+
+.loyalty-level-card > strong,
+.loyalty-streak-card > strong {
+  color: var(--xy-text-primary);
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.loyalty-streak-card > strong {
+  color: var(--xy-action-primary);
+  font-size: 20px;
+  font-variant-numeric: tabular-nums;
+}
+
+.loyalty-streak-card > span {
+  color: var(--xy-text-secondary);
+  font-size: 13px;
+}
+
+.loyalty-version-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--xy-space-2);
+  margin-top: var(--xy-space-3);
+  color: var(--xy-text-tertiary);
+  font-size: 12px;
+}
+
+.loyalty-state {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--xy-space-4);
+  padding: var(--xy-space-5);
+}
+
+.loyalty-state--error {
+  border: 1px solid var(--xy-color-danger-200);
+  border-radius: var(--xy-radius-lg);
+  background: var(--xy-status-danger-bg);
+}
+
+.loyalty-editor-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: var(--xy-space-3);
+}
+
+.loyalty-editor-list {
+  display: grid;
+  gap: var(--xy-space-3);
+}
+
+.loyalty-editor-row {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 36px;
+  gap: var(--xy-space-3);
+  align-items: end;
+  margin: 0;
+  padding: var(--xy-space-3);
+  border: 1px solid var(--xy-border-subtle);
+  border-radius: var(--xy-radius-md);
+  background: var(--xy-bg-container-subtle);
+}
+
+.loyalty-editor-row > legend {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  border: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.loyalty-editor-row > label {
+  display: grid;
+  min-width: 0;
+  gap: var(--xy-space-1);
+}
+
+.loyalty-editor-row > label > span {
+  color: var(--xy-text-primary);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+@media (max-width: 900px) {
+  .loyalty-panel__heading,
+  .loyalty-state {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .loyalty-editor-row {
+    grid-template-columns: 1fr;
+  }
+}

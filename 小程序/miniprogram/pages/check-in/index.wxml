@@ -1,0 +1,47 @@
+<page-meta root-font-size="system" />
+<view class="check-in-page">
+  <page-header title="{{secondaryNavigationTitle || '签到'}}" background="#ffffff" inverse="{{false}}" bindback="onSecondaryNavigationBack" />
+  <view class="check-in-main">
+    <text wx:if="{{errorText}}" role="alert">{{errorText}}</text>
+    <text wx:if="{{receiptText}}">{{receiptText}}</text>
+    <view class="sign-hero">
+      <view class="sign-hero__body">
+        <view class="sign-hero__info">
+          <text class="sign-greeting">Hi，今天也要闪闪发光哦 ✦</text>
+          <text class="sign-kicker">{{signedToday ? '今日已签到' : ruleAvailable ? '按已发布规则签到' : '签到规则暂不可用'}}</text>
+          <view class="sign-reward"><text>{{dailyReward}}</text></view>
+          <view class="sign-assets">
+            <view><image src="{{icons.membershipDiamond}}" mode="aspectFit" /><text>粉钻 <text>{{balance}}</text></text></view>
+            <view><image src="{{icons.profileMemberStar}}" mode="aspectFit" /><text>星光 <text>{{starPoints}}</text></text></view>
+          </view>
+        </view>
+        <image class="sign-hero__visual" src="{{icons.checkInHero}}" mode="aspectFit" />
+      </view>
+      <button class="sign-button xy-button-reset xy-button-fluid" bindtap="checkIn" disabled="{{signedToday || busy || !loggedIn || !ruleAvailable}}" aria-disabled="{{signedToday || busy || !loggedIn || !ruleAvailable}}" aria-label="{{signedToday ? '今日已签到' : '立即签到'}}">
+        <text>{{signedToday ? '今日已签到' : '立即签到'}}</text><text>{{signedToday ? '服务端已记录' : '奖励以服务端回执为准'}}</text>
+      </button>
+    </view>
+    <view class="week-panel">
+      <view class="section-head"><view><text class="section-title">本周签到记录</text><text class="section-copy">按本人签到历史显示</text></view><text class="week-summary">连续 {{streak}} 天</text></view>
+      <view class="week-track">
+        <view class="track-line"></view>
+        <view wx:for="{{weekDays}}" wx:key="key" class="week-day week-day--{{item.state}}"><view>{{item.status === '已签' ? '✓' : item.label}}</view><text>周{{item.label}}</text><text>{{item.status}}</text></view>
+      </view>
+    </view>
+    <view class="sign-section">
+      <view class="section-head"><view><text class="section-title">本月签到记录</text><text class="section-copy">签到日期与当时奖励以服务端为准</text></view><text class="section-count">已签 {{signedMonthCount}} 天</text></view>
+      <view class="calendar-panel">
+        <view class="calendar-head"><text>{{monthTitle}}</text><text>当前账户</text></view>
+        <view class="calendar-weekdays"><text>日</text><text>一</text><text>二</text><text>三</text><text>四</text><text>五</text><text>六</text></view>
+        <view class="calendar-grid"><view wx:for="{{calendarDays}}" wx:key="key" class="calendar-day calendar-day--{{item.state}}"><text>{{item.day}}</text><text>{{item.stateText}}</text></view></view>
+      </view>
+      <view class="reward-list"><button wx:for="{{history}}" wx:key="key" class="reward-row check-in-receipt xy-button-reset" data-id="{{item.key}}" bindtap="openReceipt"><view><text>{{item.date}} · 连续 {{item.streak}} 天</text><text>{{item.reward}}</text></view></button></view>
+      <button wx:for="{{receiptCoupons}}" wx:key="id" class="reward-row check-in-coupon xy-button-reset" data-id="{{item.id}}" bindtap="openCoupon">查看签到奖励：{{item.title}}</button>
+    </view>
+    <view class="sign-section">
+      <view class="section-head"><view><text class="section-title">当前签到规则</text><text class="section-copy">规则更新不改写历史奖励</text></view></view>
+      <view class="reward-list"><view class="reward-row"><view><text>每日签到</text><text>{{dailyReward}}</text></view></view><view class="reward-row"><view><text>首次签到</text><text>{{firstReward}}</text></view></view></view>
+      <view class="milestone-grid"><view wx:for="{{milestones}}" wx:key="key" class="milestone"><text>{{item.day}}</text><text>{{item.reward}}</text></view></view>
+    </view>
+  </view>
+</view>

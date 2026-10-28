@@ -1,0 +1,54 @@
+:root {
+  --xy-bg-page: var(--xy-color-neutral-50);
+  --xy-bg-container: var(--xy-color-neutral-0);
+  --xy-bg-container-subtle: var(--xy-color-neutral-50);
+  --xy-bg-inverse: var(--xy-color-neutral-950);
+
+  --xy-text-primary: var(--xy-color-neutral-900);
+  --xy-text-secondary: var(--xy-color-neutral-600);
+  --xy-text-tertiary: var(--xy-color-neutral-500);
+  --xy-text-placeholder: var(--xy-color-neutral-500);
+  --xy-text-disabled: var(--xy-color-neutral-400);
+  --xy-text-inverse: var(--xy-color-neutral-0);
+  --xy-text-brand: var(--xy-color-brand-600);
+
+  --xy-border-subtle: var(--xy-color-neutral-100);
+  --xy-border-default: var(--xy-color-neutral-200);
+  --xy-border-strong: var(--xy-color-neutral-400);
+  --xy-border-focus: var(--xy-color-brand-600);
+
+  --xy-action-primary: var(--xy-color-brand-600);
+  --xy-action-primary-hover: var(--xy-color-brand-700);
+  --xy-action-primary-active: var(--xy-color-brand-800);
+  --xy-action-strong: var(--xy-color-neutral-900);
+  --xy-action-strong-hover: var(--xy-color-neutral-800);
+  --xy-action-strong-active: var(--xy-color-neutral-950);
+
+  --xy-status-success: var(--xy-color-success-600);
+  --xy-status-success-bg: var(--xy-color-success-100);
+  --xy-status-warning: var(--xy-color-warning-700);
+  --xy-status-warning-bg: var(--xy-color-warning-100);
+  --xy-status-danger: var(--xy-color-danger-700);
+  --xy-status-danger-bg: var(--xy-color-danger-100);
+  --xy-status-processing: var(--xy-color-info-700);
+  --xy-status-processing-bg: var(--xy-color-info-100);
+  --xy-status-unknown: var(--xy-color-unknown-700);
+  --xy-status-unknown-bg: var(--xy-color-unknown-100);
+
+  /* Compatibility aliases for existing feature styles. */
+  --xy-color-brand: var(--xy-color-brand-600);
+  --xy-color-text-primary: var(--xy-text-primary);
+  --xy-color-text-secondary: var(--xy-text-secondary);
+  --xy-color-surface: var(--xy-bg-container);
+  --xy-color-surface-muted: var(--xy-bg-container-subtle);
+  --xy-color-border: var(--xy-border-default);
+
+  --xy-control-height-compact: 32px;
+  --xy-control-height-dense: 36px;
+  --xy-control-height-default: 40px;
+  --xy-control-height-prominent: 48px;
+  --xy-table-row-height: 48px;
+  --xy-detail-label-width: 112px;
+  --xy-detail-row-min-height: 44px;
+  --xy-tabs-hit-area: 48px;
+}

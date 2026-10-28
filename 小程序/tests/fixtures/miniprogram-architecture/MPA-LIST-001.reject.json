@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "1.0",
+  "ruleId": "MPA-LIST-001",
+  "case": "reject",
+  "cases": [
+    {
+      "name": "missing-stable-key",
+      "files": {
+        "miniprogram/pages/orders/index.wxml": "<view wx:for=\"{{items}}\">{{item.title}}</view>\n"
+      }
+    },
+    {
+      "name": "array-index-key",
+      "files": {
+        "miniprogram/pages/orders/index.wxml": "<view wx:for=\"{{items}}\" wx:key=\"index\">{{item.title}}</view>\n"
+      }
+    },
+    {
+      "name": "silent-page-size-slice",
+      "files": {
+        "miniprogram/pages/orders/index.wxml": "<page-meta root-font-size=\"system\" />\n<view>订单</view>\n",
+        "miniprogram/pages/orders/index.ts": "const visible = items.slice(0, 20);\nvoid visible;\n"
+      }
+    }
+  ]
+}

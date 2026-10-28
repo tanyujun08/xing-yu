@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "设价上架",
+  "navigationStyle": "custom",
+  "navigationBarTextStyle": "black",
+  "usingComponents": {
+    "page-header": "../../components/page-header/index",
+    "status-view": "../../components/status-view/index"
+  }
+}

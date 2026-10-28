@@ -1,0 +1,9 @@
+{
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "费用依据",
+  "usingComponents": {
+    "page-shell": "../../components/page-shell/index",
+    "page-header": "../../components/page-header/index",
+    "media-state": "../../components/media-state/index"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "优惠券管理",
+  "navigationStyle": "custom",
+  "enablePullDownRefresh": true,
+  "onReachBottomDistance": 120,
+  "usingComponents": {
+    "page-shell": "../../components/page-shell/index",
+    "page-header": "../../components/page-header/index",
+    "status-view": "../../components/status-view/index"
+  }
+}

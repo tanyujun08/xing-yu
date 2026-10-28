@@ -1,0 +1,35 @@
+/* Canonical list surface. Feature styles may size columns, but must not override this structure. */
+.data-card.admin-list-panel > .t-card__header {
+  padding: var(--xy-admin-list-header-padding-block) var(--xy-admin-list-content-padding-inline) var(--xy-space-3);
+}
+
+.data-card.admin-list-panel > .t-card__body {
+  padding: 0 var(--xy-admin-list-content-padding-inline) var(--xy-admin-list-content-padding-block);
+}
+
+.admin-list-panel .admin-list-panel__title-row h2 {
+  font-size: var(--xy-admin-list-title-size);
+  font-weight: var(--xy-admin-list-title-weight);
+  line-height: var(--xy-line-height-24);
+  letter-spacing: -0.01em;
+}
+
+.admin-list-panel__content {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.admin-list-panel__content > .t-table {
+  margin-inline: 0;
+}
+
+.admin-list-panel__filter-surface {
+  padding: var(--xy-admin-filter-padding);
+}
+
+@media (max-width: 767px) {
+  .data-card.admin-list-panel > .t-card__header,
+  .data-card.admin-list-panel > .t-card__body {
+    padding-inline: var(--xy-space-4);
+  }
+}

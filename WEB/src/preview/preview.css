@@ -1,0 +1,2 @@
+.preview-control-trigger { position: fixed; right: 24px; bottom: 24px; z-index: 1200; box-shadow: 0 6px 24px #2348a52b; }
+.preview-offline-map { min-height: 220px; padding: 24px; background: linear-gradient(90deg,#dce7e6 1px,transparent 1px),linear-gradient(#dce7e6 1px,transparent 1px),#edf4f3; background-size: 32px 32px; border-radius: 8px; }

@@ -1,0 +1,9 @@
+{
+  "schemaVersion": "1.0",
+  "ruleId": "MPA-DUP-001",
+  "case": "reject",
+  "files": {
+    "miniprogram/pages/alpha/index.wxml": "<view class=\"duplicate\"><text>重复实现</text><view>这是用于拒绝用例的精确重复内容，长度必须达到策略阈值。为了让门禁稳定识别，我们重复补充确定性的本地文本。这是用于拒绝用例的精确重复内容，长度必须达到策略阈值。为了让门禁稳定识别，我们重复补充确定性的本地文本。</view></view>",
+    "miniprogram/pages/beta/index.wxml": "<view class=\"duplicate\"><text>重复实现</text><view>这是用于拒绝用例的精确重复内容，长度必须达到策略阈值。为了让门禁稳定识别，我们重复补充确定性的本地文本。这是用于拒绝用例的精确重复内容，长度必须达到策略阈值。为了让门禁稳定识别，我们重复补充确定性的本地文本。</view></view>"
+  }
+}

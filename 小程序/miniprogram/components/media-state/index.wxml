@@ -1,0 +1,13 @@
+<view class="xy-media-state xy-media-state--{{renderState}} xy-media-state--{{renderDensity}}" role="{{renderState === 'ready' ? 'img' : 'status'}}" aria-live="polite" aria-busy="{{renderState === 'loading'}}" aria-label="{{resolvedAlt}}">
+  <image wx:if="{{renderState === 'ready' || renderState === 'loading'}}" class="xy-media-state__image" src="{{src}}" mode="{{mode}}" aria-label="{{resolvedAlt}}" bindload="onLoad" binderror="onError" />
+  <view wx:if="{{renderState === 'loading'}}" class="xy-media-state__loading" aria-hidden="true"><view class="xy-loading-ring"></view></view>
+  <view wx:if="{{renderState === 'idle'}}" class="xy-media-state__placeholder">
+    <image wx:if="{{placeholderSrc}}" class="xy-media-state__placeholder-icon" src="{{placeholderSrc}}" mode="aspectFit" />
+    <text wx:if="{{emptyLabel}}">{{emptyLabel}}</text>
+  </view>
+  <view wx:if="{{renderState === 'error'}}" class="xy-media-state__failure">
+    <view wx:if="{{renderDensity !== 'thumbnail'}}" class="xy-media-state__error-mark" aria-hidden="true"></view>
+    <text wx:if="{{renderDensity !== 'thumbnail'}}">{{resolvedErrorText}}</text>
+    <button wx:if="{{retryLabel}}" class="xy-media-state__retry xy-action-secondary xy-button-reset xy-tap" style="{{renderDensity === 'thumbnail' ? 'min-width:var(--xy-size-touch-min,44px);min-height:var(--xy-size-touch-min,44px);padding:0;margin-top:0;' : ''}}" aria-label="{{retryLabel}}" catchtap="retry">{{retryLabel}}</button>
+  </view>
+</view>

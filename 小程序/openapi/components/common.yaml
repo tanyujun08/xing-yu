@@ -1,0 +1,318 @@
+SMSDelivery:
+  type: object
+  additionalProperties: false
+  required: [message_id, recipient_masked, scene, template_key, status, created_at, expires_at]
+  properties:
+    message_id: { $ref: '#/OpaqueID' }
+    recipient_masked: { type: string, pattern: '^\+86\*{7}[0-9]{4}$' }
+    scene: { type: string, enum: [OPS_LOGIN, PHONE_BIND, CABINET_OPEN_ALL] }
+    template_key: { type: string, minLength: 1, maxLength: 64 }
+    status: { type: string, enum: [PENDING, ACCEPTED, UNKNOWN, DELIVERED, FAILED, EXPIRED], description: ACCEPTED is provider acceptance only, not confirmed receipt. }
+    created_at: { type: string, format: date-time }
+    expires_at: { type: string, format: date-time }
+
+SMSDeliveryPage:
+  type: object
+  additionalProperties: false
+  required: [items, page]
+  properties:
+    items: { type: array, items: { $ref: '#/SMSDelivery' } }
+    page: { $ref: ./pagination.yaml#/CursorPageMeta }
+
+OpaqueID:
+  type: string
+  minLength: 1
+  maxLength: 128
+  description: Opaque identifier. Clients must not parse or synthesize it.
+
+BigIntString:
+  type: string
+  pattern: ^-?[0-9]+$
+  description: Decimal string representation of an integer outside the safe JSON number range.
+
+Money:
+  type: object
+  additionalProperties: false
+  required: [amount_minor, currency]
+  properties:
+    amount_minor:
+      $ref: "#/BigIntString"
+      description: Amount in the smallest currency unit. Never a floating-point number.
+    currency:
+      type: string
+      enum: [CNY]
+
+BuildInfo:
+  type: object
+  additionalProperties: false
+  required: [version, revision, build_time]
+  properties:
+    version:
+      type: string
+    revision:
+      type: string
+    build_time:
+      type: string
+      format: date-time
+
+HealthResponse:
+  type: object
+  additionalProperties: false
+  required: [status, build, time]
+  properties:
+    status:
+      type: string
+      const: ok
+    build:
+      $ref: "#/BuildInfo"
+    time:
+      type: string
+      format: date-time
+
+ReadyResponse:
+  type: object
+  additionalProperties: false
+  required: [status]
+  properties:
+    status:
+      type: string
+      const: ready
+
+ConfigKey:
+  type: string
+  enum: [material.upload_policy, identity.profile_policy, sms.challenge_policy, rental.requirements, rental.billing, rental.deposit, rental.creation_defaults, rental.order_policy, membership.levels, entitlement.catalog, benefits.check_in, client.resources.MINIPROGRAM, client.resources.ADMIN, wechat.message_scenes, settlement.rules, cabinet.credential_policy, administrative.regions, storage.route, payout.provider, agreement.requirements, benefits.catalog, benefits.lottery, benefits.coupons, rental.service_coverage, asset.price_guidance]
+ConfigStatus:
+  type: string
+  enum: [DRAFT, VALIDATED, APPROVED, PUBLISHED, SUPERSEDED]
+
+IdentityProfilePolicy:
+  type: object
+  additionalProperties: false
+  required: [display_name_min_length, display_name_max_length, allowed_locales, avatar_material_class, avatar_required_status]
+  properties:
+    display_name_min_length: { type: integer, minimum: 1, maximum: 64 }
+    display_name_max_length: { type: integer, minimum: 1, maximum: 64 }
+    allowed_locales:
+      type: array
+      minItems: 1
+      uniqueItems: true
+      items: { type: string, minLength: 2, maxLength: 16 }
+    avatar_material_class: { type: string, const: PROFILE_IMAGE }
+    avatar_required_status: { type: string, const: READY }
+
+SMSChallengePolicy:
+  type: object
+  additionalProperties: false
+  required: [allowed_scenes, digits, ttl_seconds, cooldown_seconds, max_attempts, phone_daily_limit, ip_daily_limit]
+  properties:
+    allowed_scenes:
+      type: array
+      minItems: 1
+      uniqueItems: true
+      items: { type: string, enum: [OPS_LOGIN, PHONE_BIND, CABINET_OPEN_ALL] }
+    digits: { type: integer, const: 6 }
+    ttl_seconds: { type: integer, minimum: 60, maximum: 600 }
+    cooldown_seconds: { type: integer, minimum: 30, maximum: 600 }
+    max_attempts: { type: integer, minimum: 3, maximum: 5 }
+    phone_daily_limit: { type: integer, minimum: 1, maximum: 100 }
+    ip_daily_limit: { type: integer, minimum: 1, maximum: 500 }
+
+TypedConfigValue:
+  oneOf:
+    - $ref: ./business-config-direct.yaml#/RentalOrderPolicy
+    - $ref: ./business-config-direct.yaml#/RentalCreationDefaultsPolicy
+    - $ref: ./business-config-direct.yaml#/EntitlementCatalogPolicyV2
+    - $ref: ./business-config-direct.yaml#/CheckInPolicyV2
+    - $ref: '#/IdentityProfilePolicy'
+    - $ref: '#/SMSChallengePolicy'
+    - $ref: './business-configuration.yaml#/BusinessConfigValue'
+
+ConfigDefinition:
+  type: object
+  additionalProperties: false
+  required: [config_key, schema_version, value_type, scope_type, status, description_code, updated_at]
+  properties:
+    config_key: { $ref: '#/ConfigKey' }
+    schema_version: { type: integer, minimum: 1 }
+    value_type: { type: string, enum: [MATERIAL_UPLOAD_POLICY, IDENTITY_PROFILE_POLICY, SMS_CHALLENGE_POLICY, RENTAL_REQUIREMENTS, RENTAL_BILLING, RENTAL_DEPOSIT, MEMBERSHIP_LEVELS, ENTITLEMENT_CATALOG, CHECK_IN_RULES, CLIENT_RESOURCES, WECHAT_MESSAGE_SCENES, SETTLEMENT_RULES, CABINET_CREDENTIAL_POLICY, ADMINISTRATIVE_REGIONS, STORAGE_ROUTE, PAYMENT_PROVIDER, PAYOUT_PROVIDER, AGREEMENT_REQUIREMENTS, BENEFIT_CATALOG, LOTTERY_RULES, SERVICE_COVERAGE_RULES, ASSET_PRICE_GUIDANCE, ASSET_PUBLICATION_ELIGIBILITY, COUPON_TEMPLATE, RENTAL_CREATION_DEFAULTS, COUPON_RULES, RENTAL_ORDER_POLICY] }
+    scope_type: { type: string, const: GLOBAL }
+    status: { type: string, enum: [ACTIVE, RETIRED] }
+    description_code: { type: string, minLength: 1, maxLength: 128 }
+    updated_at: { type: string, format: date-time }
+
+ConfigVersion:
+  type: object
+  additionalProperties: false
+  required: [config_version_id, config_key, version_no, schema_version, value, content_hash, status, created_by, reason, version, created_at]
+  properties:
+    publication_mode: { type: string, readOnly: true, enum: [APPROVAL, DIRECT, SUPER_ADMIN_SELF] }
+    config_version_id: { $ref: '#/OpaqueID' }
+    config_key: { $ref: '#/ConfigKey' }
+    version_no: { type: integer, minimum: 1 }
+    schema_version: { type: integer, minimum: 1 }
+    value: { $ref: '#/TypedConfigValue' }
+    content_hash: { type: string, pattern: '^[a-f0-9]{64}$' }
+    status: { $ref: '#/ConfigStatus' }
+    created_by: { $ref: '#/OpaqueID' }
+    validated_by: { $ref: '#/OpaqueID' }
+    approved_by: { $ref: '#/OpaqueID' }
+    published_by: { $ref: '#/OpaqueID' }
+    reason: { type: string, minLength: 3, maxLength: 256 }
+    version: { type: integer, minimum: 1 }
+    created_at: { type: string, format: date-time }
+    validated_at: { type: string, format: date-time }
+    approved_at: { type: string, format: date-time }
+    published_at: { type: string, format: date-time }
+
+EffectiveConfig:
+  type: object
+  additionalProperties: false
+  required: [config_key, source, schema_version, value]
+  properties:
+    config_key: { $ref: '#/ConfigKey' }
+    source: { type: string, enum: [DEFAULT_CODE, PUBLISHED] }
+    schema_version: { type: integer, minimum: 1 }
+    value: { $ref: '#/TypedConfigValue' }
+    config_version: { $ref: '#/ConfigVersion' }
+    effective_epoch: { type: integer, minimum: 1 }
+    published_by: { $ref: '#/OpaqueID' }
+    published_at: { type: string, format: date-time }
+
+DefinitionList:
+  type: object
+  additionalProperties: false
+  required: [items]
+  properties:
+    items: { type: array, items: { $ref: '#/ConfigDefinition' } }
+
+EffectiveList:
+  type: object
+  additionalProperties: false
+  required: [items]
+  properties:
+    items: { type: array, items: { $ref: '#/EffectiveConfig' } }
+
+VersionPage:
+  type: object
+  additionalProperties: false
+  required: [items, page]
+  properties:
+    items: { type: array, items: { $ref: '#/ConfigVersion' } }
+    page: { $ref: ./pagination.yaml#/CursorPageMeta }
+
+CreateConfigVersionRequest:
+  type: object
+  additionalProperties: false
+  required: [config_key, value, reason]
+  properties:
+    schema_version: { type: integer, enum: [1, 2], description: Material policy uses only schema 2 and defaults to 2 when omitted. Other configuration keys retain their registered schema and default to 1 on this endpoint. }
+    config_key: { $ref: '#/ConfigKey' }
+    value: { $ref: '#/TypedConfigValue' }
+    reason: { type: string, minLength: 3, maxLength: 256 }
+
+TransitionConfigVersionRequest:
+  type: object
+  additionalProperties: false
+  required: [reason]
+  properties:
+    reason: { type: string, minLength: 3, maxLength: 256 }
+
+EmptyObject:
+  type: object
+  additionalProperties: false
+
+MaterialClass:
+  type: string
+  enum: [PROFILE_IMAGE, CATALOG_IMAGE, RENTAL_ASSET_IMAGE, MERCHANT_IMAGE, SYSTEM_MATERIAL, SYSTEM_ICON, EVIDENCE_IMAGE, CATALOG_VIDEO, RENTAL_ASSET_VIDEO, EVIDENCE_VIDEO, CHAT_IMAGE, CONTRACT_SIGNATURE_IMAGE, CONTRACT_PAGE_IMAGE, CONTRACT_DOCUMENT]
+
+MaterialScopeType:
+  type: string
+  enum: [ACCOUNT, CATALOG, RENTAL_ASSET, SYSTEM, EVIDENCE_SET]
+
+MaterialStatus:
+  type: string
+  enum: [PENDING_UPLOAD, UPLOADED, SCANNING, PROCESSING, READY, REJECTED, EXPIRED, ARCHIVED]
+
+Material:
+  type: object
+  additionalProperties: false
+  required: [material_id, scope_type, material_class, status, expected_mime, expected_size, expected_sha256, sse_mode, version, created_at, updated_at, public_url, playback_url, metadata, poster, mime_type, size_bytes]
+  properties:
+    material_id: { $ref: '#/OpaqueID' }
+    owner_account_id: { $ref: '#/OpaqueID' }
+    scope_type: { $ref: '#/MaterialScopeType' }
+    scope_id: { $ref: '#/OpaqueID' }
+    material_class: { $ref: '#/MaterialClass' }
+    status: { $ref: '#/MaterialStatus' }
+    public_url: { anyOf: [{ $ref: '#/PublicMaterialURL' }, { type: "null" }] }
+    playback_url: { anyOf: [{ $ref: '#/PublicMaterialURL' }, { type: "null" }] }
+    metadata: { anyOf: [{ $ref: '#/MediaMetadataV1' }, { type: "null" }] }
+    poster: { anyOf: [{ $ref: '#/MaterialPoster' }, { type: "null" }] }
+    mime_type: { type: string, minLength: 3, maxLength: 64 }
+    size_bytes: { type: integer, minimum: 1, maximum: 104857600 }
+    object_version_id: { type: string, minLength: 1, maxLength: 256 }
+    object_etag: { type: string, minLength: 1, maxLength: 256 }
+    expected_mime: { type: string }
+    expected_size: { type: integer, minimum: 1 }
+    expected_sha256: { type: string, pattern: '^[a-f0-9]{64}$' }
+    detected_mime: { type: string }
+    observed_size: { type: integer, minimum: 0 }
+    observed_sha256: { type: string, pattern: '^[a-f0-9]{64}$' }
+    sse_mode: { type: string, enum: [SSE-OSS, SSE-KMS] }
+    scanner_verdict: { type: string, enum: [PASS, REJECT, ERROR] }
+    rejection_reason: { type: string, maxLength: 64 }
+    authorization_expires_at: { type: string, format: date-time }
+    version: { type: integer, minimum: 1 }
+    created_at: { type: string, format: date-time }
+    updated_at: { type: string, format: date-time }
+
+MediaMetadataV1:
+  type: object
+  additionalProperties: false
+  required: [schema_version, width, height, duration_ms, video_codec, audio_codec]
+  properties:
+    schema_version: { type: integer, const: 1 }
+    width: { type: integer, minimum: 1, maximum: 8192 }
+    height: { type: integer, minimum: 1, maximum: 8192 }
+    duration_ms: { type: [integer, "null"], minimum: 1, maximum: 4294967295 }
+    video_codec: { type: [string, "null"], pattern: '^[a-z0-9_]{1,32}$' }
+    audio_codec: { type: [string, "null"], pattern: '^[a-z0-9_]{1,32}$' }
+
+MaterialPoster:
+  type: object
+  additionalProperties: false
+  required: [material_id, url, width, height]
+  properties:
+    material_id: { $ref: '#/OpaqueID' }
+    url: { $ref: '#/PublicMaterialURL' }
+    width: { type: integer, minimum: 1, maximum: 1280 }
+    height: { type: integer, minimum: 1, maximum: 1280 }
+
+PublicMaterialURL:
+  type: string
+  format: uri
+  pattern: '^https://xyuprj\.oss-cn-hangzhou\.aliyuncs\.com/[A-Za-z0-9._~/%-]+$'
+  description: Permanent anonymous HTTPS URL in the original bucket; no signature, query, fragment or userinfo.
+
+PublicMaterialMedia:
+  type: object
+  additionalProperties: false
+  required: [material_id, role, sort_order, url, mime_type, size_bytes, metadata, poster]
+  properties:
+    material_id: { $ref: '#/OpaqueID' }
+    role: { type: string, enum: [COVER, IMAGE, VIDEO] }
+    sort_order: { type: integer, minimum: 0, maximum: 65535 }
+    url: { $ref: '#/PublicMaterialURL' }
+    mime_type: { type: string, minLength: 3, maxLength: 64 }
+    size_bytes: { type: integer, minimum: 1, maximum: 104857600 }
+    metadata: { anyOf: [{ $ref: '#/MediaMetadataV1' }, { type: "null" }] }
+    poster: { anyOf: [{ $ref: '#/MaterialPoster' }, { type: "null" }] }
+
+MaterialPhoto:
+  type: object
+  additionalProperties: false
+  required: [material_id, url, sort_order]
+  properties:
+    material_id: { $ref: '#/OpaqueID' }
+    url: { $ref: '#/PublicMaterialURL' }
+    sort_order: { type: integer, minimum: 0, maximum: 8 }

@@ -1,0 +1,12 @@
+<view class="summary summary--{{variant}}" role="group" aria-label="{{title}}">
+  <view class="summary__main" bindtap="open" role="{{clickable ? 'button' : 'group'}}" aria-label="{{clickable ? '查看' + title + '详情' : title}}">
+    <media-state class="summary__media" state="{{mediaState}}" src="{{mediaSrc}}" density="thumbnail" mode="aspectFit" alt="{{title}}" bindretry="retry" />
+    <view class="summary__copy">
+      <text class="summary__title {{variant === 'order-list' && !titleExpanded ? 'summary__title--clamped' : ''}}">{{title}}</text>
+      <text wx:if="{{variant === 'order-list'}}" class="summary__title summary__title-measure" aria-hidden="true">{{title}}</text>
+      <text wx:if="{{secondary}}" class="summary__secondary">{{secondary}}</text><slot name="meta"></slot>
+    </view>
+    <text wx:if="{{clickable}}" class="summary__arrow" aria-hidden="true">›</text>
+  </view>
+  <button wx:if="{{titleOverflow}}" class="summary__title-action" catchtap="toggleTitle" aria-expanded="{{titleExpanded}}" aria-label="{{titleExpanded ? '收起设备完整名称' : '查看设备完整名称'}}">{{titleExpanded ? '收起名称' : '查看完整名称'}}</button>
+</view>

@@ -1,0 +1,5 @@
+import { afterEach, expect, test, vi } from 'vitest';
+import { buildCalendarMonths, addDaysText, dateDiffDays, localDateText } from '../miniprogram/shared/presentation/rental-calendar';
+afterEach(()=>vi.useRealTimers());
+test('a future availability anchor never labels tomorrow as today',()=>{vi.useFakeTimers({toFake:['Date']});vi.setSystemTime(new Date(2026,8,11,12));const months=buildCalendarMonths('2026-09-12');expect(months).toHaveLength(6);const days=months.flatMap(m=>m.days);expect(days.find(d=>d.date==='2026-09-12')?.isToday).toBe(false);expect(days.find(d=>d.date==='2026-09-11')).toMatchObject({isToday:true,disabled:true});expect(localDateText()).toBe('2026-09-11');});
+test('leap-month dates and selection range retain the original calendar geometry',()=>{expect(addDaysText('2028-02-28',1)).toBe('2028-02-29');expect(dateDiffDays('2028-02-28','2028-03-01')).toBe(2);const feb=buildCalendarMonths('2028-02-01','2028-02-28','2028-03-01')[0]!;expect(feb.days.filter(d=>!d.isPlaceholder)).toHaveLength(29);expect(feb.days.find(d=>d.date==='2028-02-29')?.inRange).toBe(true);});

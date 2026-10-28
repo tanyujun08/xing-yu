@@ -1,0 +1,7 @@
+<view class="return-progress" aria-label="归还进度">
+  <view wx:for="{{steps}}" wx:key="key" class="return-progress__item {{index + 1 === step ? 'is-current' : ''}} {{index + 1 < step ? 'is-complete' : ''}}">
+    <view class="return-progress__line" wx:if="{{index < 2}}"></view>
+    <view class="return-progress__number"><icon wx:if="{{index + 1 < step}}" type="success_no_circle" size="20" color="white" /><text wx:else>{{index + 1}}</text></view>
+    <text>{{item.label}}</text>
+  </view>
+</view>

@@ -1,0 +1,14 @@
+<page-meta root-font-size="system" />
+<page-shell has-footer="{{false}}"><page-header slot="header" title="优惠券详情" bindback="onBack" />
+ <view class="coupons-page">
+  <view wx:if="{{!loggedIn}}" class="coupons-login"><text class="coupons-login__title">登录后查看本人优惠券</text><button class="coupons-action xy-button-reset" bindtap="openLogin">去登录</button></view>
+  <status-view wx:if="{{loading}}" state="loading" title="正在读取券详情" />
+  <status-view wx:if="{{errorText}}" state="error" title="券详情待核实" description="{{errorText}}" action-text="重新读取" bindaction="refresh" />
+  <view wx:if="{{coupon}}" class="coupon-card"><view class="coupon-heading"><text class="coupon-title">{{coupon.title}}</text><text class="coupon-status coupon-status--{{coupon.tone}}">{{coupon.status}}</text></view><text class="coupon-amount">{{coupon.amount}}</text><text class="coupon-description">{{coupon.description}}</text><text class="coupon-expiry">{{coupon.expiry}}</text><button class="coupons-action coupon-source xy-button-reset" bindtap="openSource">查看来源：{{sourceTitle}}</button></view>
+  <view wx:if="{{coupon}}" class="coupon-card"><text class="coupon-title">状态记录</text><view wx:for="{{events}}" wx:key="id" class="coupon-description"><text>{{item.title}} · {{item.time}}</text></view></view>
+  <view wx:if="{{pendingText || receiptState}}" class="coupon-card"><text class="coupon-title coupon-receipt-state">{{receiptState || '兑换待核实'}}</text><text class="coupon-description coupon-pending">{{pendingText}}</text><text wx:if="{{reason}}" class="coupon-description">{{reason}}</text><text wx:if="{{availableAfter !== '—'}}" class="coupon-description">该回执额度：{{availableBefore}} → {{availableAfter}}</text><button wx:if="{{pendingText}}" class="coupons-action coupon-query xy-button-reset" bindtap="queryOriginal" disabled="{{busy}}" aria-disabled="{{busy}}">查询原结果</button><button wx:if="{{restoreAvailable}}" class="coupons-action coupon-restore xy-button-reset" bindtap="restoreOriginal" disabled="{{busy}}" aria-disabled="{{busy}}">恢复原请求</button><button wx:if="{{pendingCouponId}}" class="coupons-action xy-button-reset" bindtap="openPendingCoupon">查看待核实券</button></view>
+  <button wx:if="{{canRedeem}}" class="coupons-action coupon-redeem xy-button-reset" bindtap="redeem">兑换 1 次发布额度</button>
+  <button wx:if="{{movementId}}" class="coupons-action coupon-movement xy-button-reset" bindtap="openQuota">查看发布额度明细</button>
+  <view wx:if="{{confirmOpen}}" class="coupon-confirm-layer"><view class="coupon-card coupon-confirm-dialog"><text class="coupon-title">确认兑换</text><text class="coupon-description">此券将兑换 1 次发布额度，成功后标记为已兑换。</text><button class="coupons-action coupon-confirm xy-button-reset" bindtap="confirmRedeem">确认兑换</button><button class="coupons-action coupon-cancel xy-button-reset" bindtap="cancelRedeem">取消</button></view></view>
+ </view>
+</page-shell>

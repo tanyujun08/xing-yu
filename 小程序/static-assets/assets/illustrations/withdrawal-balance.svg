@@ -1,0 +1,21 @@
+<svg width="180" height="128" viewBox="0 0 180 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="walletBackWait" x1="78" y1="24" x2="136" y2="80" gradientUnits="userSpaceOnUse"><stop stop-color="#DDF5EA"/><stop offset="1" stop-color="#BCE8D4"/></linearGradient>
+    <linearGradient id="walletFrontWait" x1="44" y1="44" x2="130" y2="102" gradientUnits="userSpaceOnUse"><stop stop-color="#FFFFFF"/><stop offset="1" stop-color="#EAF7F1"/></linearGradient>
+    <linearGradient id="statusWait" x1="108" y1="63" x2="148" y2="104" gradientUnits="userSpaceOnUse"><stop stop-color="#38CE89"/><stop offset="1" stop-color="#0DA768"/></linearGradient>
+    <filter id="softShadowWait" x="-30%" y="-30%" width="170%" height="190%"><feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#2A8A65" flood-opacity="0.10"/></filter>
+    <filter id="badgeShadowWait" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#098B58" flood-opacity="0.22"/></filter>
+  </defs>
+  <ellipse cx="94" cy="108" rx="46" ry="8" fill="#DDEAE4"/>
+  <g filter="url(#softShadowWait)"><rect x="72" y="24" width="68" height="52" rx="9" fill="url(#walletBackWait)" stroke="#AEDBC8" stroke-width="1.5" transform="rotate(5 72 24)"/></g>
+  <rect x="60" y="36" width="74" height="54" rx="9" fill="#DDF3EA" stroke="#C7E8DA" stroke-width="1.2" opacity="0.95"/>
+  <g filter="url(#softShadowWait)"><rect x="44" y="44" width="84" height="56" rx="11" fill="url(#walletFrontWait)" stroke="#B9DDCD" stroke-width="1.5"/></g>
+  <rect x="91" y="55" width="27" height="15" rx="7.5" fill="#EDF8F3" stroke="#C7E6D9" stroke-width="1.2"/>
+  <circle cx="111" cy="62.5" r="2.6" fill="#A7D9C2"/>
+  <path d="M54 51H110C116.627 51 122 56.3726 122 63" stroke="white" stroke-opacity="0.95" stroke-width="2.2" stroke-linecap="round"/>
+  <g stroke="#B9E9D5" stroke-width="4" stroke-linecap="round"><path d="M151 59L159 53"/><path d="M156 70L166 68"/><path d="M151 81L159 86"/></g>
+  <g filter="url(#badgeShadowWait)"><circle cx="128" cy="83" r="23" fill="url(#statusWait)" stroke="white" stroke-width="3"/></g>
+  <ellipse cx="120" cy="71" rx="8" ry="5" fill="white" fill-opacity="0.16"/>
+  <path d="M128 70V85" stroke="white" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="128" cy="92.5" r="2.6" fill="white"/>
+</svg>

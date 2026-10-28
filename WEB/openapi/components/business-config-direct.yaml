@@ -1,0 +1,244 @@
+PublishRequest:
+  type: object
+  additionalProperties: false
+  required: [config_key, schema_version, expected_epoch, value, reason]
+  properties:
+    config_key: { type: string, enum: [membership.levels, entitlement.catalog, benefits.check_in, rental.creation_defaults, rental.order_policy] }
+    schema_version: { type: integer, minimum: 1, maximum: 2 }
+    expected_epoch: { type: integer, minimum: 0, description: Zero only for first publication. A stale epoch fails without overwriting the effective pointer. }
+    value: { $ref: ./common.yaml#/TypedConfigValue }
+    reason: { type: string, minLength: 3, maxLength: 256 }
+
+RentalCreationDefaultsPolicy:
+  type: object
+  additionalProperties: false
+  required: [schema_version, minimum_hourly_hours, minimum_daily_days, pay_score_enabled, pay_score_threshold]
+  properties:
+    schema_version: { type: integer, const: 1 }
+    minimum_hourly_hours: { type: integer, minimum: 12, maximum: 720 }
+    minimum_daily_days: { type: integer, minimum: 3, maximum: 365 }
+    pay_score_enabled: { type: boolean, const: false }
+    pay_score_threshold: { type: [integer, 'null'], minimum: 1, maximum: 1000 }
+
+CheckInPolicyV2:
+  type: object
+  additionalProperties: false
+  required: [schema_version, timezone, daily_rewards, first_rewards, milestones]
+  properties:
+    schema_version: { type: integer, const: 2 }
+    timezone: { type: string, const: Asia/Shanghai }
+    daily_rewards: { type: array, maxItems: 20, items: { $ref: ./business-configuration.yaml#/RewardItem } }
+    first_rewards: { type: array, maxItems: 20, items: { $ref: ./business-configuration.yaml#/RewardItem } }
+    milestones:
+      type: array
+      maxItems: 100
+      items:
+        type: object
+        additionalProperties: false
+        required: [days, rewards]
+        properties:
+          days: { type: integer, minimum: 1, maximum: 36500 }
+          rewards: { type: array, maxItems: 20, items: { $ref: ./business-configuration.yaml#/RewardItem } }
+
+EntitlementCatalogPolicyV2:
+  type: object
+  additionalProperties: false
+  required: [schema_version, offers]
+  properties:
+    schema_version: { type: integer, const: 2 }
+    offers:
+      type: array
+      minItems: 1
+      maxItems: 100
+      items:
+        type: object
+        additionalProperties: false
+        required: [offer_code, name, cny_price_fen, pink_price, min_quantity, max_quantity, items, refund_policy]
+        properties:
+          offer_code: { type: string, minLength: 1, maxLength: 64 }
+          name: { type: string, minLength: 1, maxLength: 80 }
+          cny_price_fen: { type: string, pattern: '^[1-9][0-9]*$' }
+          pink_price: { type: string, pattern: '^[1-9][0-9]*$' }
+          min_quantity: { type: integer, minimum: 1, maximum: 1000 }
+          max_quantity: { type: integer, minimum: 1, maximum: 1000 }
+          refund_policy: { type: string, const: NONE }
+          items:
+            type: array
+            minItems: 1
+            maxItems: 2
+            items:
+              type: object
+              additionalProperties: false
+              required: [kind, quantity, valid_days]
+              properties:
+                kind: { type: string, enum: [CONTRACT, PUBLISH_QUOTA] }
+                quantity: { type: string, pattern: '^[1-9][0-9]*$' }
+                valid_days: { type: [integer, 'null'], minimum: 1, maximum: 36500 }
+
+RentalOrderPolicy:
+  type: object
+  additionalProperties: false
+  required:
+    - schema_version
+    - return_instructions
+    - pickup_instructions
+    - grace_seconds
+    - personal_rent_basis_points
+    - loss_beneficiary_basis_points
+    - evidence_templates
+    - template_bindings
+  properties:
+    schema_version:
+      type: integer
+      const: 2
+    return_instructions:
+      type: string
+      minLength: 1
+      maxLength: 4000
+    pickup_instructions:
+      type: string
+      minLength: 0
+      maxLength: 4000
+    grace_seconds:
+      type: integer
+      minimum: 0
+      maximum: 86400
+    personal_rent_basis_points:
+      type: integer
+      minimum: 0
+      maximum: 10000
+    loss_beneficiary_basis_points:
+      type: integer
+      minimum: 0
+      maximum: 10000
+    evidence_templates:
+      type: array
+      minItems: 1
+      maxItems: 50
+      items:
+        type: object
+        additionalProperties: false
+        required:
+          - template_key
+          - version
+          - title
+          - slots
+        properties:
+          template_key:
+            type: string
+            maxLength: 64
+          version:
+            type: string
+            maxLength: 64
+          title:
+            type: string
+            maxLength: 80
+          slots:
+            type: array
+            items:
+              type: object
+              additionalProperties: false
+              required:
+                - slot_key
+                - title
+                - kind
+                - stage
+                - min_count
+                - max_count
+                - instruction
+                - sort_order
+                - example
+              properties:
+                slot_key:
+                  type: string
+                  pattern: ^[a-z][a-z0-9-]{0,63}$
+                title:
+                  type: string
+                  maxLength: 80
+                kind:
+                  type: string
+                  enum:
+                    - PHOTO
+                    - VIDEO
+                stage:
+                  type: string
+                  enum:
+                    - PRE_RETURN
+                    - AFTER_OPEN
+                min_count:
+                  type: integer
+                  minimum: 1
+                  maximum: 20
+                max_count:
+                  type: integer
+                  minimum: 1
+                  maximum: 20
+                instruction:
+                  type: string
+                  maxLength: 2000
+                sort_order:
+                  type: integer
+                  minimum: 0
+                  maximum: 1000
+                example:
+                  anyOf:
+                    - type: object
+                      additionalProperties: false
+                      required:
+                        - object_key
+                        - sha256
+                        - mime_type
+                        - poster_object_key
+                      properties:
+                        object_key:
+                          type: string
+                          maxLength: 512
+                        sha256:
+                          type: string
+                          pattern: ^[a-f0-9]{64}$
+                        mime_type:
+                          type: string
+                          enum:
+                            - image/jpeg
+                            - image/png
+                            - image/webp
+                            - video/mp4
+                        poster_object_key:
+                          anyOf:
+                            - type: string
+                              maxLength: 512
+                            - type: 'null'
+                    - type: 'null'
+            minItems: 1
+            maxItems: 20
+    template_bindings:
+      type: array
+      minItems: 1
+      maxItems: 200
+      items:
+        type: object
+        additionalProperties: false
+        required:
+          - supply_channel
+          - fulfillment
+          - category_id
+          - template_key
+        properties:
+          supply_channel:
+            type: string
+            enum:
+              - PERSONAL
+              - OFFICIAL_CABINET
+          fulfillment:
+            type: string
+            enum:
+              - EXPRESS
+              - CABINET
+          category_id:
+            type: string
+            maxLength: 64
+            description: "Empty selects the common template for this supply channel and fulfillment; an exact category binding takes precedence. Clients select category IDs from the current catalog."
+          template_key:
+            type: string
+            minLength: 1
+            maxLength: 64

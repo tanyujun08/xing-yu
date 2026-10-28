@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "1.0",
+  "ruleId": "MPA-A11Y-001",
+  "case": "accept",
+  "cases": [
+    {
+      "name": "comparison-state-is-exposed",
+      "files": {
+        "miniprogram/components/bottom-actions/index.wxml": "<button bindtap=\"onPrimary\" aria-label=\"{{primaryText}}\" disabled=\"{{used >= limit}}\" aria-disabled=\"{{used >= limit}}\" busy=\"{{busy}}\" aria-busy=\"{{busy}}\">{{primaryText}}</button>\n"
+      }
+    },
+    {
+      "name": "nested-meaningful-button-text",
+      "files": {
+        "miniprogram/components/bottom-actions/index.wxml": "<button bindtap=\"onPrimary\"><view><text>{{primaryText}}</text></view></button>\n"
+      }
+    }
+  ]
+}

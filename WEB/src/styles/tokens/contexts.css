@@ -1,0 +1,118 @@
+:root {
+  /* Admin information hierarchy and density. */
+  --xy-admin-font-family: var(--xy-font-sans);
+  --xy-admin-text-primary: var(--xy-color-neutral-900);
+  --xy-admin-text-secondary: var(--xy-color-neutral-500);
+  --xy-admin-text-muted: var(--xy-color-neutral-400);
+  --xy-admin-surface-bg: var(--xy-bg-container);
+  --xy-admin-surface-subtle-bg: var(--xy-bg-container-subtle);
+  --xy-admin-surface-border: var(--xy-border-default);
+  --xy-admin-surface-divider: var(--xy-border-subtle);
+  --xy-admin-surface-radius: var(--xy-radius-md);
+  --xy-admin-surface-shadow: 0 1px 2px rgba(14, 18, 27, 0.035);
+  --xy-admin-page-title-size: var(--xy-font-size-22);
+  --xy-admin-page-title-line-height: var(--xy-line-height-32);
+  --xy-admin-page-title-weight: var(--xy-font-weight-bold);
+  --xy-admin-page-header-gap: var(--xy-space-4);
+  --xy-admin-section-title-size: var(--xy-font-size-16);
+  --xy-admin-section-title-weight: var(--xy-font-weight-semibold);
+  --xy-admin-body-size: var(--xy-font-size-14);
+  --xy-admin-body-line-height: var(--xy-line-height-22);
+  --xy-admin-list-title-size: var(--xy-font-size-16);
+  --xy-admin-list-title-weight: var(--xy-font-weight-bold);
+  --xy-admin-list-header-padding-block: var(--xy-space-5);
+  --xy-admin-list-content-padding-inline: var(--xy-space-5);
+  --xy-admin-list-content-padding-block: var(--xy-space-5);
+  --xy-admin-table-header-size: var(--xy-font-size-13);
+  --xy-admin-table-header-weight: var(--xy-font-weight-semibold);
+  --xy-admin-table-cell-size: var(--xy-font-size-14);
+  --xy-admin-table-cell-line-height: var(--xy-line-height-22);
+  --xy-admin-table-title-size: var(--xy-font-size-14);
+  --xy-admin-table-title-line-height: var(--xy-line-height-22);
+  --xy-admin-table-title-weight: var(--xy-font-weight-semibold);
+  --xy-admin-table-meta-size: var(--xy-font-size-12);
+  --xy-admin-table-meta-line-height: var(--xy-line-height-18);
+  --xy-admin-table-cell-padding-inline: var(--xy-space-4);
+  --xy-admin-table-cell-padding-block: var(--xy-space-3);
+  --xy-admin-table-row-business: 56px;
+  --xy-admin-table-row-media: 72px;
+  --xy-admin-table-row-log: 48px;
+  --xy-admin-stat-label-size: var(--xy-font-size-12);
+  --xy-admin-stat-value-size: var(--xy-font-size-24);
+  --xy-admin-stat-value-weight: var(--xy-font-weight-medium);
+  --xy-admin-stat-padding: var(--xy-space-5) var(--xy-space-6);
+  --xy-admin-section-gap: var(--xy-space-4);
+  --xy-admin-filter-padding: var(--xy-space-4);
+  --xy-admin-filter-gap: var(--xy-space-3);
+  --xy-admin-control-height: var(--xy-control-height-dense);
+  --xy-admin-thumbnail-size: 56px;
+  --xy-admin-tabs-content-gap: var(--xy-space-6);
+
+  /* Admin data-entry hierarchy and responsive density. */
+  --xy-admin-form-drawer-width-compact: 560px;
+  --xy-admin-form-drawer-width-complex: 720px;
+  --xy-admin-form-title-size: var(--xy-font-size-18);
+  --xy-admin-form-title-line-height: var(--xy-line-height-28);
+  --xy-admin-form-title-weight: var(--xy-font-weight-semibold);
+  --xy-admin-form-section-title-size: var(--xy-font-size-16);
+  --xy-admin-form-section-title-line-height: var(--xy-line-height-24);
+  --xy-admin-form-section-title-weight: var(--xy-font-weight-semibold);
+  --xy-admin-form-label-size: var(--xy-font-size-14);
+  --xy-admin-form-label-line-height: var(--xy-line-height-22);
+  --xy-admin-form-label-weight: var(--xy-font-weight-medium);
+  --xy-admin-form-help-size: var(--xy-font-size-12);
+  --xy-admin-form-help-line-height: var(--xy-line-height-18);
+  --xy-admin-form-header-padding: var(--xy-space-6);
+  --xy-admin-form-body-padding: var(--xy-space-6);
+  --xy-admin-form-footer-padding-block: var(--xy-space-4);
+  --xy-admin-form-item-gap: var(--xy-space-5);
+  --xy-admin-form-grid-column-gap: var(--xy-space-4);
+  --xy-admin-form-section-gap: var(--xy-space-6);
+  --xy-admin-form-section-heading-gap: var(--xy-space-4);
+  --xy-admin-form-control-height: var(--xy-control-height-default);
+  --xy-admin-form-textarea-min-height: 96px;
+  --xy-admin-form-upload-min-height: 112px;
+
+  --xy-login-hero-bg: #080b12;
+  --xy-login-panel-bg: rgba(255, 255, 255, 0.98);
+  --xy-login-panel-glow: radial-gradient(circle at 18% 10%, rgba(51, 91, 255, 0.08), transparent 36%),
+    radial-gradient(circle at 92% 88%, rgba(250, 115, 25, 0.06), transparent 32%);
+  --xy-login-tab-bg: var(--xy-color-neutral-50);
+  --xy-login-tab-active-bg: var(--xy-color-brand-50);
+  --xy-login-tab-active-border: var(--xy-color-brand-200);
+  --xy-login-mock-bg: var(--xy-color-brand-600);
+  --xy-login-helper: var(--xy-text-tertiary);
+  --xy-login-star: var(--xy-color-neutral-0);
+}
+
+@media (max-width: 1439px) {
+  :root {
+    --xy-admin-page-title-size: var(--xy-font-size-20);
+    --xy-admin-stat-padding: var(--xy-space-4) var(--xy-space-5);
+    --xy-admin-list-content-padding-inline: var(--xy-space-4);
+    --xy-admin-form-drawer-width-complex: 680px;
+    --xy-admin-form-header-padding: var(--xy-space-5);
+    --xy-admin-form-body-padding: var(--xy-space-5);
+    --xy-admin-form-section-gap: var(--xy-space-5);
+  }
+}
+
+@media (max-width: 767px) {
+  :root {
+    --xy-admin-form-drawer-width-compact: 100vw;
+    --xy-admin-form-drawer-width-complex: 100vw;
+    --xy-admin-form-title-size: var(--xy-font-size-16);
+    --xy-admin-form-title-line-height: var(--xy-line-height-24);
+    --xy-admin-form-header-padding: var(--xy-space-4);
+    --xy-admin-form-body-padding: var(--xy-space-4);
+    --xy-admin-form-item-gap: var(--xy-space-4);
+    --xy-admin-form-section-gap: var(--xy-space-5);
+    --xy-admin-form-section-heading-gap: var(--xy-space-3);
+  }
+}
+
+@media (min-width: 1920px) {
+  :root {
+    --xy-admin-page-title-size: var(--xy-font-size-24);
+  }
+}

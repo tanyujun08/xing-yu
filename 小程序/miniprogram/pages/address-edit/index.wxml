@@ -1,0 +1,27 @@
+<page-meta root-font-size="system" />
+<page-shell surface="page" has-footer="{{!missing}}" fixed-header>
+<page-header slot="header" title="{{editingId ? '编辑地址' : '新增地址'}}" bindback="goBack" />
+<view class="editor-page">
+  <status-view wx:if="{{missing}}" state="empty" title="地址暂不可编辑" description="请返回地址列表重新进入。" illustration-src="{{icons.emptyLocation}}" action-text="返回" bindaction="goBack" />
+  <block wx:else>
+    <view class="editor-card">
+      <view class="contact-field"><text class="field-label">收货人</text><input data-field="name" value="{{name}}" placeholder="请输入姓名" bindinput="input" aria-label="收货人姓名" /><text wx:if="{{errorField === 'name'}}" class="field-error" role="alert">{{errorText}}</text></view>
+      <view class="contact-field"><text class="field-label">手机号码</text><input data-field="phone" type="number" maxlength="11" value="{{phone}}" placeholder="请输入手机号" bindinput="input" aria-label="收货人手机号" /><text wx:if="{{errorField === 'phone'}}" class="field-error" role="alert">{{errorText}}</text></view>
+    </view>
+    <view class="editor-card">
+      <view class="region-row" bindtap="openRegionSheet" role="button" aria-label="选择所在地区"><text class="field-label">所在地区</text><view class="picker-value"><text>{{region}}</text><text>›</text></view></view>
+      <view class="detail-field"><text class="field-label">详细地址</text><textarea data-field="detail" maxlength="120" value="{{detail}}" placeholder="街道、楼栋、门牌号" bindinput="input" aria-label="详细地址" /><text class="field-count">{{detail.length}}/120</text><text wx:if="{{errorField === 'detail'}}" class="field-error" role="alert">{{errorText}}</text></view>
+    </view>
+    <view class="default-row" bindtap="toggleDefault" role="checkbox" aria-checked="{{isDefault}}"><text>设为默认地址</text><view class="switch {{isDefault ? 'is-on' : ''}}"><view /></view></view>
+    <text wx:if="{{errorText && !errorField}}" class="form-error" role="alert">{{errorText}}</text>
+  </block>
+</view>
+<bottom-actions slot="footer" wx:if="{{!missing}}" layout="custom"><view slot="actions" class="editor-actions">
+  <button wx:if="{{selectMode && editingId}}" class="save-secondary" disabled="{{saving}}" aria-disabled="{{saving}}" bindtap="saveOnly">保存地址</button>
+  <button class="save-primary" disabled="{{saving}}" aria-disabled="{{saving}}" bindtap="saveAndUse">{{saving ? '保存中…' : selectMode ? '保存并使用' : '保存地址'}}</button>
+</view></bottom-actions>
+</page-shell>
+<task-sheet class="xy-task-sheet" open="{{regionSheetOpen}}" title="选择地区" show-footer="{{false}}" bindclose="closeRegionSheet">
+  <view class="region-tabs"><view wx:for="{{regionTabs}}" wx:key="level" class="region-tab {{item.active ? 'is-active' : ''}}"><text>{{item.name}}</text><button class="touch-overlay" hover-class="none" data-level="{{item.level}}" bindtap="changeRegionLevel" aria-label="{{item.name}}" aria-pressed="{{item.active}}"></button></view></view>
+  <view class="region-options"><view wx:for="{{regionOptions}}" wx:key="code" class="region-option {{regionDraft[regionLevel].code === item.code ? 'is-active' : ''}}" data-code="{{item.code}}" bindtap="chooseRegion" role="button"><text>{{item.name}}</text><text wx:if="{{regionDraft[regionLevel].code === item.code}}">✓</text></view></view>
+</task-sheet>

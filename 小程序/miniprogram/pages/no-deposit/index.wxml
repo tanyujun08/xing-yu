@@ -1,0 +1,7 @@
+<page-meta root-font-size="system" />
+<page-shell surface="page" has-footer="{{false}}">
+<page-header title="{{secondaryNavigationTitle || '押金说明'}}" background="#ffffff" inverse="{{false}}" bindback="onSecondaryNavigationBack" slot="header" /><view class="no-deposit-page">
+<text wx:if="{{!hourly}}" class="no-deposit-intro">当前粉钻余额 {{diamondBalance}}。可用押金方案由设备配置决定，以订单确认页为准。</text>
+<view class="service-list" wx:if="{{allowancesLoaded}}"><view wx:for="{{allowances}}" wx:key="id" class="service-card"><text class="service-title">{{item.cycle}} 免押次数</text><text class="service-detail">可用 {{item.available}} 次 · 已用 {{item.consumed}} 次 · 占用 {{item.reserved}} 次 · 已发放 {{item.granted}} 次</text></view><text wx:if="{{!allowances.length}}">当前周期暂无免押次数</text></view>
+<view class="service-list"><view wx:for="{{visibleRules}}" wx:key="id" class="service-card"><text class="service-title">{{item.title}}</text><text class="service-detail">{{item.detail}}</text></view></view>
+</view><view wx:if="{{errorText}}" role="alert">{{errorText}}</view></page-shell>

@@ -1,0 +1,2591 @@
+{
+  "Schemas": {
+    "CouponType": {
+      "type": "string",
+      "enum": [
+        "DEPOSIT_WAIVER",
+        "PUBLISH_ONCE",
+        "ONE_DAY_RENT",
+        "GUARD_DISCOUNT"
+      ]
+    },
+    "PrizeCode": {
+      "type": "string",
+      "enum": [
+        "DEPOSIT_WAIVER",
+        "PUBLISH_ONCE",
+        "ONE_DAY_RENT",
+        "GUARD_DISCOUNT",
+        "PINK"
+      ]
+    },
+    "CouponRights": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "deposit_waiver"
+          ],
+          "properties": {
+            "kind": {
+              "const": "DEPOSIT_WAIVER"
+            },
+            "deposit_waiver": {
+              "const": "FULL"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "publish_quota_qty"
+          ],
+          "properties": {
+            "kind": {
+              "const": "PUBLISH_ONCE"
+            },
+            "publish_quota_qty": {
+              "const": "1"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "rent_day_qty"
+          ],
+          "properties": {
+            "kind": {
+              "const": "ONE_DAY_RENT"
+            },
+            "rent_day_qty": {
+              "const": "1"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "currency",
+            "insurance_discount_fen"
+          ],
+          "properties": {
+            "kind": {
+              "const": "GUARD_DISCOUNT"
+            },
+            "currency": {
+              "const": "CNY"
+            },
+            "insurance_discount_fen": {
+              "type": "string",
+              "pattern": "^[1-9][0-9]*$",
+              "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+            }
+          }
+        }
+      ]
+    },
+    "CouponsPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "coupons"
+      ],
+      "properties": {
+        "coupons": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "coupon_type",
+              "enabled",
+              "insurance_discount_fen"
+            ],
+            "properties": {
+              "coupon_type": {
+                "$ref": "#/Schemas/CouponType"
+              },
+              "enabled": {
+                "type": "boolean"
+              },
+              "insurance_discount_fen": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[1-9][0-9]*$",
+                    "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            }
+          },
+          "minItems": 4,
+          "maxItems": 4
+        }
+      }
+    },
+    "LotteryPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pool_code",
+        "enabled",
+        "cost_pink_units",
+        "no_win_probability_bps",
+        "prizes"
+      ],
+      "properties": {
+        "pool_code": {
+          "type": "string",
+          "const": "MAIN"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "cost_pink_units": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]*$",
+          "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+        },
+        "no_win_probability_bps": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
+        },
+        "prizes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "prize_code",
+              "enabled",
+              "probability_bps",
+              "total_qty",
+              "pink_reward_units"
+            ],
+            "properties": {
+              "prize_code": {
+                "$ref": "#/Schemas/PrizeCode"
+              },
+              "enabled": {
+                "type": "boolean"
+              },
+              "probability_bps": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 10000
+              },
+              "total_qty": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]*)$",
+                "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+              },
+              "pink_reward_units": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[1-9][0-9]*$",
+                    "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            }
+          },
+          "minItems": 5,
+          "maxItems": 5
+        }
+      }
+    },
+    "LotteryInventory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "prize_code",
+        "total_qty",
+        "issued_qty",
+        "remaining_qty",
+        "version"
+      ],
+      "properties": {
+        "prize_code": {
+          "$ref": "#/Schemas/PrizeCode"
+        },
+        "total_qty": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+        },
+        "issued_qty": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+        },
+        "remaining_qty": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+        }
+      }
+    },
+    "LoyaltyEffectiveConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "config_key",
+        "config_version_id",
+        "effective_epoch",
+        "value",
+        "effective_at",
+        "saved_by"
+      ],
+      "properties": {
+        "config_key": {
+          "type": "string",
+          "enum": [
+            "benefits.coupons",
+            "benefits.lottery"
+          ]
+        },
+        "config_version_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "effective_epoch": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+        },
+        "value": {
+          "oneOf": [
+            {
+              "$ref": "#/Schemas/CouponsPolicy"
+            },
+            {
+              "$ref": "#/Schemas/LotteryPolicy"
+            }
+          ]
+        },
+        "effective_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "saved_by": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        }
+      }
+    },
+    "LoyaltyEffectiveConfigResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "current",
+        "inventory",
+        "as_of_at"
+      ],
+      "properties": {
+        "current": {
+          "anyOf": [
+            {
+              "$ref": "#/Schemas/LoyaltyEffectiveConfig"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "inventory": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/Schemas/LotteryInventory"
+              },
+              "minItems": 5,
+              "maxItems": 5
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "as_of_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "LoyaltyConfigSaveRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "base_effective_epoch",
+        "value",
+        "reason"
+      ],
+      "properties": {
+        "base_effective_epoch": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+        },
+        "value": {
+          "oneOf": [
+            {
+              "$ref": "#/Schemas/CouponsPolicy"
+            },
+            {
+              "$ref": "#/Schemas/LotteryPolicy"
+            }
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 256
+        }
+      }
+    },
+    "LoyaltyConfigSaveResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "config_version_id",
+        "effective_epoch",
+        "effective_at",
+        "saved_by",
+        "current",
+        "inventory",
+        "replayed",
+        "operation_event_id"
+      ],
+      "properties": {
+        "config_version_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "effective_epoch": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+        },
+        "effective_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "saved_by": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "current": {
+          "$ref": "#/Schemas/LoyaltyEffectiveConfig"
+        },
+        "inventory": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/Schemas/LotteryInventory"
+              },
+              "minItems": 5,
+              "maxItems": 5
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "replayed": {
+          "type": "boolean"
+        },
+        "operation_event_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        }
+      }
+    },
+    "LoyaltyConfigVersion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "config_version_id",
+        "config_key",
+        "effective_epoch",
+        "value",
+        "saved_by",
+        "effective_at",
+        "reason",
+        "content_hash",
+        "operation_event_id",
+        "field_changes",
+        "inventory_movements"
+      ],
+      "properties": {
+        "config_version_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "config_key": {
+          "type": "string"
+        },
+        "effective_epoch": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+        },
+        "value": {
+          "oneOf": [
+            {
+              "$ref": "#/Schemas/CouponsPolicy"
+            },
+            {
+              "$ref": "#/Schemas/LotteryPolicy"
+            }
+          ]
+        },
+        "saved_by": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "effective_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "content_hash": {
+          "type": "string"
+        },
+        "operation_event_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "field_changes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "before_value": {
+                "type": [
+                  "string",
+                  "integer",
+                  "boolean",
+                  "null"
+                ]
+              },
+              "after_value": {
+                "type": [
+                  "string",
+                  "integer",
+                  "boolean",
+                  "null"
+                ]
+              },
+              "field": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "field",
+              "before_value",
+              "after_value"
+            ]
+          }
+        },
+        "inventory_movements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/LotteryMovement"
+          }
+        }
+      }
+    },
+    "CouponStatusEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "event_id",
+        "from_status",
+        "to_status",
+        "action",
+        "redemption_id",
+        "request_id",
+        "actor_kind",
+        "occurred_at"
+      ],
+      "properties": {
+        "event_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "from_status": {
+          "anyOf": [
+            {
+              "type": "string",
+              "const": "AVAILABLE"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "to_status": {
+          "type": "string",
+          "enum": [
+            "AVAILABLE",
+            "REDEEMED"
+          ]
+        },
+        "action": {
+          "type": "string",
+          "enum": [
+            "ISSUED",
+            "REDEEMED"
+          ]
+        },
+        "redemption_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "request_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "actor_kind": {
+          "type": "string"
+        },
+        "occurred_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "MemberCoupon": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "coupon_id",
+        "account_id",
+        "coupon_type",
+        "rights_snapshot",
+        "status",
+        "source_grant_id",
+        "source_kind",
+        "source_id",
+        "source_draw_id",
+        "coupon_config_version_id",
+        "issued_at",
+        "version",
+        "allowed_actions"
+      ],
+      "properties": {
+        "coupon_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "account_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "coupon_type": {
+          "$ref": "#/Schemas/CouponType"
+        },
+        "rights_snapshot": {
+          "$ref": "#/Schemas/CouponRights"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "AVAILABLE",
+            "REDEEMED"
+          ]
+        },
+        "source_grant_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "source_kind": {
+          "type": "string",
+          "enum": [
+            "CHECK_IN",
+            "PROGRESS",
+            "REDEMPTION",
+            "LOTTERY"
+          ]
+        },
+        "source_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "source_draw_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "coupon_config_version_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "issued_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]*$",
+          "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+        },
+        "allowed_actions": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "can_redeem"
+          ],
+          "properties": {
+            "can_redeem": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "CouponDetail": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "coupon_id",
+        "account_id",
+        "coupon_type",
+        "rights_snapshot",
+        "status",
+        "source_grant_id",
+        "source_kind",
+        "source_id",
+        "source_draw_id",
+        "coupon_config_version_id",
+        "issued_at",
+        "version",
+        "allowed_actions",
+        "status_events",
+        "redemption_id",
+        "entitlement_lot_id",
+        "movement_id"
+      ],
+      "properties": {
+        "coupon_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "account_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "coupon_type": {
+          "$ref": "#/Schemas/CouponType"
+        },
+        "rights_snapshot": {
+          "$ref": "#/Schemas/CouponRights"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "AVAILABLE",
+            "REDEEMED"
+          ]
+        },
+        "source_grant_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "source_kind": {
+          "type": "string",
+          "enum": [
+            "CHECK_IN",
+            "PROGRESS",
+            "REDEMPTION",
+            "LOTTERY"
+          ]
+        },
+        "source_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "source_draw_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "coupon_config_version_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "issued_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]*$",
+          "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+        },
+        "allowed_actions": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "can_redeem"
+          ],
+          "properties": {
+            "can_redeem": {
+              "type": "boolean"
+            }
+          }
+        },
+        "status_events": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/CouponStatusEvent"
+          }
+        },
+        "redemption_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "entitlement_lot_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "movement_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "LotteryState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "account_id",
+        "enabled",
+        "blocked_reason",
+        "cost_pink_units",
+        "available_pink_units",
+        "lottery_config_version_id",
+        "coupon_config_version_id",
+        "prizes",
+        "as_of_at"
+      ],
+      "properties": {
+        "account_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "blocked_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "cost_pink_units": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[1-9][0-9]*$",
+              "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "available_pink_units": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+        },
+        "lottery_config_version_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "coupon_config_version_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "prizes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "prize_code",
+              "enabled",
+              "remaining_qty",
+              "pink_reward_units",
+              "rights_display"
+            ],
+            "properties": {
+              "prize_code": {
+                "$ref": "#/Schemas/PrizeCode"
+              },
+              "enabled": {
+                "type": "boolean"
+              },
+              "remaining_qty": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]*)$",
+                "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+              },
+              "pink_reward_units": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[1-9][0-9]*$",
+                    "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "rights_display": {
+                "anyOf": [
+                  {
+                    "$ref": "#/Schemas/CouponRights"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            }
+          },
+          "minItems": 5,
+          "maxItems": 5
+        },
+        "as_of_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "LotteryDrawInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "expected_lottery_config_version_id",
+        "expected_coupon_config_version_id",
+        "confirmed_cost_pink_units"
+      ],
+      "properties": {
+        "expected_lottery_config_version_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "expected_coupon_config_version_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "confirmed_cost_pink_units": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]*$",
+          "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+        }
+      }
+    },
+    "LotteryPrizeSnapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "prize_code",
+        "prize_qty",
+        "pink_reward_units",
+        "coupon_config_version_id"
+      ],
+      "properties": {
+        "prize_code": {
+          "$ref": "#/Schemas/PrizeCode"
+        },
+        "prize_qty": {
+          "type": "string",
+          "const": "1"
+        },
+        "pink_reward_units": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[1-9][0-9]*$",
+              "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "coupon_config_version_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "LotteryAttempt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "account_id",
+        "attempt_id",
+        "draw_id",
+        "state",
+        "result_kind",
+        "reason_code",
+        "confirmed_cost_pink_units",
+        "cost_pink_units",
+        "prize_code",
+        "prize_snapshot",
+        "coupon_id",
+        "pink_spend_entry_id",
+        "pink_reward_entry_id",
+        "balance_after",
+        "grant_id",
+        "inventory_movement_id",
+        "confirmed_lottery_config_version_id",
+        "confirmed_coupon_config_version_id",
+        "received_at",
+        "resolved_at",
+        "lease_expires_at",
+        "request_id",
+        "replayed"
+      ],
+      "properties": {
+        "account_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "attempt_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "draw_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "RECEIVED",
+            "VERIFYING",
+            "REJECTED",
+            "COMPLETED"
+          ]
+        },
+        "result_kind": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "WIN",
+                "NO_WIN"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reason_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "confirmed_cost_pink_units": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]*$",
+          "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+        },
+        "cost_pink_units": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "prize_code": {
+          "anyOf": [
+            {
+              "$ref": "#/Schemas/PrizeCode"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "prize_snapshot": {
+          "anyOf": [
+            {
+              "$ref": "#/Schemas/LotteryPrizeSnapshot"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "coupon_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "pink_spend_entry_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "pink_reward_entry_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "balance_after": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "grant_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "inventory_movement_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "confirmed_lottery_config_version_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "confirmed_coupon_config_version_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "received_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "resolved_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "lease_expires_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "request_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "replayed": {
+          "type": "boolean"
+        }
+      },
+      "allOf": [
+        {
+          "oneOf": [
+            {
+              "properties": {
+                "state": {
+                  "const": "COMPLETED"
+                },
+                "result_kind": {
+                  "const": "WIN"
+                },
+                "draw_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 64,
+                  "pattern": "^[!-~]{1,64}$"
+                },
+                "cost_pink_units": {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$",
+                  "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+                },
+                "prize_code": {
+                  "$ref": "#/Schemas/PrizeCode"
+                },
+                "prize_snapshot": {
+                  "$ref": "#/Schemas/LotteryPrizeSnapshot"
+                },
+                "pink_spend_entry_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 64,
+                  "pattern": "^[!-~]{1,64}$"
+                },
+                "grant_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 64,
+                  "pattern": "^[!-~]{1,64}$"
+                },
+                "inventory_movement_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 64,
+                  "pattern": "^[!-~]{1,64}$"
+                },
+                "balance_after": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$",
+                  "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+                }
+              }
+            },
+            {
+              "properties": {
+                "state": {
+                  "const": "COMPLETED"
+                },
+                "result_kind": {
+                  "const": "NO_WIN"
+                },
+                "draw_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 64,
+                  "pattern": "^[!-~]{1,64}$"
+                },
+                "cost_pink_units": {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$",
+                  "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+                },
+                "prize_code": {
+                  "type": "null"
+                },
+                "prize_snapshot": {
+                  "type": "null"
+                },
+                "pink_spend_entry_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 64,
+                  "pattern": "^[!-~]{1,64}$"
+                },
+                "grant_id": {
+                  "type": "null"
+                },
+                "inventory_movement_id": {
+                  "type": "null"
+                },
+                "coupon_id": {
+                  "type": "null"
+                },
+                "pink_reward_entry_id": {
+                  "type": "null"
+                },
+                "balance_after": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$",
+                  "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+                }
+              }
+            },
+            {
+              "properties": {
+                "state": {
+                  "const": "REJECTED"
+                },
+                "result_kind": {
+                  "type": "null"
+                },
+                "draw_id": {
+                  "type": "null"
+                },
+                "cost_pink_units": {
+                  "const": "0"
+                },
+                "prize_code": {
+                  "type": "null"
+                },
+                "prize_snapshot": {
+                  "type": "null"
+                },
+                "coupon_id": {
+                  "type": "null"
+                },
+                "pink_spend_entry_id": {
+                  "type": "null"
+                },
+                "pink_reward_entry_id": {
+                  "type": "null"
+                },
+                "grant_id": {
+                  "type": "null"
+                },
+                "inventory_movement_id": {
+                  "type": "null"
+                },
+                "balance_after": {
+                  "type": "null"
+                }
+              }
+            },
+            {
+              "properties": {
+                "state": {
+                  "enum": [
+                    "RECEIVED",
+                    "VERIFYING"
+                  ]
+                },
+                "result_kind": {
+                  "type": "null"
+                },
+                "draw_id": {
+                  "type": "null"
+                },
+                "cost_pink_units": {
+                  "type": "null"
+                },
+                "prize_code": {
+                  "type": "null"
+                },
+                "prize_snapshot": {
+                  "type": "null"
+                },
+                "coupon_id": {
+                  "type": "null"
+                },
+                "pink_spend_entry_id": {
+                  "type": "null"
+                },
+                "pink_reward_entry_id": {
+                  "type": "null"
+                },
+                "grant_id": {
+                  "type": "null"
+                },
+                "inventory_movement_id": {
+                  "type": "null"
+                },
+                "balance_after": {
+                  "type": "null"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "CouponRedemptionInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "expected_coupon_version"
+      ],
+      "properties": {
+        "expected_coupon_version": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]*$",
+          "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+        }
+      }
+    },
+    "CouponRedemptionAttempt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "account_id",
+        "attempt_id",
+        "redemption_id",
+        "state",
+        "reason_code",
+        "coupon_id",
+        "quantity",
+        "entitlement_lot_id",
+        "movement_id",
+        "available_before_qty",
+        "available_after_qty",
+        "expected_coupon_version",
+        "received_at",
+        "resolved_at",
+        "lease_expires_at",
+        "request_id",
+        "replayed"
+      ],
+      "properties": {
+        "account_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "attempt_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "redemption_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "RECEIVED",
+            "VERIFYING",
+            "REJECTED",
+            "COMPLETED"
+          ]
+        },
+        "reason_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "coupon_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "quantity": {
+          "type": "string",
+          "const": "1"
+        },
+        "entitlement_lot_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "movement_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "available_before_qty": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "available_after_qty": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "expected_coupon_version": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]*$",
+          "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+        },
+        "received_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "resolved_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "lease_expires_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "request_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "replayed": {
+          "type": "boolean"
+        }
+      }
+    },
+    "BenefitGrantTrace": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "grant_id",
+        "account_id",
+        "source_kind",
+        "source_id",
+        "source_rule_version_id",
+        "source_award_ordinal",
+        "reward_kind",
+        "reward_code",
+        "reward_units",
+        "created_at",
+        "coupon_ids",
+        "pink_entry_ids"
+      ],
+      "properties": {
+        "grant_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "account_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "source_kind": {
+          "type": "string",
+          "enum": [
+            "CHECK_IN",
+            "PROGRESS",
+            "REDEMPTION",
+            "LOTTERY"
+          ]
+        },
+        "source_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "source_rule_version_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_award_ordinal": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535
+        },
+        "reward_kind": {
+          "type": "string",
+          "enum": [
+            "POINT",
+            "ENTITLEMENT",
+            "COUPON"
+          ]
+        },
+        "reward_code": {
+          "type": "string",
+          "enum": [
+            "PINK",
+            "GROWTH",
+            "CONTRACT",
+            "PUBLISH_QUOTA",
+            "DEPOSIT_WAIVER",
+            "PUBLISH_ONCE",
+            "ONE_DAY_RENT",
+            "GUARD_DISCOUNT"
+          ]
+        },
+        "reward_units": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]*$",
+          "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "coupon_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64,
+            "pattern": "^[!-~]{1,64}$"
+          }
+        },
+        "pink_entry_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64,
+            "pattern": "^[!-~]{1,64}$"
+          }
+        }
+      }
+    },
+    "LotteryMovement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "movement_id",
+        "prize_code",
+        "action",
+        "before_total_qty",
+        "after_total_qty",
+        "before_issued_qty",
+        "after_issued_qty",
+        "config_version_id",
+        "draw_id",
+        "actor_account_id",
+        "occurred_at"
+      ],
+      "properties": {
+        "movement_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "prize_code": {
+          "$ref": "#/Schemas/PrizeCode"
+        },
+        "action": {
+          "type": "string",
+          "enum": [
+            "TOTAL_ADJUSTED",
+            "PRIZE_GRANTED"
+          ]
+        },
+        "before_total_qty": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+        },
+        "after_total_qty": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+        },
+        "before_issued_qty": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+        },
+        "after_issued_qty": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+        },
+        "config_version_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "draw_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "actor_account_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "occurred_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "PointEntryDetail": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "entry_id",
+        "account_id",
+        "point_kind",
+        "account_sequence",
+        "action",
+        "available_delta",
+        "available_before",
+        "available_after",
+        "reserved_after",
+        "occurred_at",
+        "source_kind",
+        "source_id",
+        "source_draw_id",
+        "source_grant_id",
+        "reserved_delta",
+        "earned_delta"
+      ],
+      "properties": {
+        "entry_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "account_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "point_kind": {
+          "type": "string",
+          "enum": [
+            "PINK",
+            "GROWTH"
+          ]
+        },
+        "account_sequence": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+        },
+        "action": {
+          "type": "string"
+        },
+        "available_delta": {
+          "type": "string",
+          "pattern": "^(0|-?[1-9][0-9]*)$"
+        },
+        "available_before": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+        },
+        "available_after": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+        },
+        "reserved_after": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+        },
+        "occurred_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "source_kind": {
+          "type": "string"
+        },
+        "source_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "source_draw_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_grant_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reserved_delta": {
+          "type": "string",
+          "pattern": "^(0|-?[1-9][0-9]*)$"
+        },
+        "earned_delta": {
+          "type": "string",
+          "pattern": "^(0|-?[1-9][0-9]*)$"
+        }
+      }
+    },
+    "EntitlementMovementDetail": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "movement_id",
+        "account_id",
+        "kind",
+        "account_sequence",
+        "lot_id",
+        "action",
+        "quantity",
+        "available_delta",
+        "available_before_qty",
+        "available_after_qty",
+        "occurred_at",
+        "source_kind",
+        "source_id",
+        "source_redemption_id"
+      ],
+      "properties": {
+        "movement_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "account_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "kind": {
+          "type": "string",
+          "const": "PUBLISH_QUOTA"
+        },
+        "account_sequence": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+        },
+        "lot_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "action": {
+          "type": "string"
+        },
+        "quantity": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]*$",
+          "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+        },
+        "available_delta": {
+          "type": "string",
+          "pattern": "^(0|-?[1-9][0-9]*)$"
+        },
+        "available_before_qty": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+        },
+        "available_after_qty": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "description": "Canonical decimal signed BIGINT, maximum 9223372036854775807."
+        },
+        "occurred_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "source_kind": {
+          "type": "string"
+        },
+        "source_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "source_redemption_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "LoyaltyOperationEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "event_id",
+        "actor_account_id",
+        "operation_id",
+        "resource_id",
+        "request_id",
+        "http_status",
+        "result_code",
+        "reason_summary",
+        "field_change_summary",
+        "result",
+        "occurred_at"
+      ],
+      "properties": {
+        "event_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "actor_account_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "operation_id": {
+          "type": "string"
+        },
+        "resource_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "request_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "http_status": {
+          "type": "integer"
+        },
+        "result_code": {
+          "type": "string"
+        },
+        "reason_summary": {
+          "type": "string"
+        },
+        "field_change_summary": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "base_effective_epoch": {
+              "type": "string"
+            },
+            "config_key": {
+              "type": "string"
+            },
+            "content_hash": {
+              "type": "string"
+            },
+            "current_effective_epoch": {
+              "type": "string"
+            }
+          }
+        },
+        "result": {
+          "anyOf": [
+            {
+              "$ref": "#/Schemas/LoyaltyConfigSaveResult"
+            },
+            {
+              "$ref": "./errors.yaml#/Problem"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "occurred_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "field_changes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "before_value": {
+                "type": [
+                  "string",
+                  "integer",
+                  "boolean",
+                  "null"
+                ]
+              },
+              "after_value": {
+                "type": [
+                  "string",
+                  "integer",
+                  "boolean",
+                  "null"
+                ]
+              },
+              "field": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "field",
+              "before_value",
+              "after_value"
+            ]
+          }
+        }
+      }
+    },
+    "MemberCouponPage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "items",
+        "page",
+        "as_of_at"
+      ],
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/MemberCoupon"
+          }
+        },
+        "page": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "next_cursor"
+          ],
+          "properties": {
+            "next_cursor": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          }
+        },
+        "as_of_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "LotteryAttemptPage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "items",
+        "page",
+        "as_of_at"
+      ],
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/LotteryAttempt"
+          }
+        },
+        "page": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "next_cursor"
+          ],
+          "properties": {
+            "next_cursor": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          }
+        },
+        "as_of_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "CouponRedemptionAttemptPage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "items",
+        "page",
+        "as_of_at"
+      ],
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/CouponRedemptionAttempt"
+          }
+        },
+        "page": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "next_cursor"
+          ],
+          "properties": {
+            "next_cursor": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          }
+        },
+        "as_of_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "LotteryMovementPage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "items",
+        "page",
+        "as_of_at"
+      ],
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/LotteryMovement"
+          }
+        },
+        "page": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "next_cursor"
+          ],
+          "properties": {
+            "next_cursor": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          }
+        },
+        "as_of_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "LoyaltyConfigVersionPage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "items",
+        "page",
+        "as_of_at"
+      ],
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/LoyaltyConfigVersion"
+          }
+        },
+        "page": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "next_cursor"
+          ],
+          "properties": {
+            "next_cursor": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          }
+        },
+        "as_of_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "PointEntryPage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "items",
+        "page",
+        "as_of_at"
+      ],
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/PointEntryDetail"
+          }
+        },
+        "page": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "next_cursor"
+          ],
+          "properties": {
+            "next_cursor": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          }
+        },
+        "as_of_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "EntitlementMovementPage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "items",
+        "page",
+        "as_of_at"
+      ],
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/EntitlementMovementDetail"
+          }
+        },
+        "page": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "next_cursor"
+          ],
+          "properties": {
+            "next_cursor": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          }
+        },
+        "as_of_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "LotteryInventoryResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "items",
+        "as_of_at"
+      ],
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/LotteryInventory"
+          },
+          "minItems": 5,
+          "maxItems": 5
+        },
+        "as_of_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  }
+}

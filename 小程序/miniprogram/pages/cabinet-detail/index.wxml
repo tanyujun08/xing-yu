@@ -1,0 +1,54 @@
+<page-meta root-font-size="system" />
+<view class="{{returnMode ? 'return-theme' : ''}}">
+<page-shell surface="{{returnMode ? 'page' : 'surface'}}" footer-surface="page" aria-busy="{{loading}}" has-footer="{{returnMode || (!loading && !errorText && !!cabinet.id)}}">
+<page-header variant="{{returnMode ? 'return' : ''}}" title="{{returnMode ? '选择归还格口' : (secondaryNavigationTitle || '柜机详情')}}" background="#ffffff" inverse="{{false}}" bindback="onSecondaryNavigationBack" slot="header" />
+  <view wx:if="{{returnMode}}" class="return-page">
+    <return-progress step="2" />
+    <view class="return-card slot-cabinet-context"><image src="{{icons.discoveryLocation}}" mode="aspectFit" /><view><text class="return-subtitle">{{cabinet.name || '归还租赁柜'}}</text><text class="return-copy">{{cabinet.address}}</text></view><button class="return-link" bindtap="showReturnAddress">查看位置</button></view>
+    <view wx:if="{{loading}}" role="status" class="return-copy">正在核对本单格口与原归还任务…</view>
+    <view wx:if="{{errorText}}" class="return-note return-note--danger" role="alert">{{errorText}}</view>
+    <block wx:if="{{canSelect && optionsLoaded && !optionsFailed || canOpen}}">
+      <view class="slot-heading"><text class="return-title">按现场编号选择格口</text><text class="return-copy">请选择您要归还的柜子格口</text></view>
+      <view class="return-card">
+        <view class="return-slot-grid"><button wx:for="{{compartments}}" wx:key="id" class="return-slot {{selectedCompartment === item.id ? 'is-selected' : ''}}" data-compartment="{{item.id}}" bindtap="selectCompartment" disabled="{{busy || canOpen || !item.available}}" aria-disabled="{{busy || canOpen || !item.available}}" aria-label="{{item.name}}号格口，{{selectedCompartment === item.id ? '已选' : item.available ? '可用' : item.reason || '不可用'}}"><image wx:if="{{selectedCompartment === item.id}}" class="return-slot-check" src="{{icons.returnSuccess}}" mode="aspectFit" /><text class="return-slot-number">{{item.name}}</text><text>{{selectedCompartment === item.id ? '已选' : item.available ? '可用' : '不可用'}}</text></button></view>
+        <view wx:if="{{selectedCompartment}}" class="return-note return-note--success slot-selection"><image class="return-status-icon" src="{{icons.returnSuccess}}" mode="aspectFit" /><text>已选 {{selectedCompartmentNo}} 号格口</text></view>
+        <text wx:if="{{selectedCompartment}}" class="return-copy slot-selection">请确认已到柜前，点击后将打开 {{selectedCompartmentNo}} 号格口</text>
+        <view wx:if="{{!compartments.length}}" class="return-copy">当前没有可用格口，可刷新或重新选柜</view>
+      </view>
+    </block>
+    <view wx:elif="{{loaded && taskId}}" class="return-card"><text class="return-title">{{taskStatusLabel}}</text><text class="return-copy">{{taskCopy}}</text><text class="return-copy">开柜结果未知时，请查询原任务，不能换格口重新开门。</text></view>
+    <text wx:elif="{{loaded && !loading && !errorText}}" class="return-copy">当前订单暂不能选择归还格口，请返回原订单查看原因。</text>
+  </view>
+  <view wx:else class="cabinet-detail-page cabinet-detail-page--browse">
+    <view wx:if="{{loading}}" class="empty-card xy-empty-page xy-empty-page--surface"><text class="xy-empty-page__title">正在读取柜机</text><text class="xy-empty-page__copy">正在核对当前商家地址和可租设备。</text></view>
+    <view wx:elif="{{errorText}}" class="empty-card xy-empty-page xy-empty-page--surface"><image class="xy-empty-page__illustration" src="{{icons.emptyLocation}}" mode="aspectFit" aria-hidden="true" /><text class="xy-empty-page__title">柜机读取失败</text><text class="xy-empty-page__copy">{{errorText}}</text><view class="xy-empty-page__action xy-action-primary xy-action-text xy-tap" bindtap="onShow" role="button" aria-label="重新读取柜机">重试</view></view>
+    <view wx:elif="{{missing}}" class="empty-card xy-empty-page xy-empty-page--surface"><image class="xy-empty-page__illustration" src="{{icons.emptyLocation}}" mode="aspectFit" aria-hidden="true" /><text class="xy-empty-page__title">柜机不存在</text><text class="xy-empty-page__copy">请返回柜机列表重新选择。</text><view class="xy-empty-page__action xy-action-primary xy-action-text xy-tap" bindtap="goBack" role="button" aria-label="返回柜机列表">返回</view></view>
+    <block wx:else>
+      <view class="entity-hero"><swiper class="entity-swiper" current="{{heroCurrent}}" bindchange="onHeroChange" circular="true"><swiper-item wx:for="{{heroImages}}" wx:key="id"><image class="entity-slide" src="{{item.src}}" mode="aspectFill" /></swiper-item></swiper><text class="cabinet-illustration">柜机示意图</text><text class="gallery-count">{{heroCurrent + 1}}/{{heroImages.length}}</text></view>
+      <view class="xy-discovery-inset"><view class="xy-discovery-identity"><text class="xy-discovery-identity__title">{{cabinet.name}}</text><text wx:if="{{cabinet.site}}" class="cabinet-site">{{cabinet.site}}</text></view></view>
+      <view class="xy-discovery-inset">
+        <view class="xy-discovery-info"><image class="xy-discovery-icon" src="/assets/figma-icons/discovery-location.svg" mode="aspectFit" /><text class="xy-discovery-info__label">柜机位置</text><view class="xy-discovery-info__content"><text class="xy-discovery-info__value">{{cabinet.address}}</text><view class="xy-discovery-icon-action xy-hit-target xy-tap" bindtap="showAddress" role="button" aria-label="打开柜机地图导航"><text class="cabinet-view-action">导航</text></view></view></view>
+      </view>
+      <view class="xy-discovery-band"></view>
+      <view class="xy-discovery-inset">
+        <view class="xy-discovery-heading"><text class="xy-discovery-heading__title">柜内设备 <text class="cabinet-device-count">{{devices.length}}台</text></text></view><text class="cabinet-device-hint">点击设备查看租赁详情</text>
+        <view class="device-list xy-product-list">
+          <view wx:for="{{devices}}" wx:key="id" class="cabinet-device xy-tap" data-id="{{item.id}}" bindtap="openDevice" role="button" aria-label="查看{{item.name}}租赁详情">
+            <view class="cabinet-device-media"><media-state src="{{item.displayImage}}" state="{{item.displayImage ? 'loading' : 'idle'}}" mode="aspectFit" density="thumbnail" alt="{{item.name}}设备图片" /></view>
+            <view class="cabinet-device-copy"><text class="cabinet-device-name">{{item.name}}</text><text class="cabinet-device-description">{{item.displayDescription || '查看设备详情'}}</text><view class="cabinet-device-price"><text>¥{{item.priceValue}}</text><text class="cabinet-device-unit">{{item.priceUnit}}</text></view><text class="cabinet-device-deposit">押金 ¥{{item.depositValue}} · 自助柜</text></view><text class="cabinet-device-arrow" aria-hidden="true">›</text>
+          </view>
+          <view wx:if="{{devices.length === 0}}" class="empty-card xy-empty-section"><text class="xy-empty-section__title">当前暂无可租设备</text><text class="xy-empty-section__copy">可以切换其他柜机继续查看。</text></view>
+        </view>
+      </view>
+    </block>
+  </view>
+  <view wx:if="{{!returnMode && !loading && !errorText && cabinet.id}}" slot="footer" class="return-actions"><button class="xy-action-primary xy-action-hit" bindtap="pickupWithCode" disabled="{{busy}}" aria-disabled="{{busy}}">取件码取件</button></view>
+  <view wx:if="{{returnMode}}" slot="footer" class="return-actions">
+    <button wx:if="{{canSelect || canOpen}}" class="return-primary" bindtap="confirmSelected" disabled="{{busy || loading || !selectedCompartment}}" aria-disabled="{{busy || loading || !selectedCompartment}}">{{selectedCompartment ? '确认开柜 · ' + selectedCompartmentNo + '号' : '请选择归还格口'}}</button>
+    <button wx:if="{{canSelect || canCancel}}" class="return-secondary" bindtap="reselectCabinet" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">重新选柜</button>
+    <button wx:if="{{taskId && !canOpen}}" class="return-primary" bindtap="goResult">查看原归还任务</button>
+    <button wx:if="{{!selectedCompartment && !taskId}}" class="return-link" bindtap="refresh" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">刷新可用格口</button>
+    <button wx:if="{{errorText || !hasAvailableCompartment}}" class="return-link" bindtap="demoSupport">联系客服</button>
+  </view>
+</page-shell>
+</view>

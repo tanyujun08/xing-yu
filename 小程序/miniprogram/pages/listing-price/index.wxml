@@ -1,0 +1,59 @@
+<page-meta root-font-size="system" />
+<view class="listing-price-page">
+<page-header title="{{secondaryNavigationTitle || '设价上架'}}" background="#ffffff" inverse="{{false}}" bindback="onSecondaryNavigationBack" />
+  <status-view wx:if="{{!loggedIn}}" state="empty" title="登录后设置发布价格" action-text="去登录" bindaction="openLogin" />
+  <status-view wx:elif="{{loading}}" state="loading" title="正在读取发布草稿" />
+  <status-view wx:elif="{{!listing && hasDraftTarget}}" state="error" title="发布草稿暂不可用" description="{{errorText || '请重新读取当前草稿。'}}" action-text="重新读取草稿" bindaction="handleErrorAction" />
+  <status-view wx:elif="{{!listing}}" state="error" title="发布草稿暂不可用" description="{{errorText || '请从发布页重新进入。'}}" action-text="返回发布页" bindaction="goBack" />
+  <block wx:else>
+  <view class="listing-price-card listing-summary-card">
+    <view class="listing-price-head">
+      <view class="listing-copy"><text class="listing-name">{{listing.name}}</text><text class="listing-category">{{listing.category}}</text></view>
+      <text class="approved">{{editable ? '待提交' : '只读'}}</text>
+    </view>
+  </view>
+
+  <view class="price-section price-reference-card">
+    <text class="section-title">提交规则</text>
+    <view class="guidance" aria-label="{{guidanceText}}">
+      <view class="guidance-part"><text class="guidance-label">计费单位：</text><text class="guidance-value">{{priceUnitLabel}}</text></view>
+      <view class="guidance-divider" aria-hidden="true"></view>
+      <view class="guidance-part"><text class="guidance-label">提交校验：</text><text class="guidance-value">服务端校验</text></view>
+    </view>
+    <text class="section-copy">{{guidanceText}}</text>
+  </view>
+
+  <view class="price-section price-settings-card">
+    <text class="section-title">价格设置</text>
+    <view class="settings-field settings-field--first">
+      <text class="field-label">{{priceUnitLabel}}</text>
+      <view class="input-wrap xy-price xy-price--end">
+        <view class="price-entry"><text class="price-symbol xy-price__symbol">¥</text><view class="price-input-cell"><text class="price-measure xy-price__value" aria-hidden="true">{{rent}}</text><input class="price-input xy-price__value" type="digit" maxlength="20" data-field="rent" value="{{rent}}" disabled="{{!editable || pendingUpdate || pendingSubmit}}" aria-disabled="{{!editable || pendingUpdate || pendingSubmit}}" bindinput="input" /></view><text class="price-unit xy-price__unit">{{priceUnitSuffix}}</text></view>
+      </view>
+    </view>
+    <view class="settings-field">
+      <text class="field-label">押金</text>
+      <view class="input-wrap xy-price xy-price--end">
+        <view class="price-entry"><text class="price-symbol xy-price__symbol">¥</text><view class="price-input-cell"><text class="price-measure xy-price__value" aria-hidden="true">{{deposit}}</text><input class="price-input xy-price__value" type="digit" maxlength="20" data-field="deposit" value="{{deposit}}" disabled="{{!editable || pendingUpdate || pendingSubmit}}" aria-disabled="{{!editable || pendingUpdate || pendingSubmit}}" bindinput="input" /></view></view>
+      </view>
+    </view>
+    <view class="settings-field date-field">
+      <text class="field-label">出租时间</text>
+      <view class="date-control">
+        <picker mode="date" value="{{availabilityStart}}" start="{{availabilityStart}}" disabled="{{!editable || pendingUpdate || pendingSubmit}}" bindchange="changeStartDate"><view class="date-value-group"><text class="date-label">开始时间</text><text class="date-value">{{availabilityStartLabel || '请选择'}}</text></view></picker>
+        <text class="date-separator">-</text>
+        <picker mode="date" value="{{availabilityEnd}}" start="{{availabilityStart}}" disabled="{{!editable || pendingUpdate || pendingSubmit}}" bindchange="changeEndDate"><view class="date-value-group date-value-group--end"><text class="date-label">结束时间</text><text class="date-value">{{availabilityEndLabel || '请选择'}}</text></view></picker>
+      </view>
+    </view>
+    <view class="settings-field delivery-field">
+      <text class="field-label">交付方式</text>
+      <view wx:if="{{deliveryItems.length}}" class="delivery-pills"><text wx:for="{{deliveryItems}}" wx:key="key" class="delivery-pill">{{item.label}}</text></view>
+      <text wx:else class="section-copy">{{deliveryText}}</text>
+    </view>
+  </view>
+
+  <view wx:if="{{noticeText}}" class="section-copy">{{noticeText}}</view>
+  <view wx:if="{{errorText}}" class="form-error" role="alert">{{errorText}}</view>
+  <view class="listing-price-bottom xy-bottom-action"><view class="edit-button xy-action-secondary {{submitting || pendingUpdate || pendingSubmit ? 'is-disabled' : ''}}"><text>返回修改</text><button class="touch-overlay" hover-class="none" bindtap="edit" disabled="{{submitting || pendingUpdate || pendingSubmit}}" aria-disabled="{{submitting || pendingUpdate || pendingSubmit}}" aria-label="返回修改"></button></view><view class="confirm-button xy-action-primary {{submitting || (!editable && !pendingUpdate && !pendingSubmit) ? 'is-disabled' : ''}}"><text>{{submitting ? '处理中…' : primaryActionText}}</text><button class="touch-overlay" hover-class="none" bindtap="confirm" disabled="{{submitting || (!editable && !pendingUpdate && !pendingSubmit)}}" aria-disabled="{{submitting || (!editable && !pendingUpdate && !pendingSubmit)}}" aria-label="{{submitting ? '处理中' : primaryActionText}}"></button></view></view>
+  </block>
+</view>

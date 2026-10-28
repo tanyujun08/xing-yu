@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "",
+  "navigationBarBackgroundColor": "#075F48",
+  "navigationBarTextStyle": "white",
+  "navigationStyle": "custom",
+  "backgroundColor": "#ffffff",
+  "backgroundTextStyle": "light",
+  "usingComponents": {
+    "page-header": "../../components/page-header/index"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "sourceRepository": "https://github.com/mumuy/data_location",
+  "sourceCommit": "99add0f3eb797c28a6f781c801205f03aff3415a",
+  "sourceFile": "list.json",
+  "sourceRawUrl": "https://raw.githubusercontent.com/mumuy/data_location/99add0f3eb797c28a6f781c801205f03aff3415a/list.json",
+  "datasetVersion": "2026-04",
+  "license": "MIT",
+  "scope": "MAINLAND_CHINA_PROVINCE_CITY_DISTRICT",
+  "excludedCodePrefixes": [
+    "71",
+    "81",
+    "82"
+  ],
+  "syntheticParentCodes": [
+    "110100",
+    "120100",
+    "310100",
+    "419000",
+    "429000",
+    "469000",
+    "500100",
+    "500200",
+    "659000"
+  ],
+  "sourceByteLength": 78775,
+  "sourceSha256": "848d00f6e09ea3d292c666648f763920ab8c94b8c83874971c680bf168cf307a",
+  "normalizedByteLength": 288590,
+  "normalizedSha256": "34eaba228ad47abab272f215e3453e54ea5b16b085759f21e889a0753bb39150",
+  "normalization": "UTF-8 LF; sorted six-digit codes; province/city/district tree; mainland prefixes 01-65; synthetic parent nodes only for direct-administered groups"
+}

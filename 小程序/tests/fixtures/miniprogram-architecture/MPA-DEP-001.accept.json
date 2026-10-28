@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "1.0",
+  "ruleId": "MPA-DEP-001",
+  "case": "accept",
+  "files": {
+    "miniprogram/pages/orders/index.ts": "import { mockApi } from '../../shared/api/mock-api';\nvoid mockApi;\n"
+  }
+}

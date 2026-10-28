@@ -1,0 +1,7 @@
+
+.return-progress { display:flex; padding:var(--xy-space-1) 0 var(--xy-space-2); }
+.return-progress__item { position:relative; display:flex; align-items:center; flex-direction:column; flex:1; gap:var(--xy-space-1); color:var(--xy-color-text-muted); font-size:var(--xy-text-body-small-size); line-height:var(--xy-return-line-body); }
+.return-progress__number { position:relative; z-index:var(--xy-z-local); display:flex; align-items:center; justify-content:center; width:var(--xy-return-step-size); height:var(--xy-return-step-size); border-radius:var(--xy-radius-circle); background:var(--xy-color-border); font-size:var(--xy-text-section-title-size); font-weight:var(--xy-text-weight-semibold); }
+.return-progress__line { position:absolute; height:2px; background:var(--xy-color-border); top:14px; left:calc(50% + 24px); width:calc(100% - 48px); }
+.is-current { color:var(--xy-color-brand); font-weight:var(--xy-text-weight-semibold); }
+.is-current .return-progress__number,.is-complete .return-progress__number,.is-complete .return-progress__line { background:var(--xy-color-brand); color:var(--xy-color-text-inverse); }

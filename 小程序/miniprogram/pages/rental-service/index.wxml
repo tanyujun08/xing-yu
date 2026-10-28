@@ -1,0 +1,22 @@
+<page-meta root-font-size="system" />
+<view class="service-page">
+<page-header title="{{secondaryNavigationTitle || '出租服务'}}" background="#ffffff" inverse="{{false}}" bindback="onSecondaryNavigationBack" />
+  <view class="service-head"><text wx:if="{{errorText}}">{{errorText}}</text>
+    <view class="service-head-row"><text class="service-heading">我的服务余额</text><view class="service-head-actions"><text class="diamond-balance">粉钻 {{diamondBalance}}</text><view class="record-link"><text>{{showRecords ? '收起记录' : '查看记录'}}</text><button class="touch-overlay" hover-class="none" bindtap="toggleRecords" aria-label="{{showRecords ? '收起记录' : '查看记录'}}" aria-expanded="{{showRecords}}"></button></view></view></view>
+    <view class="service-stats"><view wx:for="{{stats}}" wx:key="label" class="service-stat"><text class="service-stat-value">{{item.value}}</text><text class="service-stat-label">{{item.label}}</text></view></view>
+    <view class="service-explain">电子合同额度来自当前账户。购买、人脸核身和风控报告为演示补充，仅模拟本地权益。</view>
+  </view>
+
+  <view wx:if="{{showRecords}}" class="record-list">
+    <view wx:for="{{records}}" wx:key="id" class="record-row"><view><text class="record-label">{{item.label}}</text><text class="record-time">{{item.createdText}}</text></view><text class="record-value">{{item.quantityText}} · {{item.priceText}}</text></view>
+    <view wx:if="{{records.length === 0}}" class="record-empty xy-empty-section"><text class="xy-empty-section__title">服务记录暂未接入</text><text class="xy-empty-section__copy">当前仅展示已有电子合同额度。</text></view>
+  </view>
+
+  <view class="service-tabs"><view wx:for="{{tabs}}" wx:key="id" class="service-tab {{currentTab === item.id ? 'is-active' : ''}}" data-tab="{{item.id}}" bindtap="chooseTab" role="button">{{item.label}}</view></view>
+  <view class="service-list">
+    <view wx:for="{{packages}}" wx:key="quantity" class="service-package">
+      <view class="package-head"><view><text class="package-title">{{item.title}}</text><text class="package-copy">{{item.copy}}</text></view><view class="package-price-wrap"><text class="package-price">{{item.priceText}}</text><text class="package-cost">扣除 {{item.costText}}</text></view></view>
+      <view class="package-button" data-kind="{{item.kind}}" data-quantity="{{item.quantity}}" bindtap="buyPackage" role="button" aria-disabled="{{buying || !loggedIn}}"><view class="package-button-shell">{{buying ? '购买中…' : '立即购买'}}</view></view>
+    </view>
+  </view>
+</view>

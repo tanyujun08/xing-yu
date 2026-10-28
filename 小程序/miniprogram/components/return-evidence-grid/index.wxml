@@ -1,0 +1,26 @@
+<view class="evidence-grid {{single ? 'is-single' : ''}}">
+  <view wx:for="{{tiles}}" wx:key="key" class="evidence-tile {{item.ready || item.pending ? 'has-media' : ''}} {{item.failed ? 'is-failed' : ''}} {{item.key === focusKey && !readOnly ? 'is-focused' : ''}}">
+    <text wx:if="{{item.key === focusKey && !readOnly}}" class="evidence-focus" role="status">当前待补交</text>
+    <view class="evidence-heading"><text class="evidence-title">{{item.title}}</text><button wx:if="{{item.example && !readOnly}}" class="evidence-link evidence-example" data-key="{{item.key}}" bindtap="example" aria-label="查看{{item.title}}示例">查看示例</button></view>
+    <view class="evidence-body">
+      <button wx:if="{{item.ready || item.draftPreview}}" class="evidence-preview" data-key="{{item.key}}" bindtap="preview" aria-label="预览{{item.title}}凭证">
+        <image class="evidence-media" src="{{item.draftPreview || (item.kind === 'VIDEO' ? item.poster : item.url)}}" mode="aspectFit" />
+        <text wx:if="{{single && item.failed}}" class="evidence-failed-label">上传失败</text><image wx:if="{{item.kind === 'VIDEO'}}" class="evidence-play" src="{{icons.returnVideoPlay}}" mode="aspectFit" />
+      </button>
+      <view wx:elif="{{readOnly}}" class="evidence-upload"><text>{{item.state}}</text></view>
+      <button wx:else class="evidence-upload {{busy || !item.editable || (item.pending && !item.failed) ? 'is-disabled' : ''}}" data-key="{{item.key}}" bindtap="select" disabled="{{busy || !item.editable || (item.pending && !item.failed)}}" aria-disabled="{{busy || !item.editable || (item.pending && !item.failed)}}" aria-label="上传{{item.title}}">
+        <image class="evidence-upload-icon" src="{{single ? icons.returnCamera : item.kind === 'VIDEO' ? icons.returnAddVideo : icons.returnAddPhoto}}" mode="aspectFit" /><text>{{albumOnly ? '从相册选择' : item.kind === 'VIDEO' ? '录制 / 上传' : '拍摄 / 上传'}}</text>
+      </button>
+      <view wx:if="{{item.ready || item.pending}}" class="evidence-status {{item.ready && !item.pending ? 'is-ready' : ''}}" role="status">
+        <image wx:if="{{item.ready && !item.pending || item.failed}}" class="evidence-status-icon" src="{{item.failed ? icons.returnFailure : icons.returnSuccess}}" mode="aspectFit" />
+        <text>{{item.ready && !item.pending ? readOnly ? '已保存' : '已就绪' : item.state}}</text>
+      </view>
+      <view wx:if="{{single && !readOnly}}" class="evidence-single-copy"><button wx:if="{{item.editable && item.pending}}" class="evidence-link {{busy ? 'is-disabled' : ''}}" data-key="{{item.key}}" bindtap="recover" disabled="{{busy}}" aria-disabled="{{busy}}">{{item.failed ? '继续上传' : '查看上传进度'}}</button><button wx:if="{{item.editable && (item.ready && !item.pending || item.failed)}}" class="evidence-link {{busy ? 'is-disabled' : ''}}" data-key="{{item.key}}" bindtap="select" disabled="{{busy}}" aria-disabled="{{busy}}"><image class="evidence-status-icon" src="{{icons.returnAlbum}}" mode="aspectFit" />更换照片</button><text>{{albumOnly ? '从已拍摄照片中选择' : '须拍清设备与配件'}}</text><text>{{albumOnly ? '更换后保留历史记录' : '请在关门前完成拍摄'}}</text></view>
+    </view>
+    <view class="evidence-controls" wx:if="{{!readOnly && !single && item.editable && (item.ready || item.pending)}}">
+      <button wx:if="{{item.pending}}" class="evidence-link evidence-replace {{busy ? 'is-disabled' : ''}}" data-key="{{item.key}}" bindtap="recover" disabled="{{busy}}" aria-disabled="{{busy}}">{{item.failed ? '重试上传' : '查看上传进度'}}</button>
+      <button wx:if="{{item.ready && !item.pending || item.failed}}" class="evidence-link evidence-replace {{busy ? 'is-disabled' : ''}}" data-key="{{item.key}}" bindtap="select" disabled="{{busy}}" aria-disabled="{{busy}}">{{single ? '更换照片' : item.kind === 'VIDEO' ? '更换视频' : '更换图片'}}</button>
+    </view>
+    <text wx:if="{{item.error}}" class="evidence-error" role="alert">{{item.error}}</text>
+  </view>
+</view>

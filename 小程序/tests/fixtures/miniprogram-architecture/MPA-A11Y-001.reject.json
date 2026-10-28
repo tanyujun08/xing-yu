@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "1.0",
+  "ruleId": "MPA-A11Y-001",
+  "case": "reject",
+  "cases": [
+    {
+      "name": "component-tap-without-semantics",
+      "files": {
+        "miniprogram/components/bottom-actions/index.wxml": "<view bindtap=\"onPrimary\"><image src=\"/assets/action.svg\" /></view>\n"
+      }
+    },
+    {
+      "name": "governed-page-tap-without-semantics",
+      "files": {
+        "miniprogram/pages/orders/index.wxml": "<page-meta root-font-size=\"system\" />\n<view bindtap=\"openOrder\"><image src=\"/assets/order.svg\" /></view>\n"
+      }
+    },
+    {
+      "name": "disabled-and-busy-state-not-exposed",
+      "files": {
+        "miniprogram/pages/orders/index.wxml": "<page-meta root-font-size=\"system\" />\n<button bindtap=\"submit\" disabled=\"{{used >= limit}}\" busy=\"{{busy}}\">提交</button>\n"
+      }
+    }
+  ]
+}

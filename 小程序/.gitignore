@@ -1,0 +1,13 @@
+.env
+.env.*
+.local/
+node_modules/
+miniprogram_npm/
+coverage/
+project.private.config.json
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*

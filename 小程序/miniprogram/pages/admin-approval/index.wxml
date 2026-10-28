@@ -1,0 +1,23 @@
+<page-meta root-font-size="system" />
+<page-shell has-footer="{{false}}">
+  <page-header slot="header" title="管理后台确认" bindback="onBack" />
+  <view class="approval" aria-busy="{{busy}}">
+    <text class="approval-title">{{purpose === 'BIND' ? '绑定后台账号' : '确认后台登录'}}</text>
+    <text wx:if="{{purpose === 'BIND'}}">{{displayName}} {{phoneMasked}}</text>
+    <text>请核对电脑上的管理后台，仅确认本人发起的请求。</text>
+    <text wx:if="{{error}}" role="alert">{{error}}</text>
+    <text wx:if="{{busy}}">正在处理…</text>
+    <button wx:if="{{!loggedIn}}" class="approval-action xy-button-reset" disabled="{{busy}}" aria-disabled="{{busy}}" bindtap="login" role="button" aria-label="微信登录并查看确认请求">微信登录并查看</button>
+    <block wx:elif="{{status === 'PENDING'}}">
+      <button wx:if="{{uncertain}}" class="approval-action xy-button-reset" disabled="{{busy}}" aria-disabled="{{busy}}" bindtap="retryDecision" role="button" aria-label="重试原确认请求">重试原请求</button>
+      <block wx:else>
+        <button class="approval-action xy-button-reset" disabled="{{busy}}" aria-disabled="{{busy}}" bindtap="approve" role="button" aria-label="确认{{purpose === 'BIND' ? '绑定' : '登录'}}">确认{{purpose === 'BIND' ? '绑定' : '登录'}}</button>
+        <button class="approval-action xy-button-reset" disabled="{{busy}}" aria-disabled="{{busy}}" bindtap="reject" role="button" aria-label="拒绝本次请求">拒绝</button>
+      </block>
+    </block>
+    <text wx:elif="{{status === 'CONSUMED' || status === 'APPROVED'}}">已确认，请返回电脑继续操作。</text>
+    <text wx:elif="{{status === 'REJECTED'}}">已拒绝本次请求。</text>
+    <text wx:elif="{{status === 'EXPIRED'}}">二维码已过期，请返回电脑刷新。</text>
+    <button wx:if="{{loggedIn && error && !uncertain}}" class="approval-action xy-button-reset" disabled="{{busy}}" aria-disabled="{{busy}}" bindtap="inspect" role="button" aria-label="重新查询请求状态">重新查询</button>
+  </view>
+</page-shell>

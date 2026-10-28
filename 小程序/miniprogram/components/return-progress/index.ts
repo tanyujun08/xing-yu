@@ -1,0 +1,1 @@
+Component({ options: { styleIsolation: 'isolated' }, properties: { step: { type: Number, value: 1 } }, data: { steps: [{ key: 'evidence', label: '上传凭证' }, { key: 'cabinet', label: '入柜归还' }, { key: 'result', label: '核验结果' }] } });

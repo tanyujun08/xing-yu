@@ -1,0 +1,1698 @@
+{
+  "PolicyUnits": {
+    "type": "string",
+    "pattern": "^(0|[1-9][0-9]{0,18})$",
+    "maxLength": 19,
+    "description": "Canonical nonnegative integer string, maximum 9223372036854775807. Money is CNY fen; GROWTH is stored in tenths of displayed starlight; PINK is an integer diamond count with no scaling. The server validates the upper bound."
+  },
+  "RentalRequirementsPolicy": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "schema_version",
+      "rules"
+    ],
+    "properties": {
+      "schema_version": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 1
+      },
+      "rules": {
+        "type": "array",
+        "items": {
+          "$ref": "#/RentalRequirementsRule"
+        },
+        "minItems": 1,
+        "maxItems": 6
+      }
+    }
+  },
+  "RentalRequirementsRule": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "business_mode",
+      "supply_type",
+      "rental_mode",
+      "identity_required",
+      "contract_required",
+      "allowed_delivery_methods",
+      "payment_deadline_seconds",
+      "approval_deadline_seconds"
+    ],
+    "properties": {
+      "business_mode": {
+        "type": "string",
+        "enum": [
+          "C2C",
+          "B2C"
+        ]
+      },
+      "supply_type": {
+        "type": "string",
+        "enum": [
+          "PERSONAL",
+          "STORE",
+          "CABINET"
+        ]
+      },
+      "rental_mode": {
+        "type": "string",
+        "enum": [
+          "HOUR",
+          "DAY"
+        ]
+      },
+      "identity_required": {
+        "type": "boolean"
+      },
+      "contract_required": {
+        "type": "boolean"
+      },
+      "allowed_delivery_methods": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": [
+            "EXPRESS",
+            "RUNNER",
+            "MEET",
+            "CABINET"
+          ]
+        },
+        "minItems": 1,
+        "maxItems": 4,
+        "uniqueItems": true
+      },
+      "payment_deadline_seconds": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 604800
+      },
+      "approval_deadline_seconds": {
+        "anyOf": [
+          {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 604800
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    }
+  },
+  "RentalBillingPolicy": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "schema_version",
+      "rules"
+    ],
+    "properties": {
+      "schema_version": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 1
+      },
+      "rules": {
+        "type": "array",
+        "items": {
+          "$ref": "#/RentalBillingRule"
+        },
+        "minItems": 1,
+        "maxItems": 6
+      }
+    }
+  },
+  "RentalBillingRule": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "business_mode",
+      "supply_type",
+      "rental_mode",
+      "unit",
+      "rounding",
+      "minimum_units",
+      "grace_seconds",
+      "cap_fen",
+      "overdue_enabled",
+      "overdue_unit_price_fen"
+    ],
+    "properties": {
+      "business_mode": {
+        "type": "string",
+        "enum": [
+          "C2C",
+          "B2C"
+        ]
+      },
+      "supply_type": {
+        "type": "string",
+        "enum": [
+          "PERSONAL",
+          "STORE",
+          "CABINET"
+        ]
+      },
+      "rental_mode": {
+        "type": "string",
+        "enum": [
+          "HOUR",
+          "DAY"
+        ]
+      },
+      "unit": {
+        "type": "string",
+        "enum": [
+          "HOUR",
+          "DAY"
+        ]
+      },
+      "rounding": {
+        "type": "string",
+        "enum": [
+          "CEIL_UNIT"
+        ]
+      },
+      "minimum_units": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 1000000
+      },
+      "grace_seconds": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 604800
+      },
+      "cap_fen": {
+        "anyOf": [
+          {
+            "$ref": "#/PolicyUnits"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "overdue_enabled": {
+        "type": "boolean"
+      },
+      "overdue_unit_price_fen": {
+        "anyOf": [
+          {
+            "$ref": "#/PolicyUnits"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    }
+  },
+  "RentalDepositPolicy": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "schema_version",
+      "rules"
+    ],
+    "properties": {
+      "schema_version": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 1
+      },
+      "rules": {
+        "type": "array",
+        "items": {
+          "$ref": "#/RentalDepositRule"
+        },
+        "minItems": 1,
+        "maxItems": 6
+      }
+    }
+  },
+  "UnitRatio": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "numerator",
+      "denominator"
+    ],
+    "properties": {
+      "numerator": {
+        "$ref": "#/PolicyUnits"
+      },
+      "denominator": {
+        "$ref": "#/PolicyUnits"
+      }
+    }
+  },
+  "RentalDepositRule": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "supply_type",
+      "rental_mode",
+      "allowed_methods",
+      "pink_units_per_fen",
+      "pink_max_waiver_fen"
+    ],
+    "properties": {
+      "supply_type": {
+        "type": "string",
+        "enum": [
+          "PERSONAL",
+          "STORE",
+          "CABINET"
+        ]
+      },
+      "rental_mode": {
+        "type": "string",
+        "enum": [
+          "HOUR",
+          "DAY"
+        ]
+      },
+      "allowed_methods": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": [
+            "CASH",
+            "MEMBERSHIP",
+            "PINK_PARTIAL"
+          ]
+        },
+        "minItems": 1,
+        "maxItems": 3,
+        "uniqueItems": true
+      },
+      "pink_units_per_fen": {
+        "anyOf": [
+          {
+            "$ref": "#/UnitRatio"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "pink_max_waiver_fen": {
+        "$ref": "#/PolicyUnits"
+      }
+    }
+  },
+  "MembershipLevelsPolicy": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "schema_version",
+      "levels"
+    ],
+    "properties": {
+      "schema_version": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 1
+      },
+      "levels": {
+        "type": "array",
+        "items": {
+          "$ref": "#/MembershipLevel"
+        },
+        "minItems": 1,
+        "maxItems": 20
+      }
+    }
+  },
+  "MembershipLevel": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "level_code",
+      "name",
+      "order",
+      "upgrade_growth_units",
+      "waiver_count_per_month",
+      "waiver_mode",
+      "waiver_cap_fen",
+      "eligible_modes",
+      "eligible_categories"
+    ],
+    "properties": {
+      "level_code": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 32,
+        "pattern": "^[!-~]{1,32}$"
+      },
+      "name": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 80
+      },
+      "order": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 19
+      },
+      "upgrade_growth_units": {
+        "$ref": "#/PolicyUnits"
+      },
+      "waiver_count_per_month": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 1000
+      },
+      "waiver_mode": {
+        "type": "string",
+        "enum": [
+          "FULL",
+          "CAPPED"
+        ]
+      },
+      "waiver_cap_fen": {
+        "anyOf": [
+          {
+            "$ref": "#/PolicyUnits"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "eligible_modes": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": [
+            "DAY"
+          ]
+        },
+        "minItems": 1,
+        "maxItems": 2,
+        "uniqueItems": true
+      },
+      "eligible_categories": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "minItems": 0,
+        "maxItems": 1000,
+        "uniqueItems": true
+      }
+    }
+  },
+  "EntitlementCatalogPolicy": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "schema_version",
+      "offers"
+    ],
+    "properties": {
+      "schema_version": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 1
+      },
+      "offers": {
+        "type": "array",
+        "items": {
+          "$ref": "#/EntitlementOffer"
+        },
+        "minItems": 1,
+        "maxItems": 100
+      }
+    }
+  },
+  "EntitlementOffer": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "offer_code",
+      "kind",
+      "cost_unit",
+      "unit_price",
+      "min_quantity",
+      "max_quantity",
+      "valid_days",
+      "refund_policy"
+    ],
+    "properties": {
+      "offer_code": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 64
+      },
+      "kind": {
+        "type": "string",
+        "enum": [
+          "CONTRACT",
+          "PUBLISH_QUOTA"
+        ]
+      },
+      "cost_unit": {
+        "type": "string",
+        "enum": [
+          "CNY",
+          "PINK_POINT"
+        ]
+      },
+      "unit_price": {
+        "$ref": "#/PolicyUnits"
+      },
+      "min_quantity": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 1000
+      },
+      "max_quantity": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 1000
+      },
+      "valid_days": {
+        "anyOf": [
+          {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 36500
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "refund_policy": {
+        "type": "string",
+        "enum": [
+          "CONTRACT_UNUSED_FULL",
+          "NONE"
+        ]
+      }
+    }
+  },
+  "SettlementRulesPolicy": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "schema_version",
+      "fee_basis",
+      "platform_fee_basis_points",
+      "wallet_only",
+      "withdrawal_min_fen",
+      "withdrawal_max_fen"
+    ],
+    "properties": {
+      "schema_version": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 1
+      },
+      "fee_basis": {
+        "type": "string",
+        "enum": [
+          "COLLECTED_RENT"
+        ]
+      },
+      "platform_fee_basis_points": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 10000
+      },
+      "wallet_only": {
+        "type": "boolean",
+        "const": true
+      },
+      "withdrawal_min_fen": {
+        "$ref": "#/PolicyUnits"
+      },
+      "withdrawal_max_fen": {
+        "$ref": "#/PolicyUnits"
+      }
+    }
+  },
+  "CabinetCredentialPolicy": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "schema_version",
+      "digits",
+      "code_ttl_seconds",
+      "verification_window_seconds",
+      "max_failed_attempts",
+      "session_ttl_seconds",
+      "replay_policy"
+    ],
+    "properties": {
+      "schema_version": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 1
+      },
+      "digits": {
+        "type": "integer",
+        "minimum": 6,
+        "maximum": 6
+      },
+      "code_ttl_seconds": {
+        "type": "null"
+      },
+      "verification_window_seconds": {
+        "type": "integer",
+        "minimum": 60,
+        "maximum": 3600
+      },
+      "max_failed_attempts": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 20
+      },
+      "session_ttl_seconds": {
+        "type": "integer",
+        "minimum": 60,
+        "maximum": 900
+      },
+      "replay_policy": {
+        "type": "string",
+        "enum": [
+          "QUERY_ORIGINAL"
+        ]
+      }
+    }
+  },
+  "AssetPriceGuidancePolicy": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "schema_version",
+      "rules"
+    ],
+    "properties": {
+      "schema_version": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 1
+      },
+      "rules": {
+        "type": "array",
+        "items": {
+          "$ref": "#/AssetPriceGuidanceRule"
+        },
+        "minItems": 0,
+        "maxItems": 1000
+      }
+    }
+  },
+  "AssetPriceGuidanceRule": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "category_id",
+      "rental_unit",
+      "min_unit_price_fen",
+      "max_unit_price_fen",
+      "recommended_unit_price_fen"
+    ],
+    "properties": {
+      "category_id": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 64
+      },
+      "rental_unit": {
+        "type": "string",
+        "enum": [
+          "HOUR",
+          "DAY"
+        ]
+      },
+      "min_unit_price_fen": {
+        "$ref": "#/PolicyUnits"
+      },
+      "max_unit_price_fen": {
+        "$ref": "#/PolicyUnits"
+      },
+      "recommended_unit_price_fen": {
+        "anyOf": [
+          {
+            "$ref": "#/PolicyUnits"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    }
+  },
+  "RewardItem": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "kind",
+      "units",
+      "quantity",
+      "coupon_type",
+      "valid_days"
+    ],
+    "properties": {
+      "kind": {
+        "type": "string",
+        "enum": [
+          "PINK",
+          "GROWTH",
+          "CONTRACT",
+          "PUBLISH_QUOTA",
+          "COUPON"
+        ]
+      },
+      "units": {
+        "anyOf": [
+          {
+            "$ref": "#/PolicyUnits"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "quantity": {
+        "anyOf": [
+          {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "valid_days": {
+        "anyOf": [
+          {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 36500
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "coupon_type": {
+        "anyOf": [
+          {
+            "$ref": "./loyalty.yaml#/Schemas/CouponType"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "description": "Coupon rewards require coupon_type and quantity; valid_days is null for coupons. valid_days remains an entitlement lifetime setting only. Positive reward units; empty reward arrays produce no grant."
+  },
+  "CheckInPolicy": {
+    "$ref": "./business-config-direct.yaml#/CheckInPolicyV2"
+  },
+  "BenefitCatalogPolicy": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "schema_version",
+      "tasks",
+      "redemptions"
+    ],
+    "properties": {
+      "schema_version": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 1
+      },
+      "tasks": {
+        "type": "array",
+        "items": {
+          "$ref": "#/BenefitTask"
+        },
+        "minItems": 0,
+        "maxItems": 100
+      },
+      "redemptions": {
+        "type": "array",
+        "items": {
+          "$ref": "#/BenefitRedemption"
+        },
+        "minItems": 0,
+        "maxItems": 100
+      }
+    }
+  },
+  "BenefitTask": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "benefit_code",
+      "task_code",
+      "period",
+      "limit",
+      "rewards"
+    ],
+    "properties": {
+      "benefit_code": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 64
+      },
+      "task_code": {
+        "type": "string",
+        "enum": [
+          "REGISTER",
+          "VIEW_ASSET"
+        ]
+      },
+      "period": {
+        "type": "string",
+        "enum": [
+          "LIFETIME",
+          "DAY",
+          "MONTH"
+        ]
+      },
+      "limit": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 1000
+      },
+      "rewards": {
+        "type": "array",
+        "items": {
+          "$ref": "#/RewardItem"
+        },
+        "minItems": 0,
+        "maxItems": 20
+      }
+    }
+  },
+  "BenefitRedemption": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "offer_code",
+      "cost_pink_units",
+      "period",
+      "limit",
+      "rewards"
+    ],
+    "properties": {
+      "offer_code": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 64
+      },
+      "cost_pink_units": {
+        "$ref": "#/PolicyUnits"
+      },
+      "period": {
+        "type": "string",
+        "enum": [
+          "LIFETIME",
+          "DAY",
+          "MONTH"
+        ]
+      },
+      "limit": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 1000
+      },
+      "rewards": {
+        "type": "array",
+        "items": {
+          "$ref": "#/RewardItem"
+        },
+        "minItems": 1,
+        "maxItems": 20
+      }
+    }
+  },
+  "LotteryRulesPolicy": {
+    "$ref": "./loyalty.yaml#/Schemas/LotteryPolicy"
+  },
+  "ClientResourcesPolicy": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "schema_version",
+      "client",
+      "channel",
+      "entries"
+    ],
+    "properties": {
+      "schema_version": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 1
+      },
+      "client": {
+        "type": "string",
+        "enum": [
+          "MINIPROGRAM",
+          "ADMIN"
+        ]
+      },
+      "channel": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 32
+      },
+      "entries": {
+        "type": "array",
+        "items": {
+          "$ref": "#/ClientResource"
+        },
+        "minItems": 1,
+        "maxItems": 200
+      }
+    }
+  },
+  "ClientResource": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "resource_key",
+      "locale",
+      "theme",
+      "material_id",
+      "min_client_version"
+    ],
+    "properties": {
+      "resource_key": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 64
+      },
+      "locale": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 16
+      },
+      "theme": {
+        "type": "string",
+        "enum": [
+          "LIGHT",
+          "DARK",
+          "ANY"
+        ]
+      },
+      "material_id": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 64
+      },
+      "min_client_version": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 32
+      }
+    }
+  },
+  "WechatMessageScenesPolicy": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "schema_version",
+      "scenes"
+    ],
+    "properties": {
+      "schema_version": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 1
+      },
+      "scenes": {
+        "type": "array",
+        "items": {
+          "$ref": "#/WechatMessageScene"
+        },
+        "minItems": 0,
+        "maxItems": 5
+      }
+    }
+  },
+  "WechatMessageScene": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "scene",
+      "template_id",
+      "parameter_map",
+      "page_path",
+      "enabled"
+    ],
+    "properties": {
+      "scene": {
+        "type": "string",
+        "enum": [
+          "PAYMENT_CONFIRMED",
+          "PICKUP_READY",
+          "RENTAL_DUE",
+          "RETURN_RECEIVED",
+          "REFUND_CONFIRMED"
+        ]
+      },
+      "template_id": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128
+      },
+      "parameter_map": {
+        "type": "array",
+        "items": {
+          "$ref": "#/WechatMessageParameter"
+        },
+        "minItems": 1,
+        "maxItems": 20
+      },
+      "page_path": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 256
+      },
+      "enabled": {
+        "type": "boolean"
+      }
+    }
+  },
+  "WechatMessageParameter": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "provider_parameter",
+      "source"
+    ],
+    "properties": {
+      "provider_parameter": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 64
+      },
+      "source": {
+        "type": "string",
+        "enum": [
+          "ORDER_NO",
+          "ASSET_NAME",
+          "DUE_AT",
+          "AMOUNT_FEN",
+          "STORE_NAME"
+        ]
+      }
+    }
+  },
+  "AdministrativeRegionsPolicy": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "schema_version",
+      "dataset_code",
+      "source_name",
+      "source_material_id",
+      "source_sha256",
+      "imported_count",
+      "imported_at"
+    ],
+    "properties": {
+      "schema_version": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 1
+      },
+      "dataset_code": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 64
+      },
+      "source_name": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128
+      },
+      "source_material_id": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 64
+      },
+      "source_sha256": {
+        "type": "string",
+        "minLength": 64,
+        "maxLength": 64,
+        "pattern": "^[0-9a-f]{64}$"
+      },
+      "imported_count": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 100000
+      },
+      "imported_at": {
+        "type": "string",
+        "minLength": 20,
+        "maxLength": 30,
+        "format": "date-time"
+      }
+    }
+  },
+  "StorageRoutePolicy": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "schema_version",
+      "provider",
+      "region_id",
+      "bucket",
+      "endpoint_alias",
+      "object_prefix",
+      "credential_ref",
+      "kms_key_ref",
+      "sse_mode",
+      "public_cdn_host",
+      "object_versioning_enabled"
+    ],
+    "properties": {
+      "schema_version": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 1
+      },
+      "provider": {
+        "type": "string",
+        "enum": [
+          "ALIYUN_OSS"
+        ]
+      },
+      "region_id": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 64
+      },
+      "bucket": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 63
+      },
+      "endpoint_alias": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 64
+      },
+      "object_prefix": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128
+      },
+      "credential_ref": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128
+      },
+      "kms_key_ref": {
+        "anyOf": [
+          {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "sse_mode": {
+        "type": "string",
+        "enum": [
+          "SSE-OSS",
+          "SSE-KMS"
+        ]
+      },
+      "public_cdn_host": {
+        "anyOf": [
+          {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 253
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "object_versioning_enabled": {
+        "type": "boolean"
+      }
+    }
+  },
+  "PayoutProviderPolicy": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "schema_version",
+      "provider",
+      "product_code",
+      "appid",
+      "mchid",
+      "credential_ref",
+      "notify_route_key",
+      "requires_payee_authorization",
+      "verified_at",
+      "verification_material_id",
+      "enabled"
+    ],
+    "properties": {
+      "schema_version": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 1
+      },
+      "provider": {
+        "type": "string",
+        "enum": [
+          "WECHAT"
+        ]
+      },
+      "product_code": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 64
+      },
+      "appid": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 32
+      },
+      "mchid": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 32
+      },
+      "credential_ref": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128
+      },
+      "notify_route_key": {
+        "type": "string",
+        "enum": [
+          "WECHAT_PAYOUT"
+        ]
+      },
+      "requires_payee_authorization": {
+        "type": "boolean"
+      },
+      "verified_at": {
+        "type": "string",
+        "minLength": 20,
+        "maxLength": 30,
+        "format": "date-time"
+      },
+      "verification_material_id": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 64
+      },
+      "enabled": {
+        "type": "boolean"
+      }
+    }
+  },
+  "AgreementRequirementsPolicy": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "schema_version",
+      "requirements"
+    ],
+    "properties": {
+      "schema_version": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 1
+      },
+      "requirements": {
+        "type": "array",
+        "items": {
+          "$ref": "#/AgreementRequirement"
+        },
+        "minItems": 1,
+        "maxItems": 12
+      }
+    }
+  },
+  "AgreementRequirement": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "scene",
+      "kind",
+      "document_id",
+      "required"
+    ],
+    "properties": {
+      "scene": {
+        "type": "string",
+        "enum": [
+          "REGISTER",
+          "RENTAL",
+          "ASSET_PUBLISH"
+        ]
+      },
+      "kind": {
+        "type": "string",
+        "enum": [
+          "USER_AGREEMENT",
+          "PRIVACY_POLICY",
+          "RENTAL_TERMS",
+          "CONTRACT_TEMPLATE"
+        ]
+      },
+      "document_id": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 64
+      },
+      "required": {
+        "type": "boolean"
+      }
+    }
+  },
+  "ServiceCoveragePolicy": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "schema_version",
+      "coverages"
+    ],
+    "properties": {
+      "schema_version": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 1
+      },
+      "coverages": {
+        "type": "array",
+        "items": {
+          "$ref": "#/ServiceCoverage"
+        },
+        "minItems": 0,
+        "maxItems": 1
+      }
+    }
+  },
+  "ServiceCoverage": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "code",
+      "name",
+      "fee_fen",
+      "maximum_cover_fen",
+      "terms_document_id"
+    ],
+    "properties": {
+      "code": {
+        "type": "string",
+        "enum": [
+          "GUARD"
+        ]
+      },
+      "name": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 80
+      },
+      "fee_fen": {
+        "$ref": "#/PolicyUnits"
+      },
+      "maximum_cover_fen": {
+        "$ref": "#/PolicyUnits"
+      },
+      "terms_document_id": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 64
+      }
+    }
+  },
+  "MaterialUploadPolicyV2": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "allowed_classes",
+      "allowed_mime_types",
+      "max_bytes",
+      "upload_ttl_seconds",
+      "scan_required",
+      "class_limits"
+    ],
+    "properties": {
+      "allowed_classes": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": [
+            "PROFILE_IMAGE",
+            "CATALOG_IMAGE",
+            "RENTAL_ASSET_IMAGE",
+            "SYSTEM_MATERIAL",
+            "MERCHANT_IMAGE",
+            "SYSTEM_ICON",
+            "CATALOG_VIDEO",
+            "RENTAL_ASSET_VIDEO",
+            "EVIDENCE_IMAGE",
+            "EVIDENCE_VIDEO",
+            "CONTRACT_DOCUMENT",
+            "PROVIDER_PAYLOAD",
+            "RECONCILIATION_BILL",
+            "CHAT_IMAGE",
+            "CONTRACT_SIGNATURE_IMAGE"
+          ]
+        },
+        "minItems": 1,
+        "maxItems": 16
+      },
+      "allowed_mime_types": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": [
+            "image/jpeg",
+            "image/png",
+            "image/webp",
+            "video/mp4",
+            "application/pdf",
+            "application/json",
+            "text/csv"
+          ]
+        },
+        "minItems": 1,
+        "maxItems": 7
+      },
+      "max_bytes": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 104857600
+      },
+      "upload_ttl_seconds": {
+        "type": "integer",
+        "minimum": 30,
+        "maximum": 900
+      },
+      "scan_required": {
+        "type": "boolean",
+        "const": true
+      },
+      "class_limits": {
+        "type": "array",
+        "items": {
+          "$ref": "#/MaterialClassLimit"
+        },
+        "minItems": 1,
+        "maxItems": 16
+      }
+    }
+  },
+  "MaterialClassLimit": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "class",
+      "mimes",
+      "max_bytes",
+      "processing_required"
+    ],
+    "properties": {
+      "class": {
+        "type": "string",
+        "enum": [
+          "PROFILE_IMAGE",
+          "CATALOG_IMAGE",
+          "RENTAL_ASSET_IMAGE",
+          "SYSTEM_MATERIAL",
+          "MERCHANT_IMAGE",
+          "SYSTEM_ICON",
+          "CATALOG_VIDEO",
+          "RENTAL_ASSET_VIDEO",
+          "EVIDENCE_IMAGE",
+          "EVIDENCE_VIDEO",
+          "CONTRACT_DOCUMENT",
+          "PROVIDER_PAYLOAD",
+          "RECONCILIATION_BILL",
+          "CHAT_IMAGE",
+          "CONTRACT_SIGNATURE_IMAGE"
+        ]
+      },
+      "mimes": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": [
+            "image/jpeg",
+            "image/png",
+            "image/webp",
+            "video/mp4",
+            "application/pdf",
+            "application/json",
+            "text/csv"
+          ]
+        },
+        "minItems": 1,
+        "maxItems": 7
+      },
+      "max_bytes": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 104857600
+      },
+      "max_duration_ms": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 600000
+      },
+      "processing_required": {
+        "type": "boolean"
+      }
+    }
+  },
+  "SMSChallengePolicyV2": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "allowed_scenes",
+      "digits",
+      "ttl_seconds",
+      "cooldown_seconds",
+      "max_attempts",
+      "phone_daily_limit",
+      "ip_daily_limit",
+      "template_versions"
+    ],
+    "properties": {
+      "allowed_scenes": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": [
+            "OPS_LOGIN",
+            "PHONE_BIND",
+            "CABINET_OPEN_ALL"
+          ]
+        },
+        "minItems": 1,
+        "maxItems": 4
+      },
+      "digits": {
+        "type": "integer",
+        "minimum": 6,
+        "maximum": 6
+      },
+      "ttl_seconds": {
+        "type": "integer",
+        "minimum": 60,
+        "maximum": 600
+      },
+      "cooldown_seconds": {
+        "type": "integer",
+        "minimum": 30,
+        "maximum": 600
+      },
+      "max_attempts": {
+        "type": "integer",
+        "minimum": 3,
+        "maximum": 5
+      },
+      "phone_daily_limit": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 65535
+      },
+      "ip_daily_limit": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 65535
+      },
+      "template_versions": {
+        "type": "array",
+        "items": {
+          "$ref": "#/SMSTemplateBinding"
+        },
+        "minItems": 1,
+        "maxItems": 4
+      }
+    }
+  },
+  "SMSTemplateBinding": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "scene",
+      "template_version_id"
+    ],
+    "properties": {
+      "scene": {
+        "type": "string",
+        "enum": [
+          "OPS_LOGIN",
+          "PHONE_BIND",
+          "CABINET_OPEN_ALL"
+        ]
+      },
+      "template_version_id": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 64
+      }
+    }
+  },
+  "AssetPublicationEligibilityPolicy": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "schema_version",
+      "minimum_level_code",
+      "identity_check_kind"
+    ],
+    "properties": {
+      "schema_version": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 1
+      },
+      "minimum_level_code": {
+        "anyOf": [
+          {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 32,
+            "pattern": "^[!-~]{1,32}$"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "description": "Minimum published membership level code; null explicitly means no level gate."
+      },
+      "identity_check_kind": {
+        "anyOf": [
+          {
+            "type": "string",
+            "enum": [
+              "REAL_NAME",
+              "FACE"
+            ]
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "description": "Required verified and unexpired identity check; null explicitly means no identity gate."
+      }
+    }
+  },
+  "BusinessConfigValue": {
+    "oneOf": [
+      {
+        "$ref": "#/RentalRequirementsPolicy"
+      },
+      {
+        "$ref": "#/RentalBillingPolicy"
+      },
+      {
+        "$ref": "#/RentalDepositPolicy"
+      },
+      {
+        "$ref": "#/MembershipLevelsPolicy"
+      },
+      {
+        "$ref": "#/EntitlementCatalogPolicy"
+      },
+      {
+        "$ref": "#/CheckInPolicy"
+      },
+      {
+        "$ref": "#/ClientResourcesPolicy"
+      },
+      {
+        "$ref": "#/WechatMessageScenesPolicy"
+      },
+      {
+        "$ref": "#/SettlementRulesPolicy"
+      },
+      {
+        "$ref": "#/CabinetCredentialPolicy"
+      },
+      {
+        "$ref": "#/AdministrativeRegionsPolicy"
+      },
+      {
+        "$ref": "#/StorageRoutePolicy"
+      },
+      {
+        "$ref": "#/PayoutProviderPolicy"
+      },
+      {
+        "$ref": "#/AgreementRequirementsPolicy"
+      },
+      {
+        "$ref": "#/BenefitCatalogPolicy"
+      },
+      {
+        "$ref": "#/LotteryRulesPolicy"
+      },
+      {
+        "$ref": "#/ServiceCoveragePolicy"
+      },
+      {
+        "$ref": "#/AssetPriceGuidancePolicy"
+      },
+      {
+        "$ref": "#/AssetPublicationEligibilityPolicy"
+      },
+      {
+        "$ref": "#/MaterialUploadPolicyV2"
+      },
+      {
+        "$ref": "#/SMSChallengePolicyV2"
+      },
+      {
+        "$ref": "./loyalty.yaml#/Schemas/CouponsPolicy"
+      }
+    ]
+  }
+}

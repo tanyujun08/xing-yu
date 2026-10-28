@@ -1,0 +1,389 @@
+{
+  "Schemas": {
+    "AddressLocation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "latitude",
+        "longitude",
+        "coordinate_system",
+        "source"
+      ],
+      "properties": {
+        "latitude": {
+          "type": "string",
+          "pattern": "^-?(?:(?:[0-9]|[1-8][0-9])\\.[0-9]{6}|90\\.000000)$"
+        },
+        "longitude": {
+          "type": "string",
+          "pattern": "^-?(?:(?:[0-9]|[1-9][0-9]|1[0-7][0-9])\\.[0-9]{6}|180\\.000000)$"
+        },
+        "coordinate_system": {
+          "type": "string",
+          "const": "GCJ02"
+        },
+        "source": {
+          "type": "string",
+          "enum": [
+            "MAP_PICK",
+            "PROVIDER_GEOCODE"
+          ]
+        }
+      },
+      "description": "Exactly six decimal places; zero is a present location. Coordinates originate from a GCJ02 map selection or verified provider conversion, never from relabelling another coordinate system."
+    },
+    "AddressInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dataset_id",
+        "province_id",
+        "city_id",
+        "district_id",
+        "detail_address",
+        "recipient_name",
+        "phone_country_code",
+        "phone",
+        "is_default"
+      ],
+      "properties": {
+        "dataset_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "province_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "city_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "district_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "detail_address": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "recipient_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "phone_country_code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8,
+          "pattern": "^\\+?[1-9][0-9]{0,6}$"
+        },
+        "phone": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 32,
+          "pattern": "^[0-9]{5,32}$"
+        },
+        "is_default": {
+          "type": "boolean"
+        },
+        "location": {
+          "anyOf": [
+            {
+              "$ref": "#/Schemas/AddressLocation"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "description": "Create and PATCH send the complete editable address bundle. Location omitted/null clears it. Names/details are trimmed. Country code receives a leading +. First active address becomes default even if false was submitted. A current default remains selected on edit; select another address to switch. All nodes must be ACTIVE in one published or superseded dataset. Saved region names never change automatically."
+    },
+    "ReasonItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "code",
+        "message"
+      ],
+      "properties": {
+        "code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "field": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      }
+    },
+    "AddressAction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "code",
+        "enabled",
+        "blocked_reasons"
+      ],
+      "properties": {
+        "code": {
+          "type": "string",
+          "enum": [
+            "UPDATE",
+            "ARCHIVE",
+            "DEFAULT"
+          ]
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "blocked_reasons": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/ReasonItem"
+          }
+        }
+      }
+    },
+    "OwnAddress": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dataset_id",
+        "province_id",
+        "city_id",
+        "district_id",
+        "detail_address",
+        "recipient_name",
+        "phone_country_code",
+        "phone",
+        "is_default",
+        "location",
+        "address_id",
+        "province_name",
+        "city_name",
+        "district_name",
+        "status",
+        "version",
+        "created_at",
+        "updated_at",
+        "location_verified_at",
+        "allowed_actions",
+        "blocked_reasons"
+      ],
+      "properties": {
+        "dataset_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "province_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "city_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "district_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "detail_address": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "recipient_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "phone_country_code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8,
+          "pattern": "^\\+?[1-9][0-9]{0,6}$"
+        },
+        "phone": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 32,
+          "pattern": "^[0-9]{5,32}$"
+        },
+        "is_default": {
+          "type": "boolean"
+        },
+        "location": {
+          "anyOf": [
+            {
+              "$ref": "#/Schemas/AddressLocation"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "address_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "province_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "city_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "district_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "status": {
+          "type": "string",
+          "const": "ACTIVE"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,19}$",
+          "description": "Positive uint64 decimal string, at most 18446744073709551615."
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "location_verified_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "allowed_actions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/AddressAction"
+          }
+        },
+        "blocked_reasons": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/ReasonItem"
+          }
+        }
+      }
+    },
+    "OwnAddressList": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "items",
+        "page"
+      ],
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/OwnAddress"
+          },
+          "maxItems": 100
+        },
+        "page": {
+          "$ref": "./pagination.yaml#/CursorPageMeta"
+        }
+      }
+    },
+    "AddressReceipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "address_id",
+        "version",
+        "status",
+        "is_default"
+      ],
+      "properties": {
+        "address_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,19}$",
+          "description": "Positive uint64 decimal string, at most 18446744073709551615."
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "ACTIVE",
+            "ARCHIVED"
+          ]
+        },
+        "is_default": {
+          "type": "boolean"
+        }
+      },
+      "description": "Immutable metadata of a successful intention. Replay returns this original identity and ETag even after subsequent edits. Refresh listOwnAddresses for current data; stable intention JSON contains no private contact fields."
+    },
+    "ArchiveAddressRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reason"
+      ],
+      "properties": {
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
+      }
+    },
+    "EmptyAddressCommand": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [],
+      "properties": {}
+    }
+  }
+}

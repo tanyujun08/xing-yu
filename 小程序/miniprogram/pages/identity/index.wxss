@@ -1,0 +1,15 @@
+.identity-page { padding:var(--xy-space-3) var(--xy-space-4) calc(var(--xy-space-4) + env(safe-area-inset-bottom)); color:var(--xy-color-text-primary); }
+.identity-title { display:block; font-size:var(--xy-order-status-size); line-height:var(--xy-order-status-line-height); font-weight:var(--xy-text-weight-semibold); }
+.identity-copy { display:block; margin-top:var(--xy-space-2); color:var(--xy-color-text-secondary); font-size:var(--xy-order-body-size); line-height:var(--xy-order-body-line-height); }
+.identity-card { margin-top:var(--xy-space-6); padding:0 var(--xy-space-4); border-radius:var(--xy-radius-md); background:var(--xy-color-surface); }
+.identity-row { display:flex; flex-direction:column; gap:var(--xy-space-3); padding:var(--xy-space-4) 0; font-size:var(--xy-text-section-title-size); line-height:var(--xy-text-section-title-line-height); }
+.identity-row + .identity-row { border-top:1rpx solid var(--xy-color-divider); }
+.identity-label { font-weight:var(--xy-text-weight-semibold); }
+.identity-required { color:var(--xy-color-danger); }
+.identity-row input { box-sizing:border-box; width:100%; min-width:0; min-height:var(--xy-control-height-order); padding:var(--xy-space-3); border:1rpx solid var(--xy-color-border); border-radius:var(--xy-radius-sm); font-size:var(--xy-order-body-size); line-height:var(--xy-order-body-line-height); color:var(--xy-color-text-primary); }
+.form-error { display:block; color:var(--xy-color-danger); font-size:var(--xy-text-body-small-size); line-height:var(--xy-text-body-small-line-height); }
+.retry-button { display:flex; min-height:var(--xy-size-touch-min); margin-top:var(--xy-space-2); align-items:center; justify-content:center; border:0; background:var(--xy-color-surface); color:var(--xy-color-brand); font-size:var(--xy-order-body-size); }
+.identity-actions { display:flex; flex-direction:column; gap:var(--xy-space-2); margin-top:var(--xy-space-6); }
+.identity-submit, .identity-later { margin:0; min-height:var(--xy-control-height-order); font-size:var(--xy-text-section-title-size); line-height:var(--xy-text-section-title-line-height); }
+.identity-later { display:flex; align-items:center; justify-content:center; padding:var(--xy-space-3); background:transparent; border:0; color:var(--xy-color-brand); }
+.identity-later::after { border:0; }

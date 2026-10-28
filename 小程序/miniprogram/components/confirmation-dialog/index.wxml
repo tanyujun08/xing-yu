@@ -1,0 +1,24 @@
+<view wx:if="{{visible}}" class="dialog {{tone !== 'confirm' ? 'dialog--feedback' : ''}} {{symbol ? 'dialog--progress' : ''}} {{orderStyle ? 'dialog--order' : ''}} {{stacked ? 'dialog--stacked' : ''}} dialog--{{tone}}" catchtouchmove="preventMove" role="dialog" aria-modal="true" aria-label="{{title}}">
+  <view class="dialog__mask" role="presentation" aria-hidden="true" aria-label="提示遮罩" catchtap="preventMove"></view>
+  <view class="dialog__panel">
+    <view wx:if="{{symbol}}" class="dialog__illustration dialog__illustration--{{symbol}}" aria-hidden="true">
+      <view wx:if="{{symbol === 'cabinet' || symbol === 'open'}}" class="dialog__cabinet"><view class="dialog__cabinet-divider"></view><view class="dialog__cabinet-door"></view></view>
+      <view wx:elif="{{symbol === 'success'}}" class="dialog__check"></view>
+      <text wx:else class="dialog__warning">!</text>
+      <view wx:if="{{symbol === 'cabinet'}}" class="dialog__ring"></view>
+    </view>
+    <view wx:elif="{{tone !== 'confirm'}}" class="dialog__symbol" aria-hidden="true"><icon type="{{tone === 'success' ? 'success' : tone === 'error' ? 'warn' : 'waiting'}}" size="44" color="currentColor" /></view>
+    <text wx:if="{{eyebrow}}" class="dialog__eyebrow">{{eyebrow}}</text>
+    <text class="dialog__title">{{title}}</text>
+    <text wx:if="{{content}}" class="dialog__content">{{content}}</text>
+    <text wx:if="{{hint}}" class="dialog__hint">{{hint}}</text>
+    <view wx:if="{{steps.length}}" class="dialog__steps" aria-label="操作进度">
+      <view wx:for="{{steps}}" wx:key="label" class="dialog__step dialog__step--{{item.state}}"><view class="dialog__dot">{{item.state === 'done' ? '✓' : ''}}</view><text>{{item.label}}</text></view>
+    </view>
+    <view class="dialog__actions">
+      <button wx:if="{{showCancel}}" class="dialog__button dialog__button--secondary {{busy ? 'is-disabled' : ''}}" disabled="{{busy}}" aria-disabled="{{busy}}" bindtap="onCancel">{{cancelText}}</button>
+      <button class="dialog__button dialog__button--primary {{quietConfirm ? 'dialog__button--quiet' : ''}} {{busy ? 'is-disabled' : ''}}" disabled="{{busy}}" aria-disabled="{{busy}}" aria-busy="{{busy}}" bindtap="onConfirm">{{busy ? '处理中…' : confirmText}}</button>
+      <button wx:if="{{showContact}}" class="dialog__button dialog__button--secondary dialog__contact" open-type="contact">联系客服</button>
+    </view>
+  </view>
+</view>

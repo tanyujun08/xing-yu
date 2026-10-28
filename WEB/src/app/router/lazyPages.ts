@@ -1,0 +1,23 @@
+import { lazy } from 'react';
+export const RentalOrdersPage = lazy(async () => ({ default: (await import('../../features/rental-orders/RentalOrdersPage')).RentalOrdersPage }));
+
+export const LoginPage = lazy(async () => ({ default: (await import('../../features/auth/LoginPage')).LoginPage }));
+export const AssetsPage = lazy(async () => ({ default: (await import('../../features/assets/AssetsPage')).AssetsPage }));
+export const AssetDetailPage = lazy(async () => ({ default: (await import('../../features/assets/AssetDetailPage')).AssetDetailPage }));
+export const CabinetsPage = lazy(async () => ({ default: (await import('../../features/cabinets/CabinetsPage')).CabinetsPage }));
+export const CatalogPage = lazy(async () => ({ default: (await import('../../features/catalog/CatalogPage')).CatalogPage }));
+export const DashboardPage = lazy(async () => ({ default: (await import('../../features/dashboard/DashboardPage')).DashboardPage }));
+export const FinancePage = lazy(async () => ({ default: (await import('../../features/finance/FinancePage')).FinancePage }));
+export const MembershipPage = lazy(async () => ({ default: (await import('../../features/membership/MembershipPage')).MembershipPage }));
+export const UserDossierPage = lazy(async () => ({ default: (await import('../../features/membership/UserDossierPage')).UserDossierPage }));
+export const MerchantsPage = lazy(async () => ({ default: (await import('../../features/merchants/MerchantsPage')).MerchantsPage }));
+export const MerchantDetailPage = lazy(async () => ({ default: (await import('../../features/merchants/MerchantDetailPage')).MerchantDetailPage }));
+export const ContractPurchaseOrdersPage = lazy(async () => ({ default: (await import('../../features/contract-purchases/ContractPurchaseOrdersPage')).ContractPurchaseOrdersPage }));
+export const RulesSettingsPage = lazy(async () => ({ default: (await import('../../features/settings/IntegratedRulesSettingsPage')).IntegratedRulesSettingsPage }));
+export const LoyaltySettingsPage = lazy(async () => ({ default: (await import('../../features/loyalty/IntegratedLoyaltySettingsPage')).IntegratedLoyaltySettingsPage }));
+export const CouponsSettingsPage = lazy(async () => ({ default: (await import('../../features/loyalty/LoyaltyManagementPages')).CouponsSettingsPage }));
+export const LotteryPrizesSettingsPage = lazy(async () => ({ default: (await import('../../features/loyalty/LoyaltyManagementPages')).LotteryPrizesSettingsPage }));
+export const AdminSettingsPage = lazy(async () => ({ default: (await import('../../features/settings/IntegratedAdminSettingsPage')).IntegratedAdminSettingsPage }));
+export const RolesSettingsPage = lazy(async () => ({ default: (await import('../../features/settings/RolesSettingsPage')).RolesSettingsPage }));
+export const LoginLogsSettingsPage = lazy(async () => ({ default: (await import('../../features/settings/IntegratedAuditSettingsPage')).LoginLogsSettingsPage }));
+export const OperationLogsSettingsPage = lazy(async () => ({ default: (await import('../../features/settings/IntegratedAuditSettingsPage')).OperationLogsSettingsPage }));

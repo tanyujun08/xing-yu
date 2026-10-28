@@ -1,0 +1,296 @@
+{
+  "Schemas": {
+    "RentalSupplyPage": {
+      "required": [
+        "items",
+        "page",
+        "facets"
+      ],
+      "additionalProperties": false,
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/RentalSupply"
+          }
+        },
+        "page": {
+          "$ref": "./pagination.yaml#/CursorPageMeta"
+        },
+        "facets": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "categories"
+          ],
+          "properties": {
+            "categories": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "category_id",
+                  "name",
+                  "sort_order"
+                ],
+                "properties": {
+                  "category_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "parent_category_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64
+                  },
+                  "sort_order": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9999
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "RentalSupply": {
+      "required": [
+        "asset_id",
+        "asset_revision_id",
+        "product_id",
+        "display_name",
+        "condition",
+        "description",
+        "defect_description",
+        "accessories_text",
+        "supply_type",
+        "rental_mode",
+        "currency",
+        "unit_price_fen",
+        "deposit_fen",
+        "reference_value_fen",
+        "minimum_units",
+        "version",
+        "available_from",
+        "available_until",
+        "region",
+        "media",
+        "delivery_methods",
+        "allowed_actions",
+        "pickup_location"
+      ],
+      "additionalProperties": false,
+      "type": "object",
+      "properties": {
+        "asset_id": {
+          "minLength": 1,
+          "type": "string",
+          "maxLength": 64
+        },
+        "asset_revision_id": {
+          "minLength": 1,
+          "type": "string",
+          "maxLength": 64
+        },
+        "product_id": {
+          "minLength": 1,
+          "type": "string",
+          "maxLength": 64
+        },
+        "display_name": {
+          "type": "string"
+        },
+        "condition": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "defect_description": {
+          "type": "string"
+        },
+        "accessories_text": {
+          "type": "string"
+        },
+        "supply_type": {
+          "type": "string",
+          "enum": [
+            "PERSONAL",
+            "STORE",
+            "CABINET"
+          ]
+        },
+        "rental_mode": {
+          "type": "string",
+          "enum": [
+            "DAY",
+            "HOUR"
+          ]
+        },
+        "currency": {
+          "type": "string",
+          "const": "CNY"
+        },
+        "unit_price_fen": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$"
+        },
+        "deposit_fen": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$"
+        },
+        "reference_value_fen": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$"
+        },
+        "minimum_units": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$"
+        },
+        "available_from": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "available_until": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "region": {
+          "required": [
+            "dataset_id",
+            "province_id",
+            "city_id",
+            "district_id",
+            "province_name",
+            "city_name",
+            "district_name"
+          ],
+          "additionalProperties": false,
+          "type": [
+            "object",
+            "null"
+          ],
+          "properties": {
+            "dataset_id": {
+              "type": "string"
+            },
+            "province_id": {
+              "type": "string"
+            },
+            "city_id": {
+              "type": "string"
+            },
+            "district_id": {
+              "type": "string"
+            },
+            "province_name": {
+              "type": "string"
+            },
+            "city_name": {
+              "type": "string"
+            },
+            "district_name": {
+              "type": "string"
+            }
+          }
+        },
+        "media": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/RentalSupplyMedia"
+          }
+        },
+        "delivery_methods": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "CABINET",
+              "STORE",
+              "MEET",
+              "EXPRESS",
+              "RUNNER"
+            ]
+          }
+        },
+        "allowed_actions": {
+          "type": "array",
+          "items": {
+            "required": [
+              "code",
+              "enabled",
+              "blocked_reasons"
+            ],
+            "additionalProperties": false,
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string",
+                "const": "QUOTE"
+              },
+              "enabled": {
+                "type": "boolean"
+              },
+              "blocked_reasons": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "pickup_location": {
+          "anyOf": [
+            {
+              "$ref": "#/Schemas/RentalSupplyPickupLocation"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Current verified cabinet location, not a rental reservation or pickup credential. Null for non-cabinet supplies."
+        }
+      }
+    },
+    "RentalSupplyMedia": {
+      "$ref": "./common.yaml#/PublicMaterialMedia"
+    },
+    "RentalSupplyPickupLocation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cabinet_id",
+        "name",
+        "address"
+      ],
+      "properties": {
+        "cabinet_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "address": {
+          "$ref": "./public-locations.yaml#/Schemas/PublicRentalCabinetAddress"
+        }
+      }
+    }
+  }
+}

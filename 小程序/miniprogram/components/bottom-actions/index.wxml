@@ -1,0 +1,13 @@
+<view class="bottom-actions bottom-actions--{{layout}}">
+  <view class="bottom-actions__hint"><slot name="hint"></slot></view>
+  <view class="bottom-actions__row xy-bottom-actions">
+    <slot wx:if="{{layout === 'custom'}}" name="actions"></slot>
+    <view wx:if="{{layout === 'summary' || layout === 'checkout'}}" class="bottom-actions__summary"><slot name="summary"></slot></view>
+    <block wx:if="{{layout !== 'custom'}}">
+    <button wx:if="{{secondaryText}}" class="bottom-actions__button xy-action-hit xy-button-reset xy-tap {{busy || secondaryDisabled ? 'is-disabled' : ''}}" disabled="{{busy || secondaryDisabled}}" aria-disabled="{{busy || secondaryDisabled}}" aria-label="{{secondaryText}}" bindtap="onSecondary"><view class="xy-action-secondary xy-action-shell">{{secondaryText}}</view></button>
+    <button wx:if="{{primaryText}}" class="bottom-actions__button xy-action-hit xy-button-reset xy-tap {{busy || disabled ? 'is-disabled is-waiting' : ''}}" disabled="{{busy || disabled}}" aria-disabled="{{busy || disabled}}" aria-busy="{{busy}}" aria-label="{{busy ? busyText : primaryText}}" bindtap="onPrimary">
+      <view class="xy-action-{{primaryTone === 'danger' ? 'danger' : 'primary'}} xy-action-shell"><view class="xy-action-content"><view wx:if="{{showSpinner}}" class="xy-loading-ring" aria-hidden="true"></view><text>{{busy ? busyText : primaryText}}</text></view></view>
+    </button>
+    </block>
+  </view>
+</view>

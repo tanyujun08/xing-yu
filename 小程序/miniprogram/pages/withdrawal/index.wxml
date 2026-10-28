@@ -1,0 +1,90 @@
+<page-meta root-font-size="system" />
+<page-shell surface="surface">
+<page-header title="{{secondaryNavigationTitle || '提现'}}" background="#ffffff" inverse="{{false}}" bindback="onSecondaryNavigationBack" slot="header" />
+  <view class="withdrawal-page">
+    <view class="withdrawal-tabs" role="tablist" aria-label="提现页面切换">
+      <button class="withdrawal-tab xy-button-reset {{view === 'apply' ? 'is-active' : ''}}" data-view="apply" bindtap="switchView" role="tab" aria-selected="{{view === 'apply'}}" aria-label="申请提现"><text class="withdrawal-tab-label">申请提现</text></button>
+      <button class="withdrawal-tab xy-button-reset {{view === 'records' ? 'is-active' : ''}}" data-view="records" bindtap="switchView" role="tab" aria-selected="{{view === 'records'}}" aria-label="提现记录"><text class="withdrawal-tab-label">提现记录</text></button>
+    </view>
+    <view class="withdrawal-content {{view === 'records' ? 'withdrawal-content--records' : 'withdrawal-content--apply'}}">
+      <block wx:if="{{view === 'apply'}}">
+        <view class="withdrawal-apply-assets">
+        <view class="balance-block withdrawal-summary xy-card">
+          <view class="withdrawal-summary-head">
+            <view class="withdrawal-summary-main">
+              <view class="summary-label-row"><text class="summary-label">可提现余额</text><view class="summary-help-anchor"><button class="summary-help-button xy-button-reset" bindtap="showBalanceHelp" aria-label="查看可提现余额说明"><image class="summary-help" src="{{helpIcon}}" mode="aspectFit" aria-hidden="true" /></button></view></view>
+              <view class="summary-amount {{availableText.length > 11 ? 'summary-amount--long' : ''}}" aria-label="{{availableText}}"><text class="amount-symbol">¥</text><text>{{availableValueText}}</text></view>
+              <text class="summary-hint">{{referencePreview ? '仅供视觉预览，不执行提现' : availableFen === null ? '可提现余额暂不可用' : '满 ¥1 可提现'}}</text>
+            </view>
+            <image class="withdrawal-hero-art" src="{{availableFen >= 100 ? availableHeroArt : heroArt}}" mode="aspectFit" aria-hidden="true" />
+          </view>
+          <view wx:if="{{processingFen > 0}}" class="processing-summary">
+            <view class="processing-copy"><view class="processing-line"><fund-status state="processing" label="提现处理中" /><view class="processing-amount" aria-label="{{processingText}}"><text class="processing-symbol">¥</text><text>{{processingValueText}}</text></view></view><text class="processing-hint">预计 1–3 个工作日到账</text></view><button class="record-link xy-button-reset xy-tap" bindtap="openRecords" aria-label="查看提现记录"><text>查看记录</text><image src="/assets/figma-icons/arrow-right.svg" mode="aspectFit" aria-hidden="true" /></button>
+          </view>
+        </view>
+        <view wx:if="{{submissionKey}}" class="pending-block xy-card">
+          <view class="pending-head"><text class="pending-title">提现申请处理中</text><text class="pending-state">结果待确认</text></view>
+          <text class="pending-amount">{{pendingAmountText}}</text><text class="pending-copy">当前申请完成前不能更换金额重复提交，请先查询原申请。</text>
+          <button class="pending-action xy-button-reset xy-tap" bindtap="openRecords">查看提现记录</button>
+        </view>
+        <view wx:elif="{{referencePreview || availableFen >= 100}}" class="form-section xy-card">
+          <text class="form-title">提现金额</text>
+          <view class="amount-field {{amountFocused ? 'is-focused' : ''}} {{amount ? 'is-filled' : ''}} {{errorText ? 'is-error' : ''}} {{amountDisabled ? 'is-disabled' : ''}}"><text class="field-symbol">¥</text><input type="digit" value="{{amount}}" placeholder="0.00" placeholder-class="amount-placeholder" disabled="{{amountDisabled}}" aria-disabled="{{amountDisabled}}" bindfocus="amountFocus" bindblur="amountBlur" bindinput="input" /><view class="all-button xy-tap {{amountDisabled ? 'is-disabled' : ''}}"><text>全部提现</text><button class="touch-overlay" hover-class="none" disabled="{{amountDisabled}}" aria-disabled="{{amountDisabled}}" bindtap="fillAll" aria-label="全部提现"></button></view></view>
+          <text wx:if="{{errorText}}" class="field-error">{{errorText}}</text><text wx:else class="field-guidance">最低 ¥1</text>
+        </view>
+        <view class="account-section xy-card {{accountJoined ? 'account-section--joined' : ''}}">
+          <view class="account-main"><view class="account-icon"><image src="{{accountIcon}}" mode="aspectFit" aria-hidden="true" /></view><view class="account-recipient"><text class="account-title">到账账户</text><text class="account-name">{{accountLabel}}</text></view></view>
+        </view>
+        </view>
+        <view class="withdrawal-explanation">
+          <text class="explanation-title">提现说明</text>
+          <view class="explanation-list">
+            <view wx:for="{{explanationRows}}" wx:key="id" class="explanation-row">
+              <view class="explanation-row-label"><view class="info-icon-frame"><image class="info-icon" src="{{item.icon}}" mode="aspectFit" aria-hidden="true" /></view><view class="explanation-copy"><text class="explanation-row-title">{{item.title}}</text><text class="explanation-row-detail">{{item.detail}}</text></view></view>
+            </view>
+          </view>
+        </view>
+      </block>
+      <view wx:else class="withdrawal-records">
+        <view wx:if="{{withdrawals.length === 0}}" class="record-empty xy-empty-page">
+          <image class="xy-empty-page__illustration" src="/assets/illustrations/empty-ledger.webp" mode="aspectFit" aria-hidden="true" /><text class="xy-empty-page__title">提现记录暂不可用</text><text class="xy-empty-page__copy">请稍后再试。</text>
+        </view>
+        <view wx:if="{{currentWithdrawal}}" class="withdrawal-record--current xy-card">
+          <text class="record-kicker">当前提现</text>
+          <view class="record-head">
+            <view class="record-subject">
+            <view class="record-amount {{currentWithdrawal.amountText.length > 11 ? 'record-amount--long' : ''}}" aria-label="{{currentWithdrawal.amountText}}"><text class="amount-symbol">¥</text><text>{{currentWithdrawal.amountValueText}}</text></view>
+            <view class="record-aside"><fund-status state="{{currentWithdrawal.state}}" label="{{currentWithdrawal.stateText}}" /></view>
+            </view>
+            <view class="record-details"><text class="record-account">{{currentWithdrawal.accountLabel}}</text><text class="record-meta">申请时间 {{currentWithdrawal.createdText}}</text></view>
+          </view>
+          <view class="record-progress {{currentWithdrawal.state === 'unknown' ? 'is-unknown' : ''}}">
+            <view class="progress-line"><view class="progress-line-active"></view></view>
+            <view class="progress-step is-done"><view class="progress-node"><image class="progress-dot" src="{{stepIcons.completed}}" mode="aspectFit" aria-hidden="true" /></view><text class="progress-label">申请提交</text></view>
+            <view class="progress-step is-current"><view class="progress-node"><image class="progress-dot" src="{{currentWithdrawal.state === 'unknown' ? stepIcons.unknown : stepIcons.current}}" mode="aspectFit" aria-hidden="true" /></view><text class="progress-label">{{currentWithdrawal.state === 'unknown' ? '结果待确认' : currentWithdrawal.state === 'confirming' ? '到账确认中' : '平台处理中'}}</text><text class="progress-estimate">{{currentWithdrawal.state === 'unknown' ? '请查询原申请' : '预计 1–3 个工作日到账'}}</text></view>
+            <view class="progress-step"><view class="progress-node"><image class="progress-dot" src="{{stepIcons.waiting}}" mode="aspectFit" aria-hidden="true" /></view><text class="progress-label">到账成功</text></view>
+          </view>
+          <view wx:if="{{currentWithdrawal.state === 'unknown'}}" class="record-footer"><button class="record-action xy-button-reset xy-tap" data-id="{{currentWithdrawal.id}}" data-state="{{currentWithdrawal.state}}" bindtap="withdrawalAction" disabled="{{submitting}}" aria-disabled="{{submitting}}"><view class="record-action-shell">查询进度</view></button></view>
+        </view>
+        <view wx:if="{{historyWithdrawals.length > 0}}" class="history-section">
+          <text class="explanation-title">历史记录</text>
+          <view class="history-list">
+            <view wx:for="{{historyWithdrawals}}" wx:key="id" class="history-row">
+              <view class="history-line">
+                <image class="history-status" src="{{item.state === 'completed' ? statusIcons.completed : item.state === 'failed' ? statusIcons.failed : statusIcons.pending}}" mode="aspectFit" aria-hidden="true" />
+                <text class="record-state-text">{{item.stateText}}</text>
+                <view class="history-amount" aria-label="{{item.amountText}}"><text class="history-amount-symbol">¥</text><text>{{item.amountValueText}}</text></view>
+              </view>
+              <view class="history-copy"><text class="history-account">{{item.accountLabel}}</text><text class="record-meta">{{item.createdText}}</text></view>
+              <view wx:if="{{item.state === 'failed'}}" class="failure-notice">
+                <text class="failure-copy">{{item.failureText || '提现未成功'}}</text>
+              </view>
+              <view wx:elif="{{item.state !== 'completed'}}" class="history-action"><button class="record-action xy-button-reset xy-tap" data-id="{{item.id}}" data-state="{{item.state}}" bindtap="withdrawalAction" disabled="{{submitting}}" aria-disabled="{{submitting}}"><view class="record-action-shell">查询进度</view></button></view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <bottom-actions wx:if="{{view === 'apply'}}" slot="footer" layout="primary-emphasis" primary-text="{{primaryActionText}}" secondary-text="联系客服" busy-text="提交中…" busy="{{submitting}}" disabled="{{submitting || submitDisabled}}" bindprimary="submit" bindsecondary="contactSupport" />
+</page-shell>

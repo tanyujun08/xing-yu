@@ -1,0 +1,388 @@
+{
+  "Schemas": {
+    "RewardSnapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "config_version_id",
+        "benefit_key",
+        "rewards"
+      ],
+      "properties": {
+        "schema_version": {
+          "type": "integer",
+          "const": 1
+        },
+        "config_version_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "benefit_key": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "rewards": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 20,
+          "items": {
+            "$ref": "./business-configuration.yaml#/RewardItem"
+          }
+        }
+      }
+    },
+    "BenefitGrantReceipt": {
+      "type": "object",
+      "required": [
+        "grant_id",
+        "reward_kind",
+        "reward_code",
+        "reward_units",
+        "coupon_id"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "coupon_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 64,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "grant_id": {
+          "type": "string",
+          "maxLength": 64,
+          "minLength": 1
+        },
+        "reward_kind": {
+          "enum": [
+            "POINT",
+            "ENTITLEMENT",
+            "COUPON"
+          ],
+          "type": "string"
+        },
+        "reward_units": {
+          "$ref": "./business-configuration.yaml#/PolicyUnits"
+        },
+        "reward_code": {
+          "enum": [
+            "PINK",
+            "GROWTH",
+            "CONTRACT",
+            "PUBLISH_QUOTA",
+            "DEPOSIT_WAIVER",
+            "PUBLISH_ONCE",
+            "ONE_DAY_RENT",
+            "GUARD_DISCOUNT"
+          ],
+          "type": "string"
+        }
+      }
+    },
+    "CheckInHistoryGrant": {
+      "$ref": "#/Schemas/BenefitGrantReceipt"
+    },
+    "CheckInHistoryEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "check_in",
+        "grants"
+      ],
+      "properties": {
+        "check_in": {
+          "$ref": "./members.yaml#/Schemas/MemberCheckIn"
+        },
+        "grants": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/CheckInHistoryGrant"
+          }
+        }
+      }
+    },
+    "CheckInMonth": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "month",
+        "today",
+        "items"
+      ],
+      "properties": {
+        "month": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])$"
+        },
+        "today": {
+          "type": "string",
+          "format": "date"
+        },
+        "items": {
+          "type": "array",
+          "maxItems": 31,
+          "items": {
+            "$ref": "#/Schemas/CheckInHistoryEntry"
+          }
+        }
+      }
+    },
+    "CurrentCheckInRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rule_version_id",
+        "policy"
+      ],
+      "properties": {
+        "rule_version_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "policy": {
+          "$ref": "./business-config-direct.yaml#/CheckInPolicyV2"
+        }
+      }
+    },
+    "CheckInReceipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "check_in",
+        "grants"
+      ],
+      "properties": {
+        "check_in": {
+          "$ref": "./members.yaml#/Schemas/MemberCheckIn"
+        },
+        "grants": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 65535,
+          "items": {
+            "$ref": "#/Schemas/BenefitGrantReceipt"
+          }
+        }
+      }
+    },
+  "BenefitReward": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "units",
+        "quantity",
+        "coupon_type",
+        "valid_days"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "PINK",
+            "GROWTH",
+            "CONTRACT",
+            "PUBLISH_QUOTA",
+            "COUPON"
+          ]
+        },
+        "units": {
+          "anyOf": [
+            {
+              "$ref": "./business-configuration.yaml#/PolicyUnits"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "quantity": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "coupon_type": {
+          "anyOf": [
+            {
+              "$ref": "./loyalty.yaml#/Schemas/CouponType"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "valid_days": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 36500
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "description": "Current server task reward projection, matching BenefitReward. Irrelevant fields are null. Coupon rewards have no expiry; valid_days applies only to entitlement rewards."
+    },
+    "OwnGrowthTask": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "benefit_code",
+        "task_code",
+        "period",
+        "cycle_key",
+        "limit",
+        "progress_count",
+        "claimed_count",
+        "claimable_count",
+        "state",
+        "rewards"
+      ],
+      "properties": {
+        "benefit_code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "task_code": {
+          "type": "string",
+          "enum": [
+            "REGISTER",
+            "VIEW_ASSET"
+          ]
+        },
+        "period": {
+          "type": "string",
+          "enum": [
+            "LIFETIME",
+            "DAY",
+            "MONTH"
+          ]
+        },
+        "cycle_key": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "limit": {
+          "$ref": "./business-configuration.yaml#/PolicyUnits"
+        },
+        "progress_count": {
+          "$ref": "./business-configuration.yaml#/PolicyUnits"
+        },
+        "claimed_count": {
+          "$ref": "./business-configuration.yaml#/PolicyUnits"
+        },
+        "claimable_count": {
+          "$ref": "./business-configuration.yaml#/PolicyUnits"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "IN_PROGRESS",
+            "CLAIMABLE",
+            "COMPLETED"
+          ]
+        },
+        "rewards": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/BenefitReward"
+          }
+        }
+      },
+      "description": "Authenticated owner's server progress only. A claim is allowed when claimable_count is positive. REGISTER uses the real registration source fact. VIEW_ASSET has no producer in this version and cannot be completed by a client command."
+    },
+    "OwnGrowthTaskList": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "enabled",
+        "disabled_reason",
+        "rule_version_id",
+        "items",
+        "as_of_at"
+      ],
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "disabled_reason": {
+          "type": "string",
+          "enum": [
+            "",
+            "PUBLISHED_CONFIGURATION_REQUIRED"
+          ]
+        },
+        "rule_version_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/OwnGrowthTask"
+          }
+        },
+        "as_of_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "OwnGrowthTaskClaim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "task",
+        "grants",
+        "replayed"
+      ],
+      "properties": {
+        "task": {
+          "$ref": "#/Schemas/OwnGrowthTask"
+        },
+        "grants": {
+          "type": "array",
+          "maxItems": 65535,
+          "items": {
+            "$ref": "#/Schemas/BenefitGrantReceipt"
+          }
+        },
+        "replayed": {
+          "type": "boolean"
+        }
+      },
+      "description": "Immutable original claim and its actual posted grant facts. Replaying the original key returns the same fact. A benefit code cannot claim the same progress event again after rule changes."
+    }
+  }
+}

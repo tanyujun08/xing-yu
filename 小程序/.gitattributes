@@ -1,0 +1,57 @@
+* text=auto
+
+.gitattributes text eol=lf
+VERSION text eol=lf
+*.ts text eol=lf
+*.js text eol=lf
+*.mjs text eol=lf
+*.json text eol=lf
+*.wxml text eol=lf
+*.wxss text eol=lf
+*.svg text eol=lf
+*.md text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+openapi/** whitespace=-blank-at-eof
+Dockerfile text eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+
+# 固定展示素材身份 = config/static-assets.json 记录的字节 sha256（OSS key 含 sha256），
+# 检出的换行字节必须与已上传对象一致；下列 31 个对象已按 CRLF 字节上传。
+static-assets/**/*.svg text eol=lf
+static-assets/assets/figma-icons/discovery-box.svg text eol=crlf
+static-assets/assets/figma-icons/discovery-call.svg text eol=crlf
+static-assets/assets/figma-icons/discovery-camera.svg text eol=crlf
+static-assets/assets/figma-icons/discovery-clock.svg text eol=crlf
+static-assets/assets/figma-icons/discovery-document.svg text eol=crlf
+static-assets/assets/figma-icons/discovery-location.svg text eol=crlf
+static-assets/assets/figma-icons/discovery-navigate.svg text eol=crlf
+static-assets/assets/figma-icons/discovery-phone.svg text eol=crlf
+static-assets/assets/figma-icons/discovery-service.svg text eol=crlf
+static-assets/assets/figma-icons/profile-lend.svg text eol=crlf
+static-assets/assets/figma-icons/profile-publish-filled.svg text eol=crlf
+static-assets/assets/figma-icons/profile-rental-guide.svg text eol=crlf
+static-assets/assets/figma-icons/profile-rental-service.svg text eol=crlf
+static-assets/assets/figma-icons/wallet-deposit.svg text eol=crlf
+static-assets/assets/figma-icons/wallet-frozen.svg text eol=crlf
+static-assets/assets/figma-icons/wallet-processing.svg text eol=crlf
+static-assets/assets/figma-icons/wallet-receivable.svg text eol=crlf
+static-assets/assets/figma-icons/wallet-records.svg text eol=crlf
+static-assets/assets/figma-icons/wallet-reserve.svg text eol=crlf
+static-assets/assets/figma-icons/withdrawal-help.svg text eol=crlf
+static-assets/assets/figma-icons/withdrawal-status-completed.svg text eol=crlf
+static-assets/assets/figma-icons/withdrawal-status-failed.svg text eol=crlf
+static-assets/assets/figma-icons/withdrawal-status-pending.svg text eol=crlf
+static-assets/assets/figma-icons/withdrawal-step-completed.svg text eol=crlf
+static-assets/assets/figma-icons/withdrawal-step-current.svg text eol=crlf
+static-assets/assets/figma-icons/withdrawal-step-unknown.svg text eol=crlf
+static-assets/assets/figma-icons/withdrawal-step-waiting.svg text eol=crlf
+static-assets/assets/icons/navigation-back-white.svg text eol=crlf
+static-assets/assets/icons/navigation-back.svg text eol=crlf
+static-assets/assets/illustrations/withdrawal-available.svg text eol=crlf
+static-assets/assets/illustrations/withdrawal-balance.svg text eol=crlf

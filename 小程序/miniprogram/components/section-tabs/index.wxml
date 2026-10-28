@@ -1,0 +1,10 @@
+<view class="section-tabs {{divider ? 'section-tabs--divider' : ''}}">
+  <view wx:if="{{title}}" class="section-tabs__title">{{title}}</view>
+  <view class="section-tabs__rail" role="tablist" aria-label="{{ariaLabel}}">
+    <view wx:for="{{tabs}}" wx:key="id" class="section-tabs__item {{value === item.id ? 'is-active' : ''}} {{item.disabled ? 'is-disabled' : ''}}">
+      <text class="section-tabs__label" aria-hidden="true">{{item.label}}</text>
+      <button class="section-tabs__hit xy-button-reset" data-value="{{item.id}}" bindtap="onSelect" role="tab" aria-label="{{item.label}}" aria-selected="{{value === item.id}}" aria-disabled="{{!!item.disabled}}" disabled="{{!!item.disabled}}"></button>
+    </view>
+  </view>
+  <view class="section-tabs__content"><slot /></view>
+</view>

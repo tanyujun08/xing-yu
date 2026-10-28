@@ -1,0 +1,46 @@
+@import "../../shared/design/member-subpage.wxss";
+
+.star-ledger-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 76rpx;
+  height: 76rpx;
+  border: 1rpx solid var(--xy-member-color-hero-progress);
+  border-radius: var(--xy-radius-emphasis);
+  background: var(--xy-member-color-hero-dark-border);
+}
+
+.star-ledger-mark image {
+  width: 42rpx;
+  height: 42rpx;
+  filter: brightness(0) invert(1);
+}
+
+.star-ledger-meta {
+  gap: var(--xy-space-6);
+}
+
+.star-ledger-page .member-subpage__button:last-child {
+  border-color: var(--xy-member-color-button-overlay);
+  background: transparent;
+  color: var(--xy-member-color-white);
+}
+
+.star-record-list {
+  background: var(--xy-member-color-surface-overlay-strong);
+}
+
+.star-record-row {
+  min-height: calc(var(--xy-control-height-large) + var(--xy-space-2));
+}
+
+.star-record-unit {
+  color: var(--xy-color-text-muted);
+  font-size: var(--xy-text-body-small-size);
+  line-height: var(--xy-text-body-small-line-height);
+}
+
+.member-subpage__button {
+  min-height: var(--xy-size-touch-min);
+}

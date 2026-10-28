@@ -1,0 +1,15 @@
+{
+  "navigationBarTitleText": "设备订单",
+  "navigationStyle": "custom",
+  "enablePullDownRefresh": true,
+  "onReachBottomDistance": 120,
+  "backgroundTextStyle": "dark",
+  "usingComponents": {
+    "media-state": "../../components/media-state/index",
+    "page-header": "../../components/page-header/index",
+    "page-shell": "../../components/page-shell/index",
+    "status-view": "../../components/status-view/index",
+    "task-sheet": "../../components/task-sheet/index"
+  },
+  "navigationBarTextStyle": "black"
+}

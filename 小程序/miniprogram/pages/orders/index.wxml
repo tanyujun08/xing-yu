@@ -1,0 +1,35 @@
+<page-meta root-font-size="system" />
+<page-shell surface="page" has-footer="{{false}}" fixed-header>
+  <page-header slot="header" title="我的订单" show-back="{{false}}" variant="order-primary" />
+  <view class="orders-page">
+  <view wx:if="{{!loggedIn}}" class="orders-login-card xy-card"><text class="orders-login-title">登录后查看订单</text><text class="orders-login-copy">你的租赁、出租和资金状态会保存在当前账号中</text><view class="orders-login-button xy-action-primary xy-tap" bindtap="openLogin" role="button">去登录</view></view>
+  <view wx:if="{{loggedIn && showLendTab}}" class="role-tabs">
+    <view class="role-tab {{role === 'rent' ? 'is-active' : ''}}" data-role="rent" bindtap="chooseRole" role="button" aria-label="查看我租的订单"><text class="role-tab-label">我租的</text></view>
+    <view wx:if="{{showLendTab}}" class="role-tab {{role === 'lend' ? 'is-active' : ''}}" data-role="lend" bindtap="chooseRole" role="button" aria-label="查看我出租的订单"><text class="role-tab-label">我出租的</text></view>
+  </view>
+  <view wx:if="{{loggedIn}}" class="filter-list">
+    <button wx:for="{{primaryFilters}}" wx:key="id" class="xy-button-reset filter-chip {{filter === item.id ? 'is-active' : ''}}" data-filter="{{item.id}}" bindtap="chooseFilter" aria-label="筛选{{item.label}}订单">{{item.label}}</button>
+    <button wx:if="{{showProcessingFilter}}" class="xy-button-reset filter-chip {{activeFilterGroup === 'processing' ? 'is-active' : ''}}" data-group="processing" bindtap="openFilterMenu" aria-label="选择待处理状态">待处理</button>
+    <button class="xy-button-reset filter-chip {{activeFilterGroup === 'more' ? 'is-active' : ''}}" data-group="more" bindtap="openFilterMenu" aria-label="选择更多订单状态">更多</button>
+  </view>
+  <text wx:if="{{loggedIn && activeFilterGroup}}" class="selected-filter">当前筛选：{{selectedFilterLabel}}</text>
+  <view wx:if="{{loggedIn}}" class="order-list">
+    <status-view wx:if="{{listState.phase === 'initial-loading'}}" state="loading" title="正在加载订单" description="请稍候" />
+    <status-view wx:elif="{{listState.phase === 'initial-error'}}" state="error" title="订单加载失败" description="{{listState.error.message}}" action-text="重试" bindaction="retryInitial" illustration-src="{{icons.emptyGeneric}}" />
+    <status-view wx:elif="{{listState.phase === 'empty'}}" state="empty" title="暂无相关订单" description="{{role === 'lend' ? '你的设备产生出租订单后，会显示在这里' : '浏览设备，开启你的租赁体验'}}" illustration-src="{{icons.emptyOrders}}" />
+    <view wx:for="{{items}}" wx:key="id" class="order-card xy-card xy-tap" data-id="{{item.id}}" bindtap="openOrder" role="button" aria-label="查看{{item.deviceName}}订单">
+      <view class="order-card-main"><order-product-summary variant="order-list" title="{{item.deviceName}}" media-state="{{item.mediaState}}" media-src="{{item.image}}"><view slot="meta"><text class="order-meta">{{item.supplyText}} · {{item.pickupText}}</text><text class="order-meta">{{item.rentalText}}</text></view></order-product-summary><text class="order-status order-status--{{item.statusTone}}">{{item.currentNodeText || item.mainStatusText}}</text></view>
+      <view wx:if="{{item.deadlineText}}" class="order-deadline">{{item.deadlineText}}</view>
+      <view class="order-card-foot {{!item.showAmount ? 'order-card-foot--task' : ''}}"><view wx:if="{{item.showAmount}}" class="order-price"><text class="order-amount-label">{{item.amountLabel}}</text><text class="order-amount">{{item.amountText}}</text></view><button class="order-card-action {{item.actionPrimary ? 'is-primary' : ''}}" data-id="{{item.id}}" catchtap="openOrder" aria-label="{{item.actionLabel}} {{item.deviceName}}">{{item.actionLabel}}</button></view>
+    </view>
+    <status-view wx:if="{{listState.phase === 'ready' && listState.incremental === 'refreshing'}}" state="loading" density="compact-footer" title="正在刷新订单" />
+    <status-view wx:elif="{{listState.phase === 'ready' && listState.incremental === 'refresh-error'}}" state="error" density="compact-footer" title="刷新失败" action-text="重试刷新" bindaction="retryRefresh" />
+    <status-view wx:elif="{{listState.phase === 'ready' && listState.incremental === 'loading-more'}}" state="loading" density="compact-footer" title="正在加载更多" />
+    <status-view wx:elif="{{listState.phase === 'ready' && listState.incremental === 'load-more-error'}}" state="error" density="compact-footer" title="加载更多失败" action-text="重试" bindaction="retryLoadMore" />
+    <status-view wx:elif="{{listState.phase === 'ready' && listState.incremental === 'done'}}" state="end" density="compact-footer" title="订单已全部加载" />
+  </view>
+  </view>
+</page-shell>
+<task-sheet open="{{filterMenuOpen}}" title="{{filterMenuTitle}}" show-footer="{{false}}" bindclose="closeFilterMenu">
+  <view class="filter-menu"><button wx:for="{{filterMenuOptions}}" wx:key="id" class="xy-button-reset filter-option {{filter === item.id ? 'is-active' : ''}}" data-filter="{{item.id}}" bindtap="chooseFilter" aria-label="筛选{{item.label}}订单">{{item.label}}<text wx:if="{{filter === item.id}}"> ✓</text></button></view>
+</task-sheet>

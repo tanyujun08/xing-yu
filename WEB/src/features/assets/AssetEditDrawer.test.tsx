@@ -1,0 +1,35 @@
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { afterEach, expect, it, vi } from 'vitest';
+import type { Asset } from '../../shared/services';
+import { AssetEditDrawer } from './AssetEditDrawer';
+const fx = vi.hoisted(() => ({ update: vi.fn() }));
+vi.mock('../../shared/services', () => ({ useAdminServices: () => ({ assets: fx }) }));
+const asset = { id: 'camera-1', assetNo: 'CAM-1', version: '7', identifierValue: 'TAG-1', displayName: '原相机', condition: '良好', defectDescription: '', accessoryDescription: '电池', rentalType: 'HOUR', unitPriceFen: 1000, minimumUnits: 1, depositFen: 20000, referenceValueFen: 50000 } as Asset;
+const clients: QueryClient[] = [];
+afterEach(() => { cleanup(); clients.splice(0).forEach(client => client.clear()); vi.resetAllMocks(); });
+it('prefills hourly terms and submits exact integer fen with the original asset version', async () => {
+  fx.update.mockResolvedValue({});
+  const saved = vi.fn(async () => undefined);
+  const client = new QueryClient(); clients.push(client);
+  render(<QueryClientProvider client={client}><AssetEditDrawer asset={asset} onCancel={vi.fn()} onSaved={saved} /></QueryClientProvider>);
+  expect(screen.getByLabelText('租金（元）')).toHaveDisplayValue('10.00');
+  expect(screen.getByLabelText('最低租期')).toHaveDisplayValue('1');
+  fireEvent.change(screen.getByLabelText('租金（元）'), { target: { value: '12.34' } });
+  fireEvent.change(screen.getByLabelText('修改原因'), { target: { value: '调整小时租价格' } });
+  fireEvent.click(screen.getByRole('button', { name: '保存资产新版本' }));
+  await waitFor(() => expect(fx.update).toHaveBeenCalledOnce());
+  expect(fx.update.mock.calls[0]?.[0]).toMatchObject({ assetId: 'camera-1', expectedVersion: '7', rentalType: 'HOUR', minimumUnits: 1, unitPriceFen: 1234, depositFen: 20000, accessoryDescription: '电池', changeReason: '调整小时租价格', command: { idempotencyKey: expect.any(String) } });
+  await waitFor(() => expect(saved).toHaveBeenCalledOnce());
+});
+it('shows a rejected save once and keeps the form available for correction', async () => {
+  fx.update.mockRejectedValue(new Error('请求校验失败'));
+  const saved = vi.fn(async () => undefined);
+  const client = new QueryClient(); clients.push(client);
+  render(<QueryClientProvider client={client}><AssetEditDrawer asset={asset} onCancel={vi.fn()} onSaved={saved} /></QueryClientProvider>);
+  fireEvent.change(screen.getByLabelText('修改原因'), { target: { value: '验证失败提示' } });
+  fireEvent.click(screen.getByRole('button', { name: '保存资产新版本' }));
+  await waitFor(() => expect(screen.getAllByText('请求校验失败')).toHaveLength(1));
+  expect(saved).not.toHaveBeenCalled();
+  expect(screen.getByRole('button', { name: '保存资产新版本' })).toBeEnabled();
+});

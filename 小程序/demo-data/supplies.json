@@ -1,0 +1,1714 @@
+[
+  {
+    "asset_id": "asset-1",
+    "asset_revision_id": "revision-1",
+    "product_id": "product-1",
+    "display_name": "索尼 A7M4 全画幅相机",
+    "condition": "九成新，功能正常",
+    "description": "适合旅行、人像与日常创作；含原装配件和便携包。",
+    "defect_description": "正常使用痕迹，无功能缺陷",
+    "accessories_text": "电池 ×2、充电器、肩带、收纳包",
+    "supply_type": "CABINET",
+    "rental_mode": "DAY",
+    "currency": "CNY",
+    "unit_price_fen": "8000",
+    "deposit_fen": "300000",
+    "reference_value_fen": "1500000",
+    "minimum_units": "1",
+    "version": "1",
+    "available_from": "2026-01-01T00:00:00Z",
+    "available_until": "2027-12-31T23:59:59Z",
+    "region": {
+      "dataset_id": "demo-regions",
+      "province_id": "440000",
+      "city_id": "440300",
+      "district_id": "440305",
+      "province_name": "广东省",
+      "city_name": "深圳市",
+      "district_name": "南山区"
+    },
+    "media": [
+      {
+        "material_id": "photo-1",
+        "role": "COVER",
+        "sort_order": 0,
+        "url": "/assets/demo/device-1.png",
+        "mime_type": "image/png",
+        "size_bytes": 4096,
+        "metadata": {
+          "schema_version": 1,
+          "width": 640,
+          "height": 640,
+          "duration_ms": null,
+          "video_codec": null,
+          "audio_codec": null
+        },
+        "poster": null
+      }
+    ],
+    "delivery_methods": [
+      "CABINET"
+    ],
+    "allowed_actions": [
+      {
+        "code": "QUOTE",
+        "enabled": true,
+        "blocked_reasons": []
+      }
+    ],
+    "pickup_location": {
+      "cabinet_id": "cabinet-1",
+      "name": "科技园租赁柜",
+      "address": {
+        "dataset_id": "demo-regions",
+        "province_id": "440000",
+        "city_id": "440300",
+        "district_id": "440305",
+        "province_name": "广东省",
+        "city_name": "深圳市",
+        "district_name": "南山区",
+        "detail_address": "科技园科苑路 88 号（演示地址）",
+        "recipient_name": "林沐（演示）",
+        "phone_country_code": "+86",
+        "phone": "13800000000",
+        "location": {
+          "latitude": "22.540000",
+          "longitude": "113.930000",
+          "coordinate_system": "GCJ02",
+          "source": "MAP_PICK"
+        }
+      }
+    },
+    "category": {
+      "category_id": "category-1",
+      "name": "相机"
+    },
+    "availability_status": "AVAILABLE"
+  },
+  {
+    "asset_id": "asset-2",
+    "asset_revision_id": "revision-2",
+    "product_id": "product-2",
+    "display_name": "佳能 EOS R6 II",
+    "condition": "九成新，功能正常",
+    "description": "适合旅行、人像与日常创作；含原装配件和便携包。",
+    "defect_description": "正常使用痕迹，无功能缺陷",
+    "accessories_text": "电池 ×2、充电器、肩带、收纳包",
+    "supply_type": "PERSONAL",
+    "rental_mode": "DAY",
+    "currency": "CNY",
+    "unit_price_fen": "9000",
+    "deposit_fen": "300000",
+    "reference_value_fen": "1500000",
+    "minimum_units": "1",
+    "version": "1",
+    "available_from": "2026-01-01T00:00:00Z",
+    "available_until": "2027-12-31T23:59:59Z",
+    "region": {
+      "dataset_id": "demo-regions",
+      "province_id": "440000",
+      "city_id": "440300",
+      "district_id": "440305",
+      "province_name": "广东省",
+      "city_name": "深圳市",
+      "district_name": "南山区"
+    },
+    "media": [
+      {
+        "material_id": "photo-2",
+        "role": "COVER",
+        "sort_order": 0,
+        "url": "/assets/demo/device-2.png",
+        "mime_type": "image/png",
+        "size_bytes": 4096,
+        "metadata": {
+          "schema_version": 1,
+          "width": 640,
+          "height": 640,
+          "duration_ms": null,
+          "video_codec": null,
+          "audio_codec": null
+        },
+        "poster": null
+      }
+    ],
+    "delivery_methods": [
+      "EXPRESS"
+    ],
+    "allowed_actions": [
+      {
+        "code": "QUOTE",
+        "enabled": true,
+        "blocked_reasons": []
+      }
+    ],
+    "pickup_location": null,
+    "category": {
+      "category_id": "category-2",
+      "name": "镜头"
+    },
+    "availability_status": "AVAILABLE"
+  },
+  {
+    "asset_id": "asset-3",
+    "asset_revision_id": "revision-3",
+    "product_id": "product-3",
+    "display_name": "富士 X-T5 微单",
+    "condition": "九成新，功能正常",
+    "description": "适合旅行、人像与日常创作；含原装配件和便携包。",
+    "defect_description": "正常使用痕迹，无功能缺陷",
+    "accessories_text": "电池 ×2、充电器、肩带、收纳包",
+    "supply_type": "STORE",
+    "rental_mode": "DAY",
+    "currency": "CNY",
+    "unit_price_fen": "10000",
+    "deposit_fen": "300000",
+    "reference_value_fen": "1500000",
+    "minimum_units": "1",
+    "version": "1",
+    "available_from": "2026-01-01T00:00:00Z",
+    "available_until": "2027-12-31T23:59:59Z",
+    "region": {
+      "dataset_id": "demo-regions",
+      "province_id": "440000",
+      "city_id": "440300",
+      "district_id": "440305",
+      "province_name": "广东省",
+      "city_name": "深圳市",
+      "district_name": "南山区"
+    },
+    "media": [
+      {
+        "material_id": "photo-3",
+        "role": "COVER",
+        "sort_order": 0,
+        "url": "/assets/demo/device-3.png",
+        "mime_type": "image/png",
+        "size_bytes": 4096,
+        "metadata": {
+          "schema_version": 1,
+          "width": 640,
+          "height": 640,
+          "duration_ms": null,
+          "video_codec": null,
+          "audio_codec": null
+        },
+        "poster": null
+      }
+    ],
+    "delivery_methods": [
+      "EXPRESS"
+    ],
+    "allowed_actions": [
+      {
+        "code": "QUOTE",
+        "enabled": true,
+        "blocked_reasons": []
+      }
+    ],
+    "pickup_location": null,
+    "category": {
+      "category_id": "category-3",
+      "name": "配件"
+    },
+    "availability_status": "AVAILABLE"
+  },
+  {
+    "asset_id": "asset-4",
+    "asset_revision_id": "revision-4",
+    "product_id": "product-4",
+    "display_name": "大疆 Pocket 3",
+    "condition": "九成新，功能正常",
+    "description": "适合旅行、人像与日常创作；含原装配件和便携包。",
+    "defect_description": "正常使用痕迹，无功能缺陷",
+    "accessories_text": "电池 ×2、充电器、肩带、收纳包",
+    "supply_type": "CABINET",
+    "rental_mode": "DAY",
+    "currency": "CNY",
+    "unit_price_fen": "11000",
+    "deposit_fen": "300000",
+    "reference_value_fen": "1500000",
+    "minimum_units": "1",
+    "version": "1",
+    "available_from": "2026-01-01T00:00:00Z",
+    "available_until": "2027-12-31T23:59:59Z",
+    "region": {
+      "dataset_id": "demo-regions",
+      "province_id": "440000",
+      "city_id": "440300",
+      "district_id": "440305",
+      "province_name": "广东省",
+      "city_name": "深圳市",
+      "district_name": "南山区"
+    },
+    "media": [
+      {
+        "material_id": "photo-4",
+        "role": "COVER",
+        "sort_order": 0,
+        "url": "/assets/demo/device-4.png",
+        "mime_type": "image/png",
+        "size_bytes": 4096,
+        "metadata": {
+          "schema_version": 1,
+          "width": 640,
+          "height": 640,
+          "duration_ms": null,
+          "video_codec": null,
+          "audio_codec": null
+        },
+        "poster": null
+      }
+    ],
+    "delivery_methods": [
+      "CABINET"
+    ],
+    "allowed_actions": [
+      {
+        "code": "QUOTE",
+        "enabled": true,
+        "blocked_reasons": []
+      }
+    ],
+    "pickup_location": {
+      "cabinet_id": "cabinet-1",
+      "name": "科技园租赁柜",
+      "address": {
+        "dataset_id": "demo-regions",
+        "province_id": "440000",
+        "city_id": "440300",
+        "district_id": "440305",
+        "province_name": "广东省",
+        "city_name": "深圳市",
+        "district_name": "南山区",
+        "detail_address": "科技园科苑路 88 号（演示地址）",
+        "recipient_name": "林沐（演示）",
+        "phone_country_code": "+86",
+        "phone": "13800000000",
+        "location": {
+          "latitude": "22.540000",
+          "longitude": "113.930000",
+          "coordinate_system": "GCJ02",
+          "source": "MAP_PICK"
+        }
+      }
+    },
+    "category": {
+      "category_id": "category-1",
+      "name": "相机"
+    },
+    "availability_status": "AVAILABLE"
+  },
+  {
+    "asset_id": "asset-5",
+    "asset_revision_id": "revision-5",
+    "product_id": "product-5",
+    "display_name": "大疆 Mini 4 Pro",
+    "condition": "九成新，功能正常",
+    "description": "适合旅行、人像与日常创作；含原装配件和便携包。",
+    "defect_description": "正常使用痕迹，无功能缺陷",
+    "accessories_text": "电池 ×2、充电器、肩带、收纳包",
+    "supply_type": "PERSONAL",
+    "rental_mode": "DAY",
+    "currency": "CNY",
+    "unit_price_fen": "12000",
+    "deposit_fen": "300000",
+    "reference_value_fen": "1500000",
+    "minimum_units": "1",
+    "version": "1",
+    "available_from": "2026-01-01T00:00:00Z",
+    "available_until": "2027-12-31T23:59:59Z",
+    "region": {
+      "dataset_id": "demo-regions",
+      "province_id": "440000",
+      "city_id": "440300",
+      "district_id": "440305",
+      "province_name": "广东省",
+      "city_name": "深圳市",
+      "district_name": "南山区"
+    },
+    "media": [
+      {
+        "material_id": "photo-5",
+        "role": "COVER",
+        "sort_order": 0,
+        "url": "/assets/demo/device-1.png",
+        "mime_type": "image/png",
+        "size_bytes": 4096,
+        "metadata": {
+          "schema_version": 1,
+          "width": 640,
+          "height": 640,
+          "duration_ms": null,
+          "video_codec": null,
+          "audio_codec": null
+        },
+        "poster": null
+      }
+    ],
+    "delivery_methods": [
+      "EXPRESS"
+    ],
+    "allowed_actions": [
+      {
+        "code": "QUOTE",
+        "enabled": true,
+        "blocked_reasons": []
+      }
+    ],
+    "pickup_location": null,
+    "category": {
+      "category_id": "category-2",
+      "name": "镜头"
+    },
+    "availability_status": "AVAILABLE"
+  },
+  {
+    "asset_id": "asset-6",
+    "asset_revision_id": "revision-6",
+    "product_id": "product-6",
+    "display_name": "索尼 FE 70–200mm 镜头",
+    "condition": "九成新，功能正常",
+    "description": "适合旅行、人像与日常创作；含原装配件和便携包。",
+    "defect_description": "正常使用痕迹，无功能缺陷",
+    "accessories_text": "电池 ×2、充电器、肩带、收纳包",
+    "supply_type": "STORE",
+    "rental_mode": "DAY",
+    "currency": "CNY",
+    "unit_price_fen": "13000",
+    "deposit_fen": "300000",
+    "reference_value_fen": "1500000",
+    "minimum_units": "1",
+    "version": "1",
+    "available_from": "2026-01-01T00:00:00Z",
+    "available_until": "2027-12-31T23:59:59Z",
+    "region": {
+      "dataset_id": "demo-regions",
+      "province_id": "440000",
+      "city_id": "440300",
+      "district_id": "440305",
+      "province_name": "广东省",
+      "city_name": "深圳市",
+      "district_name": "南山区"
+    },
+    "media": [
+      {
+        "material_id": "photo-6",
+        "role": "COVER",
+        "sort_order": 0,
+        "url": "/assets/demo/device-2.png",
+        "mime_type": "image/png",
+        "size_bytes": 4096,
+        "metadata": {
+          "schema_version": 1,
+          "width": 640,
+          "height": 640,
+          "duration_ms": null,
+          "video_codec": null,
+          "audio_codec": null
+        },
+        "poster": null
+      }
+    ],
+    "delivery_methods": [
+      "EXPRESS"
+    ],
+    "allowed_actions": [
+      {
+        "code": "QUOTE",
+        "enabled": true,
+        "blocked_reasons": []
+      }
+    ],
+    "pickup_location": null,
+    "category": {
+      "category_id": "category-3",
+      "name": "配件"
+    },
+    "availability_status": "AVAILABLE"
+  },
+  {
+    "asset_id": "asset-7",
+    "asset_revision_id": "revision-7",
+    "product_id": "product-7",
+    "display_name": "Insta360 X4",
+    "condition": "九成新，功能正常",
+    "description": "适合旅行、人像与日常创作；含原装配件和便携包。",
+    "defect_description": "正常使用痕迹，无功能缺陷",
+    "accessories_text": "电池 ×2、充电器、肩带、收纳包",
+    "supply_type": "CABINET",
+    "rental_mode": "DAY",
+    "currency": "CNY",
+    "unit_price_fen": "14000",
+    "deposit_fen": "300000",
+    "reference_value_fen": "1500000",
+    "minimum_units": "1",
+    "version": "1",
+    "available_from": "2026-01-01T00:00:00Z",
+    "available_until": "2027-12-31T23:59:59Z",
+    "region": {
+      "dataset_id": "demo-regions",
+      "province_id": "440000",
+      "city_id": "440300",
+      "district_id": "440305",
+      "province_name": "广东省",
+      "city_name": "深圳市",
+      "district_name": "南山区"
+    },
+    "media": [
+      {
+        "material_id": "photo-7",
+        "role": "COVER",
+        "sort_order": 0,
+        "url": "/assets/demo/device-3.png",
+        "mime_type": "image/png",
+        "size_bytes": 4096,
+        "metadata": {
+          "schema_version": 1,
+          "width": 640,
+          "height": 640,
+          "duration_ms": null,
+          "video_codec": null,
+          "audio_codec": null
+        },
+        "poster": null
+      }
+    ],
+    "delivery_methods": [
+      "CABINET"
+    ],
+    "allowed_actions": [
+      {
+        "code": "QUOTE",
+        "enabled": true,
+        "blocked_reasons": []
+      }
+    ],
+    "pickup_location": {
+      "cabinet_id": "cabinet-1",
+      "name": "科技园租赁柜",
+      "address": {
+        "dataset_id": "demo-regions",
+        "province_id": "440000",
+        "city_id": "440300",
+        "district_id": "440305",
+        "province_name": "广东省",
+        "city_name": "深圳市",
+        "district_name": "南山区",
+        "detail_address": "科技园科苑路 88 号（演示地址）",
+        "recipient_name": "林沐（演示）",
+        "phone_country_code": "+86",
+        "phone": "13800000000",
+        "location": {
+          "latitude": "22.540000",
+          "longitude": "113.930000",
+          "coordinate_system": "GCJ02",
+          "source": "MAP_PICK"
+        }
+      }
+    },
+    "category": {
+      "category_id": "category-1",
+      "name": "相机"
+    },
+    "availability_status": "AVAILABLE"
+  },
+  {
+    "asset_id": "asset-8",
+    "asset_revision_id": "revision-8",
+    "product_id": "product-8",
+    "display_name": "神牛 V1 闪光灯",
+    "condition": "九成新，功能正常",
+    "description": "适合旅行、人像与日常创作；含原装配件和便携包。",
+    "defect_description": "正常使用痕迹，无功能缺陷",
+    "accessories_text": "电池 ×2、充电器、肩带、收纳包",
+    "supply_type": "PERSONAL",
+    "rental_mode": "DAY",
+    "currency": "CNY",
+    "unit_price_fen": "15000",
+    "deposit_fen": "300000",
+    "reference_value_fen": "1500000",
+    "minimum_units": "1",
+    "version": "1",
+    "available_from": "2026-01-01T00:00:00Z",
+    "available_until": "2027-12-31T23:59:59Z",
+    "region": {
+      "dataset_id": "demo-regions",
+      "province_id": "440000",
+      "city_id": "440300",
+      "district_id": "440305",
+      "province_name": "广东省",
+      "city_name": "深圳市",
+      "district_name": "南山区"
+    },
+    "media": [
+      {
+        "material_id": "photo-8",
+        "role": "COVER",
+        "sort_order": 0,
+        "url": "/assets/demo/device-4.png",
+        "mime_type": "image/png",
+        "size_bytes": 4096,
+        "metadata": {
+          "schema_version": 1,
+          "width": 640,
+          "height": 640,
+          "duration_ms": null,
+          "video_codec": null,
+          "audio_codec": null
+        },
+        "poster": null
+      }
+    ],
+    "delivery_methods": [
+      "EXPRESS"
+    ],
+    "allowed_actions": [
+      {
+        "code": "QUOTE",
+        "enabled": true,
+        "blocked_reasons": []
+      }
+    ],
+    "pickup_location": null,
+    "category": {
+      "category_id": "category-2",
+      "name": "镜头"
+    },
+    "availability_status": "AVAILABLE"
+  },
+  {
+    "asset_id": "asset-9",
+    "asset_revision_id": "revision-9",
+    "product_id": "product-9",
+    "display_name": "智云云鹤稳定器",
+    "condition": "九成新，功能正常",
+    "description": "适合旅行、人像与日常创作；含原装配件和便携包。",
+    "defect_description": "正常使用痕迹，无功能缺陷",
+    "accessories_text": "电池 ×2、充电器、肩带、收纳包",
+    "supply_type": "STORE",
+    "rental_mode": "DAY",
+    "currency": "CNY",
+    "unit_price_fen": "8000",
+    "deposit_fen": "300000",
+    "reference_value_fen": "1500000",
+    "minimum_units": "1",
+    "version": "1",
+    "available_from": "2026-01-01T00:00:00Z",
+    "available_until": "2027-12-31T23:59:59Z",
+    "region": {
+      "dataset_id": "demo-regions",
+      "province_id": "440000",
+      "city_id": "440300",
+      "district_id": "440305",
+      "province_name": "广东省",
+      "city_name": "深圳市",
+      "district_name": "南山区"
+    },
+    "media": [
+      {
+        "material_id": "photo-9",
+        "role": "COVER",
+        "sort_order": 0,
+        "url": "/assets/demo/device-1.png",
+        "mime_type": "image/png",
+        "size_bytes": 4096,
+        "metadata": {
+          "schema_version": 1,
+          "width": 640,
+          "height": 640,
+          "duration_ms": null,
+          "video_codec": null,
+          "audio_codec": null
+        },
+        "poster": null
+      }
+    ],
+    "delivery_methods": [
+      "EXPRESS"
+    ],
+    "allowed_actions": [
+      {
+        "code": "QUOTE",
+        "enabled": true,
+        "blocked_reasons": []
+      }
+    ],
+    "pickup_location": null,
+    "category": {
+      "category_id": "category-3",
+      "name": "配件"
+    },
+    "availability_status": "AVAILABLE"
+  },
+  {
+    "asset_id": "asset-10",
+    "asset_revision_id": "revision-10",
+    "product_id": "product-10",
+    "display_name": "曼富图旅行三脚架",
+    "condition": "九成新，功能正常",
+    "description": "适合旅行、人像与日常创作；含原装配件和便携包。",
+    "defect_description": "正常使用痕迹，无功能缺陷",
+    "accessories_text": "电池 ×2、充电器、肩带、收纳包",
+    "supply_type": "CABINET",
+    "rental_mode": "DAY",
+    "currency": "CNY",
+    "unit_price_fen": "9000",
+    "deposit_fen": "300000",
+    "reference_value_fen": "1500000",
+    "minimum_units": "1",
+    "version": "1",
+    "available_from": "2026-01-01T00:00:00Z",
+    "available_until": "2027-12-31T23:59:59Z",
+    "region": {
+      "dataset_id": "demo-regions",
+      "province_id": "440000",
+      "city_id": "440300",
+      "district_id": "440305",
+      "province_name": "广东省",
+      "city_name": "深圳市",
+      "district_name": "南山区"
+    },
+    "media": [
+      {
+        "material_id": "photo-10",
+        "role": "COVER",
+        "sort_order": 0,
+        "url": "/assets/demo/device-2.png",
+        "mime_type": "image/png",
+        "size_bytes": 4096,
+        "metadata": {
+          "schema_version": 1,
+          "width": 640,
+          "height": 640,
+          "duration_ms": null,
+          "video_codec": null,
+          "audio_codec": null
+        },
+        "poster": null
+      }
+    ],
+    "delivery_methods": [
+      "CABINET"
+    ],
+    "allowed_actions": [
+      {
+        "code": "QUOTE",
+        "enabled": true,
+        "blocked_reasons": []
+      }
+    ],
+    "pickup_location": {
+      "cabinet_id": "cabinet-1",
+      "name": "科技园租赁柜",
+      "address": {
+        "dataset_id": "demo-regions",
+        "province_id": "440000",
+        "city_id": "440300",
+        "district_id": "440305",
+        "province_name": "广东省",
+        "city_name": "深圳市",
+        "district_name": "南山区",
+        "detail_address": "科技园科苑路 88 号（演示地址）",
+        "recipient_name": "林沐（演示）",
+        "phone_country_code": "+86",
+        "phone": "13800000000",
+        "location": {
+          "latitude": "22.540000",
+          "longitude": "113.930000",
+          "coordinate_system": "GCJ02",
+          "source": "MAP_PICK"
+        }
+      }
+    },
+    "category": {
+      "category_id": "category-1",
+      "name": "相机"
+    },
+    "availability_status": "AVAILABLE"
+  },
+  {
+    "asset_id": "asset-11",
+    "asset_revision_id": "revision-11",
+    "product_id": "product-11",
+    "display_name": "佳能 RF 24–70mm 镜头",
+    "condition": "九成新，功能正常",
+    "description": "适合旅行、人像与日常创作；含原装配件和便携包。",
+    "defect_description": "正常使用痕迹，无功能缺陷",
+    "accessories_text": "电池 ×2、充电器、肩带、收纳包",
+    "supply_type": "PERSONAL",
+    "rental_mode": "DAY",
+    "currency": "CNY",
+    "unit_price_fen": "10000",
+    "deposit_fen": "300000",
+    "reference_value_fen": "1500000",
+    "minimum_units": "1",
+    "version": "1",
+    "available_from": "2026-01-01T00:00:00Z",
+    "available_until": "2027-12-31T23:59:59Z",
+    "region": {
+      "dataset_id": "demo-regions",
+      "province_id": "440000",
+      "city_id": "440300",
+      "district_id": "440305",
+      "province_name": "广东省",
+      "city_name": "深圳市",
+      "district_name": "南山区"
+    },
+    "media": [
+      {
+        "material_id": "photo-11",
+        "role": "COVER",
+        "sort_order": 0,
+        "url": "/assets/demo/device-3.png",
+        "mime_type": "image/png",
+        "size_bytes": 4096,
+        "metadata": {
+          "schema_version": 1,
+          "width": 640,
+          "height": 640,
+          "duration_ms": null,
+          "video_codec": null,
+          "audio_codec": null
+        },
+        "poster": null
+      }
+    ],
+    "delivery_methods": [
+      "EXPRESS"
+    ],
+    "allowed_actions": [
+      {
+        "code": "QUOTE",
+        "enabled": true,
+        "blocked_reasons": []
+      }
+    ],
+    "pickup_location": null,
+    "category": {
+      "category_id": "category-2",
+      "name": "镜头"
+    },
+    "availability_status": "AVAILABLE"
+  },
+  {
+    "asset_id": "asset-12",
+    "asset_revision_id": "revision-12",
+    "product_id": "product-12",
+    "display_name": "索尼 FX3 电影机",
+    "condition": "九成新，功能正常",
+    "description": "适合旅行、人像与日常创作；含原装配件和便携包。",
+    "defect_description": "正常使用痕迹，无功能缺陷",
+    "accessories_text": "电池 ×2、充电器、肩带、收纳包",
+    "supply_type": "STORE",
+    "rental_mode": "DAY",
+    "currency": "CNY",
+    "unit_price_fen": "11000",
+    "deposit_fen": "300000",
+    "reference_value_fen": "1500000",
+    "minimum_units": "1",
+    "version": "1",
+    "available_from": "2026-01-01T00:00:00Z",
+    "available_until": "2027-12-31T23:59:59Z",
+    "region": {
+      "dataset_id": "demo-regions",
+      "province_id": "440000",
+      "city_id": "440300",
+      "district_id": "440305",
+      "province_name": "广东省",
+      "city_name": "深圳市",
+      "district_name": "南山区"
+    },
+    "media": [
+      {
+        "material_id": "photo-12",
+        "role": "COVER",
+        "sort_order": 0,
+        "url": "/assets/demo/device-4.png",
+        "mime_type": "image/png",
+        "size_bytes": 4096,
+        "metadata": {
+          "schema_version": 1,
+          "width": 640,
+          "height": 640,
+          "duration_ms": null,
+          "video_codec": null,
+          "audio_codec": null
+        },
+        "poster": null
+      }
+    ],
+    "delivery_methods": [
+      "EXPRESS"
+    ],
+    "allowed_actions": [
+      {
+        "code": "QUOTE",
+        "enabled": true,
+        "blocked_reasons": []
+      }
+    ],
+    "pickup_location": null,
+    "category": {
+      "category_id": "category-3",
+      "name": "配件"
+    },
+    "availability_status": "AVAILABLE"
+  },
+  {
+    "asset_id": "asset-13",
+    "asset_revision_id": "revision-13",
+    "product_id": "product-1",
+    "display_name": "索尼 A7M4 全画幅相机",
+    "condition": "九成新，功能正常",
+    "description": "适合旅行、人像与日常创作；含原装配件和便携包。",
+    "defect_description": "正常使用痕迹，无功能缺陷",
+    "accessories_text": "电池 ×2、充电器、肩带、收纳包",
+    "supply_type": "CABINET",
+    "rental_mode": "DAY",
+    "currency": "CNY",
+    "unit_price_fen": "12000",
+    "deposit_fen": "300000",
+    "reference_value_fen": "1500000",
+    "minimum_units": "1",
+    "version": "1",
+    "available_from": "2026-01-01T00:00:00Z",
+    "available_until": "2027-12-31T23:59:59Z",
+    "region": {
+      "dataset_id": "demo-regions",
+      "province_id": "440000",
+      "city_id": "440300",
+      "district_id": "440305",
+      "province_name": "广东省",
+      "city_name": "深圳市",
+      "district_name": "南山区"
+    },
+    "media": [
+      {
+        "material_id": "photo-13",
+        "role": "COVER",
+        "sort_order": 0,
+        "url": "/assets/demo/device-1.png",
+        "mime_type": "image/png",
+        "size_bytes": 4096,
+        "metadata": {
+          "schema_version": 1,
+          "width": 640,
+          "height": 640,
+          "duration_ms": null,
+          "video_codec": null,
+          "audio_codec": null
+        },
+        "poster": null
+      }
+    ],
+    "delivery_methods": [
+      "CABINET"
+    ],
+    "allowed_actions": [
+      {
+        "code": "QUOTE",
+        "enabled": true,
+        "blocked_reasons": []
+      }
+    ],
+    "pickup_location": {
+      "cabinet_id": "cabinet-1",
+      "name": "科技园租赁柜",
+      "address": {
+        "dataset_id": "demo-regions",
+        "province_id": "440000",
+        "city_id": "440300",
+        "district_id": "440305",
+        "province_name": "广东省",
+        "city_name": "深圳市",
+        "district_name": "南山区",
+        "detail_address": "科技园科苑路 88 号（演示地址）",
+        "recipient_name": "林沐（演示）",
+        "phone_country_code": "+86",
+        "phone": "13800000000",
+        "location": {
+          "latitude": "22.540000",
+          "longitude": "113.930000",
+          "coordinate_system": "GCJ02",
+          "source": "MAP_PICK"
+        }
+      }
+    },
+    "category": {
+      "category_id": "category-1",
+      "name": "相机"
+    },
+    "availability_status": "AVAILABLE"
+  },
+  {
+    "asset_id": "asset-14",
+    "asset_revision_id": "revision-14",
+    "product_id": "product-2",
+    "display_name": "佳能 EOS R6 II",
+    "condition": "九成新，功能正常",
+    "description": "适合旅行、人像与日常创作；含原装配件和便携包。",
+    "defect_description": "正常使用痕迹，无功能缺陷",
+    "accessories_text": "电池 ×2、充电器、肩带、收纳包",
+    "supply_type": "PERSONAL",
+    "rental_mode": "DAY",
+    "currency": "CNY",
+    "unit_price_fen": "13000",
+    "deposit_fen": "300000",
+    "reference_value_fen": "1500000",
+    "minimum_units": "1",
+    "version": "1",
+    "available_from": "2026-01-01T00:00:00Z",
+    "available_until": "2027-12-31T23:59:59Z",
+    "region": {
+      "dataset_id": "demo-regions",
+      "province_id": "440000",
+      "city_id": "440300",
+      "district_id": "440305",
+      "province_name": "广东省",
+      "city_name": "深圳市",
+      "district_name": "南山区"
+    },
+    "media": [
+      {
+        "material_id": "photo-14",
+        "role": "COVER",
+        "sort_order": 0,
+        "url": "/assets/demo/device-2.png",
+        "mime_type": "image/png",
+        "size_bytes": 4096,
+        "metadata": {
+          "schema_version": 1,
+          "width": 640,
+          "height": 640,
+          "duration_ms": null,
+          "video_codec": null,
+          "audio_codec": null
+        },
+        "poster": null
+      }
+    ],
+    "delivery_methods": [
+      "EXPRESS"
+    ],
+    "allowed_actions": [
+      {
+        "code": "QUOTE",
+        "enabled": true,
+        "blocked_reasons": []
+      }
+    ],
+    "pickup_location": null,
+    "category": {
+      "category_id": "category-2",
+      "name": "镜头"
+    },
+    "availability_status": "AVAILABLE"
+  },
+  {
+    "asset_id": "asset-15",
+    "asset_revision_id": "revision-15",
+    "product_id": "product-3",
+    "display_name": "富士 X-T5 微单",
+    "condition": "九成新，功能正常",
+    "description": "适合旅行、人像与日常创作；含原装配件和便携包。",
+    "defect_description": "正常使用痕迹，无功能缺陷",
+    "accessories_text": "电池 ×2、充电器、肩带、收纳包",
+    "supply_type": "STORE",
+    "rental_mode": "DAY",
+    "currency": "CNY",
+    "unit_price_fen": "14000",
+    "deposit_fen": "300000",
+    "reference_value_fen": "1500000",
+    "minimum_units": "1",
+    "version": "1",
+    "available_from": "2026-01-01T00:00:00Z",
+    "available_until": "2027-12-31T23:59:59Z",
+    "region": {
+      "dataset_id": "demo-regions",
+      "province_id": "440000",
+      "city_id": "440300",
+      "district_id": "440305",
+      "province_name": "广东省",
+      "city_name": "深圳市",
+      "district_name": "南山区"
+    },
+    "media": [
+      {
+        "material_id": "photo-15",
+        "role": "COVER",
+        "sort_order": 0,
+        "url": "/assets/demo/device-3.png",
+        "mime_type": "image/png",
+        "size_bytes": 4096,
+        "metadata": {
+          "schema_version": 1,
+          "width": 640,
+          "height": 640,
+          "duration_ms": null,
+          "video_codec": null,
+          "audio_codec": null
+        },
+        "poster": null
+      }
+    ],
+    "delivery_methods": [
+      "EXPRESS"
+    ],
+    "allowed_actions": [
+      {
+        "code": "QUOTE",
+        "enabled": true,
+        "blocked_reasons": []
+      }
+    ],
+    "pickup_location": null,
+    "category": {
+      "category_id": "category-3",
+      "name": "配件"
+    },
+    "availability_status": "AVAILABLE"
+  },
+  {
+    "asset_id": "asset-16",
+    "asset_revision_id": "revision-16",
+    "product_id": "product-4",
+    "display_name": "大疆 Pocket 3",
+    "condition": "九成新，功能正常",
+    "description": "适合旅行、人像与日常创作；含原装配件和便携包。",
+    "defect_description": "正常使用痕迹，无功能缺陷",
+    "accessories_text": "电池 ×2、充电器、肩带、收纳包",
+    "supply_type": "CABINET",
+    "rental_mode": "DAY",
+    "currency": "CNY",
+    "unit_price_fen": "15000",
+    "deposit_fen": "300000",
+    "reference_value_fen": "1500000",
+    "minimum_units": "1",
+    "version": "1",
+    "available_from": "2026-01-01T00:00:00Z",
+    "available_until": "2027-12-31T23:59:59Z",
+    "region": {
+      "dataset_id": "demo-regions",
+      "province_id": "440000",
+      "city_id": "440300",
+      "district_id": "440305",
+      "province_name": "广东省",
+      "city_name": "深圳市",
+      "district_name": "南山区"
+    },
+    "media": [
+      {
+        "material_id": "photo-16",
+        "role": "COVER",
+        "sort_order": 0,
+        "url": "/assets/demo/device-4.png",
+        "mime_type": "image/png",
+        "size_bytes": 4096,
+        "metadata": {
+          "schema_version": 1,
+          "width": 640,
+          "height": 640,
+          "duration_ms": null,
+          "video_codec": null,
+          "audio_codec": null
+        },
+        "poster": null
+      }
+    ],
+    "delivery_methods": [
+      "CABINET"
+    ],
+    "allowed_actions": [
+      {
+        "code": "QUOTE",
+        "enabled": true,
+        "blocked_reasons": []
+      }
+    ],
+    "pickup_location": {
+      "cabinet_id": "cabinet-1",
+      "name": "科技园租赁柜",
+      "address": {
+        "dataset_id": "demo-regions",
+        "province_id": "440000",
+        "city_id": "440300",
+        "district_id": "440305",
+        "province_name": "广东省",
+        "city_name": "深圳市",
+        "district_name": "南山区",
+        "detail_address": "科技园科苑路 88 号（演示地址）",
+        "recipient_name": "林沐（演示）",
+        "phone_country_code": "+86",
+        "phone": "13800000000",
+        "location": {
+          "latitude": "22.540000",
+          "longitude": "113.930000",
+          "coordinate_system": "GCJ02",
+          "source": "MAP_PICK"
+        }
+      }
+    },
+    "category": {
+      "category_id": "category-1",
+      "name": "相机"
+    },
+    "availability_status": "AVAILABLE"
+  },
+  {
+    "asset_id": "asset-17",
+    "asset_revision_id": "revision-17",
+    "product_id": "product-5",
+    "display_name": "大疆 Mini 4 Pro",
+    "condition": "九成新，功能正常",
+    "description": "适合旅行、人像与日常创作；含原装配件和便携包。",
+    "defect_description": "正常使用痕迹，无功能缺陷",
+    "accessories_text": "电池 ×2、充电器、肩带、收纳包",
+    "supply_type": "PERSONAL",
+    "rental_mode": "DAY",
+    "currency": "CNY",
+    "unit_price_fen": "8000",
+    "deposit_fen": "300000",
+    "reference_value_fen": "1500000",
+    "minimum_units": "1",
+    "version": "1",
+    "available_from": "2026-01-01T00:00:00Z",
+    "available_until": "2027-12-31T23:59:59Z",
+    "region": {
+      "dataset_id": "demo-regions",
+      "province_id": "440000",
+      "city_id": "440300",
+      "district_id": "440305",
+      "province_name": "广东省",
+      "city_name": "深圳市",
+      "district_name": "南山区"
+    },
+    "media": [
+      {
+        "material_id": "photo-17",
+        "role": "COVER",
+        "sort_order": 0,
+        "url": "/assets/demo/device-1.png",
+        "mime_type": "image/png",
+        "size_bytes": 4096,
+        "metadata": {
+          "schema_version": 1,
+          "width": 640,
+          "height": 640,
+          "duration_ms": null,
+          "video_codec": null,
+          "audio_codec": null
+        },
+        "poster": null
+      }
+    ],
+    "delivery_methods": [
+      "EXPRESS"
+    ],
+    "allowed_actions": [
+      {
+        "code": "QUOTE",
+        "enabled": true,
+        "blocked_reasons": []
+      }
+    ],
+    "pickup_location": null,
+    "category": {
+      "category_id": "category-2",
+      "name": "镜头"
+    },
+    "availability_status": "AVAILABLE"
+  },
+  {
+    "asset_id": "asset-18",
+    "asset_revision_id": "revision-18",
+    "product_id": "product-6",
+    "display_name": "索尼 FE 70–200mm 镜头",
+    "condition": "九成新，功能正常",
+    "description": "适合旅行、人像与日常创作；含原装配件和便携包。",
+    "defect_description": "正常使用痕迹，无功能缺陷",
+    "accessories_text": "电池 ×2、充电器、肩带、收纳包",
+    "supply_type": "STORE",
+    "rental_mode": "DAY",
+    "currency": "CNY",
+    "unit_price_fen": "9000",
+    "deposit_fen": "300000",
+    "reference_value_fen": "1500000",
+    "minimum_units": "1",
+    "version": "1",
+    "available_from": "2026-01-01T00:00:00Z",
+    "available_until": "2027-12-31T23:59:59Z",
+    "region": {
+      "dataset_id": "demo-regions",
+      "province_id": "440000",
+      "city_id": "440300",
+      "district_id": "440305",
+      "province_name": "广东省",
+      "city_name": "深圳市",
+      "district_name": "南山区"
+    },
+    "media": [
+      {
+        "material_id": "photo-18",
+        "role": "COVER",
+        "sort_order": 0,
+        "url": "/assets/demo/device-2.png",
+        "mime_type": "image/png",
+        "size_bytes": 4096,
+        "metadata": {
+          "schema_version": 1,
+          "width": 640,
+          "height": 640,
+          "duration_ms": null,
+          "video_codec": null,
+          "audio_codec": null
+        },
+        "poster": null
+      }
+    ],
+    "delivery_methods": [
+      "EXPRESS"
+    ],
+    "allowed_actions": [
+      {
+        "code": "QUOTE",
+        "enabled": true,
+        "blocked_reasons": []
+      }
+    ],
+    "pickup_location": null,
+    "category": {
+      "category_id": "category-3",
+      "name": "配件"
+    },
+    "availability_status": "AVAILABLE"
+  },
+  {
+    "asset_id": "asset-19",
+    "asset_revision_id": "revision-19",
+    "product_id": "product-7",
+    "display_name": "Insta360 X4",
+    "condition": "九成新，功能正常",
+    "description": "适合旅行、人像与日常创作；含原装配件和便携包。",
+    "defect_description": "正常使用痕迹，无功能缺陷",
+    "accessories_text": "电池 ×2、充电器、肩带、收纳包",
+    "supply_type": "CABINET",
+    "rental_mode": "DAY",
+    "currency": "CNY",
+    "unit_price_fen": "10000",
+    "deposit_fen": "300000",
+    "reference_value_fen": "1500000",
+    "minimum_units": "1",
+    "version": "1",
+    "available_from": "2026-01-01T00:00:00Z",
+    "available_until": "2027-12-31T23:59:59Z",
+    "region": {
+      "dataset_id": "demo-regions",
+      "province_id": "440000",
+      "city_id": "440300",
+      "district_id": "440305",
+      "province_name": "广东省",
+      "city_name": "深圳市",
+      "district_name": "南山区"
+    },
+    "media": [
+      {
+        "material_id": "photo-19",
+        "role": "COVER",
+        "sort_order": 0,
+        "url": "/assets/demo/device-3.png",
+        "mime_type": "image/png",
+        "size_bytes": 4096,
+        "metadata": {
+          "schema_version": 1,
+          "width": 640,
+          "height": 640,
+          "duration_ms": null,
+          "video_codec": null,
+          "audio_codec": null
+        },
+        "poster": null
+      }
+    ],
+    "delivery_methods": [
+      "CABINET"
+    ],
+    "allowed_actions": [
+      {
+        "code": "QUOTE",
+        "enabled": true,
+        "blocked_reasons": []
+      }
+    ],
+    "pickup_location": {
+      "cabinet_id": "cabinet-1",
+      "name": "科技园租赁柜",
+      "address": {
+        "dataset_id": "demo-regions",
+        "province_id": "440000",
+        "city_id": "440300",
+        "district_id": "440305",
+        "province_name": "广东省",
+        "city_name": "深圳市",
+        "district_name": "南山区",
+        "detail_address": "科技园科苑路 88 号（演示地址）",
+        "recipient_name": "林沐（演示）",
+        "phone_country_code": "+86",
+        "phone": "13800000000",
+        "location": {
+          "latitude": "22.540000",
+          "longitude": "113.930000",
+          "coordinate_system": "GCJ02",
+          "source": "MAP_PICK"
+        }
+      }
+    },
+    "category": {
+      "category_id": "category-1",
+      "name": "相机"
+    },
+    "availability_status": "AVAILABLE"
+  },
+  {
+    "asset_id": "asset-20",
+    "asset_revision_id": "revision-20",
+    "product_id": "product-8",
+    "display_name": "神牛 V1 闪光灯",
+    "condition": "九成新，功能正常",
+    "description": "适合旅行、人像与日常创作；含原装配件和便携包。",
+    "defect_description": "正常使用痕迹，无功能缺陷",
+    "accessories_text": "电池 ×2、充电器、肩带、收纳包",
+    "supply_type": "PERSONAL",
+    "rental_mode": "DAY",
+    "currency": "CNY",
+    "unit_price_fen": "11000",
+    "deposit_fen": "300000",
+    "reference_value_fen": "1500000",
+    "minimum_units": "1",
+    "version": "1",
+    "available_from": "2026-01-01T00:00:00Z",
+    "available_until": "2027-12-31T23:59:59Z",
+    "region": {
+      "dataset_id": "demo-regions",
+      "province_id": "440000",
+      "city_id": "440300",
+      "district_id": "440305",
+      "province_name": "广东省",
+      "city_name": "深圳市",
+      "district_name": "南山区"
+    },
+    "media": [
+      {
+        "material_id": "photo-20",
+        "role": "COVER",
+        "sort_order": 0,
+        "url": "/assets/demo/device-4.png",
+        "mime_type": "image/png",
+        "size_bytes": 4096,
+        "metadata": {
+          "schema_version": 1,
+          "width": 640,
+          "height": 640,
+          "duration_ms": null,
+          "video_codec": null,
+          "audio_codec": null
+        },
+        "poster": null
+      }
+    ],
+    "delivery_methods": [
+      "EXPRESS"
+    ],
+    "allowed_actions": [
+      {
+        "code": "QUOTE",
+        "enabled": true,
+        "blocked_reasons": []
+      }
+    ],
+    "pickup_location": null,
+    "category": {
+      "category_id": "category-2",
+      "name": "镜头"
+    },
+    "availability_status": "AVAILABLE"
+  },
+  {
+    "asset_id": "asset-21",
+    "asset_revision_id": "revision-21",
+    "product_id": "product-9",
+    "display_name": "智云云鹤稳定器",
+    "condition": "九成新，功能正常",
+    "description": "适合旅行、人像与日常创作；含原装配件和便携包。",
+    "defect_description": "正常使用痕迹，无功能缺陷",
+    "accessories_text": "电池 ×2、充电器、肩带、收纳包",
+    "supply_type": "STORE",
+    "rental_mode": "DAY",
+    "currency": "CNY",
+    "unit_price_fen": "12000",
+    "deposit_fen": "300000",
+    "reference_value_fen": "1500000",
+    "minimum_units": "1",
+    "version": "1",
+    "available_from": "2026-01-01T00:00:00Z",
+    "available_until": "2027-12-31T23:59:59Z",
+    "region": {
+      "dataset_id": "demo-regions",
+      "province_id": "440000",
+      "city_id": "440300",
+      "district_id": "440305",
+      "province_name": "广东省",
+      "city_name": "深圳市",
+      "district_name": "南山区"
+    },
+    "media": [
+      {
+        "material_id": "photo-21",
+        "role": "COVER",
+        "sort_order": 0,
+        "url": "/assets/demo/device-1.png",
+        "mime_type": "image/png",
+        "size_bytes": 4096,
+        "metadata": {
+          "schema_version": 1,
+          "width": 640,
+          "height": 640,
+          "duration_ms": null,
+          "video_codec": null,
+          "audio_codec": null
+        },
+        "poster": null
+      }
+    ],
+    "delivery_methods": [
+      "EXPRESS"
+    ],
+    "allowed_actions": [
+      {
+        "code": "QUOTE",
+        "enabled": true,
+        "blocked_reasons": []
+      }
+    ],
+    "pickup_location": null,
+    "category": {
+      "category_id": "category-3",
+      "name": "配件"
+    },
+    "availability_status": "AVAILABLE"
+  },
+  {
+    "asset_id": "asset-22",
+    "asset_revision_id": "revision-22",
+    "product_id": "product-10",
+    "display_name": "曼富图旅行三脚架",
+    "condition": "九成新，功能正常",
+    "description": "适合旅行、人像与日常创作；含原装配件和便携包。",
+    "defect_description": "正常使用痕迹，无功能缺陷",
+    "accessories_text": "电池 ×2、充电器、肩带、收纳包",
+    "supply_type": "CABINET",
+    "rental_mode": "DAY",
+    "currency": "CNY",
+    "unit_price_fen": "13000",
+    "deposit_fen": "300000",
+    "reference_value_fen": "1500000",
+    "minimum_units": "1",
+    "version": "1",
+    "available_from": "2026-01-01T00:00:00Z",
+    "available_until": "2027-12-31T23:59:59Z",
+    "region": {
+      "dataset_id": "demo-regions",
+      "province_id": "440000",
+      "city_id": "440300",
+      "district_id": "440305",
+      "province_name": "广东省",
+      "city_name": "深圳市",
+      "district_name": "南山区"
+    },
+    "media": [
+      {
+        "material_id": "photo-22",
+        "role": "COVER",
+        "sort_order": 0,
+        "url": "/assets/demo/device-2.png",
+        "mime_type": "image/png",
+        "size_bytes": 4096,
+        "metadata": {
+          "schema_version": 1,
+          "width": 640,
+          "height": 640,
+          "duration_ms": null,
+          "video_codec": null,
+          "audio_codec": null
+        },
+        "poster": null
+      }
+    ],
+    "delivery_methods": [
+      "CABINET"
+    ],
+    "allowed_actions": [
+      {
+        "code": "QUOTE",
+        "enabled": true,
+        "blocked_reasons": []
+      }
+    ],
+    "pickup_location": {
+      "cabinet_id": "cabinet-1",
+      "name": "科技园租赁柜",
+      "address": {
+        "dataset_id": "demo-regions",
+        "province_id": "440000",
+        "city_id": "440300",
+        "district_id": "440305",
+        "province_name": "广东省",
+        "city_name": "深圳市",
+        "district_name": "南山区",
+        "detail_address": "科技园科苑路 88 号（演示地址）",
+        "recipient_name": "林沐（演示）",
+        "phone_country_code": "+86",
+        "phone": "13800000000",
+        "location": {
+          "latitude": "22.540000",
+          "longitude": "113.930000",
+          "coordinate_system": "GCJ02",
+          "source": "MAP_PICK"
+        }
+      }
+    },
+    "category": {
+      "category_id": "category-1",
+      "name": "相机"
+    },
+    "availability_status": "AVAILABLE"
+  },
+  {
+    "asset_id": "asset-23",
+    "asset_revision_id": "revision-23",
+    "product_id": "product-11",
+    "display_name": "佳能 RF 24–70mm 镜头",
+    "condition": "九成新，功能正常",
+    "description": "适合旅行、人像与日常创作；含原装配件和便携包。",
+    "defect_description": "正常使用痕迹，无功能缺陷",
+    "accessories_text": "电池 ×2、充电器、肩带、收纳包",
+    "supply_type": "PERSONAL",
+    "rental_mode": "DAY",
+    "currency": "CNY",
+    "unit_price_fen": "14000",
+    "deposit_fen": "300000",
+    "reference_value_fen": "1500000",
+    "minimum_units": "1",
+    "version": "1",
+    "available_from": "2026-01-01T00:00:00Z",
+    "available_until": "2027-12-31T23:59:59Z",
+    "region": {
+      "dataset_id": "demo-regions",
+      "province_id": "440000",
+      "city_id": "440300",
+      "district_id": "440305",
+      "province_name": "广东省",
+      "city_name": "深圳市",
+      "district_name": "南山区"
+    },
+    "media": [
+      {
+        "material_id": "photo-23",
+        "role": "COVER",
+        "sort_order": 0,
+        "url": "/assets/demo/device-3.png",
+        "mime_type": "image/png",
+        "size_bytes": 4096,
+        "metadata": {
+          "schema_version": 1,
+          "width": 640,
+          "height": 640,
+          "duration_ms": null,
+          "video_codec": null,
+          "audio_codec": null
+        },
+        "poster": null
+      }
+    ],
+    "delivery_methods": [
+      "EXPRESS"
+    ],
+    "allowed_actions": [
+      {
+        "code": "QUOTE",
+        "enabled": true,
+        "blocked_reasons": []
+      }
+    ],
+    "pickup_location": null,
+    "category": {
+      "category_id": "category-2",
+      "name": "镜头"
+    },
+    "availability_status": "AVAILABLE"
+  },
+  {
+    "asset_id": "asset-24",
+    "asset_revision_id": "revision-24",
+    "product_id": "product-12",
+    "display_name": "索尼 FX3 电影机",
+    "condition": "九成新，功能正常",
+    "description": "适合旅行、人像与日常创作；含原装配件和便携包。",
+    "defect_description": "正常使用痕迹，无功能缺陷",
+    "accessories_text": "电池 ×2、充电器、肩带、收纳包",
+    "supply_type": "STORE",
+    "rental_mode": "DAY",
+    "currency": "CNY",
+    "unit_price_fen": "15000",
+    "deposit_fen": "300000",
+    "reference_value_fen": "1500000",
+    "minimum_units": "1",
+    "version": "1",
+    "available_from": "2026-01-01T00:00:00Z",
+    "available_until": "2027-12-31T23:59:59Z",
+    "region": {
+      "dataset_id": "demo-regions",
+      "province_id": "440000",
+      "city_id": "440300",
+      "district_id": "440305",
+      "province_name": "广东省",
+      "city_name": "深圳市",
+      "district_name": "南山区"
+    },
+    "media": [
+      {
+        "material_id": "photo-24",
+        "role": "COVER",
+        "sort_order": 0,
+        "url": "/assets/demo/device-4.png",
+        "mime_type": "image/png",
+        "size_bytes": 4096,
+        "metadata": {
+          "schema_version": 1,
+          "width": 640,
+          "height": 640,
+          "duration_ms": null,
+          "video_codec": null,
+          "audio_codec": null
+        },
+        "poster": null
+      }
+    ],
+    "delivery_methods": [
+      "EXPRESS"
+    ],
+    "allowed_actions": [
+      {
+        "code": "QUOTE",
+        "enabled": true,
+        "blocked_reasons": []
+      }
+    ],
+    "pickup_location": null,
+    "category": {
+      "category_id": "category-3",
+      "name": "配件"
+    },
+    "availability_status": "AVAILABLE"
+  }
+]

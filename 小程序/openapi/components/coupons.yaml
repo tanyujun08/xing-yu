@@ -1,0 +1,1 @@
+{"Schemas":{"MemberCoupon":{"$ref":"./loyalty.yaml#/Schemas/MemberCoupon"},"MemberCouponPage":{"$ref":"./loyalty.yaml#/Schemas/MemberCouponPage"}}}

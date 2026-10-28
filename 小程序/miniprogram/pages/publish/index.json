@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "发布设备",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "media-state": "../../components/media-state/index",
+    "page-header": "../../components/page-header/index",
+    "status-view": "../../components/status-view/index"
+  }
+}

@@ -1,0 +1,37 @@
+<page-meta root-font-size="system" />
+<page-shell surface="page" has-footer="{{preview}}">
+<page-header title="{{secondaryNavigationTitle || '服务详情'}}" background="#ffffff" inverse="{{false}}" bindback="onSecondaryNavigationBack" slot="header" /><view class="service-detail-page {{missing ? 'is-missing' : ''}}">
+  <block wx:if="{{preview}}">
+ <view class="preview-card"><text class="preview-title">{{previewTitle}}</text><text class="preview-price">¥{{previewPrice}} / 单</text><text class="preview-copy">下单时选择，费用计入订单。</text></view>
+ <view wx:if="{{service === 'guard'}}" class="preview-card"><text class="preview-heading">服务内容</text><text class="preview-copy">售后问题优先排队、关键处理进度消息、一次人工主动跟进。</text><text class="preview-heading">服务边界</text><text class="preview-copy">不改变押金、租金或责任金额。具体生效与退款条款待完善。</text><text class="preview-heading">优惠券</text><text class="preview-copy">费用与优惠暂不可查询。</text></view>
+ <view wx:else class="preview-card"><text class="preview-heading">适用范围</text><text class="preview-copy">租赁期间意外碰撞、跌落、进液等意外损坏。</text><text class="preview-heading">不包含事项</text><text class="preview-copy">故意损坏、遗失、盗抢、正常磨损、耗材损耗、未经允许拆修。</text><text class="preview-heading">生效及申请</text><text class="preview-copy">实际交接至有效归还期间；发生问题需提供订单、设备与事故证据。保障上限与期限以本单快照为准。</text><text class="preview-heading">取消与退款</text><text class="preview-copy">履约开始前取消按订单退款规则处理；开始后按已生效保障条款处理。</text></view>
+</block><block wx:elif="{{missing}}"><view class="missing-card xy-empty-page xy-empty-page--surface"><image class="xy-empty-page__illustration" src="/assets/illustrations/empty-generic.png" mode="aspectFit" aria-hidden="true" /><text class="xy-empty-page__title">服务详情暂不可查询</text><text class="xy-empty-page__copy">请稍后再试或返回订单。</text><view class="xy-empty-page__action xy-action-primary xy-action-text xy-tap" bindtap="goBack" role="button" aria-label="返回订单">返回订单</view></view></block>
+  <block wx:elif="{{unavailable}}">
+    <view class="unavailable-overview"><view><text class="service-eyebrow">{{service === 'guard' ? '订单服务' : '保障服务'}}</text><text class="service-title">{{detail.title}}</text></view><text class="unavailable-status">未购买</text></view>
+    <view class="unavailable-card"><text class="unavailable-title">当前订单未购买此服务</text><text class="unavailable-copy">可返回订单查看已购买的服务。</text><view class="unavailable-order"><text>关联订单</text><text>{{detail.deviceName}}</text><text>{{detail.productModel}} · {{detail.orderId}}</text></view><view class="back-action xy-tap"><text>返回订单查看服务</text><button class="touch-overlay" hover-class="none" bindtap="goBack" aria-label="返回订单查看服务"></button></view></view>
+  </block>
+  <block wx:else>
+    <block wx:if="{{service === 'guard'}}">
+      <view class="guard-hero"><view class="guard-mark">服务</view><view class="service-hero-copy"><text class="service-eyebrow">订单服务</text><text class="service-title">{{detail.title}}</text><text class="service-price">{{detail.priceText}}</text></view><text class="service-status">{{detail.statusText}}</text></view>
+      <view class="service-summary guard-summary">{{detail.summary}}</view>
+      <view class="section-title">本单权益</view>
+      <view class="guard-benefit-list"><view wx:for="{{detail.benefits}}" wx:key="id" class="guard-benefit"><view class="benefit-index">{{item.index}}</view><view class="benefit-copy"><text class="benefit-title">{{item.title}}</text><text class="benefit-detail">{{item.copy}}</text></view></view></view>
+      <view class="guard-boundary"><text class="section-title">服务边界</text><text>{{detail.cancellationText}}</text></view>
+      <view class="provider-line"><text>{{detail.providerText}}</text><text>{{detail.contactText}}</text></view>
+    </block>
+    <block wx:elif="{{service === 'insurance'}}">
+      <view class="insurance-hero"><view><text class="service-eyebrow">保障服务</text><text class="service-title">{{detail.title}}</text><text class="service-price">{{detail.priceText}}</text></view><text class="insurance-status">{{detail.statusText}}</text></view>
+      <view class="insurance-meta"><view><text>保障期间</text><text>{{detail.periodText}}</text></view><view><text>{{detail.maximumText}}</text><text>以本单保障规则为准</text></view></view>
+      <view class="section-title">保障范围</view><view class="rule-panel rule-covered"><text class="rule-label">可申请审核</text><text>{{detail.scopeText}}</text></view>
+      <view class="section-title">不保障</view><view class="rule-panel rule-excluded"><text class="rule-label">除外责任</text><text>{{detail.exclusionsText}}</text></view>
+      <view class="section-title">申请条件</view><view class="rule-line"><text>需要提供</text><text>{{detail.claimConditionsText}}</text></view>
+      <view class="section-title">证据要求</view><view class="rule-line"><text>凭证要求</text><text>{{detail.evidenceText}}</text></view>
+      <view class="section-title">处理流程</view><view class="insurance-process"><view wx:for="{{detail.processSteps}}" wx:key="id" class="process-step"><view class="process-index">{{item.index}}</view><view><text class="process-title">{{item.title}}</text><text class="process-copy">{{item.copy}}</text></view></view></view>
+      <view class="insurance-note"><text class="rule-label">取消规则</text><text>{{detail.cancellationText}}</text></view>
+      <view class="provider-line"><text>{{detail.providerText}}</text><text>{{detail.contactText}}</text></view>
+    </block>
+    <view class="order-link" bindtap="goBack" role="button"><view><text class="order-link-label">关联订单</text><text class="order-link-device">{{detail.deviceName}}</text><text class="order-link-number">{{detail.productModel}} · {{detail.orderId}}</text></view><text class="order-link-arrow">返回订单</text></view>
+  </block>
+</view>
+<bottom-actions wx:if="{{preview}}" slot="footer" primary-text="返回确认订单" bindprimary="goBack" />
+</page-shell>

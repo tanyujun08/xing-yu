@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "1.0",
+  "ruleId": "MPA-AUTH-001",
+  "case": "reject",
+  "cases": [
+    {
+      "name": "checker-bypass",
+      "files": {
+        "package.json": "{\"scripts\":{\"check:architecture\":\"node scripts/check-miniprogram-architecture.mjs --skip\",\"verify\":\"npm run lint\"}}",
+        "miniprogram/shared/config/env.ts": "const apiOrigins = { develop: 'http://127.0.0.1:8081' };\n"
+      }
+    },
+    {
+      "name": "foreign-host-port",
+      "files": {
+        "package.json": "{\"scripts\":{\"check:architecture\":\"node scripts/check-miniprogram-architecture.mjs\",\"verify\":\"npm run check:api && npm run check:package && npm run check:architecture && npm run lint && npm run typecheck && npm test\"}}",
+        "miniprogram/shared/config/env.ts": "const apiOrigins = { develop: 'http://127.0.0.1:8080' };\n"
+      }
+    },
+    {
+      "name": "unregistered-visual-migration-route",
+      "files": {
+        "package.json": "{\"scripts\":{\"check:architecture\":\"node scripts/check-miniprogram-architecture.mjs\",\"verify\":\"npm run check:api && npm run check:package && npm run check:architecture && npm run lint && npm run typecheck && npm test\"}}",
+        "miniprogram/app.json": "{\"pages\":[\"pages/unregistered/index\"]}",
+        "miniprogram/shared/config/env.ts": "const apiOrigins = { develop: 'http://127.0.0.1:8081' };\n"
+      }
+    },
+    {
+      "name": "mock-app-direct-request",
+      "files": {
+        "package.json": "{\"scripts\":{\"check:architecture\":\"node scripts/check-miniprogram-architecture.mjs\",\"verify\":\"npm run check:api && npm run check:package && npm run check:architecture && npm run lint && npm run typecheck && npm test\"}}",
+        "miniprogram/app.ts": "wx.request({ url: 'http://127.0.0.1:8081/forbidden' });\n",
+        "miniprogram/shared/api/request.ts": "export const dormantRequest = () => wx.request({ url: 'http://127.0.0.1:8081/dormant' });\n",
+        "miniprogram/shared/config/env.ts": "const apiOrigins = { develop: 'http://127.0.0.1:8081' };\n"
+      }
+    },
+    {
+      "name": "mock-page-indirect-dormant-import",
+      "files": {
+        "package.json": "{\"scripts\":{\"check:architecture\":\"node scripts/check-miniprogram-architecture.mjs\",\"verify\":\"npm run check:api && npm run check:package && npm run check:architecture && npm run lint && npm run typecheck && npm test\"}}",
+        "miniprogram/pages/withdrawal/index.ts": "import { load } from '../../shared/data/live';\nvoid load;\n",
+        "miniprogram/shared/data/live.ts": "export { dormantRequest as load } from '../api/request';\n",
+        "miniprogram/shared/api/request.ts": "export const dormantRequest = () => wx.request({ url: 'http://127.0.0.1:8081/dormant' });\n",
+        "miniprogram/shared/config/env.ts": "const apiOrigins = { develop: 'http://127.0.0.1:8081' };\n"
+      }
+    },
+    {
+      "name": "mock-upload-and-socket-host-apis",
+      "files": {
+        "package.json": "{\"scripts\":{\"check:architecture\":\"node scripts/check-miniprogram-architecture.mjs\",\"verify\":\"npm run check:api && npm run check:package && npm run check:architecture && npm run lint && npm run typecheck && npm test\"}}",
+        "miniprogram/components/uploader/index.ts": "export function upload() { wx.uploadFile({ url: 'x', filePath: 'a', name: 'f' }); wx.connectSocket({ url: 'ws://127.0.0.1' }); }\n",
+        "miniprogram/shared/api/request.ts": "export const dormantRequest = () => wx.request({ url: 'http://127.0.0.1:8081/dormant' });\n",
+        "miniprogram/shared/config/env.ts": "const apiOrigins = { develop: 'http://127.0.0.1:8081' };\n"
+      }
+    }
+  ]
+}

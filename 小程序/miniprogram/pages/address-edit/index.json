@@ -1,0 +1,11 @@
+{
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "收货地址",
+  "usingComponents": {
+    "page-shell": "../../components/page-shell/index",
+    "page-header": "../../components/page-header/index",
+    "bottom-actions": "../../components/bottom-actions/index",
+    "status-view": "../../components/status-view/index",
+    "task-sheet": "/components/task-sheet/index"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "星遇",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "media-state": "../../components/media-state/index",
+    "login-sheet": "../../components/login-sheet/index"
+  }
+}

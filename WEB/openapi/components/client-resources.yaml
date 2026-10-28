@@ -1,0 +1,90 @@
+Schemas:
+  ClientResourceManifestEntry:
+    type: object
+    additionalProperties: false
+    required:
+      - resource_key
+      - locale
+      - theme
+      - material_id
+      - object_version_id
+      - content_sha256
+      - mime_type
+      - size_bytes
+      - url
+    properties:
+      resource_key:
+        type: string
+        minLength: 9
+        maxLength: 64
+        pattern: '^managed\.[a-z0-9]+(?:[._-][a-z0-9]+)*$'
+        description: Dynamic system-resource key. It cannot name or override a compile-time fixed asset.
+      locale:
+        type: string
+        minLength: 1
+        maxLength: 16
+        pattern: '^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$'
+      theme:
+        type: string
+        enum: [LIGHT, DARK, ANY]
+      material_id:
+        type: string
+        minLength: 1
+        maxLength: 64
+        pattern: '^[!-~]{1,64}$'
+      object_version_id:
+        type: string
+        minLength: 1
+        maxLength: 256
+        pattern: '^[!-~]{1,256}$'
+      content_sha256:
+        type: string
+        pattern: '^[a-f0-9]{64}$'
+      mime_type:
+        type: string
+        enum: [image/jpeg, image/png, image/webp]
+      size_bytes:
+        type: integer
+        minimum: 1
+        maximum: 104857600
+      url:
+        $ref: './common.yaml#/PublicMaterialURL'
+  ClientResourceManifest:
+    type: object
+    additionalProperties: false
+    required:
+      - schema_version
+      - client
+      - channel
+      - client_version
+      - config_version_id
+      - config_version_no
+      - effective_epoch
+      - config_content_sha256
+      - published_at
+      - manifest_id
+      - entries
+    properties:
+      schema_version: { type: integer, const: 1 }
+      client: { type: string, enum: [MINIPROGRAM] }
+      channel: { type: string, enum: [RELEASE] }
+      client_version: { type: string, enum: [1.0.0.16] }
+      config_version_id:
+        type: string
+        minLength: 1
+        maxLength: 64
+        pattern: '^[!-~]{1,64}$'
+      config_version_no: { type: integer, minimum: 1, maximum: 9007199254740991 }
+      effective_epoch: { type: integer, minimum: 1, maximum: 9007199254740991 }
+      config_content_sha256: { type: string, pattern: '^[a-f0-9]{64}$' }
+      published_at: { type: string, format: date-time }
+      manifest_id:
+        type: string
+        pattern: '^[a-f0-9]{64}$'
+        description: Stable digest of the effective configuration and immutable material identities; permanent URLs are derived and excluded.
+      entries:
+        type: array
+        minItems: 1
+        maxItems: 200
+        items: { $ref: '#/Schemas/ClientResourceManifestEntry' }
+        description: Canonically ordered by resource_key, locale, theme, and material_id; each resource_key/locale/theme tuple is unique.

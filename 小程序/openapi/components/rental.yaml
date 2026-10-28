@@ -1,0 +1,48 @@
+RentalResourceID:
+  type: string
+  minLength: 1
+  maxLength: 64
+  description: Opaque server identifier; preserve case and never synthesize IDs.
+
+AdministrativeRegion:
+  type: object
+  additionalProperties: false
+  required: [region_id, parent_id, node_code, name, level, code_kind, is_virtual]
+  properties:
+    region_id: { $ref: '#/RentalResourceID' }
+    parent_id:
+      anyOf:
+        - { $ref: '#/RentalResourceID' }
+        - { type: 'null' }
+    node_code:
+      type: string
+      minLength: 1
+      maxLength: 32
+      description: Source dataset code; not proof of an officially verified administrative code.
+    name: { type: string, minLength: 1, maxLength: 80 }
+    level: { type: string, enum: [PROVINCE, CITY, DISTRICT] }
+    code_kind:
+      type: string
+      enum: [SOURCE_ADMINISTRATIVE, SOURCE_EXTENSION, VIRTUAL_GROUP, VIRTUAL_LEAF, LEGACY_UNKNOWN]
+      description: Provenance of node_code. SOURCE_EXTENSION marks Hong Kong, Macao and Taiwan source extensions; LEGACY_UNKNOWN marks older rows without verified provenance.
+    is_virtual:
+      type: boolean
+      description: Explicit administrative placeholder retained in the three-level dataset.
+
+AdministrativeRegionChildren:
+  type: object
+  additionalProperties: false
+  required: [dataset_id, parent_id, items]
+  properties:
+    dataset_id:
+      allOf: [{ $ref: '#/RentalResourceID' }]
+      description: Immutable administrative dictionary dataset ID, used on address submission.
+    parent_id:
+      anyOf:
+        - { $ref: '#/RentalResourceID' }
+        - { type: 'null' }
+    items:
+      type: array
+      maxItems: 1000
+      items: { $ref: '#/AdministrativeRegion' }
+      description: Complete immediate children, ordered by sort_order and region_id. Districts return an empty array; oversized or broken datasets fail instead of truncating.

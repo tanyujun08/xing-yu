@@ -1,0 +1,5 @@
+.fund-status { display: inline-flex; box-sizing: border-box; min-height: var(--xy-size-icon-nav, 24px); padding: var(--xy-gap-label-value-compact, 2px) 0; align-items: center; color: var(--xy-color-text-primary); font-size: var(--xy-text-body-small-size, 12px); font-weight: var(--xy-text-weight-medium, 500); line-height: var(--xy-text-body-small-line-height, 18px); white-space: nowrap; }
+.fund-status--processing, .fund-status--confirming { color: var(--xy-color-text-secondary); }
+.fund-status--completed { color: var(--xy-color-success); }
+.fund-status--failed { color: var(--xy-color-danger); }
+.fund-status--unknown { color: var(--xy-color-warning); }

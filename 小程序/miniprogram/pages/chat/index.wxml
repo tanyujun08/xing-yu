@@ -1,0 +1,70 @@
+<page-meta root-font-size="system" />
+<page-shell has-footer="{{loaded && !unavailable}}">
+  <page-header variant="order" slot="header" title="{{title}}" bindback="onSecondaryNavigationBack" />
+  <view wx:if="{{imageConfirmation}}" class="chat-image-confirmation">
+    <text class="chat-image-recipient">发送给 {{order.counterpartName}} · {{order.counterpartRoleText}}</text>
+    <view class="chat-image-preview-card">
+      <image class="chat-image-preview" src="{{imageSrc}}" mode="aspectFit" bindtap="previewDraftImage" role="button" aria-label="查看完整待发送图片" />
+      <text class="chat-image-confirm-copy">请确认图片内容后发送。</text>
+    </view>
+    <text wx:if="{{!imageReady}}" class="chat-image-progress" role="status">{{imageBusy ? '图片处理中 ' + imageProgress + '%' : imageFailed ? '图片处理失败，请取消后重新选择' : '图片结果待核实，请恢复原上传'}}</text>
+    <text wx:if="{{imageError || errorText}}" class="chat-error" role="alert">{{imageError || errorText}}</text>
+    <button wx:if="{{!imageReady && !imageFailed}}" class="xy-button-reset chat-text-action" bindtap="recoverImage" disabled="{{busy}}" aria-disabled="{{busy}}">恢复原上传</button>
+    <text wx:if="{{readonly}}" class="chat-readonly">{{readonlyReason}}</text>
+  </view>
+  <view wx:else class="chat-content">
+    <button wx:if="{{order}}" class="xy-button-reset chat-order-card" bindtap="openOrder" aria-label="查看本订单，{{order.deviceName}}">
+      <view class="chat-order-image"><media-state state="{{order.deviceImage ? 'loading' : 'idle'}}" src="{{order.deviceImage}}" mode="aspectFit" density="thumbnail" placeholder-src="{{icons.deviceMark}}" empty-label="" alt="{{order.deviceName}}设备图片" /></view>
+      <view class="chat-order-copy"><text class="chat-order-name">{{order.deviceName}}</text><text class="chat-order-status">{{order.rentalPeriod}}</text><text class="chat-order-status">{{order.statusText}}</text></view>
+      <text class="chat-order-link">查看订单 ›</text>
+    </button>
+    <view class="chat-tools"><text>订单留言，返回页面或刷新后查看新消息</text><button class="xy-button-reset chat-text-action" bindtap="demoSupport" binderror="contactError">官方客服</button></view>
+    <text wx:if="{{supportError}}" class="chat-error">{{supportError}}</text>
+    <view class="chat-refresh"><button class="xy-button-reset chat-text-action" bindtap="refresh" disabled="{{loading || busy}}" aria-disabled="{{loading || busy}}">{{loading ? '正在读取…' : '刷新消息'}}</button></view>
+    <view wx:if="{{loading && !loaded}}" class="chat-empty"><text>正在读取订单消息…</text></view>
+    <view wx:elif="{{unavailable}}" class="chat-empty"><text class="chat-empty-title">暂时无法打开会话</text><text>{{unavailableReason}}</text><button class="xy-button-reset chat-text-action" bindtap="refresh">重新读取</button></view>
+    <view wx:elif="{{loaded && !messages.length && !pending}}" class="xy-empty-page chat-empty"><image class="xy-empty-page__illustration" src="{{icons.emptyMessages}}" mode="aspectFit" aria-hidden="true" /><text class="xy-empty-page__title">还没有消息</text><text class="xy-empty-page__copy">{{readonly ? '暂无历史消息' : '可以先说明需要与对方确认的事项'}}</text></view>
+    <button wx:if="{{hasMore}}" class="xy-button-reset chat-text-action chat-history" bindtap="loadMore" disabled="{{loadingMore || loading}}" aria-disabled="{{loadingMore || loading}}">{{loadingMore ? '读取中…' : '查看更早消息'}}</button>
+    <view class="message-list">
+      <view wx:for="{{messages}}" wx:key="id" id="{{item.anchor}}" data-sequence="{{item.sequence}}" class="message-row {{item.mine ? 'is-mine' : ''}}">
+        <text class="message-time">{{item.timeText}}</text>
+        <view class="message-line"><view wx:if="{{!item.mine}}" class="message-avatar"><image wx:if="{{order.avatarURL}}" src="{{order.avatarURL}}" mode="aspectFill" /><text wx:else>{{order.avatarText}}</text></view><view class="message-bubble">
+          <image wx:if="{{item.kind === 'IMAGE'}}" class="message-image xy-action-hit" src="{{item.src}}" mode="aspectFit" style="width:{{item.imageWidth}}px;height:{{item.imageHeight}}px;" data-id="{{item.id}}" bindtap="previewImage" role="button" aria-label="查看消息图片" />
+          <text wx:else class="message-content" selectable="{{true}}">{{item.content}}</text>
+        </view><view wx:if="{{item.mine}}" class="message-avatar is-self"><image src="{{icons.orderPerson}}" mode="aspectFit" aria-label="本人" /></view></view>
+        <view class="message-read-marker" data-sequence="{{item.sequence}}" aria-hidden="true"></view>
+      </view>
+      <view wx:if="{{pending}}" class="message-row is-mine">
+        <view class="message-line">
+          <image wx:if="{{pending.phase === 'FAILED'}}" class="message-failure-icon" src="{{icons.withdrawalStatusFailed}}" mode="aspectFit" aria-hidden="true" />
+          <view class="message-bubble"><text class="message-content">{{pendingText}}</text></view>
+          <view class="message-avatar is-self"><image src="{{icons.orderPerson}}" mode="aspectFit" aria-label="本人" /></view>
+        </view>
+        <view class="message-outcome {{pending.phase === 'FAILED' ? 'is-failed' : ''}}"><image wx:if="{{pending.phase !== 'FAILED'}}" class="message-outcome-icon" src="{{icons.returnClock}}" mode="aspectFit" aria-hidden="true" /><text>{{busy ? '正在核实…' : pending.phase === 'FAILED' ? '发送失败' : pending.phase === 'NOT_FOUND' ? '暂未查到原消息' : '发送结果待确认'}}</text></view>
+      </view>
+    </view>
+    <view wx:if="{{pending}}" class="chat-recovery">
+      <text>{{pending.phase === 'FAILED' ? pending.reason : '原消息已保留，核实后再继续发送'}}</text>
+      <view class="chat-recovery-actions">
+        <button class="xy-button-reset chat-text-action" bindtap="queryOriginal" disabled="{{busy}}" aria-disabled="{{busy}}">查询原消息</button>
+        <button wx:if="{{canRetryOriginal}}" class="xy-button-reset chat-text-action" bindtap="retryOriginal">重试原消息</button>
+        <button wx:if="{{pending.phase === 'FAILED' && canPost}}" class="xy-button-reset chat-text-action" bindtap="discardFailed" disabled="{{busy}}" aria-disabled="{{busy}}">返回编辑</button>
+      </view>
+    </view>
+    <text wx:if="{{errorText}}" class="{{pending && pending.phase !== 'FAILED' ? 'chat-delivery' : 'chat-error'}}" role="alert">{{errorText}}</text>
+    <text wx:if="{{deliveryText}}" class="chat-delivery" role="status">{{deliveryText}}</text>
+    <view id="chat-bottom"></view>
+  </view>
+  <view slot="footer">
+    <view wx:if="{{imageConfirmation}}" class="chat-image-actions">
+      <button class="xy-button-reset chat-image-confirm-send" bindtap="send" disabled="{{!canSend}}" aria-disabled="{{!canSend}}">{{busy ? '处理中…' : '发送图片'}}</button>
+      <button class="xy-button-reset chat-image-cancel" bindtap="removeImage" disabled="{{busy}}" aria-disabled="{{busy}}">取消</button>
+    </view>
+    <text wx:elif="{{readonly}}" class="chat-readonly">{{readonlyReason}}</text>
+    <view wx:else class="chat-input-bar">
+      <textarea class="chat-input" value="{{content}}" maxlength="-1" auto-height="{{true}}" adjust-position="{{true}}" cursor-spacing="16" disabled="{{busy || !!pending}}" aria-disabled="{{busy || !!pending}}" placeholder="请输入消息" aria-label="消息，最多500字" bindinput="inputMessage" />
+      <button class="xy-button-reset chat-image-action" bindtap="chooseImage" disabled="{{busy || !!pending}}" aria-disabled="{{busy || !!pending}}" aria-label="选择一张图片"><image src="{{icons.returnAlbum}}" mode="aspectFit" aria-hidden="true" /></button>
+      <button class="xy-button-reset chat-send" bindtap="send" disabled="{{!canSend}}" aria-disabled="{{!canSend}}" aria-label="{{imageSrc ? '发送图片' : '发送消息'}}">{{busy ? '发送中' : '发送'}}</button>
+    </view>
+  </view>
+</page-shell>

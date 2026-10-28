@@ -1,0 +1,4267 @@
+ID:
+  type: string
+  minLength: 1
+  maxLength: 64
+  pattern: ^[!-~]{1,64}$
+Fen:
+  type: string
+  pattern: ^(0|[1-9][0-9]{0,18})$
+  description: CNY分字符串，另校验int64及业务上限
+Version:
+  type: string
+  pattern: ^[1-9][0-9]{0,19}$
+  description: 另校验uint64上限
+Time:
+  type: string
+  format: date-time
+  pattern: ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{1,6})?Z$
+Token:
+  type: string
+  minLength: 16
+  maxLength: 4096
+  pattern: ^[A-Za-z0-9._~-]+$
+Reason:
+  type: string
+  minLength: 1
+  maxLength: 500
+  pattern: \S
+Tracking:
+  type: string
+  minLength: 1
+  maxLength: 64
+  pattern: ^\S{1,64}$
+Empty:
+  type: object
+  additionalProperties: false
+  required: []
+  properties: {}
+Method:
+  type: string
+  enum:
+    - EXPRESS
+    - CABINET
+Stage:
+  type: string
+  enum:
+    - PREPARING
+    - AWAITING_PAYMENT
+    - ACTIVE
+    - COMPLETED
+    - CLOSED
+Physical:
+  type: string
+  enum:
+    - NOT_DELIVERED
+    - OUTBOUND
+    - IN_USE
+    - RETURN_PENDING
+    - RETURN_IN_TRANSIT
+    - RETURN_VERIFICATION
+    - RECEIVED
+ReviewStatus:
+  type: string
+  enum:
+    - NOT_STARTED
+    - PENDING
+    - MATERIAL_REQUIRED
+    - DISPUTED
+    - FINAL
+  description: >-
+    NOT_STARTED：尚未正式提交材料且未实收；PENDING：已进入待审/补交后等官方复核；MATERIAL_REQUIRED：官方要求补材料；DISPUTED：官方保存REVIEW_PENDING待核实原因；FINAL：唯一最终核定。实际收回不覆盖已有DISPUTED/MATERIAL_REQUIRED/FINAL。
+PaymentStatus:
+  type: string
+  enum:
+    - CREATED
+    - PROCESSING
+    - UNKNOWN
+    - SUCCEEDED
+    - FAILED_CONFIRMED
+    - CLOSED_UNPAID
+RefundStatus:
+  type: string
+  enum:
+    - CREATED
+    - PROCESSING
+    - UNKNOWN
+    - SUCCEEDED
+    - FAILED_CONFIRMED
+Blocker:
+  type: object
+  additionalProperties: false
+  required:
+    - code
+    - field
+    - message
+  properties:
+    code:
+      type: string
+      minLength: 1
+      maxLength: 64
+    field:
+      anyOf:
+        - type: string
+          minLength: 1
+          maxLength: 128
+        - type: 'null'
+    message:
+      type: string
+      minLength: 1
+      maxLength: 500
+Action:
+  type: object
+  additionalProperties: false
+  required:
+    - action_code
+    - allowed
+    - reason_code
+    - display_reason
+    - target
+    - required_version
+  properties:
+    action_code:
+      type: string
+      enum:
+        - CREATE_PREPARATION
+        - CONFIRM_ORDER
+        - PAY_INITIAL
+        - PAY_SUPPLEMENT
+        - INVOKE_PAYMENT
+        - QUERY_PAYMENT
+        - REFUND_UNPICKED
+        - QUERY_REFUND
+        - CANCEL_UNPAID
+        - AGREE_CONTRACT
+        - VIEW_CONTRACT
+        - SHIP
+        - CORRECT_SHIPMENT
+        - CONFIRM_DELIVERY
+        - START_RETURN
+        - SET_RETURN_ADDRESS
+        - SHIP_RETURN
+        - CORRECT_RETURN_SHIPMENT
+        - CONFIRM_RECEIPT
+        - CORRECT_RECEIPT
+        - PREVIEW_REVIEW
+        - SUBMIT_REVIEW
+        - SELECT_COMPARTMENT
+        - OPEN_CABINET
+        - CANCEL_CABINET
+        - QUERY_CABINET
+        - READ_PICKUP_CODE
+        - CONTACT_OFFICIAL
+        - EXPORT_MERCHANT_INCOME
+        - SAVE_RETURN_EVIDENCE
+        - CONFIRM_RETURN
+        - RECHECK_RETURN
+        - RELEASE_EMPTY_RETURN
+    allowed:
+      type: boolean
+    reason_code:
+      anyOf:
+        - type: string
+          minLength: 1
+          maxLength: 64
+        - type: 'null'
+    display_reason:
+      anyOf:
+        - type: string
+          minLength: 1
+          maxLength: 500
+        - type: 'null'
+    target:
+      anyOf:
+        - $ref: '#/ID'
+        - type: 'null'
+    required_version:
+      anyOf:
+        - $ref: '#/Version'
+        - type: 'null'
+FieldViolation:
+  type: object
+  additionalProperties: false
+  required:
+    - field
+    - reason
+    - rule
+  properties:
+    field:
+      type: string
+      pattern: ^[a-z][a-z0-9_]*(?:\.[a-z][a-z0-9_]*)*$
+    reason:
+      type: string
+      maxLength: 256
+    rule:
+      type: string
+      pattern: ^[A-Z][A-Z0-9_]*$
+CommandResult:
+  type: object
+  additionalProperties: false
+  required:
+    - state
+    - resource_type
+    - resource_id
+    - order_id
+    - version
+    - poll_after_seconds
+    - allowed_actions
+    - blockers
+  properties:
+    state:
+      type: string
+      enum:
+        - ACCEPTED
+        - APPLIED
+        - UNKNOWN
+    resource_type:
+      type: string
+      enum:
+        - ORDER
+        - CABINET_TASK
+    resource_id:
+      $ref: '#/ID'
+    order_id:
+      anyOf:
+        - $ref: '#/ID'
+        - type: 'null'
+    version:
+      $ref: '#/Version'
+    poll_after_seconds:
+      type: integer
+      minimum: 0
+      maximum: 60
+    allowed_actions:
+      type: array
+      items:
+        $ref: '#/Action'
+      maxItems: 30
+      minItems: 0
+    blockers:
+      type: array
+      items:
+        $ref: '#/Blocker'
+      maxItems: 30
+      minItems: 0
+LookupView:
+  type: object
+  additionalProperties: false
+  required:
+    - state
+    - result
+    - error
+    - retry_same_request
+  properties:
+    state:
+      type: string
+      enum:
+        - NOT_FOUND
+        - PROCESSING
+        - COMPLETED
+        - FAILED
+    result:
+      anyOf:
+        - $ref: '#/CommandResult'
+        - type: 'null'
+    error:
+      anyOf:
+        - $ref: ./errors.yaml#/Problem
+        - type: 'null'
+    retry_same_request:
+      type: boolean
+QuoteRequest:
+  type: object
+  additionalProperties: false
+  required:
+    - asset_id
+    - rental_start_at
+    - rental_end_at
+    - delivery_method
+    - address_id
+    - coupon_id
+  properties:
+    asset_id:
+      $ref: '#/ID'
+    rental_start_at:
+      $ref: '#/Time'
+    rental_end_at:
+      $ref: '#/Time'
+    delivery_method:
+      $ref: '#/Method'
+    address_id:
+      anyOf:
+        - $ref: '#/ID'
+        - type: 'null'
+    coupon_id:
+      anyOf:
+        - $ref: '#/ID'
+        - type: 'null'
+  allOf:
+    - if:
+        properties:
+          delivery_method:
+            const: CABINET
+        required:
+          - delivery_method
+      then:
+        properties:
+          address_id:
+            type: 'null'
+    - if:
+        properties:
+          delivery_method:
+            const: EXPRESS
+        required:
+          - delivery_method
+      then:
+        properties:
+          address_id:
+            $ref: '#/ID'
+FeeBreakdown:
+  type: object
+  additionalProperties: false
+  required:
+    - rent_gross_fen
+    - rent_discount_fen
+    - deposit_list_fen
+    - deposit_waived_fen
+    - deposit_due_fen
+    - initial_due_fen
+    - currency
+  properties:
+    rent_gross_fen:
+      $ref: '#/Fen'
+    rent_discount_fen:
+      $ref: '#/Fen'
+    deposit_list_fen:
+      $ref: '#/Fen'
+    deposit_waived_fen:
+      $ref: '#/Fen'
+    deposit_due_fen:
+      $ref: '#/Fen'
+    initial_due_fen:
+      $ref: '#/Fen'
+    currency:
+      type: string
+      const: CNY
+QuoteView:
+  type: object
+  additionalProperties: false
+  required:
+    - terms_hash
+    - fees
+    - max_payable_fen
+    - required_signer_roles
+    - blockers
+    - requirements
+  properties:
+    terms_hash:
+      type: string
+      pattern: ^[a-f0-9]{64}$
+    fees:
+      $ref: '#/FeeBreakdown'
+    max_payable_fen:
+      $ref: '#/Fen'
+    required_signer_roles:
+      type: array
+      items:
+        type: string
+        enum:
+          - TENANT
+          - LESSOR
+          - PLATFORM
+      maxItems: 3
+      minItems: 1
+    blockers:
+      type: array
+      items:
+        $ref: '#/Blocker'
+      maxItems: 30
+      minItems: 0
+    requirements:
+      $ref: '#/OrderRequirements'
+  description: 无状态只读报价；terms_hash为规范化成交条件SHA-256，仅用于比较。费用、权限及资格在B02全部重新计算，客户端hash不授权任何金额。无报价表、签名令牌或报价缓存。
+PreparationRequest:
+  type: object
+  additionalProperties: false
+  required:
+    - asset_id
+    - rental_start_at
+    - rental_end_at
+    - delivery_method
+    - address_id
+    - coupon_id
+    - accepted_terms_hash
+  properties:
+    asset_id:
+      $ref: '#/ID'
+    rental_start_at:
+      $ref: '#/Time'
+    rental_end_at:
+      $ref: '#/Time'
+    delivery_method:
+      $ref: '#/Method'
+    address_id:
+      anyOf:
+        - $ref: '#/ID'
+        - type: 'null'
+    coupon_id:
+      anyOf:
+        - $ref: '#/ID'
+        - type: 'null'
+    accepted_terms_hash:
+      type: string
+      pattern: ^[a-f0-9]{64}$
+      description: 用户当前已确认的B01.terms_hash；与完整相同选择一并提交，服务端重算不匹配返回409 QUOTE_CHANGED。
+  allOf:
+    - if:
+        properties:
+          delivery_method:
+            const: CABINET
+        required:
+          - delivery_method
+      then:
+        properties:
+          address_id:
+            type: 'null'
+    - if:
+        properties:
+          delivery_method:
+            const: EXPRESS
+        required:
+          - delivery_method
+      then:
+        properties:
+          address_id:
+            $ref: '#/ID'
+Signer:
+  type: object
+  additionalProperties: false
+  required:
+    - role
+    - status
+    - signed_at
+    - session_id
+    - account_id
+  properties:
+    role:
+      type: string
+      enum:
+        - TENANT
+        - LESSOR
+        - PLATFORM
+    status:
+      type: string
+      enum:
+        - PENDING
+        - SUCCEEDED
+    signed_at:
+      anyOf:
+        - $ref: '#/Time'
+        - type: 'null'
+    session_id:
+      anyOf:
+        - $ref: '#/ID'
+        - type: 'null'
+    account_id:
+      anyOf:
+        - $ref: '#/ID'
+        - type: 'null'
+ContractView:
+  type: object
+  additionalProperties: false
+  required:
+    - contract_id
+    - order_id
+    - status
+    - template_version_id
+    - document_template
+    - lessor_signature
+    - tenant_signature
+    - current_attempt
+    - final_artifact
+    - quota_state
+    - quota_valid_until
+    - expires_at
+    - version
+    - allowed_actions
+    - blockers
+    - agreement_text
+    - agreement_sha256
+    - order_terms_sha256
+  properties:
+    contract_id:
+      $ref: '#/ID'
+    order_id:
+      $ref: '#/ID'
+    status:
+      type: string
+      enum:
+        - PENDING
+        - SUCCEEDED
+        - EXPIRED
+    template_version_id:
+      $ref: '#/ID'
+    document_template:
+      $ref: ./order-experience.yaml#/DocumentTemplate
+    lessor_signature:
+      $ref: ./order-experience.yaml#/LessorSignature
+    tenant_signature:
+      $ref: ./order-experience.yaml#/TenantSignature
+    current_attempt:
+      anyOf:
+        - $ref: ./order-experience.yaml#/SignatureAttempt
+        - type: 'null'
+    final_artifact:
+      anyOf:
+        - $ref: ./order-experience.yaml#/ContractArtifact
+        - type: 'null'
+    quota_state:
+      type: string
+      enum:
+        - NOT_APPLICABLE
+        - RESERVED
+        - CONSUMED
+        - RELEASED
+        - RESTORED
+    quota_valid_until:
+      anyOf:
+        - $ref: '#/Time'
+        - type: 'null'
+      description: 原合同次数权益的到期时间；释放或恢复不延长。未占用次数或没有期限时为null。
+    expires_at:
+      $ref: '#/Time'
+    version:
+      $ref: '#/Version'
+    allowed_actions:
+      type: array
+      items:
+        $ref: '#/Action'
+      maxItems: 30
+      minItems: 0
+    blockers:
+      type: array
+      items:
+        $ref: '#/Blocker'
+      maxItems: 30
+      minItems: 0
+    agreement_text:
+      type: string
+      minLength: 1
+      maxLength: 100000
+    agreement_sha256:
+      type: string
+      pattern: ^[a-f0-9]{64}$
+    order_terms_sha256:
+      type: string
+      pattern: ^[a-f0-9]{64}$
+PaymentRequest:
+  type: object
+  additionalProperties: false
+  required:
+    - purpose
+    - supplement_id
+  properties:
+    supplement_id:
+      anyOf:
+        - $ref: '#/ID'
+        - type: 'null'
+      description: INITIAL必须null；SUPPLEMENT必须为当前订单补缴责任ID。金额和代次仅服务端分配。
+    purpose:
+      type: string
+      enum:
+        - INITIAL
+        - SUPPLEMENT
+PaymentView:
+  type: object
+  additionalProperties: false
+  required:
+    - business_amount_fen
+    - channel_amount_fen
+    - payment_mode
+    - payment_id
+    - order_id
+    - purpose
+    - supplement_id
+    - generation
+    - status
+    - amount_fen
+    - payer_total_fen
+    - currency
+    - expires_at
+    - paid_at
+    - last_verified_at
+    - version
+    - allowed_actions
+    - blockers
+    - created_at
+  properties:
+    payment_mode:
+      type: string
+      enum: [NORMAL, FIXED_10_FEN]
+      description: FIXED_10_FEN为测试业务覆盖，业务金额不代表现金实收或可提现收益。
+    business_amount_fen:
+      $ref: '#/PositiveFen'
+    channel_amount_fen:
+      $ref: '#/PositiveFen'
+    supplement_id:
+      anyOf:
+        - $ref: '#/ID'
+        - type: 'null'
+    generation:
+      type: integer
+      minimum: 0
+      maximum: 4294967295
+    payment_id:
+      $ref: '#/ID'
+    order_id:
+      $ref: '#/ID'
+    purpose:
+      type: string
+      enum:
+        - INITIAL
+        - SUPPLEMENT
+    status:
+      $ref: '#/PaymentStatus'
+    amount_fen:
+      $ref: '#/PositiveFen'
+    payer_total_fen:
+      anyOf:
+        - $ref: '#/Fen'
+        - type: 'null'
+      description: 业务成功必需的原交易绑定、金额、状态和发生时间已经核实后，此现金分项未返回允许null；页面标现金金额待核实，不用amount_fen补值；补全不再次记账。核心支付/退款事实未知时不能SUCCEEDED。
+    currency:
+      type: string
+      const: CNY
+    expires_at:
+      $ref: '#/Time'
+    paid_at:
+      anyOf:
+        - $ref: '#/Time'
+        - type: 'null'
+    last_verified_at:
+      anyOf:
+        - $ref: '#/Time'
+        - type: 'null'
+    version:
+      $ref: '#/Version'
+    allowed_actions:
+      type: array
+      items:
+        $ref: '#/Action'
+      maxItems: 30
+      minItems: 0
+    blockers:
+      type: array
+      items:
+        $ref: '#/Blocker'
+      maxItems: 30
+      minItems: 0
+    created_at:
+      $ref: '#/Time'
+Invocation:
+  type: object
+  additionalProperties: false
+  required:
+    - payment_id
+    - app_id
+    - time_stamp
+    - nonce_str
+    - package
+    - sign_type
+    - pay_sign
+    - expires_at
+  properties:
+    payment_id:
+      $ref: '#/ID'
+    app_id:
+      type: string
+      minLength: 1
+      maxLength: 32
+    time_stamp:
+      type: string
+      pattern: ^[0-9]{1,20}$
+    nonce_str:
+      type: string
+      minLength: 1
+      maxLength: 32
+    package:
+      type: string
+      minLength: 1
+      maxLength: 128
+      pattern: ^prepay_id=.+$
+    sign_type:
+      type: string
+      const: RSA
+    pay_sign:
+      type: string
+      minLength: 1
+      maxLength: 1024
+    expires_at:
+      $ref: '#/Time'
+RefundView:
+  type: object
+  additionalProperties: false
+  required:
+    - business_amount_fen
+    - channel_amount_fen
+    - payment_mode
+    - refund_id
+    - obligation_id
+    - original_payment_id
+    - excess_component_fen
+    - order_id
+    - purpose
+    - status
+    - amount_fen
+    - payer_refund_fen
+    - deposit_component_fen
+    - rent_component_fen
+    - refunded_at
+    - last_verified_at
+    - version
+    - allowed_actions
+    - blockers
+    - currency
+  properties:
+    payment_mode:
+      type: string
+      enum: [NORMAL, FIXED_10_FEN]
+      description: FIXED_10_FEN为测试业务覆盖，业务金额不代表现金实收或可提现收益。
+    business_amount_fen:
+      $ref: '#/PositiveFen'
+    channel_amount_fen:
+      $ref: '#/PositiveFen'
+    obligation_id:
+      $ref: '#/ID'
+    original_payment_id:
+      $ref: '#/ID'
+    excess_component_fen:
+      $ref: '#/Fen'
+    refund_id:
+      $ref: '#/ID'
+    order_id:
+      $ref: '#/ID'
+    purpose:
+      type: string
+      enum:
+        - DEPOSIT
+        - ADMIN_UNPICKED
+        - OBSERVED_NONFULFILLMENT
+        - EXCESS_PAYMENT
+    status:
+      $ref: '#/RefundStatus'
+    amount_fen:
+      $ref: '#/PositiveFen'
+    payer_refund_fen:
+      anyOf:
+        - $ref: '#/Fen'
+        - type: 'null'
+      description: 业务成功必需的原交易绑定、金额、状态和发生时间已经核实后，此现金分项未返回允许null；页面标现金金额待核实，不用amount_fen补值；补全不再次记账。核心支付/退款事实未知时不能SUCCEEDED。
+    deposit_component_fen:
+      $ref: '#/Fen'
+    rent_component_fen:
+      $ref: '#/Fen'
+    refunded_at:
+      anyOf:
+        - $ref: '#/Time'
+        - type: 'null'
+    last_verified_at:
+      anyOf:
+        - $ref: '#/Time'
+        - type: 'null'
+    version:
+      $ref: '#/Version'
+    allowed_actions:
+      type: array
+      items:
+        $ref: '#/Action'
+      maxItems: 30
+      minItems: 0
+    blockers:
+      type: array
+      items:
+        $ref: '#/Blocker'
+      maxItems: 30
+      minItems: 0
+    currency:
+      type: string
+      const: CNY
+AssetSummary:
+  type: object
+  additionalProperties: false
+  required:
+    - asset_id
+    - asset_revision_id
+    - title
+    - cover_material_id
+    - cover_media
+  properties:
+    asset_id:
+      $ref: '#/ID'
+    asset_revision_id:
+      $ref: '#/ID'
+    title:
+      type: string
+      minLength: 1
+      maxLength: 128
+    cover_material_id:
+      anyOf:
+        - $ref: '#/ID'
+        - type: 'null'
+    cover_media:
+      anyOf:
+        - $ref: '#/PublicMaterialMedia'
+        - type: 'null'
+OrderSummary:
+  type: object
+  additionalProperties: false
+  required:
+    - payment_mode
+    - order_id
+    - order_no
+    - viewer_role
+    - supply_channel
+    - stage
+    - physical_status
+    - review_status
+    - display_status
+    - has_exception
+    - exception_codes
+    - asset
+    - rental_start_at
+    - rental_end_at
+    - placed_at
+    - created_at
+    - version
+    - allowed_actions
+    - blockers
+    - display_status_code
+    - initial_due_fen
+    - initial_paid_fen
+    - initial_payer_total_fen
+    - supplement_due_fen
+    - payment_due_at
+  properties:
+    payment_mode:
+      type: string
+      enum: [NORMAL, FIXED_10_FEN]
+      description: FIXED_10_FEN为测试业务覆盖，业务金额不代表现金实收或可提现收益。
+    order_id:
+      $ref: '#/ID'
+    order_no:
+      type: string
+      minLength: 1
+      maxLength: 32
+    viewer_role:
+      type: string
+      enum:
+        - TENANT
+        - LESSOR
+        - OFFICIAL
+    supply_channel:
+      type: string
+      enum:
+        - PERSONAL
+        - OFFICIAL_CABINET
+    stage:
+      $ref: '#/Stage'
+    physical_status:
+      $ref: '#/Physical'
+    review_status:
+      $ref: '#/ReviewStatus'
+    display_status:
+      type: string
+      minLength: 1
+      maxLength: 64
+    has_exception:
+      type: boolean
+    exception_codes:
+      type: array
+      items:
+        type: string
+        minLength: 1
+        maxLength: 64
+      maxItems: 30
+      minItems: 0
+    asset:
+      $ref: '#/AssetSummary'
+    rental_start_at:
+      $ref: '#/Time'
+    rental_end_at:
+      $ref: '#/Time'
+    placed_at:
+      anyOf:
+        - $ref: '#/Time'
+        - type: 'null'
+    created_at:
+      $ref: '#/Time'
+    version:
+      $ref: '#/Version'
+    allowed_actions:
+      type: array
+      items:
+        $ref: '#/Action'
+      maxItems: 30
+      minItems: 0
+      description: >-
+        按当前主体及服务端UTC投影。官方PICKUP仅rental_start_at <= server_now <
+        rental_end_at允许OPEN_CABINET；开始前allowed=false，reason_code=RENTAL_NOT_STARTED，display_reason展示北京时间可取件时间。READ_PICKUP_CODE不受开始时刻限制；RETURN不套用该PICKUP守卫。投影不能替代执行前重验。
+    blockers:
+      type: array
+      items:
+        $ref: '#/Blocker'
+      maxItems: 30
+      minItems: 0
+    display_status_code:
+      type: string
+      enum:
+        - PREPARING
+        - AWAITING_CONFIRMATION
+        - AWAITING_PAYMENT
+        - AWAITING_DELIVERY
+        - IN_USE
+        - RETURNING
+        - RETURN_REVIEW
+        - AWAITING_SUPPLEMENT
+        - REFUND_PROCESSING
+        - SETTLEMENT_CONFIRMING
+        - COMPLETED
+        - CLOSED
+    initial_due_fen:
+      $ref: '#/Fen'
+    initial_paid_fen:
+      anyOf:
+        - $ref: '#/Fen'
+        - type: 'null'
+      description: INITIAL可信SUCCEEDED取amount_fen（订单结清额，含渠道优惠），零现金确认取0；尚未确认取null；不把补缴混入卡片初始实付，不把UNKNOWN写0。
+    supplement_due_fen:
+      anyOf:
+        - $ref: '#/Fen'
+        - type: 'null'
+      description: 实物收回且FINAL后由最终核定与本单可信补缴支付计算；成功补缴后为0，尚未核定为null，不使用初付金额替代。
+    payment_due_at:
+      anyOf:
+        - $ref: '#/Time'
+        - type: 'null'
+    initial_payer_total_fen:
+      anyOf:
+        - $ref: '#/Fen'
+        - type: 'null'
+      description: INITIAL成功的payer_total_fen，展示用户微信实付；成功但渠道未返回时为null并显示已支付/金额待核实，不能拿amount_fen冒充微信实付；零现金确认取0。
+AddressView:
+  type: object
+  additionalProperties: false
+  required:
+    - recipient_name
+    - country_code
+    - phone
+    - region_ids
+    - region_text
+    - detail
+    - source_id
+  properties:
+    recipient_name:
+      type: string
+      minLength: 1
+      maxLength: 64
+    country_code:
+      type: string
+      minLength: 1
+      maxLength: 8
+      pattern: ^\+?[1-9][0-9]{0,6}$
+    phone:
+      type: string
+      minLength: 5
+      maxLength: 32
+      pattern: ^[0-9]{5,32}$
+    region_ids:
+      type: array
+      items:
+        $ref: '#/ID'
+      maxItems: 4
+      minItems: 1
+    region_text:
+      type: string
+      minLength: 1
+      maxLength: 256
+    detail:
+      type: string
+      minLength: 1
+      maxLength: 256
+    source_id:
+      anyOf:
+        - $ref: '#/ID'
+        - type: 'null'
+DeliveryView:
+  type: object
+  additionalProperties: false
+  required:
+    - method
+    - recipient
+    - tracking_no
+    - carrier
+    - shipped_at
+    - delivered_at
+  properties:
+    method:
+      $ref: '#/Method'
+    recipient:
+      anyOf:
+        - $ref: '#/AddressView'
+        - type: 'null'
+    tracking_no:
+      anyOf:
+        - $ref: '#/Tracking'
+        - type: 'null'
+    carrier:
+      anyOf:
+        - type: string
+          minLength: 1
+          maxLength: 64
+        - type: 'null'
+    shipped_at:
+      anyOf:
+        - $ref: '#/Time'
+        - type: 'null'
+    delivered_at:
+      anyOf:
+        - $ref: '#/Time'
+        - type: 'null'
+BillView:
+  type: object
+  additionalProperties: false
+  required:
+    - payment_mode
+    - finalized
+    - review_id
+    - deposit_received_fen
+    - overtime_fen
+    - loss_fen
+    - deducted_fen
+    - refund_due_fen
+    - supplement_due_fen
+    - deposit_refunded_fen
+    - initial_payment
+    - supplement
+    - refund_summary
+    - funds_summary
+    - assessment
+    - currency
+  properties:
+    payment_mode:
+      type: string
+      enum: [NORMAL, FIXED_10_FEN]
+      description: FIXED_10_FEN为测试业务覆盖，业务金额不代表现金实收或可提现收益。
+    finalized:
+      type: boolean
+    review_id:
+      anyOf:
+        - $ref: '#/ID'
+        - type: 'null'
+    deposit_received_fen:
+      $ref: '#/Fen'
+    overtime_fen:
+      anyOf:
+        - $ref: '#/Fen'
+        - type: 'null'
+    loss_fen:
+      anyOf:
+        - $ref: '#/Fen'
+        - type: 'null'
+    deducted_fen:
+      $ref: '#/Fen'
+    refund_due_fen:
+      anyOf:
+        - $ref: '#/Fen'
+        - type: 'null'
+    supplement_due_fen:
+      anyOf:
+        - $ref: '#/Fen'
+        - type: 'null'
+    deposit_refunded_fen:
+      $ref: '#/Fen'
+    initial_payment:
+      anyOf:
+        - $ref: '#/PaymentView'
+        - type: 'null'
+    supplement:
+      anyOf:
+        - $ref: '#/SupplementView'
+        - type: 'null'
+    refund_summary:
+      $ref: '#/RefundSummary'
+    funds_summary:
+      $ref: '#/FundsSummary'
+    assessment:
+      anyOf:
+        - $ref: '#/AssessmentView'
+        - type: 'null'
+    currency:
+      type: string
+      const: CNY
+  description: 费用由唯一FINAL核定；业务责任、当前支付引用及全量资金汇总由服务端生成，不能从一页历史流水推导已结清。补缴责任无超时，渠道交易可顺序换代；退款按责任与原支付累计。
+OrderDetail:
+  type: object
+  additionalProperties: false
+  required:
+    - order
+    - server_time
+    - fees
+    - bill
+    - delivery
+    - contract_id
+    - return_id
+    - merchant_id
+    - earning_id
+    - payment_due_at
+    - hold_expires_at
+    - completed_at
+    - closed_at
+    - close_reason
+    - asset_snapshot
+    - requirements
+    - latest_cabinet_tasks
+    - pickup
+    - checkout
+    - coupon_status
+  properties:
+    server_time:
+      $ref: '#/Time'
+    coupon_status:
+      anyOf:
+        - type: string
+          enum:
+            - RESERVED
+            - CONSUMED
+            - RELEASED
+            - RESTORED
+        - type: 'null'
+      description: 本订单唯一券绑定的当前状态；未用券为null。恢复不新增优惠券，不伪造有效期。
+    order:
+      $ref: '#/OrderSummary'
+    fees:
+      $ref: '#/FeeBreakdown'
+    bill:
+      $ref: '#/BillView'
+    delivery:
+      $ref: '#/DeliveryView'
+    contract_id:
+      $ref: '#/ID'
+    return_id:
+      anyOf:
+        - $ref: '#/ID'
+        - type: 'null'
+    merchant_id:
+      anyOf:
+        - $ref: '#/ID'
+        - type: 'null'
+    earning_id:
+      anyOf:
+        - $ref: '#/ID'
+        - type: 'null'
+    payment_due_at:
+      anyOf:
+        - $ref: '#/Time'
+        - type: 'null'
+    hold_expires_at:
+      $ref: '#/Time'
+    completed_at:
+      anyOf:
+        - $ref: '#/Time'
+        - type: 'null'
+    closed_at:
+      anyOf:
+        - $ref: '#/Time'
+        - type: 'null'
+    close_reason:
+      anyOf:
+        - type: string
+          enum:
+            - PREPARATION_EXPIRED
+            - PAYMENT_EXPIRED
+            - PAYMENT_CLOSED_UNPAID
+            - CANCELLED_UNPAID
+            - ZERO_CASH_UNDELIVERED
+            - ADMIN_UNPICKED_REFUND
+            - EXTERNAL_NONFULFILLMENT
+        - type: 'null'
+      description: 服务端已提交的关闭原因，仅 CLOSED 时非 null；客户端不得依据本地倒计时、签约过期或零金额推断关闭。重新下单重新读取报价和条款，不复用旧订单或签名。
+    asset_snapshot:
+      $ref: '#/AssetSnapshotView'
+    requirements:
+      $ref: '#/OrderRequirements'
+    latest_cabinet_tasks:
+      type: array
+      items:
+        $ref: '#/CabinetTask'
+      minItems: 0
+      maxItems: 2
+    pickup:
+      anyOf:
+        - $ref: '#/PickupContext'
+        - type: 'null'
+      description: CABINET成交绑定的柜格上下文；不含正确码。不依赖取件任务是否已创建；格口和入柜位置一经成交不自行换柜。
+    checkout:
+      $ref: '#/CheckoutSelection'
+ShippingRequest:
+  type: object
+  additionalProperties: false
+  required:
+    - tracking_no
+    - carrier
+  properties:
+    tracking_no:
+      $ref: '#/Tracking'
+    carrier:
+      anyOf:
+        - type: string
+          minLength: 1
+          maxLength: 64
+        - type: 'null'
+ShippingCorrection:
+  type: object
+  additionalProperties: false
+  required:
+    - tracking_no
+    - carrier
+    - reason
+  properties:
+    tracking_no:
+      $ref: '#/Tracking'
+    carrier:
+      anyOf:
+        - type: string
+          minLength: 1
+          maxLength: 64
+        - type: 'null'
+    reason:
+      $ref: '#/Reason'
+ReturnAddressRequest:
+  type: object
+  additionalProperties: false
+  required:
+    - address_id
+  properties:
+    address_id:
+      $ref: '#/ID'
+ReturnDraftRequest:
+  type: object
+  additionalProperties: false
+  required:
+    - method
+  properties:
+    method:
+      $ref: '#/Method'
+ReturnShippingRequest:
+  type: object
+  additionalProperties: false
+  required:
+    - tracking_no
+    - carrier
+    - confirmed_address_version
+  properties:
+    tracking_no:
+      $ref: '#/Tracking'
+    carrier:
+      anyOf:
+        - type: string
+          minLength: 1
+          maxLength: 64
+        - type: 'null'
+    confirmed_address_version:
+      $ref: '#/PositiveAddressVersion'
+ReturnShippingCorrection:
+  type: object
+  additionalProperties: false
+  required:
+    - tracking_no
+    - carrier
+    - reason
+  properties:
+    tracking_no:
+      $ref: '#/Tracking'
+    carrier:
+      anyOf:
+        - type: string
+          minLength: 1
+          maxLength: 64
+        - type: 'null'
+    reason:
+      $ref: '#/Reason'
+EvidenceRef:
+  type: object
+  additionalProperties: false
+  required:
+    - material_id
+    - kind
+  properties:
+    material_id:
+      $ref: '#/ID'
+    kind:
+      type: string
+      enum:
+        - PHOTO
+        - VIDEO
+ReceiptRequest:
+  type: object
+  additionalProperties: false
+  required:
+    - received_at
+    - note
+  properties:
+    received_at:
+      $ref: '#/Time'
+    note:
+      anyOf:
+        - type: string
+          minLength: 0
+          maxLength: 500
+        - type: 'null'
+      description: 可选备注；null或0–500字符，不要求收回依据或附件。
+ReceiptCorrection:
+  type: object
+  additionalProperties: false
+  required:
+    - received_at
+    - reason
+  properties:
+    received_at:
+      $ref: '#/Time'
+    reason:
+      $ref: '#/Reason'
+LossItem:
+  type: object
+  additionalProperties: false
+  required:
+    - description
+    - confirmed_fen
+    - evidence_ids
+  properties:
+    description:
+      $ref: '#/Reason'
+    confirmed_fen:
+      anyOf:
+        - $ref: '#/Fen'
+        - type: 'null'
+    evidence_ids:
+      type: array
+      items:
+        $ref: '#/ID'
+      maxItems: 20
+      minItems: 0
+      uniqueItems: true
+  description: 损失项仅包含说明、官方核定金额及凭证；过程未核定为null。数组顺序标识展示行，不设主张/争议金额或业务行ID。
+  allOf:
+    - if:
+        properties:
+          confirmed_fen:
+            $ref: '#/PositiveFen'
+      then:
+        properties:
+          evidence_ids:
+            minItems: 1
+ReturnView:
+  type: object
+  additionalProperties: false
+  required:
+    - return_id
+    - order_id
+    - method
+    - address_version
+    - address
+    - confirmed_address_version
+    - tracking_no
+    - carrier
+    - shipped_at
+    - material_status
+    - submitted_at
+    - received_at
+    - receipt_source
+    - receipt_recorded_at
+    - version
+    - allowed_actions
+    - blockers
+    - receipt_note
+    - note
+    - evidence_version
+    - evidence_template
+    - evidence_slots
+    - evidence_history
+    - pre_return_complete
+    - cabinet_task
+    - missing_items
+  properties:
+    return_id:
+      $ref: '#/ID'
+    order_id:
+      $ref: '#/ID'
+    method:
+      $ref: '#/Method'
+    address_version:
+      $ref: '#/AddressVersion'
+    address:
+      anyOf:
+        - $ref: '#/AddressView'
+        - type: 'null'
+      description: 仅个人快递返程投影AddressView，未设置前为null；官方柜机固定null。电话来自原授权地址，不猜测或伪造。
+    confirmed_address_version:
+      anyOf:
+        - $ref: '#/PositiveAddressVersion'
+        - type: 'null'
+    tracking_no:
+      anyOf:
+        - $ref: '#/Tracking'
+        - type: 'null'
+    carrier:
+      anyOf:
+        - type: string
+          minLength: 1
+          maxLength: 64
+        - type: 'null'
+    shipped_at:
+      anyOf:
+        - $ref: '#/Time'
+        - type: 'null'
+    material_status:
+      type: string
+      enum:
+        - INCOMPLETE
+        - COMPLETE
+    submitted_at:
+      anyOf:
+        - $ref: '#/Time'
+        - type: 'null'
+    received_at:
+      anyOf:
+        - $ref: '#/Time'
+        - type: 'null'
+    receipt_source:
+      anyOf:
+        - type: string
+          enum:
+            - CABINET
+            - LESSOR
+            - OFFICIAL
+        - type: 'null'
+    receipt_recorded_at:
+      anyOf:
+        - $ref: '#/Time'
+        - type: 'null'
+    version:
+      $ref: '#/Version'
+    allowed_actions:
+      type: array
+      items:
+        $ref: '#/Action'
+      maxItems: 30
+      minItems: 0
+    blockers:
+      type: array
+      items:
+        $ref: '#/Blocker'
+      maxItems: 30
+      minItems: 0
+    receipt_note:
+      anyOf:
+        - type: string
+          maxLength: 500
+        - type: 'null'
+    note:
+      anyOf:
+        - type: string
+          maxLength: 500
+          description: 租客最新一次已成功绑定材料的说明；收回备注另见receipt_note。
+        - type: 'null'
+    evidence_version:
+      type: string
+      pattern: ^(0|[1-9][0-9]*)$
+    evidence_template:
+      $ref: '#/ReturnEvidenceTemplate'
+    evidence_slots:
+      type: array
+      items:
+        $ref: '#/ReturnEvidenceSlotView'
+      minItems: 0
+      maxItems: 20
+    evidence_history:
+      type: array
+      items:
+        $ref: '#/ReturnEvidenceItem'
+      minItems: 0
+      maxItems: 200
+    pre_return_complete:
+      type: boolean
+    cabinet_task:
+      anyOf:
+        - $ref: '#/CabinetTask'
+        - type: 'null'
+    missing_items:
+      type: array
+      items:
+        $ref: '#/ReturnMissingItem'
+      minItems: 0
+      maxItems: 20
+ReviewPreviewRequest:
+  type: object
+  additionalProperties: false
+  required:
+    - decision
+    - receipt_version
+    - overtime_assessed_fen
+    - adjustment_reason
+    - loss_items
+    - rejection_reason
+    - missing_items
+    - evidence_ids
+  properties:
+    decision:
+      type: string
+      enum:
+        - APPROVE_FINAL
+        - REVIEW_PENDING
+        - MATERIAL_REQUIRED
+    receipt_version:
+      anyOf:
+        - $ref: '#/Version'
+        - type: 'null'
+    overtime_assessed_fen:
+      anyOf:
+        - $ref: '#/Fen'
+        - type: 'null'
+    adjustment_reason:
+      anyOf:
+        - $ref: '#/Reason'
+        - type: 'null'
+    loss_items:
+      type: array
+      items:
+        $ref: '#/LossItem'
+      maxItems: 100
+      minItems: 0
+    rejection_reason:
+      anyOf:
+        - $ref: '#/Reason'
+        - type: 'null'
+    missing_items:
+      type: array
+      items:
+        $ref: '#/ReturnMissingItem'
+      minItems: 0
+      maxItems: 20
+    evidence_ids:
+      type: array
+      items:
+        $ref: '#/ID'
+      maxItems: 20
+      minItems: 0
+      uniqueItems: true
+  allOf:
+    - if:
+        properties:
+          decision:
+            const: APPROVE_FINAL
+      then:
+        properties:
+          receipt_version:
+            $ref: '#/Version'
+          overtime_assessed_fen:
+            $ref: '#/Fen'
+          rejection_reason:
+            type: 'null'
+          missing_items:
+            maxItems: 0
+          loss_items:
+            items:
+              allOf:
+                - $ref: '#/LossItem'
+                - properties:
+                    confirmed_fen:
+                      $ref: '#/Fen'
+      else:
+        properties:
+          rejection_reason:
+            $ref: '#/Reason'
+    - if:
+        properties:
+          decision:
+            const: MATERIAL_REQUIRED
+      then:
+        properties:
+          missing_items:
+            minItems: 1
+          receipt_version:
+            $ref: '#/Version'
+  description: >-
+    同一审核正文。APPROVE_FINAL含官方对本版COMPLETE材料合格的确认，仍须服务端完整性检查；过程不要求FINAL预览成功。有RETURN必传其最新version；无RETURN仅REVIEW_PENDING可传null。
+ReviewRequest:
+  type: object
+  additionalProperties: false
+  required:
+    - decision
+    - receipt_version
+    - overtime_assessed_fen
+    - adjustment_reason
+    - loss_items
+    - rejection_reason
+    - missing_items
+    - evidence_ids
+  properties:
+    decision:
+      type: string
+      enum:
+        - APPROVE_FINAL
+        - REVIEW_PENDING
+        - MATERIAL_REQUIRED
+    receipt_version:
+      anyOf:
+        - $ref: '#/Version'
+        - type: 'null'
+    overtime_assessed_fen:
+      anyOf:
+        - $ref: '#/Fen'
+        - type: 'null'
+    adjustment_reason:
+      anyOf:
+        - $ref: '#/Reason'
+        - type: 'null'
+    loss_items:
+      type: array
+      items:
+        $ref: '#/LossItem'
+      maxItems: 100
+      minItems: 0
+    rejection_reason:
+      anyOf:
+        - $ref: '#/Reason'
+        - type: 'null'
+    missing_items:
+      type: array
+      items:
+        $ref: '#/ReturnMissingItem'
+      minItems: 0
+      maxItems: 20
+    evidence_ids:
+      type: array
+      items:
+        $ref: '#/ID'
+      maxItems: 20
+      minItems: 0
+      uniqueItems: true
+  allOf:
+    - if:
+        properties:
+          decision:
+            const: APPROVE_FINAL
+      then:
+        properties:
+          receipt_version:
+            $ref: '#/Version'
+          overtime_assessed_fen:
+            $ref: '#/Fen'
+          rejection_reason:
+            type: 'null'
+          missing_items:
+            maxItems: 0
+          loss_items:
+            items:
+              allOf:
+                - $ref: '#/LossItem'
+                - properties:
+                    confirmed_fen:
+                      $ref: '#/Fen'
+      else:
+        properties:
+          rejection_reason:
+            $ref: '#/Reason'
+    - if:
+        properties:
+          decision:
+            const: MATERIAL_REQUIRED
+      then:
+        properties:
+          missing_items:
+            minItems: 1
+          receipt_version:
+            $ref: '#/Version'
+  description: >-
+    同一审核正文。APPROVE_FINAL含官方对本版COMPLETE材料合格的确认，仍须服务端完整性检查；过程不要求FINAL预览成功。有RETURN必传其最新version；无RETURN仅REVIEW_PENDING可传null。
+ReviewPreview:
+  type: object
+  additionalProperties: false
+  required:
+    - basis_version
+    - deposit_fen
+    - overtime_fen
+    - loss_fen
+    - deducted_fen
+    - refund_due_fen
+    - supplement_due_fen
+    - blockers
+  properties:
+    basis_version:
+      $ref: '#/Version'
+    deposit_fen:
+      $ref: '#/Fen'
+    overtime_fen:
+      anyOf:
+        - $ref: '#/Fen'
+        - type: 'null'
+    loss_fen:
+      anyOf:
+        - $ref: '#/Fen'
+        - type: 'null'
+    deducted_fen:
+      anyOf:
+        - $ref: '#/Fen'
+        - type: 'null'
+    refund_due_fen:
+      anyOf:
+        - $ref: '#/Fen'
+        - type: 'null'
+    supplement_due_fen:
+      anyOf:
+        - $ref: '#/Fen'
+        - type: 'null'
+    blockers:
+      type: array
+      items:
+        $ref: '#/Blocker'
+      maxItems: 30
+      minItems: 0
+  description: >-
+    B11只读预览；basis_version为ORDER版本。B10提交相同正文及If-Match，按冻结规则和同一可信received_at重算。过程金额允许null；FINAL预览要求材料COMPLETE，由现有最终确认表达官方材料合格判断；B10原子写COMPLETE及FINAL。修改输入先重新预览，不持久化预览或签发令牌。
+ReviewView:
+  type: object
+  additionalProperties: false
+  required:
+    - review_id
+    - order_id
+    - review_no
+    - decision
+    - overtime_calculated_fen
+    - overtime_assessed_fen
+    - loss_confirmed_fen
+    - created_at
+    - allocation
+    - assessment
+  properties:
+    review_id:
+      $ref: '#/ID'
+    order_id:
+      $ref: '#/ID'
+    review_no:
+      $ref: '#/Version'
+    overtime_calculated_fen:
+      anyOf:
+        - $ref: '#/Fen'
+        - type: 'null'
+    overtime_assessed_fen:
+      anyOf:
+        - $ref: '#/Fen'
+        - type: 'null'
+    loss_confirmed_fen:
+      anyOf:
+        - $ref: '#/Fen'
+        - type: 'null'
+    created_at:
+      $ref: '#/Time'
+    allocation:
+      $ref: '#/ReviewAllocation'
+    assessment:
+      $ref: '#/AssessmentView'
+    decision:
+      type: string
+      enum:
+        - APPROVE_FINAL
+        - REVIEW_PENDING
+        - MATERIAL_REQUIRED
+  description: >-
+    历史版本只读；allocation由该版本overtime_assessed_fen、loss_confirmed_fen及不变deposit_received_fen计算，过程审核未定费用为null且deducted=0。不混入当前退款成功状态；当前账单由B08/B12读。
+CabinetOption:
+  type: object
+  additionalProperties: false
+  required:
+    - cabinet_id
+    - name
+    - address
+    - compartments
+    - connectivity_status
+  properties:
+    cabinet_id:
+      $ref: '#/ID'
+    name:
+      type: string
+      minLength: 1
+      maxLength: 128
+    address:
+      anyOf:
+        - type: string
+          maxLength: 512
+        - type: 'null'
+    compartments:
+      type: array
+      items:
+        type: object
+        additionalProperties: false
+        required:
+          - compartment_id
+          - compartment_no
+          - available
+          - blockers
+        properties:
+          compartment_id:
+            $ref: '#/ID'
+          compartment_no:
+            type: string
+            minLength: 1
+            maxLength: 32
+          available:
+            type: boolean
+          blockers:
+            type: array
+            items:
+              $ref: '#/Blocker'
+            maxItems: 10
+            minItems: 0
+      maxItems: 48
+      minItems: 0
+    connectivity_status:
+      type: string
+      enum:
+        - ONLINE
+        - OFFLINE
+        - UNKNOWN
+CabinetReserve:
+  type: object
+  additionalProperties: false
+  required:
+    - purpose
+    - cabinet_id
+    - compartment_id
+  properties:
+    purpose:
+      type: string
+      const: RETURN
+    cabinet_id:
+      $ref: '#/ID'
+    compartment_id:
+      $ref: '#/ID'
+CabinetOpen:
+  type: object
+  additionalProperties: false
+  required:
+    - pickup_code
+  properties:
+    pickup_code:
+      anyOf:
+        - type: string
+          pattern: ^[0-9]{6}$
+        - type: 'null'
+CabinetTask:
+  type: object
+  additionalProperties: false
+  required:
+    - task_id
+    - order_id
+    - purpose
+    - cabinet_id
+    - compartment_id
+    - status
+    - door_status
+    - rfid_result
+    - observed_at
+    - hold_expires_at
+    - confirmed_at
+    - version
+    - allowed_actions
+    - blockers
+    - occupancy_result
+    - pre_open_rfid_result
+    - pre_open_observed_at
+    - verification_requested_at
+    - cabinet_name
+    - compartment_no
+  properties:
+    task_id:
+      $ref: '#/ID'
+    order_id:
+      $ref: '#/ID'
+    purpose:
+      type: string
+      enum:
+        - PICKUP
+        - RETURN
+    cabinet_id:
+      $ref: '#/ID'
+    compartment_id:
+      $ref: '#/ID'
+    status:
+      type: string
+      enum:
+        - RESERVED
+        - EXECUTING
+        - UNKNOWN
+        - VERIFYING
+        - SUCCEEDED
+        - CANCELLED
+        - FAILED_CONFIRMED
+        - AWAITING_CONFIRMATION
+        - ANOMALY
+    door_status:
+      type: string
+      enum:
+        - OPEN
+        - CLOSED
+        - UNKNOWN
+    rfid_result:
+      type: string
+      enum:
+        - MATCH
+        - MISMATCH
+        - NOT_OBSERVED
+      description: 本次动作后最新观测；取件成功为TARGET_ABSENT，不要求动作后RFID仍MATCH；非空且全为ASCII字符0的cardInfo表示可信空格，不限定哨兵长度；缺失/空字符串仍未知。
+    observed_at:
+      anyOf:
+        - $ref: '#/Time'
+        - type: 'null'
+    hold_expires_at:
+      $ref: '#/Time'
+    confirmed_at:
+      anyOf:
+        - $ref: '#/Time'
+        - type: 'null'
+    version:
+      $ref: '#/Version'
+    allowed_actions:
+      type: array
+      items:
+        $ref: '#/Action'
+      maxItems: 30
+      minItems: 0
+      description: >-
+        按当前主体及服务端UTC投影。官方PICKUP仅rental_start_at <= server_now <
+        rental_end_at允许OPEN_CABINET；开始前allowed=false，reason_code=RENTAL_NOT_STARTED，display_reason展示北京时间可取件时间。READ_PICKUP_CODE不受开始时刻限制；RETURN不套用该PICKUP守卫。投影不能替代执行前重验。
+    blockers:
+      type: array
+      items:
+        $ref: '#/Blocker'
+      maxItems: 30
+      minItems: 0
+    occupancy_result:
+      type: string
+      enum:
+        - TARGET_PRESENT
+        - TARGET_ABSENT
+        - OTHER_ASSET
+        - UNKNOWN
+    pre_open_rfid_result:
+      type: string
+      enum:
+        - MATCH
+        - MISMATCH
+        - NOT_OBSERVED
+    pre_open_observed_at:
+      anyOf:
+        - $ref: '#/Time'
+        - type: 'null'
+    verification_requested_at:
+      anyOf:
+        - $ref: '#/Time'
+        - type: 'null'
+    cabinet_name:
+      type: string
+      maxLength: 128
+    compartment_no:
+      type: string
+      pattern: ^[1-9][0-9]*$
+PickupCredential:
+  type: object
+  additionalProperties: false
+  required:
+    - order_id
+    - credential_id
+    - pickup_code
+    - expires_at
+  properties:
+    order_id:
+      $ref: '#/ID'
+    credential_id:
+      $ref: '#/ID'
+    pickup_code:
+      type: string
+      pattern: ^[0-9]{6}$
+    expires_at:
+      type: 'null'
+      description: 既有凭证无定时有效期（数据库CHECK expires_at IS NULL）；使用资格由订单及凭证状态控制。租期结束不自动消耗码。
+EarningView:
+  type: object
+  additionalProperties: false
+  required:
+    - earning_id
+    - order_id
+    - beneficiary_kind
+    - rent_fen
+    - overtime_fen
+    - loss_fen
+    - subsidy_fen
+    - beneficiary_fen
+    - platform_fen
+    - posted_at
+    - currency
+    - order_no
+    - asset_title
+    - merchant_id
+    - merchant_name
+  properties:
+    earning_id:
+      $ref: '#/ID'
+    order_id:
+      $ref: '#/ID'
+    beneficiary_kind:
+      type: string
+      enum:
+        - PERSONAL
+        - MERCHANT
+    rent_fen:
+      $ref: '#/Fen'
+    overtime_fen:
+      $ref: '#/Fen'
+    loss_fen:
+      $ref: '#/Fen'
+    subsidy_fen:
+      $ref: '#/Fen'
+    beneficiary_fen:
+      $ref: '#/Fen'
+    platform_fen:
+      $ref: '#/Fen'
+    posted_at:
+      $ref: '#/Time'
+    currency:
+      type: string
+      const: CNY
+    order_no:
+      type: string
+      minLength: 1
+      maxLength: 32
+    asset_title:
+      type: string
+      maxLength: 256
+    merchant_id:
+      anyOf:
+        - $ref: '#/ID'
+        - type: 'null'
+    merchant_name:
+      anyOf:
+        - type: string
+          maxLength: 256
+        - type: 'null'
+WalletSummary:
+  type: object
+  additionalProperties: false
+  required:
+    - booked_income_fen
+    - estimated_income_fen
+    - estimated_order_count
+    - withdrawal_enabled
+    - currency
+  properties:
+    booked_income_fen:
+      $ref: '#/Fen'
+    estimated_income_fen:
+      $ref: '#/Fen'
+    estimated_order_count:
+      type: integer
+      minimum: 0
+    withdrawal_enabled:
+      type: boolean
+      const: false
+    currency:
+      type: string
+      const: CNY
+  description: 本人已入账收益与未完成预计收益分开；预计集合仅初付结清的ACTIVE个人单且无已入账收益/无法履约退款，计算口径见字段绑定。未核定超期/损失不作预计收入，未知不当0。
+OrderPage:
+  type: object
+  additionalProperties: false
+  required:
+    - items
+    - next_cursor
+    - has_more
+  properties:
+    items:
+      type: array
+      items:
+        $ref: '#/OrderSummary'
+      maxItems: 100
+      minItems: 0
+    next_cursor:
+      anyOf:
+        - $ref: '#/Token'
+        - type: 'null'
+    has_more:
+      type: boolean
+PaymentPage:
+  type: object
+  additionalProperties: false
+  required:
+    - items
+    - next_cursor
+    - has_more
+  properties:
+    items:
+      type: array
+      items:
+        $ref: '#/PaymentView'
+      maxItems: 100
+      minItems: 0
+    next_cursor:
+      anyOf:
+        - $ref: '#/Token'
+        - type: 'null'
+    has_more:
+      type: boolean
+RefundPage:
+  type: object
+  additionalProperties: false
+  required:
+    - items
+    - next_cursor
+    - has_more
+  properties:
+    items:
+      type: array
+      items:
+        $ref: '#/RefundView'
+      maxItems: 100
+      minItems: 0
+    next_cursor:
+      anyOf:
+        - $ref: '#/Token'
+        - type: 'null'
+    has_more:
+      type: boolean
+EarningPage:
+  type: object
+  additionalProperties: false
+  required:
+    - items
+    - next_cursor
+    - has_more
+    - summary
+  properties:
+    items:
+      type: array
+      items:
+        $ref: '#/EarningView'
+      maxItems: 100
+      minItems: 0
+    next_cursor:
+      anyOf:
+        - $ref: '#/Token'
+        - type: 'null'
+    has_more:
+      type: boolean
+    summary:
+      type: object
+      additionalProperties: false
+      required:
+        - count
+        - beneficiary_fen
+        - as_of
+      properties:
+        count:
+          type: integer
+          minimum: 0
+        beneficiary_fen:
+          $ref: '#/Fen'
+        as_of:
+          $ref: '#/Time'
+ReviewPage:
+  type: object
+  additionalProperties: false
+  required:
+    - items
+    - next_cursor
+    - has_more
+  properties:
+    items:
+      type: array
+      items:
+        $ref: '#/ReviewView'
+      maxItems: 100
+      minItems: 0
+    next_cursor:
+      anyOf:
+        - $ref: '#/Token'
+        - type: 'null'
+    has_more:
+      type: boolean
+CabinetTaskPage:
+  type: object
+  additionalProperties: false
+  required:
+    - items
+    - next_cursor
+    - has_more
+  properties:
+    items:
+      type: array
+      items:
+        $ref: '#/CabinetTask'
+      maxItems: 100
+      minItems: 0
+    next_cursor:
+      anyOf:
+        - $ref: '#/Token'
+        - type: 'null'
+    has_more:
+      type: boolean
+CabinetOptions:
+  type: object
+  additionalProperties: false
+  required:
+    - items
+    - next_cursor
+    - has_more
+    - blockers
+  properties:
+    items:
+      type: array
+      items:
+        $ref: '#/CabinetOption'
+      maxItems: 100
+      minItems: 0
+    next_cursor:
+      anyOf:
+        - $ref: '#/Token'
+        - type: 'null'
+    has_more:
+      type: boolean
+    blockers:
+      type: array
+      items:
+        $ref: '#/Blocker'
+      minItems: 0
+      maxItems: 30
+ValidationDetails:
+  type: object
+  additionalProperties: false
+  required:
+    - errors
+  properties:
+    errors:
+      type: array
+      minItems: 1
+      items:
+        $ref: '#/FieldViolation'
+ConflictDetails:
+  type: object
+  additionalProperties: false
+  required:
+    - resource_type
+    - resource_id
+  properties:
+    resource_type:
+      type: string
+    resource_id:
+      type: string
+RetryDetails:
+  type: object
+  additionalProperties: false
+  required:
+    - retry_after_seconds
+  properties:
+    retry_after_seconds:
+      type: integer
+      minimum: 1
+      maximum: 86400
+PositiveFen:
+  type: string
+  pattern: ^[1-9][0-9]{0,18}$
+  description: 正整数分，另校验int64及业务上限
+OpsPaymentView:
+  type: object
+  additionalProperties: false
+  required:
+    - business_amount_fen
+    - channel_amount_fen
+    - payment_mode
+    - supplement_id
+    - generation
+    - payment_id
+    - order_id
+    - purpose
+    - status
+    - amount_fen
+    - payer_total_fen
+    - currency
+    - expires_at
+    - paid_at
+    - last_verified_at
+    - version
+    - allowed_actions
+    - blockers
+    - out_trade_no
+    - channel_transaction_id
+    - mchid
+    - config_version_id
+    - channel_status
+    - last_error_code
+    - created_at
+  properties:
+    payment_mode:
+      type: string
+      enum: [NORMAL, FIXED_10_FEN]
+      description: FIXED_10_FEN为测试业务覆盖，业务金额不代表现金实收或可提现收益。
+    business_amount_fen:
+      $ref: '#/PositiveFen'
+    channel_amount_fen:
+      $ref: '#/PositiveFen'
+    supplement_id:
+      anyOf:
+        - $ref: '#/ID'
+        - type: 'null'
+    generation:
+      type: integer
+      minimum: 0
+      maximum: 4294967295
+    payment_id:
+      $ref: '#/ID'
+    order_id:
+      $ref: '#/ID'
+    purpose:
+      type: string
+      enum:
+        - INITIAL
+        - SUPPLEMENT
+    status:
+      $ref: '#/PaymentStatus'
+    amount_fen:
+      $ref: '#/PositiveFen'
+    payer_total_fen:
+      anyOf:
+        - $ref: '#/Fen'
+        - type: 'null'
+    currency:
+      type: string
+      const: CNY
+    expires_at:
+      $ref: '#/Time'
+    paid_at:
+      anyOf:
+        - $ref: '#/Time'
+        - type: 'null'
+    last_verified_at:
+      anyOf:
+        - $ref: '#/Time'
+        - type: 'null'
+    version:
+      $ref: '#/Version'
+    allowed_actions:
+      type: array
+      items:
+        $ref: '#/Action'
+      maxItems: 30
+      minItems: 0
+    blockers:
+      type: array
+      items:
+        $ref: '#/Blocker'
+      maxItems: 30
+      minItems: 0
+    out_trade_no:
+      type: string
+      minLength: 1
+      maxLength: 32
+    channel_transaction_id:
+      anyOf:
+        - type: string
+          minLength: 1
+          maxLength: 32
+        - type: 'null'
+    mchid:
+      type: string
+      minLength: 1
+      maxLength: 32
+    config_version_id:
+      $ref: '#/ID'
+    channel_status:
+      anyOf:
+        - type: string
+          minLength: 1
+          maxLength: 32
+        - type: 'null'
+    last_error_code:
+      anyOf:
+        - type: string
+          minLength: 1
+          maxLength: 64
+        - type: 'null'
+    created_at:
+      $ref: '#/Time'
+OpsRefundView:
+  type: object
+  additionalProperties: false
+  required:
+    - business_amount_fen
+    - channel_amount_fen
+    - payment_mode
+    - obligation_id
+    - excess_component_fen
+    - refund_id
+    - order_id
+    - purpose
+    - status
+    - amount_fen
+    - payer_refund_fen
+    - deposit_component_fen
+    - rent_component_fen
+    - refunded_at
+    - last_verified_at
+    - version
+    - allowed_actions
+    - blockers
+    - currency
+    - out_refund_no
+    - channel_refund_id
+    - mchid
+    - config_version_id
+    - original_payment_id
+    - channel_status
+    - last_error_code
+  properties:
+    payment_mode:
+      type: string
+      enum: [NORMAL, FIXED_10_FEN]
+      description: FIXED_10_FEN为测试业务覆盖，业务金额不代表现金实收或可提现收益。
+    business_amount_fen:
+      $ref: '#/PositiveFen'
+    channel_amount_fen:
+      $ref: '#/PositiveFen'
+    obligation_id:
+      $ref: '#/ID'
+    excess_component_fen:
+      $ref: '#/Fen'
+    refund_id:
+      $ref: '#/ID'
+    order_id:
+      $ref: '#/ID'
+    purpose:
+      type: string
+      enum:
+        - DEPOSIT
+        - ADMIN_UNPICKED
+        - OBSERVED_NONFULFILLMENT
+        - EXCESS_PAYMENT
+    status:
+      $ref: '#/RefundStatus'
+    amount_fen:
+      $ref: '#/PositiveFen'
+    payer_refund_fen:
+      anyOf:
+        - $ref: '#/Fen'
+        - type: 'null'
+    deposit_component_fen:
+      $ref: '#/Fen'
+    rent_component_fen:
+      $ref: '#/Fen'
+    refunded_at:
+      anyOf:
+        - $ref: '#/Time'
+        - type: 'null'
+    last_verified_at:
+      anyOf:
+        - $ref: '#/Time'
+        - type: 'null'
+    version:
+      $ref: '#/Version'
+    allowed_actions:
+      type: array
+      items:
+        $ref: '#/Action'
+      maxItems: 30
+      minItems: 0
+    blockers:
+      type: array
+      items:
+        $ref: '#/Blocker'
+      maxItems: 30
+      minItems: 0
+    currency:
+      type: string
+      const: CNY
+    out_refund_no:
+      type: string
+      minLength: 1
+      maxLength: 64
+    channel_refund_id:
+      anyOf:
+        - type: string
+          minLength: 1
+          maxLength: 32
+        - type: 'null'
+    mchid:
+      type: string
+      minLength: 1
+      maxLength: 32
+    config_version_id:
+      $ref: '#/ID'
+    original_payment_id:
+      $ref: '#/ID'
+    channel_status:
+      anyOf:
+        - type: string
+          minLength: 1
+          maxLength: 32
+        - type: 'null'
+    last_error_code:
+      anyOf:
+        - type: string
+          minLength: 1
+          maxLength: 64
+        - type: 'null'
+OpsPaymentPage:
+  type: object
+  additionalProperties: false
+  required:
+    - items
+    - next_cursor
+    - has_more
+  properties:
+    items:
+      type: array
+      maxItems: 100
+      minItems: 0
+      items:
+        $ref: '#/OpsPaymentView'
+    next_cursor:
+      anyOf:
+        - $ref: '#/Token'
+        - type: 'null'
+    has_more:
+      type: boolean
+OpsRefundPage:
+  type: object
+  additionalProperties: false
+  required:
+    - items
+    - next_cursor
+    - has_more
+  properties:
+    items:
+      type: array
+      maxItems: 100
+      minItems: 0
+      items:
+        $ref: '#/OpsRefundView'
+    next_cursor:
+      anyOf:
+        - $ref: '#/Token'
+        - type: 'null'
+    has_more:
+      type: boolean
+AssetSnapshotView:
+  type: object
+  additionalProperties: false
+  required:
+    - asset_id
+    - asset_revision_id
+    - title
+    - description
+    - condition_description
+    - physical_identifier_display
+    - material_ids
+    - accessories
+    - media
+  properties:
+    asset_id:
+      $ref: '#/ID'
+    asset_revision_id:
+      $ref: '#/ID'
+    title:
+      type: string
+      minLength: 1
+      maxLength: 200
+    description:
+      type: string
+      minLength: 0
+      maxLength: 10000
+    condition_description:
+      type: string
+      minLength: 0
+      maxLength: 2000
+    physical_identifier_display:
+      anyOf:
+        - type: string
+          minLength: 1
+          maxLength: 64
+        - type: 'null'
+    material_ids:
+      type: array
+      items:
+        $ref: '#/ID'
+      minItems: 0
+      maxItems: 100
+    accessories:
+      type: array
+      items:
+        type: object
+        additionalProperties: false
+        required:
+          - name
+          - quantity
+          - item_code
+        properties:
+          name:
+            type: string
+            minLength: 1
+            maxLength: 100
+          quantity:
+            type: integer
+            minimum: 1
+            maximum: 999
+          item_code:
+            $ref: '#/ID'
+      minItems: 0
+      maxItems: 100
+    media:
+      type: array
+      items:
+        $ref: '#/OrderMediaView'
+      maxItems: 200
+MediaRequirements:
+  type: object
+  additionalProperties: false
+  required:
+    - photo_bytes_max
+    - video_bytes_max
+    - video_seconds_max
+    - photo_mime_types
+    - video_mime_types
+  properties:
+    photo_bytes_max:
+      $ref: '#/ByteCount'
+    video_bytes_max:
+      $ref: '#/ByteCount'
+    video_seconds_max:
+      type: integer
+      minimum: 1
+    photo_mime_types:
+      type: array
+      items:
+        type: string
+        minLength: 1
+        maxLength: 64
+      minItems: 1
+      maxItems: 10
+    video_mime_types:
+      type: array
+      items:
+        type: string
+        minLength: 1
+        maxLength: 64
+      minItems: 1
+      maxItems: 10
+  description: >-
+    示例大小/时长仅供Schema测试；真实值来自已发布配置，缺失即阻断，前后端共同校验单次20引用与累计200引用，不由图片文字决定。
+    photo_max/video_max按本次新增批次校验；本单去重累计最多200个引用。首批必须同时达到photo_min/video_min；后续补交可以单一类型，累计须满足必需类型和本次官方missing_items。配置须1<=min<=max且photo_min+video_min<=20。
+    来源：照片/视频min/max来自成交订单策略；字节/时长/MIME来自当前既有上传安全策略，订单配置不重复定义。
+OrderRequirements:
+  type: object
+  additionalProperties: false
+  required:
+    - policy_version_id
+    - allowed_return_methods
+    - outbound_freight_payer
+    - return_freight_payer
+    - freight_included
+    - return_instructions
+    - pickup_instructions
+    - media
+    - return_evidence_template
+  properties:
+    policy_version_id:
+      $ref: '#/ID'
+    allowed_return_methods:
+      type: array
+      items:
+        $ref: '#/Method'
+      minItems: 1
+      maxItems: 1
+      description: 本单唯一方式：PERSONAL为[EXPRESS]、OFFICIAL_CABINET为[CABINET]；只读，不提供选择器。
+    outbound_freight_payer:
+      type: string
+      enum:
+        - TENANT
+        - LESSOR
+        - PLATFORM
+        - NOT_APPLICABLE
+    return_freight_payer:
+      type: string
+      enum:
+        - TENANT
+        - LESSOR
+        - PLATFORM
+        - NOT_APPLICABLE
+    freight_included:
+      type: boolean
+      const: false
+    return_instructions:
+      type: string
+      minLength: 1
+      maxLength: 4000
+    pickup_instructions:
+      type: string
+      minLength: 0
+      maxLength: 4000
+    media:
+      $ref: '#/MediaRequirements'
+    return_evidence_template:
+      $ref: '#/ReturnEvidenceTemplate'
+OvertimeBasis:
+  type: object
+  additionalProperties: false
+  required:
+    - end_at
+    - cutoff_at
+    - cutoff_source
+    - pricing_config_version_id
+    - unit_seconds
+    - billable_units
+    - unit_price_fen
+    - grace_seconds
+    - rounding
+  properties:
+    end_at:
+      $ref: '#/Time'
+    cutoff_at:
+      anyOf:
+        - $ref: '#/Time'
+        - type: 'null'
+    cutoff_source:
+      anyOf:
+        - type: string
+          enum:
+            - RECEIVED
+        - type: 'null'
+    pricing_config_version_id:
+      $ref: '#/ID'
+    unit_seconds:
+      type: integer
+      minimum: 1
+    billable_units:
+      anyOf:
+        - $ref: '#/Fen'
+        - type: 'null'
+    unit_price_fen:
+      $ref: '#/Fen'
+    grace_seconds:
+      type: integer
+      minimum: 0
+    rounding:
+      type: string
+      enum:
+        - CEIL_UNIT
+AssessmentView:
+  type: object
+  additionalProperties: false
+  required:
+    - review_id
+    - review_no
+    - decision
+    - rejection_reason
+    - missing_items
+    - adjustment_reason
+    - overtime_basis
+    - loss_items
+    - evidence_ids
+    - created_at
+    - evidence
+  properties:
+    review_id:
+      $ref: '#/ID'
+    review_no:
+      $ref: '#/Version'
+    decision:
+      type: string
+      enum:
+        - APPROVE_FINAL
+        - REVIEW_PENDING
+        - MATERIAL_REQUIRED
+    rejection_reason:
+      anyOf:
+        - $ref: '#/Reason'
+        - type: 'null'
+    missing_items:
+      type: array
+      items:
+        $ref: '#/ReturnMissingItem'
+      minItems: 0
+      maxItems: 20
+    adjustment_reason:
+      anyOf:
+        - $ref: '#/Reason'
+        - type: 'null'
+    overtime_basis:
+      $ref: '#/OvertimeBasis'
+    loss_items:
+      type: array
+      items:
+        $ref: '#/LossItemView'
+      maxItems: 100
+      minItems: 0
+    evidence_ids:
+      type: array
+      items:
+        $ref: '#/ID'
+      minItems: 0
+      maxItems: 20
+    created_at:
+      $ref: '#/Time'
+    evidence:
+      type: array
+      items:
+        $ref: '#/OrderMediaView'
+      maxItems: 20
+ReviewAllocation:
+  type: object
+  additionalProperties: false
+  required:
+    - fee_total_fen
+    - deducted_fen
+    - refund_due_fen
+    - supplement_due_fen
+  properties:
+    fee_total_fen:
+      anyOf:
+        - $ref: '#/Fen'
+        - type: 'null'
+    deducted_fen:
+      $ref: '#/Fen'
+    refund_due_fen:
+      anyOf:
+        - $ref: '#/Fen'
+        - type: 'null'
+    supplement_due_fen:
+      anyOf:
+        - $ref: '#/Fen'
+        - type: 'null'
+  description: 只读计算：指定审核版本的费用与本单已收押金算出的决策金额。过程审核未知金额为null，扣抵为0；不是可写余额。
+CabinetScene:
+  type: string
+  pattern: ^cab_[A-Za-z0-9]{20}$
+  minLength: 24
+  maxLength: 24
+  description: 每柜稳定公共定位符，不是开门凭证。
+CabinetEntry:
+  type: object
+  additionalProperties: false
+  required:
+    - cabinet_id
+    - name
+    - address
+    - connectivity_status
+    - pickup_enabled
+    - login_required
+  properties:
+    cabinet_id:
+      $ref: '#/ID'
+    name:
+      type: string
+      maxLength: 128
+    address:
+      type:
+        - string
+        - 'null'
+      maxLength: 512
+    connectivity_status:
+      type: string
+      enum:
+        - ONLINE
+        - OFFLINE
+        - UNKNOWN
+    pickup_enabled:
+      type: boolean
+      description: 柜机公共可服务状态，不能代替K10/K04的本人权限与实时校验
+    login_required:
+      type: boolean
+      const: true
+CabinetPickupResolveRequest:
+  type: object
+  additionalProperties: false
+  required:
+    - scene
+    - pickup_code
+  properties:
+    scene:
+      $ref: '#/CabinetScene'
+    pickup_code:
+      type: string
+      pattern: ^[0-9]{6}$
+      minLength: 6
+      maxLength: 6
+      writeOnly: true
+      description: 用户手动输入，保留前导0；F20不从K07取得正确码
+AddressVersion:
+  type: string
+  pattern: ^(0|[1-9][0-9]{0,9})$
+  description: INT UNSIGNED十进制字符串，服务端BigInt校验0..4294967295；0表示尚无返程地址。
+  x-integer-maximum: '4294967295'
+PositiveAddressVersion:
+  type: string
+  pattern: ^[1-9][0-9]{0,9}$
+  description: INT UNSIGNED十进制字符串1..4294967295；必须等于本次回显的地址版本。
+  x-integer-maximum: '4294967295'
+ByteCount:
+  type: string
+  pattern: ^[1-9][0-9]{0,18}$
+  description: 正整数字节数；服务端校验<=9223372036854775807及素材系统限制；不是金额。
+PickupContext:
+  type: object
+  additionalProperties: false
+  required:
+    - cabinet_id
+    - name
+    - address
+    - compartment_id
+    - compartment_no
+    - connectivity_status
+  properties:
+    cabinet_id:
+      $ref: '#/ID'
+    name:
+      type: string
+      maxLength: 128
+    address:
+      anyOf:
+        - type: string
+          maxLength: 512
+        - type: 'null'
+    compartment_id:
+      $ref: '#/ID'
+    compartment_no:
+      type: integer
+      minimum: 1
+      maximum: 48
+    connectivity_status:
+      type: string
+      enum:
+        - ONLINE
+        - OFFLINE
+        - UNKNOWN
+CheckoutSelection:
+  type: object
+  additionalProperties: false
+  required:
+    - coupon_id
+  properties:
+    coupon_id:
+      anyOf:
+        - $ref: '#/ID'
+        - type: 'null'
+  description: 冻结唯一coupon_id，押金默认现金，免押仅来自合法免押券；无其他待接入方案字段。
+DeliveryConfirmationRequest:
+  type: object
+  additionalProperties: false
+  required: []
+  properties: {}
+  description: 已有确认收货弹层只提交{}。仅本单承租人在个人快递已发货且实际收到后操作；服务端记录首次确认时间为occurred_at、recorded_at及delivered_at，重复请求不改时间；不新增时间或附件输入。
+Quantity:
+  type: string
+  pattern: ^(0|[1-9][0-9]{0,18})$
+  description: 权益整数数量，不是金额；服务端限制到int64及真实可用量。
+PublicMaterialMedia:
+  type: object
+  additionalProperties: false
+  required:
+    - material_id
+    - role
+    - sort_order
+    - url
+    - mime_type
+    - size_bytes
+    - metadata
+    - poster
+  properties:
+    material_id:
+      $ref: ./common.yaml#/OpaqueID
+    role:
+      type: string
+      enum:
+        - COVER
+        - IMAGE
+        - VIDEO
+    sort_order:
+      type: integer
+      minimum: 0
+      maximum: 65535
+    url:
+      $ref: '#/PublicMaterialURL'
+    mime_type:
+      type: string
+      minLength: 3
+      maxLength: 64
+    size_bytes:
+      type: integer
+      minimum: 1
+      maximum: 104857600
+    metadata:
+      anyOf:
+        - $ref: '#/MediaMetadataV1'
+        - type: 'null'
+    poster:
+      anyOf:
+        - $ref: '#/MaterialPoster'
+        - type: 'null'
+PublicMaterialURL:
+  type: string
+  format: uri
+  pattern: ^https://xyuprj\.oss-cn-hangzhou\.aliyuncs\.com/[A-Za-z0-9._~/%-]+$
+  description: Permanent anonymous HTTPS URL in the original bucket; no signature, query, fragment or userinfo.
+MediaMetadataV1:
+  type: object
+  additionalProperties: false
+  required:
+    - schema_version
+    - width
+    - height
+    - duration_ms
+    - video_codec
+    - audio_codec
+  properties:
+    schema_version:
+      type: integer
+      const: 1
+    width:
+      type: integer
+      minimum: 1
+      maximum: 8192
+    height:
+      type: integer
+      minimum: 1
+      maximum: 8192
+    duration_ms:
+      type:
+        - integer
+        - 'null'
+      minimum: 1
+      maximum: 4294967295
+    video_codec:
+      type:
+        - string
+        - 'null'
+      pattern: ^[a-z0-9_]{1,32}$
+    audio_codec:
+      type:
+        - string
+        - 'null'
+      pattern: ^[a-z0-9_]{1,32}$
+MaterialPoster:
+  type: object
+  additionalProperties: false
+  required:
+    - material_id
+    - url
+    - width
+    - height
+  properties:
+    material_id:
+      $ref: ./common.yaml#/OpaqueID
+    url:
+      $ref: '#/PublicMaterialURL'
+    width:
+      type: integer
+      minimum: 1
+      maximum: 1280
+    height:
+      type: integer
+      minimum: 1
+      maximum: 1280
+OrderMediaView:
+  type: object
+  additionalProperties: false
+  required:
+    - material_id
+    - kind
+    - availability
+    - media
+  properties:
+    material_id:
+      $ref: '#/ID'
+    kind:
+      type: string
+      enum:
+        - PHOTO
+        - VIDEO
+    availability:
+      type: string
+      enum:
+        - READY
+        - UNAVAILABLE
+    media:
+      anyOf:
+        - $ref: '#/PublicMaterialMedia'
+        - type: 'null'
+  description: >-
+    按订单读取权限返回永久公开媒体投影，VIDEO的media.url为可信playback_url，poster为该视频自身派生。UNAVAILABLE返回media=null，不伪造空成功；不返回owner/object_key或管理元数据。输入仍只接受素材ID和kind。
+  allOf:
+    - if:
+        properties:
+          availability:
+            const: READY
+      then:
+        properties:
+          media:
+            $ref: '#/PublicMaterialMedia'
+      else:
+        properties:
+          media:
+            type: 'null'
+LossItemView:
+  type: object
+  additionalProperties: false
+  required:
+    - description
+    - confirmed_fen
+    - evidence_ids
+    - evidence
+  properties:
+    description:
+      $ref: '#/Reason'
+    confirmed_fen:
+      anyOf:
+        - $ref: '#/Fen'
+        - type: 'null'
+    evidence_ids:
+      type: array
+      items:
+        $ref: '#/ID'
+      maxItems: 20
+      minItems: 0
+      uniqueItems: true
+    evidence:
+      type: array
+      items:
+        $ref: '#/OrderMediaView'
+      maxItems: 20
+  description: 损失项仅包含说明、官方核定金额及凭证；过程未核定为null。数组顺序标识展示行，不设主张/争议金额或业务行ID。
+  allOf:
+    - if:
+        properties:
+          confirmed_fen:
+            $ref: '#/PositiveFen'
+      then:
+        properties:
+          evidence_ids:
+            minItems: 1
+OpsOrderParticipants:
+  type: object
+  additionalProperties: false
+  required:
+    - tenant_account_id
+    - tenant_display_name
+    - lessor_id
+    - lessor_account_id
+    - lessor_display_name
+    - merchant_id
+    - merchant_name
+  properties:
+    tenant_account_id:
+      $ref: '#/ID'
+    tenant_display_name:
+      anyOf:
+        - type: string
+          maxLength: 256
+        - type: 'null'
+    lessor_id:
+      $ref: '#/ID'
+    lessor_account_id:
+      anyOf:
+        - $ref: '#/ID'
+        - type: 'null'
+    lessor_display_name:
+      anyOf:
+        - type: string
+          maxLength: 256
+        - type: 'null'
+    merchant_id:
+      anyOf:
+        - $ref: '#/ID'
+        - type: 'null'
+    merchant_name:
+      anyOf:
+        - type: string
+          maxLength: 256
+        - type: 'null'
+  description: 仅后台订单读权限；参与方ID随订单冻结，名称为当前授权展示名，缺失显示ID。不给出证件、OpenID或完整手机号。
+OpsOrderSummary:
+  type: object
+  additionalProperties: false
+  required:
+    - payment_mode
+    - order_id
+    - order_no
+    - viewer_role
+    - supply_channel
+    - stage
+    - physical_status
+    - review_status
+    - display_status
+    - has_exception
+    - exception_codes
+    - asset
+    - rental_start_at
+    - rental_end_at
+    - placed_at
+    - created_at
+    - version
+    - allowed_actions
+    - blockers
+    - display_status_code
+    - initial_due_fen
+    - initial_paid_fen
+    - initial_payer_total_fen
+    - supplement_due_fen
+    - payment_due_at
+    - participants
+  properties:
+    payment_mode:
+      type: string
+      enum: [NORMAL, FIXED_10_FEN]
+      description: FIXED_10_FEN 为测试订单，业务押金覆盖不代表渠道实收，不产生正常收益。
+    order_id:
+      $ref: '#/ID'
+    order_no:
+      type: string
+      minLength: 1
+      maxLength: 32
+    viewer_role:
+      type: string
+      enum:
+        - TENANT
+        - LESSOR
+        - OFFICIAL
+    supply_channel:
+      type: string
+      enum:
+        - PERSONAL
+        - OFFICIAL_CABINET
+    stage:
+      $ref: '#/Stage'
+    physical_status:
+      $ref: '#/Physical'
+    review_status:
+      $ref: '#/ReviewStatus'
+    display_status:
+      type: string
+      minLength: 1
+      maxLength: 64
+    has_exception:
+      type: boolean
+    exception_codes:
+      type: array
+      items:
+        type: string
+        minLength: 1
+        maxLength: 64
+      maxItems: 30
+      minItems: 0
+    asset:
+      $ref: '#/AssetSummary'
+    rental_start_at:
+      $ref: '#/Time'
+    rental_end_at:
+      $ref: '#/Time'
+    placed_at:
+      anyOf:
+        - $ref: '#/Time'
+        - type: 'null'
+    created_at:
+      $ref: '#/Time'
+    version:
+      $ref: '#/Version'
+    allowed_actions:
+      type: array
+      items:
+        $ref: '#/Action'
+      maxItems: 30
+      minItems: 0
+    blockers:
+      type: array
+      items:
+        $ref: '#/Blocker'
+      maxItems: 30
+      minItems: 0
+    display_status_code:
+      type: string
+      enum:
+        - PREPARING
+        - AWAITING_CONFIRMATION
+        - AWAITING_PAYMENT
+        - AWAITING_DELIVERY
+        - IN_USE
+        - RETURNING
+        - RETURN_REVIEW
+        - AWAITING_SUPPLEMENT
+        - REFUND_PROCESSING
+        - SETTLEMENT_CONFIRMING
+        - COMPLETED
+        - CLOSED
+    initial_due_fen:
+      $ref: '#/Fen'
+    initial_paid_fen:
+      anyOf:
+        - $ref: '#/Fen'
+        - type: 'null'
+      description: INITIAL可信SUCCEEDED取amount_fen（订单结清额，含渠道优惠），零现金确认取0；尚未确认取null；不把补缴混入卡片初始实付，不把UNKNOWN写0。
+    supplement_due_fen:
+      anyOf:
+        - $ref: '#/Fen'
+        - type: 'null'
+      description: 实物收回且FINAL后由最终核定与本单可信补缴支付计算；成功补缴后为0，尚未核定为null，不使用初付金额替代。
+    payment_due_at:
+      anyOf:
+        - $ref: '#/Time'
+        - type: 'null'
+    initial_payer_total_fen:
+      anyOf:
+        - $ref: '#/Fen'
+        - type: 'null'
+      description: INITIAL成功的payer_total_fen，展示用户微信实付；成功但渠道未返回时为null并显示已支付/金额待核实，不能拿amount_fen冒充微信实付；零现金确认取0。
+    participants:
+      $ref: '#/OpsOrderParticipants'
+OpsOrderPage:
+  type: object
+  additionalProperties: false
+  required:
+    - items
+    - next_cursor
+    - has_more
+  properties:
+    items:
+      type: array
+      items:
+        $ref: '#/OpsOrderSummary'
+      maxItems: 100
+      minItems: 0
+    next_cursor:
+      anyOf:
+        - $ref: '#/Token'
+        - type: 'null'
+    has_more:
+      type: boolean
+OpsOrderDetail:
+  type: object
+  additionalProperties: false
+  required:
+    - server_time
+    - order
+    - fees
+    - bill
+    - delivery
+    - contract_id
+    - return_id
+    - merchant_id
+    - earning_id
+    - payment_due_at
+    - hold_expires_at
+    - completed_at
+    - closed_at
+    - asset_snapshot
+    - requirements
+    - latest_cabinet_tasks
+    - pickup
+    - checkout
+    - coupon_status
+  properties:
+    coupon_status:
+      anyOf:
+        - type: string
+          enum:
+            - RESERVED
+            - CONSUMED
+            - RELEASED
+            - RESTORED
+        - type: 'null'
+      description: 本订单唯一券绑定的当前状态；未用券为null。
+    server_time:
+      $ref: '#/Time'
+    order:
+      $ref: '#/OpsOrderSummary'
+    fees:
+      $ref: '#/FeeBreakdown'
+    bill:
+      $ref: '#/BillView'
+    delivery:
+      $ref: '#/DeliveryView'
+    contract_id:
+      $ref: '#/ID'
+    return_id:
+      anyOf:
+        - $ref: '#/ID'
+        - type: 'null'
+    merchant_id:
+      anyOf:
+        - $ref: '#/ID'
+        - type: 'null'
+    earning_id:
+      anyOf:
+        - $ref: '#/ID'
+        - type: 'null'
+    payment_due_at:
+      anyOf:
+        - $ref: '#/Time'
+        - type: 'null'
+    hold_expires_at:
+      $ref: '#/Time'
+    completed_at:
+      anyOf:
+        - $ref: '#/Time'
+        - type: 'null'
+    closed_at:
+      anyOf:
+        - $ref: '#/Time'
+        - type: 'null'
+    asset_snapshot:
+      $ref: '#/AssetSnapshotView'
+    requirements:
+      $ref: '#/OrderRequirements'
+    latest_cabinet_tasks:
+      type: array
+      items:
+        $ref: '#/CabinetTask'
+      minItems: 0
+      maxItems: 2
+    pickup:
+      anyOf:
+        - $ref: '#/PickupContext'
+        - type: 'null'
+      description: CABINET成交绑定的柜格上下文；不含正确码。不依赖取件任务是否已创建；格口和入柜位置一经成交不自行换柜。
+    checkout:
+      $ref: '#/CheckoutSelection'
+OpsEarningView:
+  type: object
+  additionalProperties: false
+  required:
+    - earning_id
+    - order_id
+    - beneficiary_kind
+    - rent_fen
+    - overtime_fen
+    - loss_fen
+    - subsidy_fen
+    - beneficiary_fen
+    - platform_fen
+    - posted_at
+    - currency
+    - order_no
+    - asset_title
+    - merchant_id
+    - merchant_name
+    - account_id
+    - beneficiary_display_name
+  properties:
+    earning_id:
+      $ref: '#/ID'
+    order_id:
+      $ref: '#/ID'
+    beneficiary_kind:
+      type: string
+      enum:
+        - PERSONAL
+        - MERCHANT
+    rent_fen:
+      $ref: '#/Fen'
+    overtime_fen:
+      $ref: '#/Fen'
+    loss_fen:
+      $ref: '#/Fen'
+    subsidy_fen:
+      $ref: '#/Fen'
+    beneficiary_fen:
+      $ref: '#/Fen'
+    platform_fen:
+      $ref: '#/Fen'
+    posted_at:
+      $ref: '#/Time'
+    currency:
+      type: string
+      const: CNY
+    order_no:
+      type: string
+      minLength: 1
+      maxLength: 32
+    asset_title:
+      type: string
+      maxLength: 256
+    merchant_id:
+      anyOf:
+        - $ref: '#/ID'
+        - type: 'null'
+    merchant_name:
+      anyOf:
+        - type: string
+          maxLength: 256
+        - type: 'null'
+    account_id:
+      anyOf:
+        - $ref: '#/ID'
+        - type: 'null'
+    beneficiary_display_name:
+      anyOf:
+        - type: string
+          maxLength: 256
+        - type: 'null'
+  description: 仅官方资金数据范围；PERSONAL必有account_id，MERCHANT的account_id=null并使用merchant_id/name。名称缺失回显真实ID，不把列表筛选值充当每行受益人。
+OpsEarningPage:
+  type: object
+  additionalProperties: false
+  required:
+    - items
+    - next_cursor
+    - has_more
+    - summary
+  properties:
+    items:
+      type: array
+      items:
+        $ref: '#/OpsEarningView'
+      maxItems: 100
+      minItems: 0
+    next_cursor:
+      anyOf:
+        - $ref: '#/Token'
+        - type: 'null'
+    has_more:
+      type: boolean
+    summary:
+      type: object
+      additionalProperties: false
+      required:
+        - count
+        - beneficiary_fen
+        - as_of
+      properties:
+        count:
+          type: integer
+          minimum: 0
+        beneficiary_fen:
+          $ref: '#/Fen'
+        as_of:
+          $ref: '#/Time'
+ReceiptHistoryItem:
+  type: object
+  additionalProperties: false
+  required:
+    - old_received_at
+    - new_received_at
+    - reason
+    - actor_account_id
+    - recorded_at
+  properties:
+    old_received_at:
+      $ref: '#/Time'
+    new_received_at:
+      $ref: '#/Time'
+    reason:
+      $ref: '#/Reason'
+    actor_account_id:
+      $ref: '#/ID'
+    recorded_at:
+      $ref: '#/Time'
+OpsReturnView:
+  type: object
+  additionalProperties: false
+  required:
+    - return_id
+    - order_id
+    - method
+    - address_version
+    - address
+    - confirmed_address_version
+    - tracking_no
+    - carrier
+    - shipped_at
+    - material_status
+    - submitted_at
+    - received_at
+    - receipt_source
+    - receipt_recorded_at
+    - version
+    - allowed_actions
+    - blockers
+    - receipt_note
+    - note
+    - receipt_actor_id
+    - receipt_actor_display_name
+    - receipt_history
+    - evidence_version
+    - evidence_template
+    - evidence_slots
+    - evidence_history
+    - pre_return_complete
+    - cabinet_task
+    - missing_items
+  properties:
+    return_id:
+      $ref: '#/ID'
+    order_id:
+      $ref: '#/ID'
+    method:
+      $ref: '#/Method'
+    address_version:
+      $ref: '#/AddressVersion'
+    address:
+      anyOf:
+        - $ref: '#/AddressView'
+        - type: 'null'
+      description: 仅个人快递返程投影AddressView，未设置前为null；官方柜机固定null。电话来自原授权地址，不猜测或伪造。
+    confirmed_address_version:
+      anyOf:
+        - $ref: '#/PositiveAddressVersion'
+        - type: 'null'
+    tracking_no:
+      anyOf:
+        - $ref: '#/Tracking'
+        - type: 'null'
+    carrier:
+      anyOf:
+        - type: string
+          minLength: 1
+          maxLength: 64
+        - type: 'null'
+    shipped_at:
+      anyOf:
+        - $ref: '#/Time'
+        - type: 'null'
+    material_status:
+      type: string
+      enum:
+        - INCOMPLETE
+        - COMPLETE
+    submitted_at:
+      anyOf:
+        - $ref: '#/Time'
+        - type: 'null'
+    received_at:
+      anyOf:
+        - $ref: '#/Time'
+        - type: 'null'
+    receipt_source:
+      anyOf:
+        - type: string
+          enum:
+            - CABINET
+            - LESSOR
+            - OFFICIAL
+        - type: 'null'
+    receipt_recorded_at:
+      anyOf:
+        - $ref: '#/Time'
+        - type: 'null'
+    version:
+      $ref: '#/Version'
+    allowed_actions:
+      type: array
+      items:
+        $ref: '#/Action'
+      maxItems: 30
+      minItems: 0
+    blockers:
+      type: array
+      items:
+        $ref: '#/Blocker'
+      maxItems: 30
+      minItems: 0
+    receipt_note:
+      anyOf:
+        - type: string
+          maxLength: 500
+        - type: 'null'
+    note:
+      anyOf:
+        - type: string
+          maxLength: 500
+          description: 租客最新一次已成功绑定材料的说明；收回备注另见receipt_note。
+        - type: 'null'
+    receipt_actor_id:
+      anyOf:
+        - $ref: '#/ID'
+        - type: 'null'
+    receipt_actor_display_name:
+      anyOf:
+        - type: string
+          maxLength: 256
+        - type: 'null'
+    receipt_history:
+      type: array
+      items:
+        $ref: '#/ReceiptHistoryItem'
+    evidence_version:
+      type: string
+      pattern: ^(0|[1-9][0-9]*)$
+    evidence_template:
+      $ref: '#/ReturnEvidenceTemplate'
+    evidence_slots:
+      type: array
+      items:
+        $ref: '#/ReturnEvidenceSlotView'
+      minItems: 0
+      maxItems: 20
+    evidence_history:
+      type: array
+      items:
+        $ref: '#/ReturnEvidenceItem'
+      minItems: 0
+      maxItems: 200
+    pre_return_complete:
+      type: boolean
+    cabinet_task:
+      anyOf:
+        - $ref: '#/CabinetTask'
+        - type: 'null'
+    missing_items:
+      type: array
+      items:
+        $ref: '#/ReturnMissingItem'
+      minItems: 0
+      maxItems: 20
+OpsReviewView:
+  type: object
+  additionalProperties: false
+  required:
+    - review_id
+    - order_id
+    - review_no
+    - decision
+    - overtime_calculated_fen
+    - overtime_assessed_fen
+    - loss_confirmed_fen
+    - created_at
+    - allocation
+    - assessment
+    - actor_account_id
+    - actor_display_name
+  properties:
+    review_id:
+      $ref: '#/ID'
+    order_id:
+      $ref: '#/ID'
+    review_no:
+      $ref: '#/Version'
+    overtime_calculated_fen:
+      anyOf:
+        - $ref: '#/Fen'
+        - type: 'null'
+    overtime_assessed_fen:
+      anyOf:
+        - $ref: '#/Fen'
+        - type: 'null'
+    loss_confirmed_fen:
+      anyOf:
+        - $ref: '#/Fen'
+        - type: 'null'
+    created_at:
+      $ref: '#/Time'
+    allocation:
+      $ref: '#/ReviewAllocation'
+    assessment:
+      $ref: '#/AssessmentView'
+    decision:
+      type: string
+      enum:
+        - APPROVE_FINAL
+        - REVIEW_PENDING
+        - MATERIAL_REQUIRED
+    actor_account_id:
+      $ref: '#/ID'
+    actor_display_name:
+      anyOf:
+        - type: string
+          maxLength: 256
+        - type: 'null'
+  description: >-
+    历史版本只读；allocation由该版本overtime_assessed_fen、loss_confirmed_fen及不变deposit_received_fen计算，过程审核未定费用为null且deducted=0。不混入当前退款成功状态；当前账单由B08/B12读。
+OpsReviewPage:
+  type: object
+  additionalProperties: false
+  required:
+    - items
+    - next_cursor
+    - has_more
+  properties:
+    items:
+      type: array
+      items:
+        $ref: '#/OpsReviewView'
+      maxItems: 100
+      minItems: 0
+    next_cursor:
+      anyOf:
+        - $ref: '#/Token'
+        - type: 'null'
+    has_more:
+      type: boolean
+MiniLookupRequest:
+  type: object
+  additionalProperties: false
+  required:
+    - operation_id
+    - target_id
+    - idempotency_key
+  properties:
+    operation_id:
+      type: string
+      enum:
+        - B02
+        - K10
+    target_id:
+      type: 'null'
+    idempotency_key:
+      type: string
+      minLength: 16
+      maxLength: 64
+      pattern: ^[!-~]+$
+  description: 只读查询固定候选操作的原意图结果；不是命令分派器。作用域绑定当前主体、原操作、原目标与原键，重新检查原权限。
+ContractConsentRequest:
+  type: object
+  additionalProperties: false
+  required:
+    - accepted
+    - agreement_sha256
+    - order_terms_sha256
+  properties:
+    accepted:
+      type: boolean
+      const: true
+    agreement_sha256:
+      type: string
+      pattern: ^[a-f0-9]{64}$
+    order_terms_sha256:
+      type: string
+      pattern: ^[a-f0-9]{64}$
+ReturnEvidenceExample:
+  type: object
+  additionalProperties: false
+  required:
+    - object_key
+    - sha256
+    - mime_type
+    - poster_object_key
+    - url
+    - poster_url
+  properties:
+    object_key:
+      type: string
+      maxLength: 512
+    sha256:
+      type: string
+      pattern: ^[a-f0-9]{64}$
+    mime_type:
+      type: string
+      enum:
+        - image/jpeg
+        - image/png
+        - image/webp
+        - video/mp4
+    poster_object_key:
+      anyOf:
+        - type: string
+          maxLength: 512
+        - type: 'null'
+    url:
+      type: string
+      maxLength: 2048
+    poster_url:
+      anyOf:
+        - type: string
+          maxLength: 2048
+        - type: 'null'
+ReturnEvidenceSlot:
+  type: object
+  additionalProperties: false
+  required:
+    - slot_key
+    - title
+    - kind
+    - stage
+    - min_count
+    - max_count
+    - instruction
+    - sort_order
+    - example
+  properties:
+    slot_key:
+      type: string
+      pattern: ^[a-z][a-z0-9-]{0,63}$
+    title:
+      type: string
+      maxLength: 80
+    kind:
+      type: string
+      enum:
+        - PHOTO
+        - VIDEO
+    stage:
+      type: string
+      enum:
+        - PRE_RETURN
+        - AFTER_OPEN
+    min_count:
+      type: integer
+      minimum: 1
+      maximum: 20
+    max_count:
+      type: integer
+      minimum: 1
+      maximum: 20
+    instruction:
+      type: string
+      maxLength: 2000
+    sort_order:
+      type: integer
+      minimum: 0
+      maximum: 1000
+    example:
+      anyOf:
+        - $ref: '#/ReturnEvidenceExample'
+        - type: 'null'
+ReturnEvidenceTemplate:
+  type: object
+  additionalProperties: false
+  required:
+    - template_key
+    - version
+    - title
+    - slots
+  properties:
+    template_key:
+      type: string
+      maxLength: 64
+    version:
+      type: string
+      maxLength: 64
+    title:
+      type: string
+      maxLength: 80
+    slots:
+      type: array
+      items:
+        $ref: '#/ReturnEvidenceSlot'
+      minItems: 1
+      maxItems: 20
+ReturnEvidenceItem:
+  type: object
+  additionalProperties: false
+  required:
+    - evidence_id
+    - slot_key
+    - item_no
+    - revision_no
+    - binding_version
+    - material_id
+    - kind
+    - stage
+    - is_current
+    - replaces_evidence_id
+    - source
+    - submitted_by
+    - reason
+    - created_at
+    - availability
+    - media
+  properties:
+    evidence_id:
+      $ref: '#/ID'
+    slot_key:
+      type: string
+      maxLength: 64
+    item_no:
+      type: integer
+      minimum: 1
+      maximum: 20
+    revision_no:
+      type: integer
+      minimum: 1
+      maximum: 200
+    binding_version:
+      type: string
+      pattern: ^[1-9][0-9]*$
+    material_id:
+      $ref: '#/ID'
+    kind:
+      type: string
+      enum:
+        - PHOTO
+        - VIDEO
+    stage:
+      type: string
+      enum:
+        - PRE_RETURN
+        - AFTER_OPEN
+    is_current:
+      type: boolean
+    replaces_evidence_id:
+      anyOf:
+        - $ref: '#/ID'
+        - type: 'null'
+    source:
+      type: string
+      enum:
+        - TENANT
+        - OPS_SUPPLEMENT
+    submitted_by:
+      $ref: '#/ID'
+    reason:
+      anyOf:
+        - type: string
+          maxLength: 500
+        - type: 'null'
+    created_at:
+      $ref: '#/Time'
+    availability:
+      type: string
+      enum:
+        - READY
+        - UNAVAILABLE
+    media:
+      anyOf:
+        - $ref: '#/PublicMaterialMedia'
+        - type: 'null'
+ReturnEvidenceSlotView:
+  type: object
+  additionalProperties: false
+  required:
+    - slot
+    - items
+    - complete
+    - editable
+    - blocker
+  properties:
+    slot:
+      $ref: '#/ReturnEvidenceSlot'
+    items:
+      type: array
+      items:
+        $ref: '#/ReturnEvidenceItem'
+      minItems: 0
+      maxItems: 20
+    complete:
+      type: boolean
+    editable:
+      type: boolean
+    blocker:
+      anyOf:
+        - type: string
+          maxLength: 128
+        - type: 'null'
+ReturnEvidenceItemRequest:
+  type: object
+  additionalProperties: false
+  required:
+    - material_id
+    - reason
+  properties:
+    material_id:
+      $ref: '#/ID'
+    reason:
+      anyOf:
+        - $ref: '#/Reason'
+        - type: 'null'
+ReturnMissingItem:
+  type: object
+  additionalProperties: false
+  required:
+    - slot_key
+    - item_no
+    - evidence_id
+    - reason
+  properties:
+    slot_key:
+      type: string
+      maxLength: 64
+    item_no:
+      type: integer
+      minimum: 1
+      maximum: 20
+    evidence_id:
+      anyOf:
+        - $ref: '#/ID'
+        - type: 'null'
+    reason:
+      $ref: '#/Reason'
+ReturnResolutionRequest:
+  type: object
+  additionalProperties: false
+  required:
+    - action
+    - reason
+  properties:
+    action:
+      type: string
+      enum:
+        - RECHECK
+        - RELEASE_EMPTY
+    reason:
+      $ref: '#/Reason'
+SupplementView:
+  type: object
+  additionalProperties: false
+  required: [supplement_id, order_id, final_review_id, amount_fen, currency, status, active_payment, paid_payment, paid_at, version]
+  properties:
+    supplement_id:
+      $ref: '#/ID'
+    order_id:
+      $ref: '#/ID'
+    final_review_id:
+      $ref: '#/ID'
+    amount_fen:
+      $ref: '#/PositiveFen'
+    currency:
+      type: string
+      const: CNY
+    status:
+      type: string
+      enum: [UNPAID, PAID]
+    active_payment:
+      anyOf:
+        - $ref: '#/PaymentView'
+        - type: 'null'
+    paid_payment:
+      anyOf:
+        - $ref: '#/PaymentView'
+        - type: 'null'
+    paid_at:
+      anyOf:
+        - $ref: '#/Time'
+        - type: 'null'
+    version:
+      $ref: '#/Version'
+  description: 不自动超时的业务欠款。active_payment为当前待确认渠道交易，paid_payment为唯一清偿来源；迟到重复款另记误收责任。
+RefundSummary:
+  type: object
+  additionalProperties: false
+  required: [obligation_fen, refunded_fen, pending_fen, open_obligation_count, latest_refund]
+  properties:
+    obligation_fen:
+      $ref: '#/Fen'
+    refunded_fen:
+      $ref: '#/Fen'
+    pending_fen:
+      $ref: '#/Fen'
+    open_obligation_count:
+      type: integer
+      minimum: 0
+    latest_refund:
+      anyOf:
+        - $ref: '#/RefundView'
+        - type: 'null'
+FundsSummary:
+  type: object
+  additionalProperties: false
+  required: [gross_received_fen, refunded_fen, net_received_fen, payer_total_fen, payer_refund_fen, payer_net_fen, excess_received_fen, currency]
+  properties:
+    gross_received_fen:
+      $ref: '#/Fen'
+    refunded_fen:
+      $ref: '#/Fen'
+    net_received_fen:
+      $ref: '#/Fen'
+    payer_total_fen:
+      anyOf:
+        - $ref: '#/Fen'
+        - type: 'null'
+    payer_refund_fen:
+      anyOf:
+        - $ref: '#/Fen'
+        - type: 'null'
+    payer_net_fen:
+      anyOf:
+        - $ref: '#/Fen'
+        - type: 'null'
+    excess_received_fen:
+      $ref: '#/Fen'
+    currency:
+      type: string
+      const: CNY
+PaymentHistoryPage:
+  type: object
+  additionalProperties: false
+  required: [items, next_cursor, has_more]
+  properties:
+    items:
+      type: array
+      maxItems: 50
+      items:
+        $ref: '#/PaymentView'
+    next_cursor:
+      anyOf:
+        - $ref: '#/Token'
+        - type: 'null'
+    has_more:
+      type: boolean
+RefundHistoryPage:
+  type: object
+  additionalProperties: false
+  required: [items, next_cursor, has_more]
+  properties:
+    items:
+      type: array
+      maxItems: 50
+      items:
+        $ref: '#/RefundView'
+    next_cursor:
+      anyOf:
+        - $ref: '#/Token'
+        - type: 'null'
+    has_more:
+      type: boolean
+ExternalRefundVerificationRequest:
+  type: object
+  additionalProperties: false
+  required: [out_refund_no]
+  properties:
+    out_refund_no:
+      type: string
+      minLength: 1
+      maxLength: 64
+      pattern: '^[A-Za-z0-9_-]+$'
+      description: 商户平台原退款单号；金额和状态必须由渠道查询核验。
+OpsPaymentHistoryPage:
+  type: object
+  additionalProperties: false
+  required:
+    - items
+    - next_cursor
+    - has_more
+  properties:
+    items:
+      type: array
+      maxItems: 50
+      minItems: 0
+      items:
+        $ref: '#/OpsPaymentView'
+    next_cursor:
+      anyOf:
+        - $ref: '#/Token'
+        - type: 'null'
+    has_more:
+      type: boolean
+OpsRefundHistoryPage:
+  type: object
+  additionalProperties: false
+  required:
+    - items
+    - next_cursor
+    - has_more
+  properties:
+    items:
+      type: array
+      maxItems: 50
+      minItems: 0
+      items:
+        $ref: '#/OpsRefundView'
+    next_cursor:
+      anyOf:
+        - $ref: '#/Token'
+        - type: 'null'
+    has_more:
+      type: boolean

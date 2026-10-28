@@ -1,0 +1,30 @@
+<page-meta root-font-size="system" />
+<view class="eligibility-page">
+<page-header title="{{secondaryNavigationTitle || '我要出租'}}" background="#ffffff" inverse="{{false}}" bindback="onSecondaryNavigationBack" />
+  <view class="eligibility-header">
+    <text class="page-eyebrow">我要出租</text>
+    <text class="page-title">发布资格</text>
+    <text class="page-status {{publishEnabled ? 'is-ready' : 'is-pending'}}">{{loading ? '正在核对服务端发布资格' : errorText ? '资格读取失败，当前不能发布' : publishEnabled ? '当前已满足发布条件，可以发布设备' : '当前未满足下方条件，请完成'}}</text>
+  </view>
+  <view wx:if="{{errorText}}" class="check-card" bindtap="retry" role="button"><text class="check-title">{{errorText}}</text><text class="check-value">重新读取</text></view>
+
+  <view class="check-list">
+    <view wx:for="{{checks}}" wx:key="title" wx:if="{{item.group === 'qualification'}}" class="check-card" data-route="{{item.route}}" data-title="{{item.title}}" bindtap="openCheck" role="button">
+      <text class="check-title">{{item.title}}</text>
+      <view class="check-right"><text class="check-value {{item.done ? 'is-done' : 'is-warning'}}">{{item.value}}</text><image class="check-arrow" src="{{icons.arrowRight}}" mode="aspectFit" /></view>
+    </view>
+  </view>
+
+  <view wx:for="{{checks}}" wx:key="title" wx:if="{{item.group === 'service'}}" class="service-section">
+    <view class="section-title">{{item.title}}</view>
+    <view class="service-copy">非必需条件，但合同/人脸余额不足时承租方无法签署合同，需要及时补购。<text>风控报告不影响出租，但可帮助判断承租人是否存在较高履约或欺诈风险。</text></view>
+    <view class="service-card" data-route="{{item.route}}" data-title="{{item.title}}" bindtap="openCheck" role="button">
+      <view wx:for="{{item.services}}" wx:for-item="service" wx:key="label" class="service-row"><text>{{service.label}}</text><text>{{service.value}}</text></view>
+    </view>
+  </view>
+
+  <view class="eligibility-bottom xy-bottom-action">
+    <view class="service-button xy-action-secondary" bindtap="buyRentalService" role="button">购买出租服务</view>
+    <view class="publish-button xy-action-primary" bindtap="publish" role="button" aria-label="{{primaryLabel}}">{{primaryLabel}}</view>
+  </view>
+</view>

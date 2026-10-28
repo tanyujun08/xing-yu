@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0",
+  "ruleId": "MPA-EXC-001",
+  "case": "accept",
+  "ordinalContract": {
+    "path": "miniprogram/pages/fixture/index.wxss",
+    "base": ".card { margin: 12px; }\n.card { margin: 12px; }\n",
+    "formatVariant": "/* formatting must not affect identity */\r\n.card{margin : 12px;}\r\n\r\n.card {  margin:   12px ; }\r\n",
+    "appended": ".card { margin: 12px; }\n.card { margin: 12px; }\n.card { margin: 12px; }\n",
+    "removed": ".card { margin: 12px; }\n"
+  },
+  "files": {
+    "config/miniprogram-architecture-policy.json": "{\"exceptions\":[]}"
+  }
+}

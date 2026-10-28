@@ -1,0 +1,43 @@
+<page-meta root-font-size="system" />
+<view class="member-subpage growth-page">
+<page-header title="{{secondaryNavigationTitle || '升级任务'}}" background="#F7F9F8" inverse="{{false}}" bindback="onSecondaryNavigationBack" />
+  <view class="member-subpage__hero">
+    <view class="member-subpage__hero-top"><view><text class="member-subpage__eyebrow">会员成长</text><text class="member-subpage__title">升级任务</text></view><text class="task-count">{{taskCount}}</text></view>
+    <text class="member-subpage__hero-copy">完成成长任务，获得星光与粉钻，推动会员等级持续升级。</text>
+    <view class="member-subpage__progress"><view class="member-subpage__progress-fill" style="width: {{taskProgress}};"></view></view>
+    <view class="member-subpage__progress-caption"><text>成长任务</text><text>{{taskCount}} 已完成</text></view>
+  </view>
+
+  <text wx:if="{{loading}}" class="member-subpage__footnote" role="status">正在读取本人成长任务…</text>
+  <text wx:if="{{notice}}" class="member-subpage__footnote" role="status">{{notice}}</text>
+  <view wx:if="{{errorText}}" class="member-subpage__footnote" role="alert"><text>{{errorText}}</text><button class="growth-task__action xy-button-reset" bindtap="refresh" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">重新读取</button></view>
+  <view wx:if="{{pendingBenefitCode}}" class="member-subpage__footnote"><text>任务 {{pendingBenefitCode}} 的原领取结果待核实。</text><button id="growth-recover" class="growth-task__action xy-button-reset" bindtap="recoverClaim" disabled="{{busy}}" aria-disabled="{{busy}}" loading="{{busy}}">恢复原请求</button></view>
+  <view wx:if="{{receiptText}}" class="member-subpage__footnote" role="status"><text>{{receiptText}}</text><text>当前粉钻 {{balance}} · 当前星光 {{starPoints}}</text><view wx:for="{{receiptGrants}}" wx:key="id"><text>{{item.label}}</text><button class="growth-task__action xy-button-reset" data-id="{{item.id}}" bindtap="openGrant">查看发奖事实</button><button class="growth-task__action xy-button-reset" data-id="{{item.id}}" bindtap="openReward">查看奖励明细</button></view><text wx:if="{{grantDetail}}">{{grantDetail}}</text></view>
+
+  <view class="member-subpage__section growth-section">
+    <view class="member-subpage__section-head"><text class="member-subpage__section-title">成长任务</text><text class="member-subpage__section-note">达成后可领取奖励</text></view>
+    <view class="member-subpage__surface task-list">
+      <view wx:for="{{tasks}}" wx:key="id" class="growth-task {{item.done ? 'growth-task--done' : ''}}">
+        <view class="growth-task__mark"><image src="{{item.icon}}" mode="aspectFit" /></view>
+        <view class="growth-task__main"><text class="member-subpage__row-title">{{item.title}}</text><text class="member-subpage__row-detail">{{item.detail}}</text></view>
+        <view class="growth-task__side"><text class="growth-task__reward {{item.done ? 'growth-task__reward--muted' : ''}}">{{item.reward}}</text><button class="growth-task__action xy-button-reset" data-index="{{index}}" data-id="{{item.id}}" bindtap="openTask" role="button" disabled="{{!item.claimable || busy || loading || pendingBenefitCode}}" aria-disabled="{{!item.claimable || busy || loading || pendingBenefitCode}}"><view class="growth-task__action-shell {{!item.claimable ? 'is-disabled' : ''}}">{{item.actionText}}</view></button></view>
+      </view>
+    </view>
+  </view>
+
+  <view class="member-subpage__section">
+    <view class="member-subpage__section-head"><text class="member-subpage__section-title">每日成长任务</text><text class="member-subpage__section-note">{{dailyCount}} · 奖励以领取回执为准</text></view>
+    <view class="mission-list">
+      <view wx:for="{{missions}}" wx:key="id" class="mission-card xy-tap" data-index="{{index}}" data-id="{{item.id}}" bindtap="openMission" role="button" aria-label="{{item.title}}，{{item.detail}}，{{item.actionText}}" aria-disabled="{{!item.claimable || busy || pendingBenefitCode}}">
+        <view class="mission-card__icon"><image src="{{item.icon}}" mode="aspectFit" /></view>
+        <view class="mission-card__main"><text class="mission-card__title">{{item.title}}</text><text class="mission-card__detail">{{item.detail}}</text><view class="mission-card__track"><view style="width:{{item.progress}};"></view></view></view>
+        <view class="mission-card__side"><text class="mission-card__reward">{{item.reward}}</text><text class="mission-card__progress">{{item.actionText}} · {{item.progressText}}</text></view>
+      </view>
+    </view>
+    <view class="browse-toggle xy-tap" bindtap="toggleBrowse" role="button"><text>每日浏览任务 <text class="browse-toggle__note">按实际任务计奖</text></text><text class="browse-toggle__arrow">{{browseExpanded ? '收起' : '展开'}}</text></view>
+    <view wx:if="{{browseExpanded}}" class="browse-list">
+      <view wx:for="{{browseMissions}}" wx:key="id" class="browse-item xy-tap {{item.done ? 'browse-item--done' : ''}}" data-index="{{index}}" data-id="{{item.id}}" bindtap="openBrowseMission" role="button" aria-disabled="{{!item.claimable || busy || pendingBenefitCode}}"><text class="browse-item__name">{{item.title}} · {{item.actionText}}</text><text class="browse-item__reward">{{item.reward}}</text></view>
+    </view>
+    <text class="member-subpage__footnote">任务进度由服务端真实来源记录确定，只有可领取任务可以提交领取。</text>
+  </view>
+</view>

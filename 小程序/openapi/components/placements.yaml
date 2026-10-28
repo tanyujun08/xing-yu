@@ -1,0 +1,408 @@
+{
+  "Schemas": {
+    "OpsCabinetStockingOptions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cabinet_readiness",
+        "slots",
+        "assets"
+      ],
+      "properties": {
+        "cabinet_readiness": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "eligible",
+            "reason_code",
+            "cabinet_version"
+          ],
+          "properties": {
+            "eligible": {
+              "type": "boolean"
+            },
+            "reason_code": {
+              "type": "string"
+            },
+            "cabinet_version": {
+              "type": "string",
+              "pattern": "^[1-9][0-9]{0,19}$"
+            }
+          }
+        },
+        "slots": {
+          "type": "array",
+          "maxItems": 48,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "compartment_id",
+              "compartment_no",
+              "eligible",
+              "reason_code",
+              "version"
+            ],
+            "properties": {
+              "compartment_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64
+              },
+              "compartment_no": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 48
+              },
+              "eligible": {
+                "type": "boolean"
+              },
+              "reason_code": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string",
+                "pattern": "^[1-9][0-9]{0,19}$"
+              }
+            }
+          }
+        },
+        "assets": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "items",
+            "page"
+          ],
+          "properties": {
+            "items": {
+              "type": "array",
+              "maxItems": 100,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "asset_id",
+                  "asset_no",
+                  "display_name",
+                  "eligible",
+                  "reason_code",
+                  "version"
+                ],
+                "properties": {
+                  "asset_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64
+                  },
+                  "asset_no": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 32
+                  },
+                  "display_name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "eligible": {
+                    "type": "boolean"
+                  },
+                  "reason_code": {
+                    "type": "string"
+                  },
+                  "version": {
+                    "type": "string",
+                    "pattern": "^[1-9][0-9]{0,19}$"
+                  }
+                }
+              }
+            },
+            "page": {
+              "$ref": "./pagination.yaml#/CursorPageMeta"
+            }
+          }
+        }
+      }
+    },
+    "OpsStorePlacementInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "location_kind": {
+          "type": "string",
+          "const": "STORE"
+        },
+        "store_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "evidence_set_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
+      },
+      "required": [
+        "location_kind",
+        "store_id",
+        "evidence_set_id",
+        "reason"
+      ]
+    },
+    "OpsCabinetPlacementInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "location_kind": {
+          "type": "string",
+          "const": "CABINET"
+        },
+        "cabinet_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "compartment_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
+      },
+      "required": [
+        "location_kind",
+        "cabinet_id",
+        "compartment_id",
+        "reason"
+      ]
+    },
+    "OpsPlacementInput": {
+      "oneOf": [
+        {
+          "$ref": "#/Schemas/OpsStorePlacementInput"
+        },
+        {
+          "$ref": "#/Schemas/OpsCabinetPlacementInput"
+        }
+      ]
+    },
+    "OpsPlacementEndInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "evidence_set_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
+      },
+      "required": [
+        "reason"
+      ],
+      "description": "CABINET accepts reason only; STORE requires evidence_set_id."
+    },
+    "OpsPlacementRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "placement_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "location_kind": {
+          "type": "string",
+          "enum": [
+            "STORE",
+            "CABINET"
+          ]
+        },
+        "store_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "cabinet_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "compartment_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "confirmed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "evidence_set_id": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,19}$"
+        },
+        "asset_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "ACTIVE",
+            "ENDED"
+          ]
+        },
+        "ended_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ended_evidence_set_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "placement_id",
+        "location_kind",
+        "store_id",
+        "cabinet_id",
+        "compartment_id",
+        "confirmed_at",
+        "version",
+        "asset_id",
+        "status",
+        "ended_at",
+        "ended_evidence_set_id"
+      ]
+    },
+    "OpsPlacementReceipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "type": "integer",
+          "const": 1
+        },
+        "asset_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "state": {
+          "$ref": "./assets.yaml#/Schemas/OpsAssetState"
+        },
+        "placement": {
+          "$ref": "#/Schemas/OpsPlacementRecord"
+        },
+        "credential": {
+          "$ref": "#/Schemas/OpsCabinetCredentialSummary"
+        }
+      },
+      "required": [
+        "schema_version",
+        "asset_id",
+        "state",
+        "placement"
+      ]
+    },
+    "OpsCabinetCredentialSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "credential_id",
+        "kind",
+        "status",
+        "generated_at"
+      ],
+      "properties": {
+        "credential_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "kind": {
+          "type": "string",
+          "const": "PICKUP"
+        },
+        "status": {
+          "type": "string",
+          "const": "DORMANT"
+        },
+        "generated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  }
+}

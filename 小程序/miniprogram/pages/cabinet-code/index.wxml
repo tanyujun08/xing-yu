@@ -1,0 +1,32 @@
+<page-meta root-font-size="system" />
+<page-shell surface="page" has-footer>
+  <page-header title="输入取件码" bindback="onSecondaryNavigationBack" slot="header" />
+  <view class="code-page">
+    <view class="intro-block"><text class="page-title">柜机取件</text></view>
+    <view wx:if="{{loading}}" class="body-copy" role="status">正在读取柜机…</view>
+    <block wx:if="{{loaded}}">
+      <view class="surface-card cabinet-card">
+        <view class="card-head"><text class="section-title">{{cabinetName}}</text><text class="state-label {{pickupEnabled ? 'is-success' : 'is-warning'}}">{{pickupEnabled ? '柜机可用' : '暂不可用'}}</text></view>
+        <text wx:if="{{cabinetAddress}}" class="body-copy">{{cabinetAddress}}</text>
+        <text class="body-copy">{{pickupEnabled ? '请确认您已到达此柜机' : '柜机暂不可用，请稍后刷新或联系客服'}}</text>
+      </view>
+      <view wx:if="{{taskStatus}}" class="surface-card progress-card" role="status">
+        <text class="section-title">{{taskStatus}}</text><text class="body-copy">{{taskCopy}}</text>
+        <button wx:if="{{canCancel}}" class="xy-action-hit" bindtap="cancelReservation" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">取消本次取件预留</button>
+      </view>
+      <view wx:if="{{!taskId || canResume}}" class="surface-card credential-card">
+        <text class="section-title">{{canResume ? '继续本次取件' : '输入取件码'}}</text>
+        <cabinet-credential-input label="取件码" show-display-code="{{false}}" value="{{credentialInput}}" bindinput="inputCredential" />
+        <text class="body-copy">{{canResume ? '请重新输入本单取件码，确认后继续开柜。' : '请使用当前账号订单中的六位取件码，仅在约定租期内取件。'}}</text>
+      </view>
+      <text class="body-copy pickup-guidance">取出设备并关好柜门，取件结果将自动更新。</text>
+      <button wx:if="{{!pickupEnabled}}" class="xy-action-hit" bindtap="refresh" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">重新连接柜机</button>
+      <button class="xy-action-hit" bindtap="goOrders">去我的订单查看取件码</button>
+      <button wx:if="{{!loggedIn}}" class="xy-action-hit" bindtap="openLogin">登录后取件</button>
+    </block>
+    <button class="xy-action-hit" bindtap="demoSupport">联系客服</button>
+  </view>
+  <bottom-actions slot="footer" primary-text="{{taskId ? (canResume ? '继续开柜取件' : '查看取件进度') : '确认并开柜'}}" busy="{{busy}}" disabled="{{credentialErrorOpen || loading || !loggedIn || (taskId && !canResume ? false : (!pickupEnabled || credentialInput.length !== 6))}}" aria-disabled="{{credentialErrorOpen || loading || !loggedIn || (taskId && !canResume ? false : (!pickupEnabled || credentialInput.length !== 6))}}" bindprimary="submitCredential" />
+</page-shell>
+<confirmation-dialog visible="{{feedbackVisible && !credentialErrorOpen && !errorText}}" tone="{{feedbackTone}}" symbol="{{feedbackSymbol}}" eyebrow="{{feedbackEyebrow}}" title="{{feedbackTitle}}" content="{{feedbackContent}}" hint="{{feedbackHint}}" steps="{{feedbackSteps}}" quiet-confirm="{{feedbackQuiet}}" show-contact="{{feedbackContact}}" confirm-text="{{feedbackPrimary}}" show-cancel="{{feedbackPhase === 'done'}}" cancel-text="完成" bindconfirm="confirmProgress" bindcancel="closeProgress" />
+<confirmation-dialog visible="{{credentialErrorOpen || !!errorText}}" tone="error" symbol="warning" title="{{credentialErrorOpen ? '取件码不可用' : '暂时无法取件'}}" content="{{credentialErrorOpen ? '请核对本账号订单中的取件码，并确认您已到达本单租赁柜。' : errorText}}" confirm-text="{{credentialErrorOpen ? '重新输入' : '知道了'}}" show-cancel="{{false}}" bindconfirm="acknowledgeFeedback" />

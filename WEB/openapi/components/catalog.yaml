@@ -1,0 +1,453 @@
+{
+  "Schemas": {
+    "CatalogReason": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
+      },
+      "required": [
+        "reason"
+      ]
+    },
+    "CatalogBrand": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "brand_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "ACTIVE",
+            "ARCHIVED"
+          ]
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,19}$"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "brand_id",
+        "name",
+        "status",
+        "version",
+        "created_at",
+        "updated_at"
+      ]
+    },
+    "CatalogBrandView": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "brand_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "ACTIVE",
+            "ARCHIVED"
+          ]
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,19}$"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_actions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "UPDATE",
+                  "DEACTIVATE"
+                ]
+              },
+              "enabled": {
+                "type": "boolean"
+              },
+              "blocked_reasons": {
+                "type": "array",
+                "items": {
+                  "$ref": "./addresses.yaml#/Schemas/ReasonItem"
+                }
+              }
+            },
+            "required": [
+              "code",
+              "enabled",
+              "blocked_reasons"
+            ]
+          }
+        },
+        "blocked_reasons": {
+          "type": "array",
+          "items": {
+            "$ref": "./addresses.yaml#/Schemas/ReasonItem"
+          }
+        }
+      },
+      "required": [
+        "brand_id",
+        "name",
+        "status",
+        "version",
+        "created_at",
+        "updated_at",
+        "allowed_actions",
+        "blocked_reasons"
+      ]
+    },
+    "CatalogBrandInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "CatalogBrandPatch": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
+      },
+      "required": [
+        "reason"
+      ],
+      "description": "At least one business field required. Omitted parent_id keeps the parent; null explicitly moves to root. Names use NFC+trim preserving case. Archived names remain reserved."
+    },
+    "CatalogBrandPage": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/CatalogBrandView"
+          }
+        },
+        "page": {
+          "$ref": "./pagination.yaml#/CursorPageMeta"
+        }
+      },
+      "required": [
+        "items",
+        "page"
+      ]
+    },
+    "CatalogCategory": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "category_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "ACTIVE",
+            "ARCHIVED"
+          ]
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,19}$"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "parent_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sort_order": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9999
+        }
+      },
+      "required": [
+        "category_id",
+        "name",
+        "status",
+        "version",
+        "created_at",
+        "updated_at",
+        "parent_id",
+        "sort_order"
+      ]
+    },
+    "CatalogCategoryView": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "category_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "ACTIVE",
+            "ARCHIVED"
+          ]
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,19}$"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "parent_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sort_order": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9999
+        },
+        "allowed_actions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "UPDATE",
+                  "DEACTIVATE"
+                ]
+              },
+              "enabled": {
+                "type": "boolean"
+              },
+              "blocked_reasons": {
+                "type": "array",
+                "items": {
+                  "$ref": "./addresses.yaml#/Schemas/ReasonItem"
+                }
+              }
+            },
+            "required": [
+              "code",
+              "enabled",
+              "blocked_reasons"
+            ]
+          }
+        },
+        "blocked_reasons": {
+          "type": "array",
+          "items": {
+            "$ref": "./addresses.yaml#/Schemas/ReasonItem"
+          }
+        }
+      },
+      "required": [
+        "category_id",
+        "name",
+        "status",
+        "version",
+        "created_at",
+        "updated_at",
+        "parent_id",
+        "sort_order",
+        "allowed_actions",
+        "blocked_reasons"
+      ]
+    },
+    "CatalogCategoryInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "parent_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sort_order": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9999
+        }
+      },
+      "required": [
+        "name",
+        "sort_order"
+      ]
+    },
+    "CatalogCategoryPatch": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "parent_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sort_order": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9999
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
+      },
+      "required": [
+        "reason"
+      ],
+      "description": "At least one business field required. Omitted parent_id keeps the parent; null explicitly moves to root. Names use NFC+trim preserving case. Archived names remain reserved."
+    },
+    "CatalogCategoryPage": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/CatalogCategoryView"
+          }
+        },
+        "page": {
+          "$ref": "./pagination.yaml#/CursorPageMeta"
+        }
+      },
+      "required": [
+        "items",
+        "page"
+      ]
+    }
+  }
+}

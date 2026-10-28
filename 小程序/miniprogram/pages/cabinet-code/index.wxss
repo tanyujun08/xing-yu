@@ -1,0 +1,12 @@
+@import "../../shared/design/components.wxss";
+@import "../../shared/design/cabinet-flow.wxss";
+.code-page { min-height: 100%; padding: var(--xy-space-4) var(--xy-layout-page-padding-x) var(--xy-space-6); box-sizing: border-box; color: var(--xy-color-text-primary); }
+.intro-block { padding: 0 0 var(--xy-layout-card-stack-start-gap); }
+.page-title { display: block; font-size: var(--xy-text-page-title-size); font-weight: var(--xy-text-weight-semibold); line-height: var(--xy-text-page-title-line-height); }
+.body-copy { display: block; margin-top: var(--xy-space-1); color: var(--xy-color-text-secondary); font-size: var(--xy-text-body-size); line-height: var(--xy-text-body-line-height); }
+.empty-card { margin-top: 0; }
+.inline-action { width: 100%; min-height: var(--xy-control-height); margin-top: var(--xy-space-4); }
+.code-page .credential-card { margin-top: var(--xy-space-3); }
+.credential-card .section-title { margin-bottom: var(--xy-space-3); }
+.pickup-guidance { margin-top:var(--xy-space-3); }
+.progress-card .xy-action-hit { margin-top:var(--xy-space-2); }

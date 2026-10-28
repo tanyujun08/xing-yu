@@ -1,0 +1,26 @@
+<page-meta root-font-size="system" />
+<view class="order-messages-page">
+<page-header title="{{secondaryNavigationTitle || '订单信息'}}" background="#ffffff" inverse="{{false}}" bindback="onSecondaryNavigationBack" />
+  <view wx:if="{{!loggedIn}}" class="state-card">
+    <view class="state-symbol"><image src="{{icons.infoOrder}}" mode="aspectFit" /></view>
+    <text class="state-title">登录后查看订单信息</text>
+    <view class="state-button xy-tap" bindtap="openLogin" role="button">去登录</view>
+  </view>
+
+  <view wx:elif="{{messages.length > 0}}" class="message-list">
+    <view wx:for="{{messages}}" wx:key="id" class="order-message xy-tap" data-id="{{item.orderId}}" bindtap="openOrder" role="button" aria-label="查看{{item.deviceName}}订单">
+      <view class="order-message-body">
+        <view class="message-head"><view class="message-type"><text>{{item.title}}</text></view><text class="message-time">{{item.timeText}}</text></view>
+        <view class="message-context"><text class="device-name">{{item.deviceName}}</text><text class="status-text">{{item.statusText}}</text></view>
+        <text class="message-content">{{item.content}}</text>
+        <view class="message-footer"><text class="message-order-id">订单 {{item.orderId}}</text><view class="message-arrow"><text>查看订单</text><image src="{{icons.arrowRight}}" mode="aspectFit" /></view></view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:elif="{{loggedIn}}" class="state-card empty-card xy-empty-page xy-empty-page--surface">
+    <image class="xy-empty-page__illustration" src="{{icons.emptyMessages}}" mode="aspectFit" aria-hidden="true" />
+    <text class="xy-empty-page__title">还没有订单更新</text>
+    <text class="xy-empty-page__copy">订单状态发生变化后，会显示在这里。</text>
+  </view>
+</view>

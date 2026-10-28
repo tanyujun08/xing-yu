@@ -1,0 +1,73 @@
+[
+  {
+    "draft_id": "draft-demo",
+    "status": "EDITING",
+    "version": "1",
+    "asset": {
+      "product_id": "product-1",
+      "display_name": "索尼 A7M4 全画幅相机",
+      "condition": "九成新",
+      "defect_description": "",
+      "accessories_text": "电池、充电器、肩带",
+      "description": "演示发布草稿，含完整设备和价格资料。",
+      "identifier_type": "MANUFACTURER_SERIAL",
+      "identifier_value": "SN-DEMO-001",
+      "rental_unit": "DAY",
+      "unit_price_fen": "8000",
+      "deposit_fen": "300000",
+      "minimum_units": "1",
+      "reference_value_fen": "1500000",
+      "available_from": "2025-12-31T16:00:00.000Z",
+      "available_until": "2027-12-31T16:00:00.000Z",
+      "timezone": "Asia/Shanghai",
+      "publication_location": {
+        "dataset_id": "demo-regions",
+        "province_id": "440000",
+        "city_id": "440300",
+        "district_id": "440305",
+        "detail_address": "科技园科苑路 88 号（演示地址）",
+        "recipient_name": "林沐（演示）",
+        "phone_country_code": "+86",
+        "phone": "13800000000",
+        "location": {
+          "latitude": "22.540000",
+          "longitude": "113.930000",
+          "coordinate_system": "GCJ02",
+          "source": "MAP_PICK"
+        }
+      },
+      "publication_position": {
+        "latitude": "22.540000",
+        "longitude": "113.930000",
+        "coordinate_system": "GCJ02",
+        "source": "WECHAT_CLIENT"
+      },
+      "media": [
+        {
+          "material_id": "photo-1",
+          "role": "COVER",
+          "sort_order": 0
+        },
+        {
+          "material_id": "photo-2",
+          "role": "OWNERSHIP",
+          "sort_order": 1
+        }
+      ],
+      "delivery_options": [
+        {
+          "method": "EXPRESS",
+          "outbound_fee_payer": "TENANT",
+          "return_fee_payer": "TENANT",
+          "source_address_id": "address-1"
+        }
+      ],
+      "rule_version_id": "1",
+      "eligibility_rule_version_id": "1"
+    },
+    "asset_id": null,
+    "committed_revision_id": null,
+    "origin_kind": "CREATE",
+    "base_version": null
+  }
+]

@@ -1,0 +1,258 @@
+.merchant-primary-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.merchant-primary-cell .media-thumbnail {
+  flex: 0 0 auto;
+}
+
+.merchant-photo-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 12px;
+}
+
+.merchant-photo-gallery > div {
+  display: grid;
+  gap: 6px;
+  color: var(--xy-text-secondary);
+  font-size: 12px;
+}
+
+.merchant-address-cell {
+  display: flex;
+  min-width: 280px;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.merchant-address-cell strong {
+  color: var(--xy-text-primary);
+  font-weight: var(--xy-font-weight-medium);
+  line-height: var(--xy-line-height-22);
+}
+
+.merchant-address-cell small {
+  color: var(--xy-text-tertiary);
+  font-size: var(--xy-font-size-12);
+  font-variant-numeric: tabular-nums;
+}
+
+.merchant-form-address-preview {
+  min-height: 40px;
+  padding: 9px 12px;
+  color: var(--xy-text-primary);
+  line-height: 20px;
+  background: var(--xy-bg-container-subtle);
+  border: 1px solid var(--xy-border-default);
+  border-radius: var(--xy-radius-md);
+}
+
+.merchant-form-address-preview[data-empty="true"] {
+  color: var(--xy-text-placeholder);
+}
+
+.merchant-list-error {
+  display: flex;
+  min-height: 48px;
+  padding: var(--xy-space-2) var(--xy-space-3);
+  align-items: center;
+  justify-content: center;
+  gap: var(--xy-space-2);
+  color: var(--xy-status-danger);
+  background: var(--xy-status-danger-bg);
+  border-bottom: 1px solid var(--xy-color-danger-200);
+}
+
+.tencent-address-picker {
+  padding: var(--xy-space-4);
+  background: var(--xy-bg-container-subtle);
+  border: 1px solid var(--xy-border-default);
+  border-radius: var(--xy-radius-md);
+}
+
+.tencent-address-picker__heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--xy-space-4);
+}
+
+.tencent-address-picker__heading > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tencent-address-picker__heading strong {
+  color: var(--xy-text-primary);
+  font-size: var(--xy-font-size-14);
+  line-height: var(--xy-line-height-22);
+}
+
+.tencent-address-picker__heading span,
+.tencent-address-picker__load-row span {
+  color: var(--xy-text-secondary);
+  font-size: var(--xy-font-size-12);
+  line-height: var(--xy-line-height-18);
+}
+
+.tencent-address-picker__ready {
+  flex: 0 0 auto;
+  padding: 2px 8px;
+  color: var(--xy-status-success) !important;
+  background: var(--xy-status-success-bg);
+  border-radius: var(--xy-radius-round);
+}
+
+.tencent-address-picker__status,
+.tencent-address-picker__loading,
+.tencent-address-picker__load-row {
+  margin-top: var(--xy-space-3);
+}
+
+.tencent-address-picker__status {
+  padding: 9px 12px;
+  color: var(--xy-text-secondary);
+  font-size: var(--xy-font-size-12);
+  line-height: var(--xy-line-height-18);
+  background: var(--xy-color-warning-100);
+  border: 1px solid var(--xy-color-warning-200);
+  border-radius: var(--xy-radius-sm);
+}
+
+.tencent-address-picker__status code {
+  color: var(--xy-status-warning);
+  font-family: var(--xy-font-mono);
+}
+
+.tencent-address-picker__load-row,
+.tencent-address-picker__loading {
+  display: flex;
+  align-items: center;
+  gap: var(--xy-space-3);
+}
+
+.tencent-address-picker__load-row span[role="alert"],
+.tencent-address-picker__search-error {
+  color: var(--xy-status-danger);
+}
+
+.tencent-address-picker__search {
+  margin-top: var(--xy-space-4);
+}
+
+.tencent-address-picker__search > label {
+  display: block;
+  margin-bottom: var(--xy-space-2);
+  color: var(--xy-text-primary);
+  font-size: var(--xy-font-size-12);
+  font-weight: var(--xy-font-weight-semibold);
+}
+
+.tencent-address-picker__search > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--xy-space-2);
+}
+
+.tencent-address-picker__search-input::placeholder {
+  color: var(--xy-text-placeholder);
+}
+
+.tencent-address-picker__search-error,
+.tencent-address-picker__selection {
+  margin: var(--xy-space-2) 0 0;
+  font-size: var(--xy-font-size-12);
+  line-height: var(--xy-line-height-18);
+}
+
+.tencent-address-picker__results {
+  max-height: 184px;
+  margin: var(--xy-space-2) 0 0;
+  padding: var(--xy-space-1);
+  overflow-y: auto;
+  list-style: none;
+  background: var(--xy-bg-container);
+  border: 1px solid var(--xy-border-default);
+  border-radius: var(--xy-radius-sm);
+}
+
+.tencent-address-picker__results button {
+  display: flex;
+  width: 100%;
+  padding: var(--xy-space-2) var(--xy-space-3);
+  flex-direction: column;
+  gap: 2px;
+  color: var(--xy-text-primary);
+  font: inherit;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  border-radius: var(--xy-radius-xs);
+  cursor: pointer;
+}
+
+.tencent-address-picker__results button:hover {
+  background: var(--xy-color-brand-50);
+}
+
+.tencent-address-picker__results button:focus-visible {
+  outline: 2px solid var(--xy-border-focus);
+  outline-offset: 1px;
+}
+
+.tencent-address-picker__results strong {
+  font-weight: var(--xy-font-weight-semibold);
+}
+
+.tencent-address-picker__results span {
+  color: var(--xy-text-secondary);
+  font-size: var(--xy-font-size-12);
+}
+
+.tencent-address-picker__map {
+  width: 100%;
+  height: 260px;
+  margin-top: var(--xy-space-3);
+  overflow: hidden;
+  background: var(--xy-color-neutral-100);
+  border: 1px solid var(--xy-border-default);
+  border-radius: var(--xy-radius-sm);
+}
+
+.tencent-address-picker__map:focus-visible {
+  outline: 2px solid var(--xy-border-focus);
+  outline-offset: 2px;
+}
+
+.tencent-address-picker__selection {
+  min-height: var(--xy-line-height-18);
+  color: var(--xy-text-secondary);
+}
+
+@media (max-width: 720px) {
+  .tencent-address-picker__heading,
+  .tencent-address-picker__load-row {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .tencent-address-picker__map {
+    height: 220px;
+  }
+}
+.merchant-detail-grid {
+  margin-bottom: var(--xy-space-4);
+}
+
+.merchant-detail-list__wide { grid-column: 1 / -1; }
+.merchant-detail-orders { margin-top: var(--xy-space-4); }
+.merchant-cabinet-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--xy-space-4);
+}

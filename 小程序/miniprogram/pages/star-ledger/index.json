@@ -1,0 +1,13 @@
+{
+  "navigationBarTitleText": "星光明细",
+  "navigationBarBackgroundColor": "#F7F9F8",
+  "navigationBarTextStyle": "black",
+  "backgroundColor": "#F2F5F3",
+  "enablePullDownRefresh": true,
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "page-header": "../../components/page-header/index",
+    "status-view": "../../components/status-view/index"
+  },
+  "onReachBottomDistance": 120
+}

@@ -1,0 +1,34 @@
+:root {
+  /* Reference viewport, not a document min-size constraint. */
+  --xy-layout-min-width: 1920px;
+  --xy-layout-min-height: 1080px;
+  --xy-shell-sidebar-width: 248px;
+  --xy-shell-sidebar-collapsed-width: 72px;
+  --xy-shell-topbar-height: 64px;
+  --xy-shell-page-padding: 16px;
+  --xy-shell-page-padding-block: 16px;
+  --xy-shell-page-padding-inline: 16px;
+  --xy-shell-grid-gap: 16px;
+
+  --xy-login-panel-min-width: 520px;
+  --xy-login-content-width: 480px;
+  --xy-login-tabs-height: 48px;
+  --xy-login-control-height: var(--xy-control-height-prominent);
+  --xy-login-button-height: var(--xy-control-height-prominent);
+}
+
+@media (min-width: 1440px) {
+  :root {
+    --xy-shell-page-padding: 16px;
+    --xy-shell-page-padding-block: 16px;
+    --xy-shell-page-padding-inline: 16px;
+  }
+}
+
+@media (min-width: 1920px) {
+  :root {
+    --xy-shell-page-padding: 24px;
+    --xy-shell-page-padding-block: 24px;
+    --xy-shell-page-padding-inline: 24px;
+  }
+}

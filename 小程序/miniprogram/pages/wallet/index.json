@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "我的钱包",
+  "usingComponents": {
+    "page-shell": "/components/page-shell/index",
+    "section-tabs": "/components/section-tabs/index",
+    "page-header": "../../components/page-header/index",
+    "task-sheet": "../../components/task-sheet/index"
+  },
+  "navigationStyle": "custom",
+  "navigationBarTextStyle": "black"
+}

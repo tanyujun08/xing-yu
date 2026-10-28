@@ -1,0 +1,63 @@
+.dialog { position: fixed; z-index: var(--xy-z-modal, 1000); inset: 0; display: flex; align-items: center; justify-content: center; padding: var(--xy-space-6, 24px); box-sizing: border-box; color: var(--xy-color-text-primary, #202937); font-family: var(--xy-font-family-sans, sans-serif); }
+.dialog__mask { position: absolute; inset: 0; background: var(--xy-color-scrim, rgba(19, 25, 38, .45)); }
+.dialog__panel { position: relative; width: 100%; max-width: 320px; padding: var(--xy-space-5, 20px); box-sizing: border-box; border-radius: var(--xy-radius-lg, 12px); background: var(--xy-color-surface, #fff); }
+.dialog__title { display: block; font-size: var(--xy-text-section-title-size, 16px); font-weight: var(--xy-text-weight-semibold, 600); line-height: var(--xy-text-section-title-line-height, 24px); text-align: center; }
+.dialog__content { display: block; margin-top: var(--xy-space-2, 8px); color: var(--xy-color-text-secondary, #58616e); font-size: var(--xy-text-body-size, 14px); line-height: var(--xy-text-body-line-height, 20px); text-align: left; white-space: pre-line; overflow-wrap: anywhere; }
+.dialog__actions { display: flex; gap: var(--xy-space-3, 12px); margin-top: var(--xy-space-5, 20px); }
+.dialog__button { display: flex; width: 0; min-height: var(--xy-control-height, 44px); flex: 1 1 0; align-items: center; justify-content: center; margin: 0; padding: 0 var(--xy-space-2, 8px); border-radius: var(--xy-radius-md, 6px); font-size: var(--xy-text-body-size, 14px); font-weight: var(--xy-text-weight-semibold, 600); line-height: var(--xy-text-body-line-height, 20px); }
+.dialog__button::after { border: 0; }
+.dialog__button--secondary { border: 1rpx solid var(--xy-color-border-strong, #858d96); background: var(--xy-color-surface, #fff); color: var(--xy-color-text-primary, #202937); }
+.dialog__button--primary { border: 1rpx solid var(--xy-color-brand, #0a7f5e); background: var(--xy-color-brand, #0a7f5e); color: var(--xy-color-text-inverse, #fff); }
+.dialog__button.is-disabled { opacity: 1; }
+.dialog__button--secondary.is-disabled { color: var(--xy-color-text-disabled, #c4c6cc); }
+.dialog__button--primary.is-disabled { border-color: var(--xy-color-brand-disabled, #98b4ac); background: var(--xy-color-brand-disabled, #98b4ac); }
+.dialog--feedback .dialog__panel { border-radius:var(--xy-radius-container); padding:var(--xy-space-6) var(--xy-space-5) var(--xy-space-5); max-height:calc(100vh - var(--xy-space-6) - var(--xy-space-6) - env(safe-area-inset-top) - env(safe-area-inset-bottom)); overflow-y:auto; }
+.dialog__symbol { display:flex; align-items:center; justify-content:center; margin-bottom:var(--xy-space-4); color:var(--xy-color-text-secondary); }
+.dialog--error .dialog__symbol { color:var(--xy-color-warning); }
+.dialog--success .dialog__symbol { color:var(--xy-color-success); }
+.dialog--feedback .dialog__title { font-size:var(--xy-text-page-title-size); line-height:var(--xy-text-page-title-line-height); }
+.dialog--feedback .dialog__content { margin-top:var(--xy-space-3); text-align:center; }
+.dialog--feedback .dialog__actions { flex-direction:column; gap:var(--xy-space-1); margin-top:var(--xy-space-6); }
+.dialog--feedback .dialog__button { width:100%; min-width:100%; box-sizing:border-box; flex:none; }
+.dialog--feedback .dialog__button--primary { order:0; }
+.dialog--feedback .dialog__button--secondary { order:1; border:0; color:var(--xy-color-text-secondary); background:transparent; font-weight:var(--xy-text-weight-regular); }
+.dialog--progress .dialog__panel { max-width:326px; border-radius:var(--xy-radius-sheet,20px); padding:var(--xy-space-6); }
+.dialog__illustration { position:relative; display:flex; align-items:center; justify-content:center; width:88px; height:88px; margin:0 auto var(--xy-space-4); border-radius:50%; background:var(--xy-color-brand-light,#edf6f1); color:var(--xy-color-brand); }
+.dialog__illustration--warning { background:var(--xy-color-warning-soft,#fff5e8); color:var(--xy-color-warning); }
+.dialog__cabinet { position:relative; width:32px; height:44px; border:2px solid currentColor; border-radius:var(--xy-radius-sm); }
+.dialog__cabinet-divider { position:absolute; inset:13px 0; border-top:1px solid currentColor; border-bottom:1px solid currentColor; }
+.dialog__cabinet-door { position:absolute; top:0; bottom:0; left:50%; width:50%; border-left:1px solid currentColor; box-sizing:border-box; }
+.dialog__cabinet-door::after { content:''; position:absolute; top:5px; right:4px; height:3px; width:4px; background:currentColor; }
+.dialog__illustration--open .dialog__cabinet-door { left:50%; width:24px; border:2px solid currentColor; background:var(--xy-color-brand-light,#edf6f1); transform:skewY(12deg); transform-origin:left center; }
+.dialog__check { width:23px; height:12px; border-left:3px solid currentColor; border-bottom:3px solid currentColor; transform:translateY(-4px) rotate(-45deg); }
+.dialog__illustration--success::after { content:''; position:absolute; inset:20px; border:2px solid currentColor; border-radius:50%; }
+.dialog__warning { font-size:calc(var(--xy-text-page-title-size) * 2); line-height:var(--xy-control-height-large); font-weight:var(--xy-text-weight-semibold); }
+.dialog__ring { position:absolute; inset:0; border:3px solid transparent; border-top-color:currentColor; border-right-color:currentColor; border-radius:50%; animation:dialog-spin 1.4s linear infinite; }
+.dialog__eyebrow { display:block; margin-bottom:var(--xy-space-2); text-align:center; color:var(--xy-color-brand); font-size:var(--xy-text-caption-size,12px); line-height:var(--xy-text-body-line-height); }
+.dialog__hint { display:block; margin-top:var(--xy-space-4); padding:var(--xy-space-3); border-radius:var(--xy-radius-md); background:var(--xy-color-page); color:var(--xy-color-text-secondary); font-size:var(--xy-text-caption-size,12px); line-height:var(--xy-text-body-line-height); text-align:center; }
+.dialog--success .dialog__hint,.dialog__illustration--open ~ .dialog__hint { background:var(--xy-color-brand-light,#edf6f1); color:var(--xy-color-brand); }
+.dialog__steps { display:flex; margin-top:var(--xy-space-5); }
+.dialog__step { position:relative; flex:1; text-align:center; color:var(--xy-color-text-secondary); font-size:var(--xy-text-caption-size,12px); line-height:var(--xy-text-body-line-height); }
+.dialog__step::before { content:''; position:absolute; top:9px; left:-50%; width:100%; height:1px; background:var(--xy-color-border,#e0e4e8); }
+.dialog__step:first-child::before { display:none; }
+.dialog__dot { position:relative; width:18px; height:18px; box-sizing:border-box; margin:0 auto var(--xy-space-1); border:1px solid var(--xy-color-border-strong); border-radius:50%; background:var(--xy-color-surface); font-size:var(--xy-text-caption-size); line-height:var(--xy-text-caption-line-height); }
+.dialog__step--active,.dialog__step--done { color:var(--xy-color-brand); }
+.dialog__step--active .dialog__dot { border:3px solid var(--xy-color-brand); }
+.dialog__step--done .dialog__dot { background:var(--xy-color-brand); border-color:var(--xy-color-brand); color:var(--xy-color-text-inverse); }
+.dialog__step--done::before { background:var(--xy-color-brand); }
+.dialog--progress .dialog__button { min-height:var(--xy-control-height-large); }
+.dialog__button--quiet { background:var(--xy-color-page); border:1px solid var(--xy-color-border,#e0e4e8); color:var(--xy-color-text-primary); }
+.dialog__contact { color:var(--xy-color-brand); }
+@keyframes dialog-spin { to { transform:rotate(360deg); } }
+@media (prefers-reduced-motion:reduce) { .dialog__ring { animation:none; } }
+.dialog--order .dialog__panel { max-width:326px; padding:var(--xy-space-6); border-radius:var(--xy-radius-md); }
+.dialog--order .dialog__content { font-size:var(--xy-order-body-size,15px); line-height:var(--xy-order-body-line-height,22px); }
+.dialog--order .dialog__actions { gap:var(--xy-space-2); margin-top:var(--xy-space-6); }
+.dialog--order .dialog__button { min-height:var(--xy-control-height-large); font-size:var(--xy-order-body-size,15px); line-height:var(--xy-order-body-line-height,22px); }
+.dialog--stacked .dialog__actions { flex-direction:column; }
+.dialog--stacked .dialog__button { width:100%; box-sizing:border-box; flex:none; }
+.dialog--stacked .dialog__button--primary { order:0; }
+.dialog--stacked .dialog__button--secondary { order:1; }
+.dialog--order.dialog--stacked .dialog__actions { align-items:stretch; }
+/* Keep the native button width reset from shrinking I1's stacked actions. */
+.dialog--order.dialog--stacked .dialog__button { width:100% !important; min-width:100%; box-sizing:border-box; flex:none; align-self:stretch; }

@@ -1,0 +1,13 @@
+{
+  "navigationBarTitleText": "每日抽奖",
+  "navigationBarBackgroundColor": "#EEF8F1",
+  "navigationBarTextStyle": "black",
+  "backgroundColor": "#F7FAF8",
+  "enablePullDownRefresh": true,
+  "onReachBottomDistance": 120,
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "page-header": "../../components/page-header/index",
+    "status-view": "../../components/status-view/index"
+  }
+}

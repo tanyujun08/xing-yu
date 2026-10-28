@@ -1,0 +1,25 @@
+<svg width="180" height="128" viewBox="0 0 180 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="walletBackSuccess" x1="78" y1="24" x2="136" y2="80" gradientUnits="userSpaceOnUse"><stop stop-color="#DDF5EA"/><stop offset="1" stop-color="#BCE8D4"/></linearGradient>
+    <linearGradient id="walletFrontSuccess" x1="44" y1="44" x2="130" y2="102" gradientUnits="userSpaceOnUse"><stop stop-color="#FFFFFF"/><stop offset="1" stop-color="#EAF7F1"/></linearGradient>
+    <linearGradient id="statusSuccess" x1="108" y1="63" x2="148" y2="104" gradientUnits="userSpaceOnUse"><stop stop-color="#3DDA92"/><stop offset="1" stop-color="#0EAD69"/></linearGradient>
+    <linearGradient id="coinSuccess" x1="94" y1="33" x2="116" y2="54" gradientUnits="userSpaceOnUse"><stop stop-color="#F4FFF9"/><stop offset="1" stop-color="#C8F4DE"/></linearGradient>
+    <filter id="softShadowSuccess" x="-30%" y="-30%" width="170%" height="190%"><feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#2A8A65" flood-opacity="0.10"/></filter>
+    <filter id="badgeShadowSuccess" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#098B58" flood-opacity="0.24"/></filter>
+  </defs>
+  <ellipse cx="94" cy="108" rx="46" ry="8" fill="#DDEAE4"/>
+  <g filter="url(#softShadowSuccess)"><rect x="72" y="24" width="68" height="52" rx="9" fill="url(#walletBackSuccess)" stroke="#AEDBC8" stroke-width="1.5" transform="rotate(5 72 24)"/></g>
+  <rect x="60" y="36" width="74" height="54" rx="9" fill="#DDF3EA" stroke="#C7E8DA" stroke-width="1.2" opacity="0.95"/>
+  <g filter="url(#softShadowSuccess)"><rect x="44" y="44" width="84" height="56" rx="11" fill="url(#walletFrontSuccess)" stroke="#B9DDCD" stroke-width="1.5"/></g>
+  <rect x="91" y="55" width="27" height="15" rx="7.5" fill="#EDF8F3" stroke="#C7E6D9" stroke-width="1.2"/>
+  <circle cx="111" cy="62.5" r="2.6" fill="#A7D9C2"/>
+  <path d="M54 51H110C116.627 51 122 56.3726 122 63" stroke="white" stroke-opacity="0.95" stroke-width="2.2" stroke-linecap="round"/>
+  <circle cx="102" cy="41" r="10" fill="url(#coinSuccess)" stroke="#BDE7D4" stroke-width="1.2"/>
+  <text x="102" y="45.5" text-anchor="middle" font-size="12" font-weight="700" fill="#1DAA6C" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif">¥</text>
+  <g stroke="#B8EED6" stroke-width="3.5" stroke-linecap="round"><path d="M150 55L158 48"/><path d="M159 66L169 64"/><path d="M153 78L161 84"/><path d="M139 54L141 45"/></g>
+  <circle cx="158" cy="46" r="2" fill="#D0F4E3"/>
+  <circle cx="167" cy="84" r="1.8" fill="#D0F4E3"/>
+  <g filter="url(#badgeShadowSuccess)"><circle cx="128" cy="83" r="23" fill="url(#statusSuccess)" stroke="white" stroke-width="3"/></g>
+  <ellipse cx="120" cy="71" rx="8" ry="5" fill="white" fill-opacity="0.17"/>
+  <path d="M118 83L125 90L138 76" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

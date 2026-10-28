@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "1.0",
+  "ruleId": "MPA-COMP-001",
+  "case": "reject",
+  "cases": [
+    {
+      "name": "shared-style-isolation",
+      "files": {
+        "miniprogram/components/status-view/index.json": "{\"component\":true}",
+        "miniprogram/components/status-view/index.ts": "Component({ options: { styleIsolation: 'shared' } });\n"
+      }
+    },
+    {
+      "name": "component-performs-navigation",
+      "files": {
+        "miniprogram/components/status-view/index.json": "{\"component\":true,\"styleIsolation\":\"isolated\"}",
+        "miniprogram/components/status-view/index.ts": "Component({ methods: { openOrders() { wx.navigateTo({ url: '/pages/orders/index' }); } } });\n"
+      }
+    },
+    {
+      "name": "component-performs-business-command",
+      "files": {
+        "miniprogram/components/status-view/index.json": "{\"component\":true,\"styleIsolation\":\"isolated\"}",
+        "miniprogram/components/status-view/index.ts": "Component({ methods: { advance() { return mockApi.command.advanceOrderRuntime('order-1'); } } });\n"
+      }
+    }
+  ]
+}

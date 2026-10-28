@@ -1,0 +1,62 @@
+<page-meta root-font-size="system" />
+<page-shell fixed-header>
+  <page-header slot="header" variant="order" title="费用依据" bindback="returnToOrder" />
+  <view class="fees-page">
+    <view wx:if="{{loading}}" class="fees-state" role="status">正在读取本单核定结果…</view>
+    <view wx:elif="{{errorText}}" class="fees-state" role="alert"><text>{{errorText}}</text><button class="xy-button-reset fees-link" bindtap="refresh">重新读取</button></view>
+    <view wx:elif="{{unavailable}}" class="fees-state"><text class="fees-title">当前尚无可展示的最终核定</text><text>请返回订单查看当前进度。</text><button class="xy-button-reset fees-link" bindtap="refresh">刷新核定结果</button></view>
+    <block wx:elif="{{loaded && fees}}">
+      <view class="fees-summary fees-card"><image class="fees-success" src="{{successIcon}}" mode="aspectFit" aria-hidden="true" /><view><text class="fees-status">最终核定</text><text class="fees-copy">本次归还费用已核定，押金将按核定结果处理。</text></view></view>
+      <view class="fees-card">
+        <text class="fees-title">归还时间与计费规则</text>
+        <view class="fees-row"><text class="fees-label">归还截止</text><text class="fees-value">{{fees.returnDeadline}}</text></view>
+        <view class="fees-row"><text class="fees-label">实际收回</text><text class="fees-value">{{fees.receivedAt}}</text></view>
+        <view class="fees-row"><text class="fees-label">计费单位</text><text class="fees-value">每{{fees.unit}}</text></view>
+        <view class="fees-row"><text class="fees-label">归还宽限</text><text class="fees-value">{{fees.grace}}</text></view>
+        <text class="fees-caption">{{fees.rounding}}</text>
+      </view>
+      <view class="fees-card">
+        <text class="fees-title">费用明细</text>
+        <view class="fees-row"><view class="fees-label fees-label--wide"><text>逾期费用</text><text class="fees-caption">{{fees.units}}个计费单位 × {{fees.unitPrice}}</text></view><text class="fees-value">{{fees.overtime}}</text></view>
+        <view class="fees-row"><text class="fees-label">损失费用</text><text class="fees-value">{{fees.loss}}</text></view>
+        <text wx:if="{{!fees.lossItems.length}}" class="fees-caption">本次核定无损失项</text>
+        <view wx:for="{{fees.lossItems}}" wx:key="key" class="fees-loss">
+          <view class="fees-row fees-row--plain"><text class="fees-label fees-description">{{item.description}}</text><text class="fees-value">{{item.amount}}</text></view>
+          <view class="fees-evidence">
+            <view wx:for="{{item.evidence}}" wx:for-item="proof" wx:key="key" class="fees-proof">
+              <view wx:if="{{proof.available}}" class="fees-proof-action" data-key="{{proof.key}}" data-review="{{fees.reviewId}}" bindtap="previewProof" role="button" aria-label="{{proof.kind === 'PHOTO' ? '放大本项损失照片' : '播放本项凭证视频'}}"><media-state density="thumbnail" state="ready" src="{{proof.kind === 'PHOTO' ? proof.url : proof.poster}}" mode="aspectFill" alt="本项核定凭证" /><text wx:if="{{proof.kind === 'VIDEO'}}" class="fees-video-label">视频</text></view>
+              <text wx:else class="fees-caption">本项凭证暂不可用</text>
+            </view>
+          </view>
+          <text wx:if="{{!item.evidence.length}}" class="fees-caption">本项暂无可查看的凭证，请联系官方客服核实。</text>
+        </view>
+        <view class="fees-row fees-total"><text class="fees-label">归还费用</text><text class="fees-value">{{fees.total}}</text></view>
+      </view>
+      <view wx:if="{{fees.evidence.length}}" class="fees-card">
+        <text class="fees-title">核定补充凭证</text>
+        <view class="fees-evidence"><view wx:for="{{fees.evidence}}" wx:for-item="proof" wx:key="key" class="fees-proof">
+          <view wx:if="{{proof.available}}" class="fees-proof-action" data-key="{{proof.key}}" data-review="{{fees.reviewId}}" bindtap="previewProof" role="button" aria-label="{{proof.kind === 'PHOTO' ? '放大核定凭证照片' : '播放核定凭证视频'}}"><media-state density="thumbnail" state="ready" src="{{proof.kind === 'PHOTO' ? proof.url : proof.poster}}" mode="aspectFill" alt="核定补充凭证" /><text wx:if="{{proof.kind === 'VIDEO'}}" class="fees-video-label">视频</text></view>
+          <text wx:else class="fees-caption">凭证暂不可用</text>
+        </view></view>
+      </view>
+      <view class="fees-card">
+        <text class="fees-title">押金处理</text>
+        <view class="fees-row"><text class="fees-label">押金抵扣</text><text class="fees-value">{{fees.deducted}}</text></view>
+        <view wx:if="{{fees.hasSupplement}}" class="fees-row fees-result"><text class="fees-label">应补缴费用</text><text class="fees-value">{{fees.supplement}}</text></view>
+        <view wx:else class="fees-row fees-result"><text class="fees-label">应退押金</text><text class="fees-value">{{fees.refundDue}}</text></view>
+        <text class="fees-caption">资金处理进度以订单内支付及退款结果为准。</text>
+        <view wx:if="{{fees.cashExpense}}" class="fees-row"><text class="fees-label">最终现金支出</text><text class="fees-value">{{fees.cashExpense}}</text></view>
+      </view>
+      <view class="fees-card">
+        <text class="fees-title">核定信息</text>
+        <view class="fees-row"><text class="fees-label">订单编号</text><text class="fees-value" selectable>{{fees.orderNo}}</text></view>
+        <view class="fees-row"><text class="fees-label">核定版本</text><text class="fees-value">第{{fees.reviewNo}}次</text></view>
+        <view class="fees-row"><text class="fees-label">核定时间</text><text class="fees-value">{{fees.createdAt}}</text></view>
+        <text wx:if="{{fees.adjustment}}" class="fees-caption">核定说明：{{fees.adjustment}}</text>
+      </view>
+      <text wx:if="{{previewError}}" class="fees-error" role="alert">{{previewError}}</text>
+      <button class="xy-button-reset fees-link" bindtap="demoSupport">对核定有疑问？联系官方客服</button>
+    </block>
+  </view>
+  <view slot="footer" class="fees-footer"><button class="xy-button-reset fees-return" bindtap="returnToOrder">返回订单</button></view>
+</page-shell>

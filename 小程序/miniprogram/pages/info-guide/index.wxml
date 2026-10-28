@@ -1,0 +1,21 @@
+<page-meta root-font-size="system" />
+<view class="info-guide-page">
+<page-header title="{{secondaryNavigationTitle || '租赁指南'}}" background="#ffffff" inverse="{{false}}" bindback="onSecondaryNavigationBack" />
+  <view wx:if="{{directory}}" class="guide-directory xy-card">
+    <view wx:for="{{entries}}" wx:key="id" class="guide-directory-row xy-tap" data-id="{{item.id}}" bindtap="openEntry" role="button" aria-label="查看{{item.title}}"><text>{{item.title}}</text><image class="guide-directory-arrow" src="{{icons.arrowRight}}" mode="aspectFit" aria-hidden="true" /></view>
+  </view>
+  <view wx:elif="{{missing}}" class="state-card xy-empty-page xy-empty-page--surface">
+    <image class="xy-empty-page__illustration" src="{{icons.emptyGeneric}}" mode="aspectFit" aria-hidden="true" />
+    <text class="xy-empty-page__title">说明内容不存在</text>
+    <text class="xy-empty-page__copy">请返回上一页重新选择。</text>
+    <view class="xy-empty-page__action xy-action-primary xy-action-text xy-tap" bindtap="goBack" role="button" aria-label="返回上一页">返回上一页</view>
+  </view>
+  <block wx:else>
+    <view class="guide-header"><text wx:if="{{guide.kicker !== guide.title}}" class="guide-kicker">{{guide.kicker}}</text><text class="guide-title" role="heading" aria-level="1">{{guide.title}}</text><text class="guide-summary">{{guide.summary}}</text></view>
+    <view class="guide-section-heading"><text class="guide-section-label">说明要点</text><text class="guide-section-count">{{guide.sections.length}} 个主题</text></view>
+    <view wx:for="{{guide.sections}}" wx:key="title" class="guide-section {{index === 0 ? 'is-first' : ''}}">
+      <view class="guide-index"><text>{{index < 9 ? '0' + (index + 1) : index + 1}}</text></view>
+      <view class="guide-section-copy"><text class="guide-section-title">{{item.title}}</text><text class="guide-section-body">{{item.body}}</text></view>
+    </view>
+  </block>
+</view>

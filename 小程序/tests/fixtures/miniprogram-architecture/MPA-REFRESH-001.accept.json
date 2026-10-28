@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "1.0",
+  "ruleId": "MPA-REFRESH-001",
+  "case": "accept",
+  "files": {
+    "miniprogram/pages/orders/index.ts": "Page({ async onPullDownRefresh() { try { await mockApi.query.orderSnapshot('1'); } finally { wx.stopPullDownRefresh(); } } });\n"
+  }
+}

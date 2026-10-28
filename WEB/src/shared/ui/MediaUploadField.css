@@ -1,0 +1,185 @@
+.media-upload-field {
+  width: 100%;
+}
+
+.media-upload-field__pending { display: flex; align-items: center; flex-wrap: wrap; gap: var(--xy-space-2); margin-top: var(--xy-space-2); padding: var(--xy-space-3); font-size: var(--xy-admin-form-help-size); border: 1px solid var(--xy-admin-surface-divider); border-radius: var(--xy-admin-surface-radius); }
+.media-upload-field__pending p { flex-basis: 100%; margin: 0; }
+
+.media-upload-field__dropzone {
+  min-height: var(--xy-admin-form-upload-min-height);
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 5px;
+  padding: var(--xy-space-4);
+  color: var(--xy-admin-text-secondary);
+  text-align: center;
+  border: 1px dashed var(--xy-border-strong);
+  border-radius: var(--xy-admin-surface-radius);
+  background: var(--xy-admin-surface-subtle-bg);
+  cursor: pointer;
+  transition: border-color .2s ease, background .2s ease;
+}
+
+.media-upload-field__dropzone:hover,
+.media-upload-field__dropzone:focus-within {
+  border-color: var(--td-brand-color);
+  background: var(--td-brand-color-light);
+}
+
+.media-upload-field__dropzone strong {
+  color: var(--xy-admin-text-primary);
+  font-size: var(--xy-admin-form-label-size);
+  font-weight: var(--xy-admin-form-label-weight);
+}
+
+.media-upload-field__dropzone span,
+.media-upload-field__dropzone small {
+  font-size: var(--xy-admin-form-help-size);
+  line-height: var(--xy-admin-form-help-line-height);
+}
+
+.media-upload-field__icon {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  color: var(--td-brand-color);
+}
+
+.media-upload-field__icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.media-upload-field__files {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+  gap: var(--xy-space-3);
+  margin-top: var(--xy-space-3);
+}
+
+.media-upload-field__file,
+.media-upload-field__append {
+  position: relative;
+  min-height: 92px;
+  overflow: hidden;
+  border: 1px solid var(--xy-admin-surface-divider);
+  border-radius: var(--xy-admin-surface-radius);
+  background: var(--xy-admin-surface-subtle-bg);
+}
+
+.media-upload-field__file img {
+  width: 100%;
+  height: 92px;
+  display: block;
+  object-fit: cover;
+}
+
+.media-upload-field__file .media-thumbnail {
+  width: 100%;
+  height: 92px;
+  border: 0;
+  border-radius: 0;
+}
+
+.media-upload-field__file .media-thumbnail img {
+  padding: 0;
+  object-fit: cover;
+}
+
+.media-upload-field__video,
+.media-upload-field__append {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: var(--xy-space-2);
+  padding: var(--xy-space-3);
+  color: var(--xy-admin-text-secondary);
+  font-size: var(--xy-admin-form-help-size);
+  text-align: center;
+}
+
+.media-upload-field__file .media-upload-field__remove {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  border: 0;
+  border-radius: 50%;
+  background: rgb(15 23 42 / 72%);
+  cursor: pointer;
+}
+
+.media-upload-field__file .media-upload-field__play {
+  padding: 0;
+  color: var(--td-brand-color);
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.media-upload-field__cover {
+  position: absolute;
+  left: 6px;
+  bottom: 6px;
+  padding: 2px 7px;
+  color: #fff;
+  font-size: 11px;
+  border-radius: 10px;
+  background: rgb(37 99 235 / 90%);
+}
+
+.media-upload-field__order {
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  display: flex;
+  gap: 2px;
+  padding: 2px;
+  border-radius: 4px;
+  background: rgb(255 255 255 / 94%);
+}
+
+.media-upload-field__order button {
+  border: 0;
+  background: transparent;
+  color: var(--td-brand-color);
+  cursor: pointer;
+  font-size: 11px;
+}
+
+.media-upload-field__order button:disabled {
+  color: var(--xy-text-tertiary);
+  cursor: default;
+}
+
+.media-upload-field__append {
+  border-style: dashed;
+  cursor: pointer;
+}
+
+.media-upload-field__error,
+.media-upload-field__note {
+  margin: var(--xy-space-2) 0 0;
+  font-size: var(--xy-admin-form-help-size);
+  line-height: var(--xy-admin-form-help-line-height);
+}
+
+.media-upload-field__error {
+  color: var(--td-error-color);
+}
+
+.media-upload-field__note {
+  color: var(--xy-admin-text-muted);
+}
+
+.media-upload-field__dropzone.t-button { width: 100%; height: auto; white-space: normal; }
+.media-upload-field__dropzone .t-button__text { display: grid; justify-items: center; gap: 5px; }
+.media-upload-field .t-upload__dragger { width: 100%; padding: 0; border: 0; background: transparent; }
+.media-upload-field__progress { width: 160px; }
+.media-upload-field__append.t-button { height: auto; }

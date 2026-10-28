@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "账户安全",
+  "navigationStyle": "custom",
+  "navigationBarTextStyle": "black",
+  "usingComponents": {
+    "page-header": "../../components/page-header/index"
+  }
+}

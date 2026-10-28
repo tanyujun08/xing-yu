@@ -1,0 +1,55 @@
+<page-meta root-font-size="system" />
+<view class="powder-ledger-page">
+<page-header title="{{secondaryNavigationTitle || '粉钻明细'}}" background="#F7F9F8" inverse="{{false}}" bindback="onSecondaryNavigationBack" />
+  <status-view wx:if="{{!loggedIn}}" state="empty" title="登录后查看粉钻明细" description="积分流水属于当前账号" action-text="去登录" bindaction="openLogin" />
+  <view wx:if="{{loggedIn}}" class="ledger-main">
+    <view class="asset-hero">
+      <view class="asset-copy">
+        <view class="asset-label"><text>我的粉钻</text><text class="asset-label__info">ⓘ</text><button class="asset-label__hit xy-button-reset" bindtap="showRules" aria-label="查看粉钻规则" /></view>
+        <view class="asset-balance"><text class="asset-balance__value">{{balance}}</text><text class="asset-balance__unit">粉钻</text></view>
+        <text class="asset-desc">用于租赁优惠、出租服务与平台权益</text>
+        <view class="purpose-list">
+          <view><image src="{{icons.membershipShop}}" mode="aspectFit" /><text>租赁优惠</text></view>
+          <view><image src="{{icons.profilePublish}}" mode="aspectFit" /><text>出租服务</text></view>
+          <view><image src="{{icons.profileVerified}}" mode="aspectFit" /><text>平台权益</text></view>
+        </view>
+      </view>
+      <image class="asset-visual" src="{{icons.powderLedgerHero}}" mode="aspectFit" />
+    </view>
+
+    <view class="month-strip">
+      <view class="month-item"><view class="month-mark month-mark--income">+</view><view><text>本月增加</text><text class="month-value month-value--income">{{monthIncrease}}</text></view></view>
+      <view class="month-item"><view class="month-mark month-mark--expense">−</view><view><text>本月减少</text><text class="month-value month-value--expense">{{monthDecrease}}</text></view></view>
+    </view>
+
+    <view class="action-rail">
+      <button class="xy-button-reset xy-button-fluid" bindtap="goCheckIn"><image src="{{icons.membershipCheckin}}" mode="aspectFit" /><text class="action-title">每日签到</text><text class="action-note">查看今日签到</text></button>
+      <button class="xy-button-reset xy-button-fluid" bindtap="goMall"><image src="{{icons.membershipShop}}" mode="aspectFit" /><text class="action-title">粉钻商城</text><text class="action-note">暂未开放兑换</text></button>
+      <button class="xy-button-reset xy-button-fluid powder-lottery" bindtap="goLottery"><image src="{{icons.membershipBalanceDiamond}}" mode="aspectFit" /><text class="action-title">每日抽奖</text><text class="action-note">查看奖品与抽奖记录</text></button>
+    </view>
+
+    <view wx:if="{{detail}}" class="ledger-section powder-entry-detail"><text class="section-title">{{detail.title}}</text><text>{{detail.amount}} 粉钻</text><text>当时可用 {{detail.before}} → {{detail.after}}</text><text>{{detail.time}}</text><button wx:if="{{detail.drawId || detail.checkInId}}" class="xy-button-reset powder-entry-source" bindtap="openSource">查看业务来源</button><button wx:if="{{detail.grantId}}" class="xy-button-reset powder-entry-grant" bindtap="readGrant">查看奖励发放明细</button></view>
+    <status-view wx:if="{{detailError}}" state="error" title="明细读取失败" description="{{detailError}}" action-text="重试" bindaction="retryEntry" />
+    <view class="ledger-section">
+      <view class="section-head"><text class="section-title">粉钻收支</text><text class="section-note">最新在前</text></view>
+      <view class="ledger-filter"><section-tabs class="ledger-tabs-control" tabs="{{ledgerTabs}}" value="{{ledgerFilter}}" divider="{{false}}" aria-label="粉钻收支筛选" bindchange="setLedgerFilter">
+      <view class="ledger-content"><view class="ledger-list">
+        <status-view wx:if="{{listState.phase === 'initial-loading'}}" state="loading" title="正在加载粉钻明细" description="请稍候" />
+        <status-view wx:elif="{{listState.phase === 'initial-error'}}" state="error" title="粉钻明细加载失败" description="{{listState.error.message}}" action-text="重试" bindaction="retryInitial" illustration-src="{{icons.emptyGeneric}}" />
+        <status-view wx:elif="{{listState.phase === 'empty'}}" state="empty" title="当前筛选下暂无粉钻记录" illustration-src="{{icons.emptyLedger}}" />
+        <button wx:for="{{items}}" wx:key="id" class="ledger-row powder-entry xy-button-reset" data-id="{{item.id}}" bindtap="openEntry">
+          <view class="ledger-row__main"><view class="ledger-row__mark ledger-row__mark--{{item.tone}}">{{item.marker}}</view><view class="ledger-row__copy"><text class="ledger-row__title">{{item.title}}</text><text class="ledger-row__time">{{item.movementText}} · {{item.detail}}</text></view></view>
+          <text class="ledger-row__amount ledger-row__amount--{{item.tone}}">{{item.amount}}</text>
+        </button>
+        <status-view wx:if="{{listState.phase === 'ready' && listState.incremental === 'refreshing'}}" state="loading" density="compact-footer" title="正在刷新明细" />
+        <status-view wx:elif="{{listState.phase === 'ready' && listState.incremental === 'refresh-error'}}" state="error" density="compact-footer" title="刷新失败" action-text="重试刷新" bindaction="retryRefresh" />
+        <status-view wx:elif="{{listState.phase === 'ready' && listState.incremental === 'loading-more'}}" state="loading" density="compact-footer" title="正在加载更多" />
+        <status-view wx:elif="{{listState.phase === 'ready' && listState.incremental === 'load-more-error'}}" state="error" density="compact-footer" title="加载更多失败" action-text="重试" bindaction="retryLoadMore" />
+        <status-view wx:elif="{{listState.phase === 'ready' && listState.incremental === 'done'}}" state="end" density="compact-footer" title="粉钻明细已全部加载" />
+      </view>
+      </view></section-tabs></view>
+      <text class="footnote">流水及本月统计按北京时间；增加与减少按可用和预占合计变动统计，纯预占和释放仅在全部展示。当前预占 {{reserved}} 粉钻。</text>
+    </view>
+
+  </view>
+</view>

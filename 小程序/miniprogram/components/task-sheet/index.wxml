@@ -1,0 +1,10 @@
+<view wx:if="{{open}}" class="sheet-mask" catchtouchmove="stop">
+  <button class="sheet-mask__dismiss" disabled="{{busy}}" aria-disabled="{{busy}}" aria-label="关闭{{title}}" catchtap="close"></button>
+  <view class="sheet {{fullHeight ? 'sheet--full' : ''}}" catchtap="stop" role="dialog" aria-label="{{title}}" aria-modal="true">
+    <view wx:if="{{fullHeight}}" class="sheet__header sheet__header--full"><page-header id="sheet-page-header" variant="order" title="{{title}}" bindback="close" /></view>
+    <view wx:else class="sheet__header"><text class="sheet__title">{{title}}</text><button class="sheet__close" disabled="{{busy}}" aria-disabled="{{busy}}" bindtap="close" aria-label="关闭{{title}}">×</button></view>
+    <scroll-view class="sheet__body" style="height:{{bodyHeight}}px" scroll-y="true"><view class="sheet__content"><slot></slot></view></scroll-view>
+    <view class="sheet__summary"><slot name="summary"></slot></view>
+    <view wx:if="{{showFooter}}" class="sheet__footer"><slot name="footer"></slot></view>
+  </view>
+</view>

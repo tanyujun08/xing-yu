@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "1.0",
+  "ruleId": "MPA-LIST-001",
+  "case": "accept",
+  "files": {
+    "miniprogram/pages/orders/index.wxml": "<page-meta root-font-size=\"system\" />\n<view wx:for=\"{{items}}\" wx:key=\"id\">{{item.title}}</view>\n"
+  }
+}

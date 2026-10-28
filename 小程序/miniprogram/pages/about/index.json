@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "关于星遇",
+  "navigationStyle": "custom",
+  "navigationBarTextStyle": "black",
+  "usingComponents": {
+    "page-header": "../../components/page-header/index"
+  }
+}

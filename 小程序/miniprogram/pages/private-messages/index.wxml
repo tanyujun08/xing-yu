@@ -1,0 +1,29 @@
+<page-meta root-font-size="system" />
+<view class="private-messages-page">
+<page-header title="{{secondaryNavigationTitle || '私聊信息'}}" background="#ffffff" inverse="{{false}}" bindback="onSecondaryNavigationBack" />
+
+  <view wx:if="{{!loggedIn}}" class="state-card">
+    <view class="state-symbol"><image src="{{icons.infoPrivate}}" mode="aspectFit" /></view>
+    <text class="state-title">登录后查看私聊信息</text>
+    <view class="state-button xy-action-primary xy-tap" bindtap="openLogin" role="button">去登录</view>
+  </view>
+
+  <view wx:elif="{{conversations.length > 0}}" class="conversation-list">
+    <view wx:for="{{conversations}}" wx:key="id" class="conversation-row xy-tap" data-order-id="{{item.orderId}}" bindtap="openConversation" role="button" aria-label="打开{{item.counterpartRoleText}}会话">
+      <view class="avatar" aria-hidden="true"><image src="{{icons.infoPrivate}}" mode="aspectFit" /></view>
+      <view class="conversation-copy">
+        <view class="conversation-title-line"><text class="conversation-title">{{item.counterpartRoleText}} · {{item.counterpartName}}</text></view>
+        <view class="conversation-meta"><text class="conversation-status">{{item.statusText}}</text><text class="conversation-device">{{item.deviceName}}</text></view>
+        <text class="conversation-last">{{item.lastMessage}}</text>
+        <view class="conversation-reference"><text>订单 {{item.orderId}}</text><text wx:if="{{item.timeText && item.timeText !== '暂无记录'}}" class="conversation-time">{{item.timeText}}</text></view>
+      </view>
+      <image class="conversation-arrow" src="{{icons.arrowRight}}" mode="aspectFit" />
+    </view>
+  </view>
+
+  <view wx:elif="{{loggedIn}}" class="state-card empty-card xy-empty-page xy-empty-page--surface">
+    <image class="xy-empty-page__illustration" src="{{icons.emptyMessages}}" mode="aspectFit" aria-hidden="true" />
+    <text class="xy-empty-page__title">还没有私聊会话</text>
+    <text class="xy-empty-page__copy">订单产生沟通后，会显示在这里。</text>
+  </view>
+</view>

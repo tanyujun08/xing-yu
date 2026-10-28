@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "1.0",
+  "ruleId": "MPA-REFRESH-001",
+  "case": "reject",
+  "cases": [
+    {
+      "name": "refresh-advances-runtime",
+      "files": {
+        "miniprogram/pages/orders/index.ts": "Page({ onPullDownRefresh() { mockApi.command.advanceOrderRuntime('1'); } });\n"
+      }
+    },
+    {
+      "name": "comment-cannot-spoof-cleanup",
+      "files": {
+        "miniprogram/pages/orders/index.ts": "Page({ async onPullDownRefresh() { try { await mockApi.query.orderSnapshot('1'); } catch (error) { console.error(error); } // finally { wx.stopPullDownRefresh(); }\n} });\n"
+      }
+    },
+    {
+      "name": "cleanup-outside-finally",
+      "files": {
+        "miniprogram/pages/orders/index.ts": "Page({ async onPullDownRefresh() { try { await mockApi.query.orderSnapshot('1'); } finally { console.info('done'); } wx.stopPullDownRefresh(); } });\n"
+      }
+    }
+  ]
+}

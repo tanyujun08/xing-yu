@@ -1,0 +1,143 @@
+<page-meta root-font-size="system" />
+<page-shell surface="page" has-footer fixed-header>
+  <page-header variant="order" slot="header" title="{{quoteChange ? '费用已更新' : frozen ? zeroCash && frozenSigned ? '确认订单' : '订单详情' : '核对订单'}}" bindback="handleNavigationBack" />
+  <view class="confirm-page {{frozen || quoteChange ? 'confirm-page--frozen' : ''}}">
+    <view wx:if="{{loading}}" class="confirm-section" role="status">正在读取订单信息…</view>
+    <view wx:if="{{errorText && !errorOpen && (!loaded || hasPendingPreparation)}}" class="confirm-section" role="alert">
+      <text>{{errorText}}</text>
+      <button class="xy-action-hit" bindtap="loadContext" disabled="{{busy}}" aria-disabled="{{busy}}">查询最新结果</button>
+      <button wx:if="{{hasPendingPreparation}}" class="xy-action-hit" bindtap="restorePreparation" disabled="{{busy}}" aria-disabled="{{busy}}">恢复原准备请求</button>
+    </view>
+    <view wx:if="{{loaded && quoteChange}}" class="order-recovery-card quote-change-card">
+      <view class="order-recovery-heading">
+        <view class="order-recovery-symbol" aria-hidden="true"><image class="quote-document-icon" src="{{quoteIcons.document}}" mode="aspectFit" /><image class="quote-refresh-icon" src="{{quoteIcons.refresh}}" mode="aspectFit" /></view>
+        <text class="order-recovery-state">费用已更新</text><text class="order-recovery-description">请重新核对订单。</text>
+      </view>
+      <order-product-summary variant="order-list" title="{{title}}" secondary="{{termText}}" media-src="{{productMedia}}" media-state="{{productMedia ? 'ready' : 'idle'}}" />
+      <view class="order-recovery-facts">
+        <view wx:for="{{quoteChange.rows}}" wx:key="label" class="order-recovery-fact"><text>{{item.label}}</text><text class="order-recovery-value {{item.emphasis ? 'order-recovery-value--strong' : ''}}">{{item.value}}</text></view>
+      </view>
+      <text wx:if="{{!quoteChange.latestKnown}}" class="order-recovery-description quote-change-warning" role="status">最新报价尚未读取，请重新核对费用。</text>
+      <text wx:if="{{blockers}}" class="order-recovery-description quote-change-warning" role="status">{{blockers}}</text>
+      <text wx:if="{{errorText}}" class="order-recovery-description quote-change-warning" role="alert">{{errorText}}</text>
+      <view class="order-recovery-notice"><image src="{{quoteIcons.info}}" mode="aspectFit" aria-hidden="true" /><text>尚未创建本次待签订单，请确认新费用后继续。</text></view>
+    </view>
+    <block wx:elif="{{loaded}}">
+      <view wx:if="{{frozen}}" class="confirm-section signed-state">
+        <view class="signed-state-heading {{frozenSigned ? 'is-signed' : ''}}">
+          <image wx:if="{{frozenSigned}}" class="signed-state-icon" src="{{icons.success}}" mode="aspectFit" aria-hidden="true" />
+          <view class="signed-state-copy"><text class="signed-state-title">{{frozenSigned && zeroCash ? '无需支付' : statusText}}</text><text wx:if="{{frozenSigned}}" class="signed-state-hint">{{zeroCash ? method === 'EXPRESS' ? '合同已签署，确认后等待出租方发货。' : '合同已签署，确认后按约定安排取件。' : '下一步：确认订单并付款'}}</text></view>
+        </view>
+        <view wx:if="{{signedAt}}" class="signed-fact"><text>签署时间</text><text>{{signedAt}}</text></view>
+        <view wx:if="{{deadlineText}}" class="signed-fact"><text>{{frozenNeedsConfirmation ? '确认截止' : '支付截止'}}</text><text>{{deadlineText}}</text></view>
+      </view>
+      <view wx:if="{{!frozen}}" class="checkout-step">
+        <t-steps current="{{0}}" readonly="{{true}}" layout="horizontal" theme="default">
+          <t-step-item title="核对信息" />
+          <t-step-item title="手写签名" />
+          <t-step-item title="确认订单" />
+        </t-steps>
+      </view>
+      <view class="checkout-details {{!frozen ? 'checkout-details--editable' : ''}}">
+      <view class="checkout-object">
+        <order-product-summary title="{{title}}" secondary="{{frozen ? termText + ' · 共' + termDays + '天' : method === 'EXPRESS' ? '个人设备' : '官方设备'}}" variant="order-list" media-src="{{productMedia}}" media-state="{{productMedia ? 'ready' : 'idle'}}" />
+      </view>
+      <view wx:if="{{!frozen}}" class="confirm-section xy-card checkout-dates">
+        <view class="section-head"><text class="section-title">租赁日期</text><text wx:if="{{termDays}}" class="term-days">共 {{termDays}} 天</text></view>
+        <view class="term-range">
+          <button class="term-endpoint xy-button-reset" bindtap="openTermSheet" disabled="{{busy}}" aria-disabled="{{busy}}" aria-label="选择开始日期"><text class="section-note">开始日期</text><text class="term-date">{{startDate || '请选择'}}</text></button>
+          <text class="term-separator" aria-hidden="true">至</text>
+          <button class="term-endpoint xy-button-reset" bindtap="openTermSheet" disabled="{{busy}}" aria-disabled="{{busy}}" aria-label="选择归还日期"><text class="section-note">归还日期</text><text class="term-date">{{endDate || '请选择'}}</text></button>
+        </view>
+        <text class="section-note">{{termHint}}</text>
+      </view>
+      <view class="confirm-section xy-card pickup-section">
+        <view class="section-head">
+          <text class="section-title">{{method === 'CABINET' ? '租赁柜取还' : '快递往返'}}</text>
+        </view>
+        <text class="pickup-address">{{method === 'CABINET' ? '官方设备仅可在租赁柜取还；到租期开始后，扫描柜机小程序码取件。' : '个人设备通过快递寄送与归还。'}}</text>
+        <text wx:if="{{method === 'CABINET' && pickupLocation}}" class="pickup-address">{{pickupLocation}}</text>
+        <button wx:if="{{method === 'EXPRESS' && !frozen}}" class="pickup-card xy-button-reset" bindtap="openAddressBook" disabled="{{busy}}" aria-disabled="{{busy}}" aria-label="选择收货地址">{{recipientAddress || '选择收货地址'}}</button>
+        <text wx:elif="{{recipientAddress}}" class="pickup-address">{{recipientAddress}}</text>
+        <view wx:if="{{method === 'EXPRESS'}}" class="checkout-notice"><text>{{outboundFreight || '寄出运费待核实'}}；{{returnFreight || '寄回运费待核实'}}。</text><text>{{!outboundFreight || !returnFreight ? '选好地址与租期后核对运费承担方。' : ''}}运费不计本单应付，运输不顺延租期。</text></view>
+      </view>
+      </view>
+      <view class="confirm-section xy-card">
+        <view class="section-head">
+          <text class="section-title">费用明细</text>
+        </view>
+        <view class="pickup-summary-row">
+          <text>租金</text>
+          <text>{{rent}}</text>
+        </view>
+        <view class="pickup-summary-row">
+          <text>租赁押金</text>
+          <text>{{deposit}}</text>
+        </view>
+        <view class="pickup-summary-row">
+          <text>优惠券抵扣</text>
+          <text>{{discount === '¥0.00' ? '未使用' : discount === '—' ? '—' : '−' + discount}}</text>
+        </view>
+        <button wx:if="{{!frozen}}" class="xy-action-hit" bindtap="openVoucherSheet" disabled="{{busy}}" aria-disabled="{{busy}}">{{couponLabel}}（限一张）</button>
+        <view class="pickup-summary-row confirm-total"><text>本单应付</text><text class="confirm-total-value">{{total}}</text></view>
+        <text class="pickup-address">请按约定时间归还设备；设备收回后，由官方验机并核定费用。</text>
+      </view>
+      <button wx:if="{{frozen}}" class="confirm-section signed-contract-entry xy-button-reset xy-button-fluid" bindtap="openContract" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}" aria-label="{{frozenSigned ? '查看已签合同' : '查看租赁合同'}}">
+        <image class="signed-contract-icon" src="{{icons.contract}}" mode="aspectFit" aria-hidden="true" />
+        <view class="signed-contract-copy"><text class="section-title">{{frozenSigned ? '已签合同可查看' : '查看租赁合同'}}</text><text class="section-note">{{frozenSigned ? '查看合同详情，了解双方权利义务' : '请先完成签署，再确认订单'}}</text></view>
+        <image class="signed-contract-chevron" src="{{icons.chevron}}" mode="aspectFit" aria-hidden="true" />
+      </button>
+      <button wx:if="{{frozen}}" class="xy-action-hit" bindtap="openOrder" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">返回原订单</button>
+      <view wx:if="{{blockers}}" class="confirm-section" role="status">
+        <text>{{blockers}}</text>
+        <button class="xy-action-hit" bindtap="openIdentity" disabled="{{busy}}" aria-disabled="{{busy}}">完善实名信息</button>
+      </view>
+      <button class="xy-action-hit" bindtap="demoSupport" aria-label="联系官方客服">联系客服</button>
+    </block>
+  </view>
+  <view wx:if="{{loaded && quoteChange}}" slot="footer" class="quote-change-actions">
+    <button class="quote-change-button xy-action-primary xy-button-fluid" bindtap="recheckChangedQuote" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}" aria-busy="{{busy}}">{{busy ? '正在核对…' : '重新核对'}}</button>
+    <button class="quote-change-button xy-action-secondary xy-button-fluid" bindtap="returnToDevice" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">返回设备详情</button>
+  </view>
+  <bottom-actions wx:else slot="footer" layout="custom" primary-text="{{canPrepare ? '确认信息并去签约' : '核对费用'}}" busy="{{busy}}" disabled="{{loading || !loaded}}" bindprimary="next">
+    <view wx:if="{{!frozen}}" slot="hint">{{total === '—' ? '费用以服务端最新报价为准' : '本单应付 ' + total}}</view>
+    <view slot="actions"><button wx:if="{{!frozen}}" class="confirm-submit xy-action-primary xy-button-fluid" bindtap="next" disabled="{{busy || loading || !loaded}}" aria-disabled="{{busy || loading || !loaded}}" aria-busy="{{busy}}">{{busy ? '正在核对…' : canPrepare ? '确认信息并去签约' : '核对费用'}}</button><button wx:else class="confirm-submit xy-action-primary xy-button-fluid" bindtap="next" disabled="{{busy || loading || !loaded || (frozenNeedsConfirmation && !canConfirm)}}" aria-disabled="{{busy || loading || !loaded || (frozenNeedsConfirmation && !canConfirm)}}" aria-busy="{{busy}}">{{busy ? '正在确认…' : frozenActionText}}</button></view>
+  </bottom-actions>
+</page-shell>
+<task-sheet open="{{termSheetOpen}}" title="选择租期" show-footer bindclose="closeTermSheet">
+  <view class="calendar-sheet">
+    <view class="calendar-month-nav">
+      <button class="calendar-nav xy-button-reset" data-direction="-1" bindtap="moveCalendarMonth" disabled="{{busy || monthIndex === 0}}" aria-disabled="{{busy || monthIndex === 0}}" aria-label="上个月">‹</button>
+      <text class="section-title">{{calendarMonths[monthIndex].title}}</text>
+      <button class="calendar-nav xy-button-reset" data-direction="1" bindtap="moveCalendarMonth" disabled="{{busy || monthIndex === calendarMonths.length - 1}}" aria-disabled="{{busy || monthIndex === calendarMonths.length - 1}}" aria-label="下个月">›</button>
+    </view>
+    <view class="calendar-weekdays"><text wx:for="{{calendarWeekdays}}" wx:key="id" class="calendar-weekday">{{item.label}}</text></view>
+    <view class="calendar-grid">
+      <block wx:for="{{calendarMonths[monthIndex].days}}" wx:key="key">
+        <view wx:if="{{item.isPlaceholder}}" class="calendar-placeholder" aria-hidden="true"></view>
+        <button wx:else class="calendar-day xy-button-reset {{item.disabled ? 'is-disabled' : ''}} {{item.inRange ? 'is-in-range' : ''}} {{item.isStart ? 'is-start' : ''}} {{item.isEnd ? 'is-end' : ''}}" disabled="{{busy || item.disabled}}" aria-disabled="{{busy || item.disabled}}" aria-label="{{item.ariaLabel}}{{item.isStart ? '，开始日期' : item.isEnd ? '，归还日期' : ''}}" data-date="{{item.date}}" bindtap="chooseCalendarDate"><text class="calendar-day-inner">{{item.dayLabel}}</text></button>
+      </block>
+    </view>
+    <text class="calendar-instruction" role="status">{{!formStartDate ? '请选择开始日期' : !formEndDate ? '请选择归还日期' : '已选择 ' + formDays + ' 天'}} · {{termHint}}</text>
+  </view>
+  <view slot="summary" class="calendar-summary">
+    <view><text class="section-note">开始日期</text><text>{{formStartDate || '请选择'}}</text></view>
+    <view><text class="section-note">归还日期</text><text>{{formEndDate || '请选择'}}</text></view>
+    <text class="term-days">{{formDays ? '共 ' + formDays + ' 天' : '待选择'}}</text>
+  </view>
+  <view slot="footer" class="calendar-actions">
+    <button class="xy-action-secondary" bindtap="resetPricingDates" disabled="{{busy}}" aria-disabled="{{busy}}">重置</button>
+    <button class="xy-action-primary" bindtap="applyTermSheet" disabled="{{busy}}" aria-disabled="{{busy}}">{{busy ? '正在核价…' : '确定'}}</button>
+  </view>
+</task-sheet>
+<confirmation-dialog visible="{{errorOpen}}" tone="error" show-cancel="{{false}}" title="请核对租赁信息" content="{{errorText}}" confirm-text="知道了" bindconfirm="dismissCheckoutError" />
+<task-sheet open="{{voucherSheetOpen}}" title="选择一张优惠券" show-footer="{{false}}" bindclose="closeVoucherSheet">
+  <view class="voucher-sheet-list">
+    <button class="voucher-option xy-button-reset" bindtap="chooseVoucher" disabled="{{busy}}" aria-disabled="{{busy}}">不使用优惠券</button>
+    <button wx:for="{{vouchers}}" wx:key="id" class="voucher-option xy-button-reset" data-id="{{item.id}}" bindtap="chooseVoucher" disabled="{{busy}}" aria-disabled="{{busy}}">{{item.label}}</button>
+    <text wx:if="{{voucherLoading}}" role="status">正在读取…</text>
+    <text wx:if="{{voucherError}}" role="alert">{{voucherError}}</text>
+    <button wx:if="{{voucherError}}" class="xy-action-hit" bindtap="retryVouchers">重试</button>
+    <button wx:if="{{voucherCursor}}" class="xy-action-hit" bindtap="loadMoreVouchers" disabled="{{voucherLoading}}" aria-disabled="{{voucherLoading}}">加载更多</button>
+  </view>
+</task-sheet>

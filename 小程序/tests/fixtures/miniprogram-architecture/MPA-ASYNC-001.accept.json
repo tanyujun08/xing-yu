@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "1.0",
+  "ruleId": "MPA-ASYNC-001",
+  "case": "accept",
+  "cases": [
+    {
+      "name": "owned-single-flight-host-operation",
+      "files": {
+        "miniprogram/pages/cabinet-pickup/index.wxml": "<page-meta root-font-size=\"system\" />\n<view>取件</view>\n",
+        "miniprogram/pages/cabinet-pickup/index.ts": "const scope = createOperationScope();\nPage({ onUnload() { scope.dispose(); }, scan() { return scope.singleFlight('scan', () => wx.scanCode({})); } });\n"
+      }
+    },
+    {
+      "name": "owned-leading-navigation",
+      "files": {
+        "miniprogram/pages/cabinet-pickup/index.wxml": "<page-meta root-font-size=\"system\" />\n<view>取件</view>\n",
+        "miniprogram/pages/cabinet-pickup/index.ts": "const navigation = createNavigateOnce();\nPage({ onUnload() { navigation.dispose(); }, next() { return navigation.navigateOnce('orders', (callbacks) => wx.navigateTo({ url: '/pages/orders/index', ...callbacks })); } });\n"
+      }
+    }
+  ]
+}

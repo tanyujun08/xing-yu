@@ -1,0 +1,483 @@
+Audience:
+  type: string
+  enum: [MINIPROGRAM, OPS]
+
+ScopeGrant:
+  type: object
+  additionalProperties: false
+  required: [type, id]
+  properties:
+    type:
+      type: string
+      enum: [PLATFORM, MERCHANT, ACCOUNT, RESOURCE]
+    id:
+      $ref: ./common.yaml#/OpaqueID
+
+AccountView:
+  type: object
+  additionalProperties: false
+  required: [account_id, audience, roles, permissions, scopes]
+  properties:
+    display_name: { type: string, maxLength: 64 }
+    wechat_binding: { $ref: '#/OpsWechatBinding' }
+    account_id:
+      $ref: ./common.yaml#/OpaqueID
+    audience:
+      $ref: '#/Audience'
+    roles:
+      type: array
+      items: { type: string }
+    permissions:
+      type: array
+      items:
+        type: string
+        pattern: '^[a-z][a-z0-9_]*(?:\.[a-z][a-z0-9_]*)+$'
+    scopes:
+      type: array
+      items:
+        $ref: '#/ScopeGrant'
+
+AccountProfile:
+  type: object
+  additionalProperties: false
+  required: [account_id, display_name, locale, version, created_at, updated_at]
+  properties:
+    account_id: { $ref: ./common.yaml#/OpaqueID }
+    display_name: { type: string, maxLength: 64 }
+    avatar_material_id: { $ref: ./common.yaml#/OpaqueID }
+    locale: { type: string, enum: [zh-CN] }
+    version: { type: integer, minimum: 1 }
+    created_at: { type: string, format: date-time }
+    updated_at: { type: string, format: date-time }
+
+UpdateAccountProfileRequest:
+  type: object
+  additionalProperties: false
+  required: [display_name, avatar_material_id, locale]
+  properties:
+    display_name: { type: string, minLength: 1, maxLength: 64 }
+    avatar_material_id: { type: string, maxLength: 64, description: Empty string clears the avatar. }
+    locale: { type: string, enum: [zh-CN] }
+
+AccountDirectoryEntry:
+  type: object
+  additionalProperties: false
+  required: [account_id, status, security_version, display_name, roles, scopes, created_at, updated_at]
+  properties:
+    phone_masked: { type: [string, 'null'], pattern: '^1[0-9]{2}\*{4}[0-9]{4}$' }
+    last_login_at: { type: [string, 'null'], format: date-time }
+    archived_at: { type: [string, 'null'], format: date-time }
+    archived_by: { type: [string, 'null'], maxLength: 64 }
+    wechat_binding: { $ref: '#/OpsWechatBinding' }
+    account_id: { $ref: ./common.yaml#/OpaqueID }
+    status: { type: string, enum: [ACTIVE, DISABLED, ARCHIVED] }
+    security_version: { type: integer, minimum: 1 }
+    display_name: { type: string, maxLength: 64 }
+    roles: { type: array, items: { type: string } }
+    scopes: { type: array, items: { $ref: '#/ScopeGrant' } }
+    created_at: { type: string, format: date-time }
+    updated_at: { type: string, format: date-time }
+
+OpsWechatBinding:
+  type: object
+  additionalProperties: false
+  required: [status, nickname, avatar_material_id, bound_at]
+  properties:
+    status: { type: string, enum: [BOUND, UNBOUND] }
+    nickname: { type: [string, 'null'], maxLength: 64 }
+    avatar_material_id: { type: [string, 'null'], maxLength: 64 }
+    bound_at: { type: [string, 'null'], format: date-time }
+
+MiniLoginRequest:
+  type: object
+  additionalProperties: false
+  required: [code]
+  properties:
+    code:
+      type: string
+      minLength: 1
+      maxLength: 256
+      writeOnly: true
+
+MiniPhoneLoginRequest:
+  type: object
+  additionalProperties: false
+  required: [phone_code, code]
+  properties:
+    phone_code: { type: string, minLength: 1, maxLength: 256, writeOnly: true, description: One-time code from a user-triggered WeChat getPhoneNumber action. }
+    code: { type: string, minLength: 1, maxLength: 256, writeOnly: true, description: A separate fresh wx.login code for the configured Mini AppID. }
+
+MiniPhoneBindingRequest:
+  type: object
+  additionalProperties: false
+  required: [phone_code]
+  properties:
+    phone_code: { type: string, minLength: 1, maxLength: 256, writeOnly: true, description: One-time code for the new +86 mainland phone; the old phone is not reverified. }
+
+MiniWechatBindingRequest:
+  type: object
+  additionalProperties: false
+  required: [code]
+  properties:
+    code: { type: string, minLength: 1, maxLength: 256, writeOnly: true, description: Fresh wx.login code from an explicit authenticated binding action. }
+
+OwnAuthenticatorAction:
+  type: object
+  additionalProperties: false
+  required: [code, enabled]
+  properties:
+    code: { type: string, enum: [BIND_PHONE, REBIND_PHONE, UNBIND_PHONE, BIND_WECHAT] }
+    enabled: { type: boolean }
+    blocked_reason: { type: string, maxLength: 128 }
+
+OwnAuthenticators:
+  type: object
+  additionalProperties: false
+  required: [account_id, security_version, phone_bound, wechat_bound, allowed_actions]
+  properties:
+    account_id: { $ref: ./common.yaml#/OpaqueID }
+    security_version: { type: integer, minimum: 1, description: Strong ETag is "security-<security_version>". }
+    phone_bound: { type: boolean }
+    phone_masked: { type: string, pattern: '^1[0-9]{2}\*{4}[0-9]{4}$', description: Present only for an active verified +86 phone; never the full number. }
+    wechat_bound: { type: boolean, description: Only the configured Mini AppID OpenID is counted. }
+    allowed_actions:
+      type: array
+      items: { $ref: '#/OwnAuthenticatorAction' }
+
+IdentityKindStatus:
+  type: object
+  additionalProperties: false
+  required: [status, can_create_verification]
+  properties:
+    status: { type: string, enum: [NOT_VERIFIED, CREATED, DISPATCHED, UNKNOWN, VERIFIED, REJECTED, EXPIRED] }
+    verification_id: { $ref: ./common.yaml#/OpaqueID }
+    can_create_verification: { type: boolean }
+    verified_at: { type: string, format: date-time }
+    valid_until: { type: string, format: date-time }
+
+OwnIdentityStatus:
+  type: object
+  additionalProperties: false
+  required: [overall_status, real_name, face]
+  properties:
+    overall_status: { type: string, enum: [NOT_VERIFIED, PENDING, REAL_NAME_VERIFIED, FACE_VERIFIED] }
+    real_name: { $ref: '#/IdentityKindStatus' }
+    face: { $ref: '#/IdentityKindStatus' }
+
+RefreshRequest:
+  type: object
+  additionalProperties: false
+  required: [refresh_token]
+  properties:
+    refresh_token:
+      type: string
+      minLength: 32
+      maxLength: 512
+      writeOnly: true
+
+SessionResponse:
+  type: object
+  additionalProperties: false
+  required: [access_token, refresh_token, token_type, expires_in, account]
+  properties:
+    access_token:
+      type: string
+    refresh_token:
+      type: string
+    token_type:
+      type: string
+      const: Bearer
+    expires_in:
+      type: integer
+      minimum: 1
+      maximum: 1800
+    account:
+      $ref: '#/AccountView'
+
+PhoneChallengeRequest:
+  type: object
+  additionalProperties: false
+  required: [phone]
+  properties:
+    phone:
+      type: string
+      minLength: 8
+      maxLength: 32
+      writeOnly: true
+
+ChallengeSessionRequest:
+  type: object
+  additionalProperties: false
+  required: [challenge_id, proof]
+  properties:
+    challenge_id:
+      $ref: ./common.yaml#/OpaqueID
+    proof:
+      type: string
+      minLength: 1
+      maxLength: 256
+      writeOnly: true
+
+ChallengeResponse:
+  type: object
+  additionalProperties: false
+  required: [challenge_id, status, expires_in]
+  properties:
+    challenge_id:
+      $ref: ./common.yaml#/OpaqueID
+    status:
+      type: string
+      enum: [PENDING, APPROVED, CONSUMED, EXPIRED]
+    expires_in:
+      type: integer
+      minimum: 1
+      maximum: 600
+    retry_after_seconds:
+      type: integer
+      minimum: 0
+      maximum: 600
+      description: Phone challenge resend cooldown remaining from the original persisted deadline; idempotent replay does not reset it.
+
+Reason:
+  type: string
+  minLength: 3
+  maxLength: 256
+
+Role:
+  type: object
+  additionalProperties: false
+  required: [role_id, role_code, status, version, permissions]
+  properties:
+    role_id: { $ref: ./common.yaml#/OpaqueID }
+    role_code: { type: string, pattern: '^[a-z][a-z0-9_]*(?:\.[a-z][a-z0-9_]*)+$' }
+    status: { type: string, enum: [ACTIVE, DISABLED] }
+    version: { type: integer, minimum: 1 }
+    permissions:
+      type: array
+      uniqueItems: true
+      items: { type: string, pattern: '^[a-z][a-z0-9_]*(?:\.[a-z][a-z0-9_]*)+$' }
+
+ReplaceRolePermissionsRequest:
+  type: object
+  additionalProperties: false
+  required: [permissions, reason]
+  properties:
+    permissions:
+      type: array
+      uniqueItems: true
+      items: { type: string, pattern: '^[a-z][a-z0-9_]*(?:\.[a-z][a-z0-9_]*)+$' }
+    reason: { $ref: '#/Reason' }
+
+ReplaceAccountAuthorizationRequest:
+  type: object
+  additionalProperties: false
+  required: [role_ids, scopes, reason]
+  properties:
+    role_ids:
+      type: array
+      uniqueItems: true
+      items: { $ref: ./common.yaml#/OpaqueID }
+    scopes:
+      type: array
+      uniqueItems: true
+      items: { $ref: '#/ScopeGrant' }
+    reason: { $ref: '#/Reason' }
+
+AccountAuthorization:
+  type: object
+  additionalProperties: false
+  required: [account_id, role_ids, scopes, version]
+  properties:
+    account_id: { $ref: ./common.yaml#/OpaqueID }
+    role_ids: { type: array, items: { $ref: ./common.yaml#/OpaqueID } }
+    scopes: { type: array, items: { $ref: '#/ScopeGrant' } }
+    version: { type: integer, minimum: 1 }
+
+SecurityPolicy:
+  type: object
+  additionalProperties: false
+  description: Refresh idle limits are strict subsets of their audience absolute limits; both relations are validated before persistence.
+  x-xingyu-field-relations:
+    - left_field: mini_refresh_idle_seconds
+      operator: LT
+      right_field: mini_refresh_absolute_seconds
+    - left_field: ops_refresh_idle_seconds
+      operator: LT
+      right_field: ops_refresh_absolute_seconds
+  required: [access_ttl_seconds, mini_refresh_idle_seconds, mini_refresh_absolute_seconds, ops_refresh_idle_seconds, ops_refresh_absolute_seconds, challenge_ttl_seconds, challenge_max_attempts, login_rate_limit, refresh_rate_limit, max_sessions_per_audience]
+  properties:
+    access_ttl_seconds: { type: integer, minimum: 300, maximum: 1800 }
+    mini_refresh_idle_seconds: { type: integer, minimum: 86400 }
+    mini_refresh_absolute_seconds: { type: integer, minimum: 86401 }
+    ops_refresh_idle_seconds: { type: integer, minimum: 900 }
+    ops_refresh_absolute_seconds: { type: integer, minimum: 901 }
+    challenge_ttl_seconds: { type: integer, minimum: 180, maximum: 600 }
+    challenge_max_attempts: { type: integer, minimum: 3, maximum: 5 }
+    login_rate_limit: { type: integer, minimum: 1, maximum: 100 }
+    refresh_rate_limit: { type: integer, minimum: 1, maximum: 100 }
+    max_sessions_per_audience: { type: integer, minimum: 1, maximum: 20 }
+
+SecurityPolicyVersion:
+  type: object
+  additionalProperties: false
+  required: [policy_version_id, version, status, policy, content_hash, created_by, created_at]
+  properties:
+    policy_version_id: { $ref: ./common.yaml#/OpaqueID }
+    version: { type: integer, minimum: 1 }
+    status: { type: string, enum: [DRAFT, VALIDATED, APPROVED, PUBLISHED, SUPERSEDED] }
+    policy: { $ref: '#/SecurityPolicy' }
+    content_hash: { type: string, pattern: '^[0-9a-fA-F]{64}$' }
+    created_by: { $ref: ./common.yaml#/OpaqueID }
+    approved_by: { $ref: ./common.yaml#/OpaqueID }
+    published_by: { $ref: ./common.yaml#/OpaqueID }
+    created_at: { type: string, format: date-time }
+
+CreateSecurityPolicyRequest:
+  type: object
+  additionalProperties: false
+  required: [policy, reason]
+  properties:
+    policy: { $ref: '#/SecurityPolicy' }
+    reason: { $ref: '#/Reason' }
+
+TransitionSecurityPolicyRequest:
+  type: object
+  additionalProperties: false
+  required: [reason]
+  properties:
+    reason: { $ref: '#/Reason' }
+
+LoginEvent:
+  type: object
+  additionalProperties: false
+  required: [event_id, event_type, result_code, audience, login_method, provider_code, request_id, occurred_at]
+  properties:
+    current_display_name: { type: string, description: Current OPS directory name. Not the historical name at login. }
+    current_roles: { type: array, items: { type: string }, description: Current active OPS roles. Not the historical authorization snapshot. }
+    event_id: { $ref: ./common.yaml#/OpaqueID }
+    event_type: { type: string }
+    result_code: { type: string }
+    account_id: { $ref: ./common.yaml#/OpaqueID }
+    session_id: { $ref: ./common.yaml#/OpaqueID }
+    audience: { $ref: '#/Audience' }
+    login_method: { type: string }
+    provider_code: { type: string }
+    request_id: { $ref: ./common.yaml#/OpaqueID }
+    occurred_at: { type: string, format: date-time }
+
+OperationEvent:
+  type: object
+  additionalProperties: false
+  required: [event_id, actor_account_id, session_id, operation_id, action_code, result_code, http_status, request_id, field_change_summary, occurred_at]
+  properties:
+    current_display_name: { type: string, description: Current OPS directory name. }
+    event_id: { $ref: ./common.yaml#/OpaqueID }
+    actor_account_id: { $ref: ./common.yaml#/OpaqueID }
+    session_id:
+      oneOf:
+        - { $ref: ./common.yaml#/OpaqueID }
+        - { type: 'null' }
+    permission_code: { type: string }
+    operation_id: { type: string }
+    resource_type: { type: string }
+    resource_id: { $ref: ./common.yaml#/OpaqueID }
+    action_code: { type: string }
+    result_code: { type: string }
+    http_status: { type: integer, minimum: 100, maximum: 599 }
+    request_id: { $ref: ./common.yaml#/OpaqueID }
+    reason_summary: { type: string, maxLength: 256 }
+    field_change_summary:
+      type: object
+      additionalProperties: false
+      properties:
+        role_code_changed: { type: boolean }
+        permission_count: { type: integer, minimum: 0 }
+        role_count: { type: integer, minimum: 0 }
+        scope_count: { type: integer, minimum: 0 }
+        policy_created: { type: boolean }
+        status_from: { type: string }
+        status_to: { type: string }
+        page_size: { type: integer, minimum: 1, maximum: 100 }
+        search_filter_hash: { type: string, pattern: '^[a-f0-9]{64}$' }
+        login_method: { type: string }
+        action_code: { type: string }
+        result_class: { type: string, enum: [SUCCESS, FAILED] }
+        source: { type: string, enum: [CONTROLLED_INITIALIZATION] }
+        environment_code: { type: string, maxLength: 32 }
+        authorization_ref: { type: string, maxLength: 128 }
+        permission_snapshot_hash: { type: string, pattern: '^[a-f0-9]{64}$' }
+        action: { type: string }
+        display_name_changed: { type: boolean }
+        avatar_changed: { type: boolean }
+        locale_changed: { type: boolean }
+    occurred_at: { type: string, format: date-time }
+
+CreateIdentityVerificationRequest:
+  type: object
+  additionalProperties: false
+  required:
+    - real_name
+    - identity_number
+  properties:
+    real_name:
+      type: string
+      minLength: 2
+      maxLength: 50
+      writeOnly: true
+      description: Trimmed legal name; letters, spaces, middle dot, hyphen or apostrophe. No control characters.
+    identity_number:
+      type: string
+      minLength: 18
+      maxLength: 18
+      pattern: ^[1-9][0-9]{16}[0-9Xx]$
+      writeOnly: true
+      description: >-
+        Mainland 18-digit number; server validates real birth date and checksum, canonicalizes x. Self-reported; no
+        external verification.
+IdentityVerification:
+  type: object
+  additionalProperties: false
+  required:
+    - verification_id
+    - check_kind
+    - status
+    - can_create_verification
+    - version
+    - created_at
+    - updated_at
+  properties:
+    verification_id:
+      $ref: ./common.yaml#/OpaqueID
+    check_kind:
+      type: string
+      enum:
+        - REAL_NAME
+        - FACE
+    status:
+      type: string
+      enum:
+        - NOT_VERIFIED
+        - CREATED
+        - DISPATCHED
+        - UNKNOWN
+        - VERIFIED
+        - REJECTED
+        - EXPIRED
+      description: SELF_DECLARED REAL_NAME VERIFIED means required form saved, not provider verification.
+    can_create_verification:
+      type: boolean
+    verified_at:
+      type: string
+      format: date-time
+    valid_until:
+      type: string
+      format: date-time
+    version:
+      type: integer
+      minimum: 1
+    created_at:
+      type: string
+      format: date-time
+    updated_at:
+      type: string
+      format: date-time

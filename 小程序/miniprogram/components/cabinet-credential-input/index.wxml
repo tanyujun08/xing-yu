@@ -1,0 +1,11 @@
+<view class="credential">
+  <text class="credential__label">{{showDisplayCode ? label : '请输入6位' + label}}</text>
+  <text wx:if="{{showDisplayCode}}" class="credential__value" aria-label="当前{{label}}{{displayCode}}">{{displayCode}}</text>
+  <view class="credential__entry {{error ? 'has-error' : ''}}">
+    <input class="credential__input" type="number" maxlength="6" value="{{inputValue}}" focus="{{focus}}" bindinput="onInput" aria-label="输入6位{{label}}" />
+    <view class="credential__cells" aria-hidden="true">
+      <view wx:for="{{slots}}" wx:key="id" class="credential__cell {{item.filled ? 'is-filled' : ''}} {{item.active ? 'is-active' : ''}}"><text>{{item.value}}</text></view>
+    </view>
+  </view>
+  <text wx:if="{{error}}" class="credential__error" role="alert">{{error}}</text>
+</view>

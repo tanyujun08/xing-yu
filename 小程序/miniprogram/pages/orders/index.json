@@ -1,0 +1,15 @@
+{
+  "navigationBarTitleText": "订单",
+  "navigationStyle": "custom",
+  "enablePullDownRefresh": true,
+  "onReachBottomDistance": 120,
+  "backgroundTextStyle": "dark",
+  "usingComponents": {
+    "media-state": "../../components/media-state/index",
+    "status-view": "../../components/status-view/index",
+    "page-shell": "../../components/page-shell/index",
+    "page-header": "../../components/page-header/index",
+    "order-product-summary": "../../components/order-product-summary/index",
+    "task-sheet": "../../components/task-sheet/index"
+  }
+}

@@ -1,0 +1,449 @@
+{
+  "Schemas": {
+    "OwnEntitlementOffer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "offer_code",
+        "kind",
+        "cost_unit",
+        "unit_price",
+        "min_quantity",
+        "max_quantity",
+        "maximum_purchasable_quantity",
+        "valid_days",
+        "refund_policy",
+        "rule_version_id",
+        "purchase_enabled",
+        "unavailable_reason",
+        "allowed_actions"
+      ],
+      "properties": {
+        "offer_code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "CONTRACT",
+            "PUBLISH_QUOTA",
+            "PACKAGE"
+          ]
+        },
+        "cost_unit": {
+          "type": "string",
+          "enum": [
+            "CNY",
+            "PINK_POINT"
+          ]
+        },
+        "unit_price": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$"
+        },
+        "min_quantity": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        },
+        "max_quantity": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        },
+        "maximum_purchasable_quantity": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        },
+        "valid_days": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "refund_policy": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9_]{0,31}$"
+        },
+        "rule_version_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "purchase_enabled": {
+          "type": "boolean"
+        },
+        "unavailable_reason": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "allowed_actions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64
+          }
+        },
+        "name": {
+          "minLength": 1,
+          "type": "string",
+          "maxLength": 100
+        },
+        "cny_price_fen": {
+          "pattern": "^[1-9][0-9]{0,18}$",
+          "type": "string"
+        },
+        "pink_price": {
+          "pattern": "^[1-9][0-9]{0,18}$",
+          "type": "string"
+        },
+        "items": {
+          "items": {
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "quantity",
+              "valid_days"
+            ],
+            "properties": {
+              "valid_days": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "CONTRACT",
+                  "PUBLISH_QUOTA"
+                ]
+              },
+              "quantity": {
+                "pattern": "^[1-9][0-9]{0,18}$",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "maxItems": 2,
+          "minItems": 1,
+          "type": "array"
+        },
+        "allowed_cost_units": {
+          "items": {
+            "type": "string",
+            "enum": [
+              "PINK_POINT"
+            ]
+          },
+          "maxItems": 1,
+          "minItems": 1,
+          "type": "array"
+        }
+      }
+    },
+    "OwnEntitlementOfferList": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "items",
+        "available_pink_units",
+        "rule_version_id",
+        "as_of_at"
+      ],
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/OwnEntitlementOffer"
+          }
+        },
+        "available_pink_units": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$"
+        },
+        "rule_version_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "as_of_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        }
+      }
+    },
+    "OwnEntitlementPurchaseCreateRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "offer_code",
+        "quantity"
+      ],
+      "properties": {
+        "offer_code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "quantity": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,3}$"
+        }
+      }
+    },
+    "OwnEntitlementPurchase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "purchase_id",
+        "purchase_no",
+        "offer_code",
+        "kind",
+        "quantity",
+        "cost_unit",
+        "purchase_model",
+        "unit_price",
+        "gross_cost",
+        "discount_cost",
+        "total_cost",
+        "rule_version_id",
+        "consideration_status",
+        "grant_status",
+        "refund_status",
+        "settled_at",
+        "granted_at",
+        "closed_at",
+        "created_at",
+        "updated_at",
+        "version",
+        "allowed_actions",
+        "replayed"
+      ],
+      "properties": {
+        "purchase_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "purchase_no": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "offer_code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "CONTRACT",
+            "PUBLISH_QUOTA",
+            "PACKAGE"
+          ]
+        },
+        "quantity": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$"
+        },
+        "cost_unit": {
+          "type": "string",
+          "enum": [
+            "CNY",
+            "PINK_POINT"
+          ]
+        },
+        "purchase_model": {
+          "type": "string",
+          "enum": [
+            "PINK_IMMEDIATE",
+            "PINK_V2"
+          ]
+        },
+        "unit_price": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$"
+        },
+        "gross_cost": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$"
+        },
+        "discount_cost": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$"
+        },
+        "total_cost": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$"
+        },
+        "rule_version_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "consideration_status": {
+          "type": "string",
+          "enum": [
+            "UNPAID",
+            "PROCESSING",
+            "UNKNOWN",
+            "PAID",
+            "CLOSED"
+          ]
+        },
+        "grant_status": {
+          "type": "string",
+          "enum": [
+            "NOT_GRANTED",
+            "GRANTED",
+            "REVOKED"
+          ]
+        },
+        "refund_status": {
+          "type": "string",
+          "enum": [
+            "NONE",
+            "PROCESSING",
+            "UNKNOWN",
+            "REFUNDED",
+            "FAILED_FINAL"
+          ]
+        },
+        "settled_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "Z$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "granted_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "Z$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "closed_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "Z$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        },
+        "allowed_actions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64
+          }
+        },
+        "replayed": {
+          "type": "boolean"
+        },
+        "name": {
+          "minLength": 1,
+          "type": "string",
+          "maxLength": 100
+        },
+        "cny_price_fen": {
+          "pattern": "^[1-9][0-9]{0,18}$",
+          "type": "string"
+        },
+        "pink_price": {
+          "pattern": "^[1-9][0-9]{0,18}$",
+          "type": "string"
+        },
+        "items": {
+          "items": {
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "quantity",
+              "valid_days"
+            ],
+            "properties": {
+              "valid_days": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "CONTRACT",
+                  "PUBLISH_QUOTA"
+                ]
+              },
+              "quantity": {
+                "pattern": "^[1-9][0-9]{0,18}$",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "maxItems": 2,
+          "minItems": 1,
+          "type": "array"
+        }
+      }
+    }
+  }
+}

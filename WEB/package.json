@@ -1,0 +1,54 @@
+{
+  "name": "xingyu-admin-visual-mock",
+  "private": true,
+  "version": "1.0.1-visual-preview",
+  "type": "module",
+  "packageManager": "npm@11.6.2",
+  "engines": {
+    "node": "24.13.x",
+    "npm": "11.6.x"
+  },
+  "scripts": {
+    "dev": "vite",
+    "preview": "vite preview",
+    "generate:api": "node scripts/generate-openapi.mjs",
+    "check:api": "node scripts/generate-openapi.mjs --check",
+    "lint": "eslint .",
+    "typecheck": "tsc -p tsconfig.app.json --noEmit && tsc -p tsconfig.node.json --noEmit",
+    "test": "npm run test:preview",
+    "test:preview": "vitest run src/preview/engine.test.ts",
+    "test:e2e": "playwright test",
+    "test:e2e:update": "playwright test --update-snapshots",
+    "build": "npm run typecheck && vite build",
+    "verify": "npm run test:preview && npm run build",
+    "verify:container": "node scripts/run-container-verify.mjs"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "5.101.4",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "react-router-dom": "7.18.2",
+    "tdesign-icons-react": "0.6.10",
+    "tdesign-react": "1.18.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@playwright/test": "1.62.1",
+    "@testing-library/jest-dom": "7.0.1",
+    "@testing-library/react": "16.3.2",
+    "@types/node": "26.2.0",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.4",
+    "@vitejs/plugin-react": "6.1.0",
+    "eslint": "10.9.0",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "eslint-plugin-react-refresh": "0.5.4",
+    "globals": "17.11.0",
+    "jsdom": "29.0.0",
+    "openapi-typescript": "7.13.0",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.67.0",
+    "vite": "8.2.2",
+    "vitest": "4.1.11"
+  }
+}

@@ -1,0 +1,28 @@
+<view wx:if="{{visible}}" class="login-overlay" role="dialog" aria-label="登录星遇">
+  <view class="login-backdrop" catchtap="close" role="button" aria-label="关闭登录弹窗" />
+  <view class="login-sheet" style="{{windowWidth > 0 ? 'width:' + windowWidth + 'px;' : ''}}">
+    <view class="login-sheet__handle" />
+    <button class="login-close" bindtap="close" aria-label="关闭登录弹窗" hover-class="none">×</button>
+    <view class="brand-block"><image class="login-logo" src="{{icons.loginMark}}" mode="aspectFit" /><text class="login-heading">登录星遇</text><text class="login-copy">选择登录方式，开启星遇</text></view>
+    <text wx:if="{{errorText}}" class="login-error" role="alert">{{errorText}}</text>
+    <view class="login-actions">
+      <button class="quick-button {{submitting ? 'is-disabled' : ''}}" disabled="{{submitting}}" aria-disabled="{{submitting}}" bindtap="quickLogin" aria-label="微信登录"><image class="login-action-icon" src="{{icons.loginWechat}}" mode="aspectFit" /><text>{{submitting ? '登录中…' : '微信登录'}}</text></button>
+      <button wx:if="{{!agreed}}" class="phone-button {{submitting ? 'is-disabled' : ''}}" disabled="{{submitting}}" aria-disabled="{{submitting}}" bindtap="phoneConsent" aria-label="同意协议后使用手机号快捷登录"><image class="login-action-icon" src="{{icons.loginPhone}}" mode="aspectFit" /><text>手机号快捷登录</text></button>
+      <button wx:else class="phone-button {{submitting ? 'is-disabled' : ''}}" bindtap="demoPhoneAuthorize" disabled="{{submitting}}" aria-disabled="{{submitting}}"  aria-label="微信授权手机号快捷登录"><image class="login-action-icon" src="{{icons.loginPhone}}" mode="aspectFit" /><text>手机号快捷登录</text></button>
+      <text class="phone-hint">手机号将由微信授权获取，无需短信验证码</text>
+    </view>
+    <view class="login-divider" />
+    <view class="agreement-row xy-tap" bindtap="toggleAgree" role="checkbox" aria-checked="{{agreed}}" aria-label="同意用户协议和隐私声明">
+      <view class="agree-box {{agreed ? 'is-checked' : ''}}"><image wx:if="{{agreed}}" class="agree-icon" src="{{icons.agreementCheck}}" mode="aspectFit" /></view>
+      <view class="agreement-text">我已阅读并同意 <view class="agreement-link-label">《用户协议》<button class="agreement-link-hit" data-legal="user-agreement" catchtap="openLegal" aria-label="阅读用户协议" hover-class="none" /></view> 与 <view class="agreement-link-label">《隐私声明》<button class="agreement-link-hit" data-legal="privacy-policy" catchtap="openLegal" aria-label="阅读隐私声明" hover-class="none" /></view></view>
+    </view>
+    <button class="guest-button" bindtap="close" aria-label="暂不登录，留在当前页面">暂不登录，继续逛逛</button>
+  </view>
+  <view wx:if="{{showConsentModal}}" class="consent-mask" catchtap="closeConsentModal" role="button" aria-label="关闭温馨提示">
+    <view class="consent-modal" role="dialog" aria-label="温馨提示">
+      <text class="consent-title">温馨提示</text>
+      <text class="consent-copy">请阅读并同意用户协议与隐私声明，随后再次点击登录。</text>
+      <view class="consent-actions"><button class="consent-cancel" bindtap="closeConsentModal">取消</button><button class="consent-confirm" bindtap="confirmConsent">同意</button></view>
+    </view>
+  </view>
+</view>

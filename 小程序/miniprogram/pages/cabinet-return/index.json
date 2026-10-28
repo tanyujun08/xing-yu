@@ -1,0 +1,13 @@
+{
+  "navigationBarTitleText": "柜机归还",
+  "usingComponents": {
+    "return-evidence-grid": "../../components/return-evidence-grid/index",
+    "page-shell": "../../components/page-shell/index",
+    "bottom-actions": "../../components/bottom-actions/index",
+    "confirmation-dialog": "../../components/confirmation-dialog/index",
+    "page-header": "../../components/page-header/index",
+    "return-progress": "../../components/return-progress/index"
+  },
+  "navigationStyle": "custom",
+  "navigationBarTextStyle": "black"
+}

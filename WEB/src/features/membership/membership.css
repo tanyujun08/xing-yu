@@ -1,0 +1,222 @@
+.membership-metrics {
+  margin-bottom: var(--xy-space-6);
+}
+
+.membership-error {
+  margin-bottom: var(--xy-space-6);
+  color: var(--xy-status-danger);
+  background: var(--xy-status-danger-bg);
+}
+
+.membership-error__content {
+  display: flex;
+  align-items: center;
+  gap: var(--xy-space-4);
+}
+
+.membership-error strong,
+.membership-error p {
+  margin: 0;
+}
+
+.membership-error p {
+  margin-top: var(--xy-space-1);
+  color: var(--xy-text-secondary);
+}
+
+.membership-rule-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--xy-space-4);
+}
+
+.membership-rule-grid article {
+  min-height: 132px;
+  padding: var(--xy-space-5);
+  background: var(--xy-bg-container-subtle);
+  border: 1px solid var(--xy-border-subtle);
+  border-radius: var(--xy-radius-lg);
+}
+
+.membership-rule-grid span,
+.membership-rule-grid small {
+  display: block;
+  color: var(--xy-text-secondary);
+}
+
+.membership-rule-grid strong {
+  display: block;
+  margin: var(--xy-space-3) 0 var(--xy-space-2);
+  color: var(--xy-text-primary);
+  font-size: 18px;
+}
+
+.star-ledger-amount {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.star-ledger-amount--success {
+  color: var(--xy-status-success);
+}
+
+.star-ledger-amount--danger {
+  color: var(--xy-status-danger);
+}
+
+.star-ledger-amount--warning {
+  color: var(--xy-status-warning);
+}
+
+.star-ledger-amount--primary {
+  color: var(--xy-status-processing);
+}
+
+.member-identity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.member-identity img {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 auto;
+  object-fit: cover;
+  border-radius: 14px;
+  box-shadow: 0 6px 16px rgb(92 108 255 / 18%);
+}
+
+.member-identity div {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.member-identity small {
+  overflow: hidden;
+  color: var(--xy-text-placeholder);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.member-identity--large img {
+  width: 72px;
+  height: 72px;
+  border-radius: 22px;
+}
+
+.member-identity--large strong {
+  font-size: 20px;
+}
+
+.table-primary--right {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.dossier-profile {
+  margin-bottom: var(--xy-space-4);
+}
+
+.dossier-profile .member-identity { margin-bottom: var(--xy-space-4); }
+
+.dossier-facts dd {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-weight: var(--xy-font-weight-semibold);
+}
+
+.dossier-facts small {
+  color: var(--xy-text-placeholder);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.dossier-table {
+  margin-bottom: var(--xy-space-6);
+}
+
+.dossier-records { margin-bottom: var(--xy-space-4); }
+
+.dossier-records .xy-admin-tabs .t-tabs__content {
+  padding-top: var(--xy-space-4);
+}
+
+.dossier-signin-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px 24px;
+  margin: 0;
+}
+
+.dossier-signin-grid div {
+  min-width: 0;
+}
+
+.dossier-signin-grid dt {
+  margin-bottom: 5px;
+  color: var(--xy-text-placeholder);
+  font-size: 12px;
+}
+
+.dossier-signin-grid dd {
+  margin: 0;
+  color: var(--xy-text-primary);
+  font-weight: 600;
+}
+
+.dossier-fulfillment-log {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dossier-fulfillment-log li {
+  display: grid;
+  grid-template-columns: 140px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--xy-border-default);
+}
+
+.dossier-fulfillment-log li:last-child {
+  border-bottom: 0;
+}
+
+.dossier-fulfillment-log li div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dossier-fulfillment-log small {
+  color: var(--xy-text-placeholder);
+  font-size: 12px;
+}
+
+@media (max-width: 900px) {
+  .dossier-facts,
+  .dossier-signin-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 901px) and (max-width: 1280px) {
+  .dossier-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+.contract-preview-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--xy-space-4) var(--xy-space-6);
+  margin: 0;
+}
+
+.contract-preview-list dt { color: var(--td-text-color-secondary); margin-bottom: var(--xy-space-2); }
+.contract-preview-list dd { margin: 0; overflow-wrap: anywhere; }

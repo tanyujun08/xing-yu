@@ -1,0 +1,14 @@
+MaterialFileResult:
+  type: object
+  additionalProperties: false
+  required: [material_id, upload_id, status, public_url, playback_url, metadata, poster, mime_type, size_bytes]
+  properties:
+    metadata: { anyOf: [{ $ref: ./common.yaml#/MediaMetadataV1 }, { type: "null" }] }
+    poster: { anyOf: [{ $ref: ./common.yaml#/MaterialPoster }, { type: "null" }] }
+    material_id: { type: string, minLength: 1, maxLength: 64 }
+    upload_id: { type: string, minLength: 1, maxLength: 64 }
+    status: { type: string, enum: [UPLOADED, SCANNING, PROCESSING, READY] }
+    public_url: { anyOf: [{ $ref: ./common.yaml#/PublicMaterialURL }, { type: "null" }] }
+    playback_url: { anyOf: [{ $ref: ./common.yaml#/PublicMaterialURL }, { type: "null" }] }
+    mime_type: { type: string }
+    size_bytes: { type: integer, minimum: 1, maximum: 104857600 }

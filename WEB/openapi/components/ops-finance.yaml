@@ -1,0 +1,1698 @@
+{
+  "Schemas": {
+    "OpsFinanceQueryRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reason"
+      ],
+      "properties": {
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
+      }
+    },
+    "OpsFinanceQueryReceipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "command_id",
+        "resource_type",
+        "resource_id",
+        "status",
+        "accepted_at",
+        "replayed"
+      ],
+      "properties": {
+        "command_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "resource_type": {
+          "type": "string",
+          "enum": [
+            "PAYOUT"
+          ]
+        },
+        "resource_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "ACCEPTED"
+          ]
+        },
+        "accepted_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "replayed": {
+          "type": "boolean"
+        }
+      }
+    },
+    "OpsCashJournalSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "WITHDRAWAL",
+            "PAYOUT"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        }
+      }
+    },
+    "OpsFinanceQueryState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "attempt_count",
+        "max_attempts",
+        "available_at",
+        "lease_expires_at",
+        "last_error_code"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "NOT_CREATED",
+            "PENDING",
+            "PROCESSING",
+            "SUCCEEDED",
+            "DEAD",
+            "CANCELED"
+          ]
+        },
+        "attempt_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "max_attempts": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "available_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "Z$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "lease_expires_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "Z$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "last_error_code": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "OpsFinanceBlockedReason": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "code",
+        "message"
+      ],
+      "properties": {
+        "code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "field": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "OpsFinanceActionState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "code",
+        "enabled",
+        "blocked_reasons"
+      ],
+      "properties": {
+        "code": {
+          "type": "string",
+          "enum": [
+            "DECIDE_OPS_WITHDRAWAL",
+            "QUERY_OPS_PAYOUT"
+          ]
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "blocked_reasons": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/OpsFinanceBlockedReason"
+          }
+        }
+      }
+    },
+    "OpsCashAccountSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cash_account_id",
+        "owner_kind",
+        "owner_account_id",
+        "system_owner_code",
+        "account_kind"
+      ],
+      "properties": {
+        "cash_account_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "owner_kind": {
+          "type": "string",
+          "enum": [
+            "USER",
+            "SYSTEM"
+          ]
+        },
+        "owner_account_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "system_owner_code": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "account_kind": {
+          "type": "string",
+          "enum": [
+            "USER_WALLET_AVAILABLE",
+            "USER_WALLET_FROZEN",
+            "CHANNEL_CLEARING",
+            "BUSINESS_PAYABLE",
+            "PLATFORM_INCOME",
+            "PLATFORM_EXPENSE"
+          ]
+        }
+      }
+    },
+    "OpsCashEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "entry_id",
+        "journal_id",
+        "entry_no",
+        "account",
+        "source",
+        "currency",
+        "debit_fen",
+        "credit_fen",
+        "posted_at",
+        "created_at"
+      ],
+      "properties": {
+        "entry_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "journal_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "entry_no": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,4})$"
+        },
+        "account": {
+          "$ref": "#/Schemas/OpsCashAccountSummary"
+        },
+        "source": {
+          "$ref": "#/Schemas/OpsCashJournalSource"
+        },
+        "currency": {
+          "type": "string",
+          "enum": [
+            "CNY"
+          ]
+        },
+        "debit_fen": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$"
+        },
+        "credit_fen": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$"
+        },
+        "posted_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        }
+      }
+    },
+    "OpsCashPostingAggregate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "count",
+        "debit_fen",
+        "credit_fen"
+      ],
+      "properties": {
+        "count": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        },
+        "debit_fen": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$"
+        },
+        "credit_fen": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$"
+        }
+      }
+    },
+    "OpsFinanceSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "from",
+        "to",
+        "as_of_at",
+        "currency",
+        "cash_entries"
+      ],
+      "properties": {
+        "from": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "to": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "as_of_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "currency": {
+          "type": "string",
+          "enum": [
+            "CNY"
+          ]
+        },
+        "cash_entries": {
+          "$ref": "#/Schemas/OpsCashPostingAggregate"
+        }
+      }
+    },
+    "OpsWithdrawal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "withdrawal_id",
+        "account_id",
+        "amount_fen",
+        "currency",
+        "provider",
+        "payee_identity_masked",
+        "provider_config_version_id",
+        "status",
+        "frozen_journal_id",
+        "created_at",
+        "updated_at",
+        "version",
+        "allowed_actions"
+      ],
+      "properties": {
+        "withdrawal_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "account_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "amount_fen": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$"
+        },
+        "currency": {
+          "type": "string",
+          "enum": [
+            "CNY"
+          ]
+        },
+        "provider": {
+          "type": "string",
+          "enum": [
+            "WECHAT"
+          ]
+        },
+        "payee_identity_masked": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "provider_config_version_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "PENDING_REVIEW",
+            "APPROVED",
+            "PROCESSING",
+            "UNKNOWN",
+            "SUCCEEDED",
+            "REJECTED",
+            "FAILED_FINAL"
+          ]
+        },
+        "frozen_journal_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "payout_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "reviewed_by": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "reviewed_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "review_reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        },
+        "allowed_actions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/OpsFinanceActionState"
+          }
+        }
+      }
+    },
+    "OpsPayout": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "payout_id",
+        "source_withdrawal_id",
+        "account_id",
+        "provider",
+        "provider_account_masked",
+        "request_number_masked",
+        "amount_fen",
+        "currency",
+        "payee_identity_masked",
+        "status",
+        "created_at",
+        "updated_at",
+        "version",
+        "query",
+        "allowed_actions"
+      ],
+      "properties": {
+        "payout_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "source_withdrawal_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "account_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "provider": {
+          "type": "string",
+          "enum": [
+            "WECHAT"
+          ]
+        },
+        "provider_account_masked": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "request_number_masked": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "amount_fen": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$"
+        },
+        "currency": {
+          "type": "string",
+          "enum": [
+            "CNY"
+          ]
+        },
+        "payee_identity_masked": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "READY",
+            "DISPATCHED",
+            "UNKNOWN",
+            "SUCCEEDED",
+            "FAILED_FINAL"
+          ]
+        },
+        "provider_transfer_id_masked": {
+          "type": "string",
+          "maxLength": 64
+        },
+        "success_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "last_observed_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        },
+        "query": {
+          "$ref": "#/Schemas/OpsFinanceQueryState"
+        },
+        "allowed_actions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/OpsFinanceActionState"
+          }
+        }
+      }
+    },
+    "OpsReconciliationBatch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "batch_id",
+        "provider",
+        "merchant_id_masked",
+        "business_date",
+        "bill_material_id",
+        "status",
+        "item_count",
+        "open_item_count",
+        "resolved_item_count",
+        "ignored_item_count",
+        "difference_abs_fen",
+        "currency",
+        "started_at",
+        "completed_at",
+        "error_code",
+        "created_at",
+        "updated_at",
+        "version"
+      ],
+      "properties": {
+        "batch_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "provider": {
+          "type": "string",
+          "enum": [
+            "WECHAT"
+          ]
+        },
+        "merchant_id_masked": {
+          "type": "string",
+          "maxLength": 64
+        },
+        "business_date": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "bill_material_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "IMPORTING",
+            "READY",
+            "FAILED"
+          ]
+        },
+        "item_count": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        },
+        "open_item_count": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        },
+        "resolved_item_count": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        },
+        "ignored_item_count": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        },
+        "difference_abs_fen": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$"
+        },
+        "currency": {
+          "type": "string",
+          "enum": [
+            "CNY"
+          ]
+        },
+        "started_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "completed_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "Z$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "error_code": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        }
+      }
+    },
+    "OpsReconciliationCreateRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "provider",
+        "business_date",
+        "bill_material_id",
+        "provider_config_version_id"
+      ],
+      "properties": {
+        "provider": {
+          "type": "string",
+          "enum": [
+            "WECHAT"
+          ]
+        },
+        "business_date": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "bill_material_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "provider_config_version_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        }
+      }
+    },
+    "OpsReconciliationReceipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "batch",
+        "replayed"
+      ],
+      "properties": {
+        "batch": {
+          "$ref": "#/Schemas/OpsReconciliationBatch"
+        },
+        "replayed": {
+          "type": "boolean"
+        }
+      }
+    },
+    "OpsReconciliationResolutionRequest": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "resolution_kind",
+            "reason"
+          ],
+          "properties": {
+            "resolution_kind": {
+              "type": "string",
+              "enum": [
+                "REQUERY_ORIGIN"
+              ]
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "resolution_kind",
+            "reason",
+            "approved_adjustment_source_id"
+          ],
+          "properties": {
+            "resolution_kind": {
+              "type": "string",
+              "enum": [
+                "POST_APPROVED_ADJUSTMENT"
+              ]
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500
+            },
+            "approved_adjustment_source_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            }
+          }
+        }
+      ]
+    },
+    "OpsReconciliationResolutionReceipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "item_id",
+        "batch_id",
+        "status",
+        "resolution_kind",
+        "resolution_ref",
+        "resolved_at",
+        "version",
+        "replayed"
+      ],
+      "properties": {
+        "item_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "batch_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "RESOLVED"
+          ]
+        },
+        "resolution_kind": {
+          "type": "string",
+          "enum": [
+            "REQUERY_ORIGIN",
+            "POST_APPROVED_ADJUSTMENT"
+          ]
+        },
+        "resolution_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "query_job_id": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        },
+        "journal_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "resolved_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        },
+        "replayed": {
+          "type": "boolean"
+        }
+      }
+    },
+    "CashBalance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "currency",
+        "available_fen",
+        "frozen_fen",
+        "withdrawable_fen",
+        "as_of_at"
+      ],
+      "properties": {
+        "currency": {
+          "type": "string",
+          "enum": [
+            "CNY"
+          ]
+        },
+        "available_fen": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]{0,18})$"
+        },
+        "frozen_fen": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]{0,18})$"
+        },
+        "withdrawable_fen": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]{0,18})$"
+        },
+        "as_of_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        }
+      }
+    },
+    "WithdrawalProjection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "withdrawal_id",
+        "amount_fen",
+        "currency",
+        "provider",
+        "provider_config_version_id",
+        "status",
+        "frozen_journal_id",
+        "created_at",
+        "updated_at",
+        "version"
+      ],
+      "properties": {
+        "withdrawal_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "amount_fen": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$"
+        },
+        "currency": {
+          "type": "string",
+          "enum": [
+            "CNY"
+          ]
+        },
+        "provider": {
+          "type": "string",
+          "enum": [
+            "WECHAT"
+          ]
+        },
+        "provider_config_version_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "PENDING_REVIEW",
+            "APPROVED",
+            "PROCESSING",
+            "UNKNOWN",
+            "SUCCEEDED",
+            "REJECTED",
+            "FAILED_FINAL"
+          ]
+        },
+        "frozen_journal_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "payout_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "reviewed_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "review_reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        }
+      }
+    },
+    "WithdrawalCreateRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "amount_fen",
+        "provider_config_version_id"
+      ],
+      "properties": {
+        "amount_fen": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,18}$"
+        },
+        "provider_config_version_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "provider_confirmation_token": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        }
+      }
+    },
+    "WithdrawalReceipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "withdrawal",
+        "balance",
+        "replayed"
+      ],
+      "properties": {
+        "withdrawal": {
+          "$ref": "#/Schemas/WithdrawalProjection"
+        },
+        "balance": {
+          "$ref": "#/Schemas/CashBalance"
+        },
+        "replayed": {
+          "type": "boolean"
+        }
+      }
+    },
+    "WithdrawalDecisionRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "decision",
+        "reason"
+      ],
+      "properties": {
+        "decision": {
+          "type": "string",
+          "enum": [
+            "APPROVE",
+            "REJECT"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
+      }
+    },
+    "WithdrawalDecisionReceipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "withdrawal",
+        "decision",
+        "replayed"
+      ],
+      "properties": {
+        "withdrawal": {
+          "$ref": "#/Schemas/WithdrawalProjection"
+        },
+        "decision": {
+          "type": "string",
+          "enum": [
+            "APPROVE",
+            "REJECT"
+          ]
+        },
+        "payout_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "replayed": {
+          "type": "boolean"
+        }
+      }
+    },
+    "OpsEntitlementPurchaseListItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "purchase_id",
+        "purchase_no",
+        "buyer_id",
+        "offer_code",
+        "kind",
+        "quantity",
+        "cost_unit",
+        "purchase_model",
+        "unit_price",
+        "gross_cost",
+        "discount_cost",
+        "total_cost",
+        "rule_version_id",
+        "consideration_status",
+        "grant_status",
+        "refund_status",
+        "settled_at",
+        "granted_at",
+        "closed_at",
+        "created_at",
+        "updated_at",
+        "version"
+      ],
+      "properties": {
+        "purchase_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "purchase_no": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "buyer_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "offer_code": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "CONTRACT",
+            "PUBLISH_QUOTA",
+            "PACKAGE"
+          ]
+        },
+        "quantity": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$"
+        },
+        "cost_unit": {
+          "type": "string",
+          "enum": [
+            "CNY",
+            "PINK_POINT"
+          ]
+        },
+        "purchase_model": {
+          "type": "string",
+          "enum": [
+            "PINK_IMMEDIATE",
+            "PINK_V2"
+          ]
+        },
+        "unit_price": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]{0,18})$"
+        },
+        "gross_cost": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]{0,18})$"
+        },
+        "discount_cost": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]{0,18})$"
+        },
+        "total_cost": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]{0,18})$"
+        },
+        "rule_version_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "consideration_status": {
+          "type": "string",
+          "enum": [
+            "UNPAID",
+            "PROCESSING",
+            "UNKNOWN",
+            "PAID",
+            "CLOSED"
+          ]
+        },
+        "grant_status": {
+          "type": "string",
+          "enum": [
+            "NOT_GRANTED",
+            "GRANTED",
+            "REVOKED"
+          ]
+        },
+        "refund_status": {
+          "type": "string",
+          "enum": [
+            "NONE",
+            "PROCESSING",
+            "UNKNOWN",
+            "REFUNDED",
+            "FAILED_FINAL"
+          ]
+        },
+        "settled_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "Z$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "granted_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "Z$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "closed_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "Z$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        }
+      }
+    },
+    "OpsEntitlementLotSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "lot_id",
+        "granted_quantity",
+        "available_quantity",
+        "reserved_quantity",
+        "consumed_quantity",
+        "refund_frozen_quantity",
+        "revoked_quantity",
+        "expired_quantity",
+        "valid_until",
+        "version"
+      ],
+      "properties": {
+        "lot_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "granted_quantity": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$"
+        },
+        "available_quantity": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$"
+        },
+        "reserved_quantity": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$"
+        },
+        "consumed_quantity": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$"
+        },
+        "refund_frozen_quantity": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$"
+        },
+        "revoked_quantity": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$"
+        },
+        "expired_quantity": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$"
+        },
+        "valid_until": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "Z$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        }
+      }
+    },
+    "OpsEntitlementPurchaseDetail": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "purchase_id",
+        "purchase_no",
+        "buyer_id",
+        "offer_code",
+        "kind",
+        "quantity",
+        "cost_unit",
+        "purchase_model",
+        "unit_price",
+        "gross_cost",
+        "discount_cost",
+        "total_cost",
+        "rule_version_id",
+        "consideration_status",
+        "grant_status",
+        "refund_status",
+        "settled_at",
+        "granted_at",
+        "closed_at",
+        "created_at",
+        "updated_at",
+        "version",
+        "lot",
+        "allowed_actions"
+      ],
+      "properties": {
+        "purchase_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "purchase_no": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "buyer_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "offer_code": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "CONTRACT",
+            "PUBLISH_QUOTA",
+            "PACKAGE"
+          ]
+        },
+        "quantity": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$"
+        },
+        "cost_unit": {
+          "type": "string",
+          "enum": [
+            "CNY",
+            "PINK_POINT"
+          ]
+        },
+        "purchase_model": {
+          "type": "string",
+          "enum": [
+            "PINK_IMMEDIATE",
+            "PINK_V2"
+          ]
+        },
+        "unit_price": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]{0,18})$"
+        },
+        "gross_cost": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]{0,18})$"
+        },
+        "discount_cost": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]{0,18})$"
+        },
+        "total_cost": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]{0,18})$"
+        },
+        "rule_version_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "consideration_status": {
+          "type": "string",
+          "enum": [
+            "UNPAID",
+            "PROCESSING",
+            "UNKNOWN",
+            "PAID",
+            "CLOSED"
+          ]
+        },
+        "grant_status": {
+          "type": "string",
+          "enum": [
+            "NOT_GRANTED",
+            "GRANTED",
+            "REVOKED"
+          ]
+        },
+        "refund_status": {
+          "type": "string",
+          "enum": [
+            "NONE",
+            "PROCESSING",
+            "UNKNOWN",
+            "REFUNDED",
+            "FAILED_FINAL"
+          ]
+        },
+        "settled_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "Z$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "granted_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "Z$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "closed_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "Z$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        },
+        "lot": {
+          "anyOf": [
+            {
+              "$ref": "#/Schemas/OpsEntitlementLotSummary"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "point_ledger_entry_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "entitlement_movement_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "allowed_actions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64
+          }
+        },
+        "name": {
+          "maxLength": 80,
+          "type": "string"
+        },
+        "cny_price_fen": {
+          "pattern": "^[1-9][0-9]{0,18}$",
+          "type": "string"
+        },
+        "pink_price": {
+          "pattern": "^[1-9][0-9]{0,18}$",
+          "type": "string"
+        },
+        "items": {
+          "minItems": 1,
+          "type": "array",
+          "items": {
+            "required": [
+              "kind",
+              "quantity",
+              "valid_days",
+              "lot",
+              "entitlement_movement_id"
+            ],
+            "type": "object",
+            "properties": {
+              "entitlement_movement_id": {
+                "minLength": 1,
+                "type": "string",
+                "maxLength": 64
+              },
+              "lot": {
+                "$ref": "#/Schemas/OpsEntitlementLotSummary"
+              },
+              "kind": {
+                "enum": [
+                  "CONTRACT",
+                  "PUBLISH_QUOTA"
+                ],
+                "type": "string"
+              },
+              "valid_days": {
+                "anyOf": [
+                  {
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "quantity": {
+                "pattern": "^[1-9][0-9]{0,18}$",
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "maxItems": 2
+        }
+      }
+    }
+  }
+}

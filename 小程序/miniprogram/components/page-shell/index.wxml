@@ -1,0 +1,6 @@
+<view class="page-shell page-shell--{{surface}} page-shell--{{scrollMode}}" aria-busy="{{ariaBusy}}">
+  <view class="page-shell__header {{fixedHeader ? 'page-shell__header--fixed' : ''}}"><slot name="header"></slot></view>
+  <scroll-view wx:if="{{scrollMode === 'viewport'}}" class="page-shell__viewport" scroll-y="true" lower-threshold="120" bindscrolltolower="onLower"><view class="page-shell__main"><slot></slot></view></scroll-view>
+  <view wx:else class="page-shell__main"><slot></slot></view>
+  <view wx:if="{{hasFooter}}" class="page-shell__footer page-shell__footer--{{footerSurface}}"><slot name="footer"></slot></view>
+</view>

@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "1.0",
+  "ruleId": "MPA-EXC-001",
+  "case": "reject",
+  "files": {
+    "config/miniprogram-architecture-policy.json": "{\"exceptions\":[{\"ruleId\":\"MPA-DEP-001\",\"path\":\"miniprogram/pages/fixture/index.ts\",\"fingerprint\":\"$FIXTURE_FINDING\",\"reason\":\"LEGACY 1.0.0.13: reviewed duplicate exception fixture for collision rejection.\",\"owner\":\"miniprogram-architecture\",\"removeByVersion\":\"1.0.1.0\"},{\"ruleId\":\"MPA-DEP-001\",\"path\":\"miniprogram/pages/fixture/index.ts\",\"fingerprint\":\"$FIXTURE_FINDING\",\"reason\":\"LEGACY 1.0.0.13: reviewed duplicate exception fixture for collision rejection.\",\"owner\":\"miniprogram-architecture\",\"removeByVersion\":\"1.0.1.0\"}]}"
+  }
+}

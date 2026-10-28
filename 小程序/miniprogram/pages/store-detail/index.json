@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "门店详情",
+  "usingComponents": {
+    "media-state": "/components/media-state/index",
+    "page-header": "../../components/page-header/index"
+  },
+  "navigationStyle": "custom",
+  "navigationBarTextStyle": "black"
+}

@@ -1,0 +1,15 @@
+<view wx:if="{{!overlayHidden}}" class="custom-tab-bar">
+  <view
+    wx:for="{{tabs}}"
+    wx:key="pagePath"
+    class="tab-item {{selected === index ? 'is-active' : ''}} xy-tap"
+    data-route="{{item.pagePath}}"
+    bindtap="switchTab"
+    role="button"
+    aria-label="切换到{{item.text}}"
+  >
+    <image wx:if="{{item.icon}}" class="tab-icon" src="{{selected === index ? item.selectedIcon : item.icon}}" mode="aspectFit" />
+    <text>{{item.text}}</text>
+    <text wx:if="{{index === 2 && unreadText}}" class="tab-unread" aria-label="{{unreadText}}条未读订单消息">{{unreadText}}</text>
+  </view>
+</view>

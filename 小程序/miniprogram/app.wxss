@@ -1,0 +1,464 @@
+@import "./shared/design/components.wxss";
+@import "./shared/design/page-action-states.wxss";
+
+page {
+  --xy-order-body-size: calc(7px + .5rem);
+  --xy-order-body-line-height: calc(14px + .5rem);
+  --xy-order-status-size: calc(16px + .5rem);
+  --xy-order-status-line-height: calc(24px + .5rem);
+  --xy-order-amount-size: calc(20px + .5rem);
+  --xy-order-amount-line-height: calc(28px + .5rem);
+  --xy-order-thumbnail-size: 80px;
+  --xy-control-height-order: 48px;
+  --xy-chat-composer-height: 56px;
+  --xy-chat-input-max-height: 124px;
+  --xy-text-order-navigation-size: calc(10px + .5rem);
+  --xy-text-order-navigation-line-height: calc(18px + .5rem);
+  --xy-contract-text-preview-height: 320px;
+  --xy-contract-canvas-height: 440px;
+  --xy-contract-status-min-height: 88px;
+  --xy-contract-summary-min-height: 144px;
+  --xy-contract-preview-min-height: 360px;
+  --xy-contract-recovery-min-height: 144px;
+  --xy-contract-recovery-object-min-height: 160px;
+  --xy-contract-recovery-icon-size: 80px;
+  --xy-color-warning-soft: #fff7e6;
+  --xy-return-line-compact: 1.4;
+  --xy-return-line-body: 1.5;
+  --xy-return-line-copy: 1.6;
+  --xy-return-line-hero: 1.35;
+  --xy-return-brand: #00876c;
+  --xy-return-brand-soft: #e4f5f0;
+  --xy-return-canvas: #f5f7fb;
+  --xy-return-ink: #0e1527;
+  --xy-return-muted: #68768e;
+  --xy-return-link: #0075ed;
+  --xy-return-border: #e1e7f0;
+  --xy-return-control: #f0f3f7;
+  --xy-return-disabled: #b7c0cc;
+  --xy-return-warning-soft: #fff7e6;
+  --xy-return-warning-icon: #eea01b;
+  --xy-return-danger-soft: #fdecef;
+  --xy-return-title-size: calc(14px + .5rem);
+  --xy-return-hero-size: calc(22px + .5rem);
+  --xy-return-step-size: 28px;
+  --xy-return-hero-icon-size: 144px;
+  --xy-return-upload-height: 82px;
+  --xy-return-proof-height: 60px;
+  --xy-return-photo-size: 104px;
+  --xy-return-slot-height: 68px;
+
+  --xy-color-brand: #0a7f5e;
+  --xy-color-brand-pressed: #075f48;
+  --xy-color-brand-light: #e7f7f1;
+  --xy-color-brand-disabled: #98b4ac;
+  --xy-color-text-primary: #202937;
+  --xy-color-text-strong: #131926;
+  --xy-color-text-secondary: #58616e;
+  --xy-color-text-muted: #67707c;
+  --xy-color-text-weak: #9198a2;
+  --xy-color-text-disabled: #c4c6cc;
+  --xy-color-text-inverse: #fff;
+  --xy-color-page: #f5f6fa;
+  --xy-color-canvas-muted: #f0f1f5;
+  --xy-color-surface: #fff;
+  --xy-color-surface-subtle: #f5f6fa;
+  --xy-color-control-surface: #f2f4f4;
+  --xy-color-brand-soft: #eaf6f1;
+  --xy-color-tag-neutral: #e7ecf5;
+  --xy-color-action-primary: var(--xy-color-brand);
+  --xy-color-action-secondary: var(--xy-color-surface);
+  --xy-color-action-danger: var(--xy-color-danger);
+  --xy-color-action-pressed: var(--xy-color-brand-pressed);
+  --xy-color-focus: #2b67bd;
+  --xy-color-link: #2b67bd;
+  --xy-color-border: #e2e6e5;
+  --xy-color-border-weak: #f0f1f3;
+  --xy-color-border-strong: #858d96;
+  --xy-color-divider: #e2e6e5;
+  --xy-color-icon: #58616e;
+  --xy-color-icon-strong: #202937;
+  --xy-color-icon-carrier: #eef1f0;
+  --xy-color-success: #1f7957;
+  --xy-color-info: #2b67bd;
+  --xy-color-info-light: #eaf2ff;
+  /* Strong enough for fixed-size status text on white/surface backgrounds. */
+  --xy-color-warning: #b45309;
+  --xy-color-danger: #c62828;
+  --xy-color-promo: #c62828;
+  --xy-color-disabled: var(--xy-color-brand-disabled);
+  --xy-color-scrim: rgba(19, 25, 38, .45);
+  --xy-color-media-canvas: #000;
+  --xy-font-family-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
+  --xy-font-family-numeric: var(--xy-font-family-sans);
+  /* Algebraically equivalent to base + .5 * (1rem - 16px), without relying
+   * on unsupported CSS multiplication. Viewport width never scales type. */
+  --xy-text-page-title-size: calc(10px + .5rem);
+  --xy-text-page-title-line-height: calc(18px + .5rem);
+  --xy-text-section-title-size: calc(8px + .5rem);
+  --xy-text-section-title-line-height: calc(16px + .5rem);
+  --xy-text-item-title-size: calc(6px + .5rem);
+  --xy-text-item-title-line-height: calc(12px + .5rem);
+  --xy-text-body-size: calc(6px + .5rem);
+  --xy-text-body-line-height: calc(12px + .5rem);
+  --xy-text-body-small-size: calc(4px + .5rem);
+  --xy-text-body-small-line-height: calc(10px + .5rem);
+  --xy-text-caption-size: calc(3px + .5rem);
+  --xy-text-caption-line-height: calc(8px + .5rem);
+  --xy-text-weight-regular: 400;
+  --xy-text-weight-medium: 500;
+  --xy-text-weight-semibold: 600;
+  --xy-text-weight-bold: 700;
+  --xy-text-weight-heavy: 800;
+  /* Spacing is a fixed CSS-px scale; it must not grow with viewport width. */
+  --xy-space-1: 4px;
+  --xy-space-2: 8px;
+  --xy-space-3: 12px;
+  --xy-space-4: 16px;
+  --xy-space-5: 20px;
+  --xy-space-6: 24px;
+  /* Compatibility only for pages not yet migrated to the final names. */
+  --xy-space-0-5: var(--xy-space-1);
+  --xy-space-1-5: var(--xy-space-2);
+  --xy-space-2-5: var(--xy-space-3);
+  --xy-layout-page-padding-x: var(--xy-space-4);
+  --xy-layout-page-padding-top: var(--xy-space-3);
+  --xy-layout-first-block-gap: var(--xy-space-3);
+  --xy-layout-first-block-gap-form: var(--xy-space-4);
+  --xy-layout-card-stack-start-gap: var(--xy-space-4);
+  --xy-discovery-rail-width: 112px;
+  --xy-region-index-step: 24px;
+  --xy-layout-section-gap: var(--xy-space-6);
+  --xy-layout-section-gap-lg: var(--xy-space-6);
+  --xy-layout-title-content-gap: var(--xy-space-3);
+  --xy-layout-content-gap: var(--xy-space-3);
+  --xy-layout-content-gap-compact: var(--xy-space-2);
+  --xy-layout-inline-gap: var(--xy-space-2);
+  /* Relationship aliases keep spacing tied to meaning instead of a page-local number. */
+  --xy-gap-label-value: var(--xy-space-1);
+  --xy-gap-title-description: var(--xy-space-1);
+  --xy-gap-related: var(--xy-space-2);
+  --xy-gap-group: var(--xy-space-3);
+  --xy-gap-content-action: var(--xy-space-4);
+  --xy-gap-product-meta-rows: 2px;
+  --xy-gap-label-value-compact: 2px;
+  --xy-gap-chip-compact: 6px;
+  --xy-inset-card: var(--xy-space-3);
+  --xy-inset-chip-compact-x: 6px;
+  --xy-inset-chip-compact-y: 1px;
+  /* Bounded optical compensation for adjacent text frames whose font leading
+   * otherwise adds one extra visible pixel beyond the relationship target. */
+  --xy-optical-text-frame-nudge: -1px;
+  /* Radius is a separate shape scale: compact2 / media4 / card6 / emphasis12. */
+  --xy-radius-compact: 2px;
+  --xy-radius-sm: 4px;
+  --xy-radius-md: 6px;
+  --xy-radius-lg: 12px;
+  --xy-radius-sheet: 16px;
+  --xy-radius-pill: 999px;
+  --xy-radius-media: var(--xy-radius-sm);
+  --xy-radius-container: var(--xy-radius-md);
+  --xy-radius-emphasis: var(--xy-radius-lg);
+  --xy-radius-control: var(--xy-radius-pill);
+  --xy-radius-circle: 50%;
+  --xy-shadow-card: none;
+  --xy-shadow-banner: 0 4px 12px rgba(18, 28, 26, .08);
+  --xy-shadow-floating-action: 0 8px 20px rgba(18, 28, 26, .12);
+  --xy-shadow-overlap-card: 0 8px 24px rgba(0, 0, 0, .14);
+  --xy-shadow-float: 0 16rpx 40rpx rgba(19, 25, 38, .12);
+  --xy-shadow-fixed: 0 -8rpx 24rpx rgba(19, 25, 38, .08);
+  --xy-fixed-tab-visible-height: 64px;
+  --xy-fixed-tab-clearance: calc(var(--xy-fixed-tab-visible-height) + var(--xy-space-4) + env(safe-area-inset-bottom));
+  --xy-gap-tab-icon-label: 3px;
+  --xy-size-tab-icon: 22px;
+  --xy-text-tab-label-size: calc(3px + .5rem);
+  --xy-text-tab-label-line-height: calc(8px + .5rem);
+  --xy-fixed-bottom-height: 56px;
+  --xy-fixed-bottom-clearance: calc(var(--xy-fixed-bottom-height) + var(--xy-space-4) + env(safe-area-inset-bottom));
+  --xy-empty-page-min-height: 360px;
+  --xy-empty-section-min-height: 120px;
+  --xy-empty-page-illustration-width: 400rpx;
+  --xy-empty-page-illustration-height: 300rpx;
+  --xy-empty-section-illustration-width: 192rpx;
+  --xy-empty-section-illustration-height: 144rpx;
+  --xy-control-height-compact: 28px;
+  --xy-control-width-membership-entry: 80px;
+  --xy-button-height-small: 32px;
+  --xy-button-height-standard: 36px;
+  --xy-control-height-standard: 40px;
+  --xy-control-height-large: 48px;
+  --xy-control-height: 44px;
+  --xy-control-hit-overhang-compact: 8px;
+  --xy-control-hit-overhang-compact-negative: -8px;
+  --xy-control-hit-overhang-small: 6px;
+  --xy-control-hit-overhang-standard: 4px;
+  --xy-button-padding-x: 16px;
+  --xy-size-icon-base: 16px;
+  --xy-size-icon-row: 20px;
+  --xy-size-icon-nav: 24px;
+  --xy-size-icon-feature: 32px;
+  --xy-size-icon-entry-block: 40px;
+  --xy-size-icon-entry-glyph: 24px;
+  --xy-size-icon-entry-block-compact: 36px;
+  --xy-size-icon-entry-glyph-compact: 24px;
+  --xy-size-icon-entry-copy-compact: 42px;
+  /* Compatibility aliases; new code should use the semantic names above. */
+  --xy-size-icon-xs: var(--xy-size-icon-base);
+  --xy-size-icon-sm: var(--xy-size-icon-row);
+  --xy-size-icon-md: var(--xy-size-icon-nav);
+  --xy-size-icon-lg: var(--xy-size-icon-feature);
+  --xy-size-touch-min: 44px;
+  --xy-control-hit-size: var(--xy-size-touch-min);
+  --xy-size-thumb-sm: 112rpx;
+  --xy-size-thumb-lg: 200rpx;
+  --xy-product-list-media-size: var(--xy-size-thumb-lg);
+  --xy-product-list-media-size-compact: 82px;
+  --xy-product-list-media-gap: var(--xy-layout-content-gap);
+  --xy-store-object-media-size: 66px;
+  --xy-layout-profile-asset-overlap: -17px;
+  --xy-layout-membership-hero-height: 319px;
+  --xy-layout-membership-card-overlap-offset: -66px;
+  --xy-layout-membership-card-height: 132px;
+  --xy-layout-membership-balance-row-height: 66px;
+  --xy-layout-membership-content-tail: 57px;
+  --xy-layout-membership-invite-height: 70px;
+  --xy-layout-membership-decoration-top: -36px;
+  --xy-layout-membership-decoration-width: 375px;
+  --xy-layout-membership-decoration-height: 195px;
+  --xy-text-membership-level-size: 30px;
+  --xy-login-title-size: 22px;
+  --xy-login-title-line-height: 30px;
+  --xy-login-action-size: 18px;
+  --xy-login-action-line-height: 24px;
+  --xy-login-close-size: 30px;
+  --xy-text-membership-level-line-height: 30px;
+  --xy-text-membership-total-size: 38px;
+  --xy-text-membership-total-line-height: 45px;
+  --xy-text-membership-growth-size: 18px;
+  --xy-text-membership-growth-line-height: 21px;
+  --xy-size-membership-diamond-width: 22px;
+  --xy-size-membership-diamond-height: 20px;
+  --xy-control-width-membership-invite: 66px;
+  --xy-store-list-media-size: 128rpx;
+  --xy-store-list-media-gap: var(--xy-layout-content-gap);
+  --xy-border-object-card-width: 1px;
+  --xy-price-value-size: 20px;
+  --xy-color-payable: #ff5252;
+  --xy-payable-value-size: 22px;
+  --xy-payable-value-line-height: 28px;
+  --xy-price-value-line-height: 24px;
+  --xy-price-symbol-size: var(--xy-text-body-small-size);
+  --xy-price-symbol-line-height: var(--xy-text-body-small-line-height);
+  --xy-price-unit-size: var(--xy-text-caption-size);
+  --xy-price-unit-line-height: var(--xy-text-caption-line-height);
+  --xy-price-meta-size: var(--xy-text-body-small-size);
+  --xy-price-meta-line-height: var(--xy-text-body-small-line-height);
+  --xy-text-asset-summary-size: 28px;
+  --xy-text-asset-summary-line-height: 32px;
+  --xy-text-operations-hero-size: 40px;
+  --xy-text-operations-hero-line-height: 44px;
+  --xy-divider-hairline: 1rpx;
+  --xy-divider-selected: 2px;
+  --xy-divider-selected-emphasis: 3px;
+  --xy-optical-category-indicator-bottom: 3px;
+  /* Closed member theme: color and material only. Geometry and type continue
+   * to use the shared semantic roles above. */
+  --xy-member-color-hero: #075f48;
+  --xy-member-color-hero-start: #01261d;
+  --xy-member-color-hero-end: #2b6a52;
+  --xy-member-color-hero-text: #ddf8e1;
+  --xy-member-color-hero-muted: rgba(255, 255, 255, .72);
+  --xy-member-color-accent: #fed47c;
+  --xy-member-color-green: #a0ffb0;
+  --xy-member-color-growth: #a6e7b1;
+  --xy-member-color-divider: rgba(255, 255, 255, .1);
+  --xy-member-color-hero-overlay: rgba(255, 255, 255, .1);
+  --xy-member-color-hero-border: #dce9e1;
+  --xy-member-color-hero-pink-border: #f0dce4;
+  --xy-member-color-hero-dark-border: rgba(255, 255, 255, .12);
+  --xy-member-color-hero-dark-text: #f7fff9;
+  --xy-member-color-hero-dark-eyebrow: #bdebd0;
+  --xy-member-color-hero-dark-copy: rgba(255, 255, 255, .88);
+  --xy-member-color-hero-dark-muted: rgba(255, 255, 255, .84);
+  --xy-member-color-hero-dark-caption: rgba(255, 255, 255, .84);
+  --xy-member-color-hero-progress: rgba(255, 255, 255, .24);
+  --xy-member-color-hero-progress-dark: rgba(255, 255, 255, .2);
+  --xy-member-color-progress: rgba(10, 127, 94, .14);
+  --xy-member-color-progress-soft: rgba(10, 127, 94, .1);
+  --xy-member-color-progress-medium: rgba(10, 127, 94, .12);
+  --xy-member-color-white: #fff;
+  --xy-member-color-white-16: rgba(255, 255, 255, .16);
+  --xy-member-color-white-26: rgba(255, 255, 255, .26);
+  --xy-member-color-white-72: rgba(255, 255, 255, .72);
+  --xy-member-color-black: #161a18;
+  --xy-member-color-page: #f2f5f3;
+  --xy-member-color-page-soft: #f8faf9;
+  --xy-member-color-surface-soft: #fafbfa;
+  --xy-member-color-surface-muted: #f5f7f6;
+  --xy-member-color-card-border: #ecefee;
+  --xy-member-color-task-bg: #f2f5f3;
+  --xy-member-color-task-bg-soft: #eef6f1;
+  --xy-member-color-task-bg-pale: #eef8f2;
+  --xy-member-color-checkin-bg: #edf7f4;
+  --xy-member-color-checkin-bg-pale: #eef8f2;
+  --xy-member-color-shop-bg: #ffe5df;
+  --xy-member-color-shop-accent: #ff7a5d;
+  --xy-member-color-diamond-bg: #fff0f5;
+  --xy-member-color-diamond-accent: #ff407c;
+  --xy-member-color-pink: #c3376b;
+  --xy-member-color-pink-deep: #b43770;
+  --xy-member-color-pink-dark: #8d2c58;
+  --xy-member-color-pink-text: #bd3f6d;
+  --xy-member-color-pink-copy: #a64068;
+  --xy-member-color-pink-border: #e4b7c8;
+  --xy-member-color-pink-border-soft: #f0cfdc;
+  --xy-member-color-pink-border-light: #f0d5e0;
+  --xy-member-color-pink-surface: #fff0f5;
+  --xy-member-color-pink-surface-soft: #fff2f6;
+  --xy-member-color-pink-surface-pale: #fff8fb;
+  --xy-member-color-pink-surface-warm: #fffafa;
+  --xy-member-color-pink-surface-light: #fff1cf;
+  --xy-member-color-gold: #f4d990;
+  --xy-member-color-gold-text: #99640f;
+  --xy-member-color-gold-deep: #ad7b1e;
+  --xy-member-color-gold-amount: #8f5c0b;
+  --xy-member-color-gold-border: #d8c899;
+  --xy-member-color-gold-bronze: #c7a963;
+  --xy-member-color-gold-border-soft: #ead29a;
+  --xy-member-color-gold-surface: #fff7df;
+  --xy-member-color-gold-surface-soft: #fff7e6;
+  --xy-member-color-gold-surface-pale: #fff8e8;
+  --xy-member-color-gold-surface-warm: #fffaf0;
+  --xy-member-color-green-border: #b5d9c7;
+  --xy-member-color-green-surface: #e9f7ef;
+  --xy-member-color-green-surface-soft: #d7efe2;
+  --xy-member-color-green-surface-pale: #f3fbf6;
+  --xy-member-color-green-text: #d8f4e1;
+  --xy-member-color-green-muted: #aab4ae;
+  --xy-member-color-green-gray: #c4cdc7;
+  --xy-member-color-green-border-soft: #dce5df;
+  --xy-member-color-green-muted-border: #e4ebe7;
+  --xy-member-color-disabled-bg: #eef1f0;
+  --xy-member-color-disabled-text: #9ba6a1;
+  --xy-member-color-muted-bg: #f2f4f3;
+  --xy-member-color-muted-text: #adb7b1;
+  --xy-member-color-surface-border: #e7e9e8;
+  --xy-member-color-neutral-border: #d8e3dd;
+  --xy-member-color-neutral: #9aa79f;
+  --xy-member-color-neutral-light: #eef5f1;
+  --xy-member-color-neutral-pale: #eef6f1;
+  --xy-member-color-red-soft: #f9dce8;
+  --xy-member-color-invite-highlight: #ff4f7d;
+  --xy-member-color-invite-copy: #58616e;
+  --xy-member-color-invite-bg: #fff8e9;
+  --xy-member-gradient-page: linear-gradient(180deg, #f8faf9 0%, #f2f5f3 100%);
+  --xy-member-gradient-hero: linear-gradient(135deg, #f8fcf9 0%, #e9f5ee 100%);
+  --xy-member-gradient-hero-pink: linear-gradient(135deg, #fffafa 0%, #fff0f5 100%);
+  --xy-member-gradient-hero-dark: linear-gradient(145deg, #0b4d38 0%, #087356 100%);
+  --xy-member-gradient-progress: linear-gradient(90deg, #0a7f5e, #c7a963);
+  --xy-member-gradient-progress-dark: linear-gradient(90deg, #f7fff9, #f4d990);
+  --xy-member-gradient-growth: linear-gradient(120deg, #f7fbf8 0%, #edf6ef 70%, #fff8e9 100%);
+  --xy-member-gradient-growth-progress: linear-gradient(90deg, #c7a963, #0a7f5e);
+  --xy-member-gradient-coupon-gold: linear-gradient(135deg, #fff7df, #f7ead0);
+  --xy-member-gradient-coupon-green: linear-gradient(135deg, #e9f7ef, #d7efe2);
+  --xy-member-gradient-coupon-pink: linear-gradient(135deg, #fff0f5, #f9dce8);
+  --xy-member-gradient-lottery-pink: linear-gradient(145deg, #fff 0%, #fff8fb 65%, #fff0f5 100%);
+  --xy-member-gradient-lottery-gold: linear-gradient(145deg, #fff 0%, #fffaf0 100%);
+  --xy-member-gradient-lottery-green: linear-gradient(145deg, #fff 0%, #f3fbf6 100%);
+  --xy-member-gradient-lottery-soft-pink: linear-gradient(145deg, #fff8fb 0%, #fff0f5 100%);
+  --xy-member-shadow-card: none;
+  --xy-member-shadow-hero: none;
+  --xy-member-shadow-balance: var(--xy-shadow-overlap-card);
+  --xy-member-shadow-pink: none;
+  --xy-member-shadow-gold-focus: 0 0 0 6rpx rgba(199, 169, 99, .2);
+  --xy-member-shadow-float: var(--xy-shadow-float);
+  --xy-member-color-pink-overlay: rgba(255, 255, 255, .72);
+  --xy-member-color-surface-overlay: rgba(255, 255, 255, .7);
+  --xy-member-color-surface-overlay-strong: rgba(255, 255, 255, .96);
+  --xy-member-color-gold-overlay: rgba(244, 217, 144, .62);
+  --xy-member-color-pink-overlay-soft: rgba(255, 255, 255, .72);
+  --xy-member-color-button-overlay: rgba(255, 255, 255, .3);
+  --xy-duration-fast: 120ms;
+  --xy-duration-normal: 200ms;
+  --xy-loading-size-inline: 16px;
+  --xy-loading-size-page: 32px;
+  --xy-loading-stroke: 2px;
+  --xy-loading-duration: 800ms;
+  --xy-opacity-pressed: .72;
+  --xy-opacity-quiet: .72;
+  --xy-z-sticky: 10;
+  --xy-z-fab: 20;
+  --xy-z-overlay: 100;
+  --xy-z-modal: 200;
+  --xy-z-local: 1;
+  --xy-z-local-raised: 2;
+  min-height: 100%;
+  background: var(--xy-color-page);
+  color: var(--xy-color-text-primary);
+  font-family: var(--xy-font-family-sans);
+  --xy-text-navigation-title-size: calc(9px + .5rem);
+  --xy-text-preview-title-size: calc(5px + .5rem);
+  --xy-text-micro-size: calc(2px + .5rem);
+  --xy-text-micro-line-height: calc(6px + .5rem);
+  --xy-text-calendar-caption-line-height: calc(4px + .5rem);
+  --xy-text-body-relaxed-line-height: calc(14px + .5rem);
+  --xy-text-task-amount-size: calc(16px + .5rem);
+  --xy-text-task-amount-line-height: calc(22px + .5rem);
+  --xy-line-height-icon: 1;
+  --xy-radius-segment: 3px;
+  --xy-radius-discovery-preview: 8px;
+  --xy-radius-switch: 13px;
+  --xy-radius-step-marker: 10px;
+  --xy-color-gallery-counter: rgba(0,0,0,.5);
+  --xy-color-calendar-track: #A5AFBA;
+  --xy-color-source-cabinet: #07865f;
+  --xy-color-source-store: #2675c9;
+  --xy-color-source-store-surface: #eaf3ff;
+  --xy-color-source-personal: #a96912;
+  --xy-color-source-personal-surface: #fff3df;
+  --xy-shadow-segment-selected: 0 1px 3px rgba(0,0,0,.08);
+  --xy-z-navigation: 30;
+}
+
+view, text, image, input, textarea, button, label, picker, scroll-view, swiper { box-sizing: border-box; }
+button::after { border: 0; }
+button { width: auto !important; max-width: 100%; margin: 0; padding: 0; border: 0; border-radius: 0; background: transparent; color: inherit; font-family: inherit; font-size: inherit; font-weight: inherit; line-height: inherit; text-align: inherit; }
+.xy-button-reset { width: auto !important; max-width: 100%; margin-right: 0 !important; margin-left: 0 !important; padding: 0; border: 0; border-radius: 0; background: transparent; color: inherit; font-family: inherit; font-size: inherit; font-weight: inherit; line-height: inherit; text-align: inherit; }
+.xy-button-fluid { width: 100% !important; }
+.xy-page { min-height: 100vh; padding-bottom: var(--xy-fixed-bottom-clearance); background: var(--xy-color-page); color: var(--xy-color-text-primary); }
+.xy-page--white { background: var(--xy-color-surface); }
+/* Deprecated: use surface, divider and list patterns for ordinary sections.
+ * Keep only for isolated entities, benefits, coupons and empty states. */
+.xy-card { border: 0; border-radius: var(--xy-radius-container, 6px); background: var(--xy-color-surface, #fff); box-shadow: none; }
+.xy-section-title { color: var(--xy-color-text-primary, #202937); font-size: var(--xy-text-section-title-size, 16px); font-weight: var(--xy-text-weight-semibold, 600); line-height: var(--xy-text-section-title-line-height, 24px); }
+.xy-body { color: var(--xy-color-text-secondary, #58616e); font-size: var(--xy-text-body-size, 14px); line-height: var(--xy-text-body-line-height, 20px); }
+.xy-caption { color: var(--xy-color-text-muted, #67707c); font-size: var(--xy-text-caption-size, 11px); line-height: var(--xy-text-caption-line-height, 16px); }
+/* Deprecated alias: use the structured .xy-price component for new money UI. */
+.xy-amount { color: var(--xy-color-text-primary, #202937); font-family: var(--xy-font-family-numeric, sans-serif); font-size: var(--xy-price-value-size, 20px); font-weight: var(--xy-text-weight-semibold, 600); line-height: var(--xy-price-value-line-height, 24px); }
+.xy-tap { transition: opacity var(--xy-duration-fast) ease; }
+.xy-tap:active { opacity: var(--xy-opacity-pressed); }
+.xy-tap:focus { outline: 2rpx solid var(--xy-color-focus); outline-offset: 2rpx; }
+.muted { color: var(--xy-color-text-secondary); }
+.hint { color: var(--xy-color-text-muted, #67707c); font-size: var(--xy-text-body-small-size, 12px); line-height: var(--xy-text-body-small-line-height, 18px); }
+.link { color: var(--xy-color-link); }
+.primary-button { display: flex; align-items: center; justify-content: center; min-height: var(--xy-control-height, 44px); border-radius: var(--xy-radius-md, 6px); background: var(--xy-color-action-primary, #0a7f5e); color: var(--xy-color-text-inverse, #fff); font-size: var(--xy-text-body-size, 14px); font-weight: var(--xy-text-weight-semibold, 600); line-height: var(--xy-text-body-line-height, 20px); }
+.secondary-button { display: flex; align-items: center; justify-content: center; min-height: var(--xy-control-height, 44px); border: 1rpx solid var(--xy-color-border-strong, #858d96); border-radius: var(--xy-radius-md, 6px); background: var(--xy-color-action-secondary, #fff); color: var(--xy-color-text-primary, #202937); font-size: var(--xy-text-body-size, 14px); font-weight: var(--xy-text-weight-semibold, 600); line-height: var(--xy-text-body-line-height, 20px); }
+.card { background: var(--xy-color-surface); }
+
+/* Scoped to the approved return v3 journey; no global redesign. */
+.return-theme {
+  --xy-color-brand: var(--xy-return-brand);
+  --xy-color-brand-light: var(--xy-return-brand-soft);
+  --xy-color-brand-soft: var(--xy-return-brand-soft);
+  --xy-color-success: var(--xy-return-brand);
+  --xy-color-page: var(--xy-return-canvas);
+  --xy-color-text-primary: var(--xy-return-ink);
+  --xy-color-text-secondary: var(--xy-return-muted);
+  --xy-color-text-muted: var(--xy-return-muted);
+  --xy-color-info: var(--xy-return-link);
+  --xy-color-link: var(--xy-return-link);
+  --xy-color-border: var(--xy-return-border);
+  --xy-color-divider: var(--xy-return-border);
+  --xy-color-surface-subtle: var(--xy-return-control);
+  --xy-color-disabled: var(--xy-return-disabled);
+}

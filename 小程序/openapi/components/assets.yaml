@@ -1,0 +1,2039 @@
+{
+  "Schemas": {
+    "OpsRentalAsset": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "asset_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "asset_no": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "product_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "product_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "lessor_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "lessor_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "supply_type": {
+          "type": "string",
+          "enum": [
+            "PERSONAL",
+            "STORE",
+            "CABINET"
+          ]
+        },
+        "identifier_type": {
+          "type": "string",
+          "enum": [
+            "IMEI",
+            "MANUFACTURER_SERIAL",
+            "PLATFORM_TAG"
+          ]
+        },
+        "identifier_scope": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "normalized_identifier": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "rfid_code": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^(?!00000000$)[0-9A-F]{8}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "current_revision_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "latest_revision_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "display_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "latest_review_status": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "PENDING",
+                "APPROVED",
+                "REJECTED"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "publish_status": {
+          "type": "string",
+          "enum": [
+            "OFFLINE",
+            "ONLINE"
+          ]
+        },
+        "availability_status": {
+          "type": "string",
+          "enum": [
+            "AVAILABLE",
+            "RESERVED",
+            "IN_USE",
+            "INSPECTION",
+            "FROZEN",
+            "RETIRED"
+          ]
+        },
+        "first_listed_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "last_listed_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "unlisted_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "unlisted_reason": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 0,
+              "maxLength": 500
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        }
+      },
+      "required": [
+        "asset_id",
+        "asset_no",
+        "product_id",
+        "product_name",
+        "lessor_id",
+        "lessor_name",
+        "supply_type",
+        "identifier_type",
+        "identifier_scope",
+        "normalized_identifier",
+        "rfid_code",
+        "current_revision_id",
+        "latest_revision_id",
+        "display_name",
+        "latest_review_status",
+        "publish_status",
+        "availability_status",
+        "first_listed_at",
+        "last_listed_at",
+        "unlisted_at",
+        "unlisted_reason",
+        "created_at",
+        "updated_at",
+        "version"
+      ]
+    },
+    "OpsAssetRevisionSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "revision_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "asset_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "revision_no": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        },
+        "product_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "display_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "rental_unit": {
+          "type": "string",
+          "enum": [
+            "HOUR",
+            "DAY"
+          ]
+        },
+        "unit_price_fen": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$",
+          "description": "Nonnegative signed BIGINT integer; amounts use fen."
+        },
+        "deposit_fen": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$",
+          "description": "Nonnegative signed BIGINT integer; amounts use fen."
+        },
+        "minimum_units": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$",
+          "description": "Nonnegative signed BIGINT integer; amounts use fen."
+        },
+        "reference_value_fen": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$",
+          "description": "Nonnegative signed BIGINT integer; amounts use fen."
+        },
+        "currency": {
+          "type": "string",
+          "enum": [
+            "CNY"
+          ]
+        },
+        "available_from": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "available_until": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "timezone": {
+          "type": "string",
+          "enum": [
+            "Asia/Shanghai"
+          ]
+        },
+        "rule_version_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "eligibility_rule_version_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "identity_check_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "submitted_by": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "submitted_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "review_status": {
+          "type": "string",
+          "enum": [
+            "PENDING",
+            "APPROVED",
+            "REJECTED"
+          ]
+        },
+        "reviewed_by": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reviewed_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "review_reason": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "revision_id",
+        "asset_id",
+        "revision_no",
+        "product_id",
+        "display_name",
+        "rental_unit",
+        "unit_price_fen",
+        "deposit_fen",
+        "minimum_units",
+        "reference_value_fen",
+        "currency",
+        "available_from",
+        "available_until",
+        "timezone",
+        "rule_version_id",
+        "eligibility_rule_version_id",
+        "identity_check_id",
+        "submitted_by",
+        "submitted_at",
+        "review_status",
+        "reviewed_by",
+        "reviewed_at",
+        "review_reason"
+      ]
+    },
+    "OpsAssetRegion": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "dataset_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "province_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "city_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "district_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "province_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "city_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "district_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        }
+      },
+      "required": [
+        "dataset_id",
+        "province_id",
+        "city_id",
+        "district_id",
+        "province_name",
+        "city_name",
+        "district_name"
+      ]
+    },
+    "OpsAssetDelivery": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "option_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "method": {
+          "type": "string",
+          "enum": [
+            "MEET",
+            "EXPRESS",
+            "RUNNER"
+          ]
+        },
+        "outbound_fee_payer": {
+          "type": "string",
+          "enum": [
+            "TENANT",
+            "LESSOR"
+          ]
+        },
+        "return_fee_payer": {
+          "type": "string",
+          "enum": [
+            "TENANT",
+            "LESSOR"
+          ]
+        },
+        "source_address_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "dataset_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "province_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "city_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "district_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "instruction": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 0,
+              "maxLength": 1000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "meeting_time_text": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 0,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "option_id",
+        "method",
+        "outbound_fee_payer",
+        "return_fee_payer",
+        "source_address_id",
+        "dataset_id",
+        "province_id",
+        "city_id",
+        "district_id",
+        "instruction",
+        "meeting_time_text"
+      ]
+    },
+    "OpsAssetProductSnapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "type": "integer",
+          "const": 1
+        },
+        "product_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "product_no": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "brand_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "brand_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "category_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "category_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "model_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "product_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 32
+          },
+          "maxItems": 20
+        },
+        "cover_material_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        }
+      },
+      "required": [
+        "schema_version",
+        "product_id",
+        "product_no",
+        "brand_id",
+        "brand_name",
+        "category_id",
+        "category_name",
+        "model_name",
+        "product_name",
+        "tags"
+      ]
+    },
+    "OpsAssetPriceSnapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "type": "integer",
+          "const": 1
+        },
+        "config_version_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "min_unit_price_fen": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$",
+          "description": "Nonnegative signed BIGINT integer; amounts use fen."
+        },
+        "max_unit_price_fen": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$",
+          "description": "Nonnegative signed BIGINT integer; amounts use fen."
+        },
+        "recommended_unit_price_fen": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$",
+          "description": "Nonnegative signed BIGINT integer; amounts use fen."
+        },
+        "rental_mode": {
+          "type": "string",
+          "enum": [
+            "HOUR",
+            "DAY"
+          ]
+        },
+        "captured_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "schema_version",
+        "config_version_id",
+        "min_unit_price_fen",
+        "max_unit_price_fen",
+        "rental_mode",
+        "captured_at"
+      ]
+    },
+    "OpsAssetRevision": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "revision_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "asset_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "revision_no": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        },
+        "product_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "display_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "rental_unit": {
+          "type": "string",
+          "enum": [
+            "HOUR",
+            "DAY"
+          ]
+        },
+        "unit_price_fen": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$",
+          "description": "Nonnegative signed BIGINT integer; amounts use fen."
+        },
+        "deposit_fen": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$",
+          "description": "Nonnegative signed BIGINT integer; amounts use fen."
+        },
+        "minimum_units": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$",
+          "description": "Nonnegative signed BIGINT integer; amounts use fen."
+        },
+        "reference_value_fen": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,18})$",
+          "description": "Nonnegative signed BIGINT integer; amounts use fen."
+        },
+        "currency": {
+          "type": "string",
+          "enum": [
+            "CNY"
+          ]
+        },
+        "available_from": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "available_until": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "timezone": {
+          "type": "string",
+          "enum": [
+            "Asia/Shanghai"
+          ]
+        },
+        "rule_version_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "eligibility_rule_version_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "identity_check_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "submitted_by": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "submitted_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "review_status": {
+          "type": "string",
+          "enum": [
+            "PENDING",
+            "APPROVED",
+            "REJECTED"
+          ]
+        },
+        "reviewed_by": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reviewed_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "review_reason": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "condition": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "defect_description": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 2000
+        },
+        "accessories_text": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 2000
+        },
+        "description": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 4000
+        },
+        "product_snapshot": {
+          "$ref": "#/Schemas/OpsAssetProductSnapshot"
+        },
+        "pricing_guidance_snapshot": {
+          "anyOf": [
+            {
+              "$ref": "#/Schemas/OpsAssetPriceSnapshot"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "publication_region": {
+          "anyOf": [
+            {
+              "$ref": "#/Schemas/OpsAssetRegion"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "media": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "material_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64,
+                "pattern": "^[!-~]{1,64}$"
+              },
+              "role": {
+                "type": "string",
+                "enum": [
+                  "COVER",
+                  "IMAGE",
+                  "VIDEO",
+                  "OWNERSHIP",
+                  "DEFECT"
+                ]
+              },
+              "sort_order": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 99
+              }
+            },
+            "required": [
+              "material_id",
+              "role",
+              "sort_order"
+            ]
+          },
+          "maxItems": 20
+        },
+        "delivery_options": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/OpsAssetDelivery"
+          },
+          "maxItems": 3
+        }
+      },
+      "required": [
+        "revision_id",
+        "asset_id",
+        "revision_no",
+        "product_id",
+        "display_name",
+        "rental_unit",
+        "unit_price_fen",
+        "deposit_fen",
+        "minimum_units",
+        "reference_value_fen",
+        "currency",
+        "available_from",
+        "available_until",
+        "timezone",
+        "rule_version_id",
+        "eligibility_rule_version_id",
+        "identity_check_id",
+        "submitted_by",
+        "submitted_at",
+        "review_status",
+        "reviewed_by",
+        "reviewed_at",
+        "review_reason",
+        "condition",
+        "defect_description",
+        "accessories_text",
+        "description",
+        "product_snapshot",
+        "pricing_guidance_snapshot",
+        "publication_region",
+        "media",
+        "delivery_options"
+      ]
+    },
+    "OpsAssetPlacement": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "placement_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "location_kind": {
+          "type": "string",
+          "enum": [
+            "STORE",
+            "CABINET"
+          ]
+        },
+        "store_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "cabinet_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "compartment_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "confirmed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "evidence_set_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        }
+      },
+      "required": [
+        "placement_id",
+        "location_kind",
+        "store_id",
+        "cabinet_id",
+        "compartment_id",
+        "confirmed_at",
+        "version"
+      ]
+    },
+    "OpsAssetAction": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "string",
+          "enum": [
+            "APPROVE",
+            "REJECT",
+            "PUBLISH",
+            "UNPUBLISH",
+            "FREEZE",
+            "UNFREEZE"
+          ]
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "blocked_reasons": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          },
+          "maxItems": 20
+        }
+      },
+      "required": [
+        "code",
+        "enabled",
+        "blocked_reasons"
+      ]
+    },
+    "OpsAssetDossier": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "asset": {
+          "$ref": "#/Schemas/OpsRentalAsset"
+        },
+        "current_revision": {
+          "anyOf": [
+            {
+              "$ref": "#/Schemas/OpsAssetRevision"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "latest_revision": {
+          "anyOf": [
+            {
+              "$ref": "#/Schemas/OpsAssetRevision"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "placement": {
+          "anyOf": [
+            {
+              "$ref": "#/Schemas/OpsAssetPlacement"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "publication_blockers": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          },
+          "maxItems": 20
+        },
+        "allowed_actions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/OpsAssetAction"
+          },
+          "maxItems": 6
+        },
+        "private_access": {
+          "type": "string",
+          "enum": [
+            "AVAILABLE",
+            "REDACTED",
+            "NOT_APPLICABLE"
+          ]
+        }
+      },
+      "required": [
+        "asset",
+        "current_revision",
+        "latest_revision",
+        "placement",
+        "publication_blockers",
+        "allowed_actions",
+        "private_access"
+      ]
+    },
+    "OpsAssetState": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "type": "integer",
+          "const": 1
+        },
+        "current_revision_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "latest_revision_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "publish_status": {
+          "type": "string",
+          "enum": [
+            "OFFLINE",
+            "ONLINE"
+          ]
+        },
+        "availability_status": {
+          "type": "string",
+          "enum": [
+            "AVAILABLE",
+            "RESERVED",
+            "IN_USE",
+            "INSPECTION",
+            "FROZEN",
+            "RETIRED"
+          ]
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        }
+      },
+      "required": [
+        "schema_version",
+        "current_revision_id",
+        "latest_revision_id",
+        "publish_status",
+        "availability_status",
+        "version"
+      ]
+    },
+    "OpsAssetCommandReceipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "asset_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "state": {
+          "$ref": "#/Schemas/OpsAssetState"
+        }
+      },
+      "required": [
+        "asset_id",
+        "state"
+      ]
+    },
+    "OpsAssetRFIDInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "rfid_code": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^(?!00000000$)[0-9A-Fa-f]{8}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "rfid_code"
+      ]
+    },
+    "OpsAssetRFIDReceipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "asset_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "rfid_code": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^(?!00000000$)[0-9A-F]{8}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]*$"
+        }
+      },
+      "required": [
+        "asset_id",
+        "rfid_code",
+        "version"
+      ]
+    },
+    "OpsAssetDecision": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "decision": {
+          "type": "string",
+          "enum": [
+            "APPROVE",
+            "REJECT"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
+      },
+      "required": [
+        "decision",
+        "reason"
+      ]
+    },
+    "OpsAssetReason": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
+      },
+      "required": [
+        "reason"
+      ]
+    },
+    "OpsAssetPage": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/OpsRentalAsset"
+          },
+          "maxItems": 100
+        },
+        "page": {
+          "$ref": "./pagination.yaml#/CursorPageMeta"
+        }
+      },
+      "required": [
+        "items",
+        "page"
+      ]
+    },
+    "OpsAssetRevisionPage": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/OpsAssetRevisionSummary"
+          },
+          "maxItems": 100
+        },
+        "page": {
+          "$ref": "./pagination.yaml#/CursorPageMeta"
+        }
+      },
+      "required": [
+        "items",
+        "page"
+      ]
+    },
+    "OpsAssetPrivateCoordinates": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "latitude": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]{0,2})\\.[0-9]{6}$"
+        },
+        "longitude": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]{0,2})\\.[0-9]{6}$"
+        },
+        "coordinate_system": {
+          "type": "string",
+          "const": "GCJ02"
+        },
+        "source": {
+          "type": "string",
+          "enum": [
+            "MAP_PICK",
+            "PROVIDER_GEOCODE"
+          ]
+        }
+      },
+      "required": [
+        "latitude",
+        "longitude",
+        "coordinate_system",
+        "source"
+      ]
+    },
+    "OpsAssetClientPosition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "latitude",
+        "longitude",
+        "coordinate_system",
+        "source"
+      ],
+      "properties": {
+        "latitude": {
+          "type": "string",
+          "pattern": "^-?(?:(?:[0-9]|[1-8][0-9])\\.[0-9]{6}|90\\.000000)$"
+        },
+        "longitude": {
+          "type": "string",
+          "pattern": "^-?(?:(?:[0-9]|[1-9][0-9]|1[0-7][0-9])\\.[0-9]{6}|180\\.000000)$"
+        },
+        "coordinate_system": {
+          "type": "string",
+          "const": "GCJ02"
+        },
+        "source": {
+          "type": "string",
+          "const": "WECHAT_CLIENT"
+        }
+      }
+    },
+    "OpsAssetPrivateAddress": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "dataset_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "province_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "city_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "district_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "province_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "city_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "district_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "detail_address": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "recipient_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "phone_country_code": {
+          "type": "string",
+          "pattern": "^\\+[1-9][0-9]{0,6}$",
+          "minLength": 2,
+          "maxLength": 8
+        },
+        "phone": {
+          "type": "string",
+          "pattern": "^[0-9]{5,32}$",
+          "minLength": 5,
+          "maxLength": 32
+        },
+        "location": {
+          "anyOf": [
+            {
+              "$ref": "#/Schemas/OpsAssetPrivateCoordinates"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "dataset_id",
+        "province_id",
+        "city_id",
+        "district_id",
+        "province_name",
+        "city_name",
+        "district_name",
+        "detail_address",
+        "recipient_name",
+        "phone_country_code",
+        "phone",
+        "location"
+      ]
+    },
+    "OpsAssetPrivateDelivery": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "option_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "method": {
+          "type": "string",
+          "enum": [
+            "MEET",
+            "EXPRESS",
+            "RUNNER"
+          ]
+        },
+        "address": {
+          "anyOf": [
+            {
+              "$ref": "#/Schemas/OpsAssetPrivateAddress"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "option_id",
+        "method",
+        "address"
+      ]
+    },
+    "OpsAssetPrivateDetails": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "asset_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "revision_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "asset_version": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,19}$"
+        },
+        "purpose": {
+          "type": "string",
+          "const": "ASSET_REVIEW"
+        },
+        "viewed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "publication_location": {
+          "anyOf": [
+            {
+              "$ref": "#/Schemas/OpsAssetPrivateAddress"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "publication_position": {
+          "anyOf": [
+            {
+              "$ref": "#/Schemas/OpsAssetClientPosition"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "delivery_locations": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 3,
+          "items": {
+            "$ref": "#/Schemas/OpsAssetPrivateDelivery"
+          }
+        }
+      },
+      "required": [
+        "asset_id",
+        "revision_id",
+        "asset_version",
+        "purpose",
+        "viewed_at",
+        "expires_at",
+        "publication_location",
+        "publication_position",
+        "delivery_locations"
+      ]
+    },
+    "OwnRentalAssetAction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "code",
+        "enabled",
+        "blocked_reasons"
+      ],
+      "properties": {
+        "code": {
+          "type": "string",
+          "enum": [
+            "VIEW",
+            "CONTINUE_DRAFT",
+            "OPEN_EDIT_DRAFT",
+            "CREATE_EDIT_DRAFT"
+          ]
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "blocked_reasons": {
+          "type": "array",
+          "maxItems": 20,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          }
+        }
+      }
+    },
+    "OwnRentalAssetItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "resource_kind",
+        "resource_id",
+        "asset_id",
+        "draft_id",
+        "origin_kind",
+        "product_id",
+        "product_name",
+        "display_name",
+        "state",
+        "publish_status",
+        "availability_status",
+        "latest_review_status",
+        "current_revision_id",
+        "latest_revision_id",
+        "rental_unit",
+        "unit_price_fen",
+        "deposit_fen",
+        "cover_material_id",
+        "delivery_methods",
+        "editable_draft_id",
+        "allowed_actions",
+        "created_at",
+        "updated_at",
+        "version"
+      ],
+      "properties": {
+        "resource_kind": {
+          "type": "string",
+          "enum": [
+            "ASSET",
+            "DRAFT"
+          ]
+        },
+        "resource_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "asset_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "draft_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "origin_kind": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "CREATE",
+                "EDIT"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "product_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "product_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "display_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "DRAFT",
+            "REVIEWING",
+            "REJECTED",
+            "ONLINE",
+            "OFFLINE",
+            "OCCUPIED"
+          ]
+        },
+        "publish_status": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "ONLINE",
+                "OFFLINE"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "availability_status": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "AVAILABLE",
+                "RESERVED",
+                "IN_USE",
+                "INSPECTION",
+                "FROZEN",
+                "RETIRED"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "latest_review_status": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "PENDING",
+                "APPROVED",
+                "REJECTED"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "current_revision_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "latest_revision_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "rental_unit": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "HOUR",
+                "DAY"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "unit_price_fen": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,18})$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "deposit_fen": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,18})$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "cover_material_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "delivery_methods": {
+          "type": "array",
+          "maxItems": 3,
+          "items": {
+            "type": "string",
+            "enum": [
+              "MEET",
+              "EXPRESS",
+              "RUNNER"
+            ]
+          }
+        },
+        "editable_draft_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "allowed_actions": {
+          "type": "array",
+          "maxItems": 8,
+          "items": {
+            "$ref": "#/Schemas/OwnRentalAssetAction"
+          }
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,19}$"
+        }
+      }
+    },
+    "OwnRentalAssetPage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "items",
+        "page"
+      ],
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 50,
+          "items": {
+            "$ref": "#/Schemas/OwnRentalAssetItem"
+          }
+        },
+        "page": {
+          "$ref": "./pagination.yaml#/CursorPageMeta"
+        }
+      }
+    },
+    "OwnRentalAssetDetail": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "item",
+        "current_revision",
+        "latest_revision",
+        "publication_blockers",
+        "as_of_at"
+      ],
+      "properties": {
+        "item": {
+          "$ref": "#/Schemas/OwnRentalAssetItem"
+        },
+        "current_revision": {
+          "anyOf": [
+            {
+              "$ref": "#/Schemas/OpsAssetRevision"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "latest_revision": {
+          "anyOf": [
+            {
+              "$ref": "#/Schemas/OpsAssetRevision"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "publication_blockers": {
+          "type": "array",
+          "maxItems": 20,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          }
+        },
+        "as_of_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  }
+}

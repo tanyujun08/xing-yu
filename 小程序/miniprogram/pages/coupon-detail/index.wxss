@@ -1,0 +1,4 @@
+@import "../coupons/index.wxss";
+.coupon-confirm-layer { position: fixed; inset: 0; z-index: var(--xy-z-modal); display: flex; align-items: center; justify-content: center; padding: var(--xy-space-6); background: var(--xy-color-scrim); }
+.coupon-confirm-dialog { width: 100%; }
+.coupons-page { display: flex; flex-direction: column; gap: var(--xy-gap-group); padding: var(--xy-layout-card-stack-start-gap) var(--xy-layout-page-padding-x) var(--xy-space-6); }

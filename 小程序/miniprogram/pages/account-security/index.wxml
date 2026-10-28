@@ -1,0 +1,16 @@
+<page-meta root-font-size="system" />
+<view class="subpage">
+<page-header title="{{secondaryNavigationTitle || '账户安全'}}" background="#ffffff" inverse="{{false}}" bindback="onSecondaryNavigationBack" />
+  <text wx:if="{{errorText}}" role="alert">{{errorText}}</text>
+  <button wx:if="{{errorText}}" class="retry-button xy-tap" bindtap="loadAuthenticators" aria-label="重试读取账户安全">重试</button>
+  <text wx:if="{{loading}}">正在读取账户安全…</text>
+  <view class="section-head"><text>登录凭据</text></view>
+  <view class="security-list">
+    <view class="security-row"><text class="security-label">手机号</text><text class="security-value">{{phoneText}}</text></view>
+    <view class="security-row"><text class="security-label">微信</text><text class="security-value">{{wechatText}}</text></view>
+    <button class="security-row security-action xy-tap" bindtap="demoPhoneAuthorize" disabled="{{!phoneActionEnabled || actionBusy}}" aria-disabled="{{!phoneActionEnabled || actionBusy}}"  aria-label="{{phoneActionText}}"><text class="security-label">{{phoneActionText}}</text><image class="security-arrow" src="{{icons.arrowRight}}" mode="aspectFit" aria-hidden="true" /></button>
+    <button wx:if="{{unbindPhoneEnabled}}" class="security-row security-action xy-tap" disabled="{{actionBusy}}" aria-disabled="{{actionBusy}}" bindtap="unbindPhone" aria-label="解绑手机号"><text class="security-label">解绑手机号</text><image class="security-arrow" src="{{icons.arrowRight}}" mode="aspectFit" aria-hidden="true" /></button>
+    <button class="security-row security-action xy-tap" disabled="{{!wechatActionEnabled || actionBusy}}" aria-disabled="{{!wechatActionEnabled || actionBusy}}" bindtap="bindWechat" aria-label="绑定微信"><text class="security-label">绑定微信</text><image class="security-arrow" src="{{icons.arrowRight}}" mode="aspectFit" aria-hidden="true" /></button>
+  </view>
+  <text class="note">手机号由微信授权获取；换绑只验证新号。解绑前请确保微信已绑定。</text>
+</view>

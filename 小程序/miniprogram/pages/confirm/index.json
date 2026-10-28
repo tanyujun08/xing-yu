@@ -1,0 +1,15 @@
+{
+  "navigationBarTitleText": "确认租赁订单",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "t-steps": "tdesign-miniprogram/steps/steps",
+    "t-step-item": "tdesign-miniprogram/step-item/step-item",
+    "confirmation-dialog": "../../components/confirmation-dialog/index",
+    "page-header": "../../components/page-header/index",
+    "task-sheet": "../../components/task-sheet/index",
+    "bottom-actions": "../../components/bottom-actions/index",
+    "order-product-summary": "../../components/order-product-summary/index",
+    "page-shell": "../../components/page-shell/index",
+    "payable-amount": "../../components/payable-amount/index"
+  }
+}

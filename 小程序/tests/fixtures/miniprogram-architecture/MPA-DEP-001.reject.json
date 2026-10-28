@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "1.0",
+  "ruleId": "MPA-DEP-001",
+  "case": "reject",
+  "files": {
+    "miniprogram/pages/orders/index.ts": "import { mockOrders } from '../../shared/fixture';\nvoid mockOrders;\n"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "我的",
+  "navigationStyle": "custom",
+  "navigationBarBackgroundColor": "#FFFFFF",
+  "navigationBarTextStyle": "black",
+  "backgroundColor": "#F5F6FA",
+  "backgroundTextStyle": "light",
+  "usingComponents": {
+    "page-header": "../../components/page-header/index"
+  }
+}

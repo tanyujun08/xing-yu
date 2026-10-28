@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1.0",
+  "ruleId": "MPA-TYPE-001",
+  "case": "reject",
+  "cases": [
+    {
+      "name": "raw-page-typography-and-sync-measurement",
+      "files": {
+        "miniprogram/pages/orders/index.wxss": ".primary-button { height: 72rpx; font-family: CustomFont; font-size: 30rpx; font-weight: 700; line-height: 42rpx; }\n",
+        "miniprogram/pages/orders/index.wxml": "<view>订单</view>\n",
+        "miniprogram/pages/orders/index.ts": "const info = wx.getSystemInfoSync();\nvoid info;\n"
+      }
+    },
+    {
+      "name": "font-shorthand-bypasses-roles",
+      "files": {
+        "miniprogram/components/probe/index.wxss": ".label { font: 600 16px/1.5 CustomFont; }\n"
+      }
+    },
+    {
+      "name": "invalid-app-font-authority",
+      "files": {
+        "miniprogram/app.wxss": "page { --xy-font-family-sans: Arial, sans-serif; }\n"
+      }
+    },
+    {
+      "name": "native-button-missing-touch-contract",
+      "files": {
+        "miniprogram/components/probe/index.wxml": "<button class=\"plain\">操作</button>\n",
+        "miniprogram/components/probe/index.wxss": ".plain { color: var(--xy-color-text-primary); }\n"
+      }
+    },
+    {
+      "name": "tap-view-missing-touch-contract",
+      "files": {
+        "miniprogram/components/probe/index.wxml": "<view class=\"plain\" bindtap=\"open\" role=\"button\">操作</view>\n",
+        "miniprogram/components/probe/index.wxss": ".plain { color: var(--xy-color-text-primary); }\n"
+      }
+    },
+    {
+      "name": "compact-visible-shell-used-as-hit-target",
+      "files": {
+        "miniprogram/components/probe/index.wxml": "<button class=\"compact-entry\">任务</button>\n",
+        "miniprogram/components/probe/index.wxss": ".compact-entry { min-height: var(--xy-button-height-standard); }\n"
+      }
+    }
+  ]
+}

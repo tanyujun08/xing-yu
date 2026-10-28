@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "1.0",
+  "ruleId": "MPA-AUTH-001",
+  "case": "accept",
+  "files": {
+    "package.json": "{\"scripts\":{\"check:architecture\":\"node scripts/check-miniprogram-architecture.mjs\",\"verify\":\"npm run check:api && npm run check:package && npm run check:architecture && npm run lint && npm run typecheck && npm test\"}}",
+    "miniprogram/app.ts": "import { mockApi } from './shared/api/mock-api';\nvoid mockApi;\n",
+    "miniprogram/shared/api/mock-api.ts": "import { readLocal } from './mock-adapter/index';\nexport const mockApi = { readLocal };\n",
+    "miniprogram/shared/api/mock-adapter/index.ts": "export const readLocal = () => ({ source: 'fixture' });\n",
+    "miniprogram/shared/api/request.ts": "export function dormantRequest() { return wx.request({ url: 'http://127.0.0.1:8081/dormant' }); }\n",
+    "miniprogram/shared/config/env.ts": "const apiOrigins = { develop: 'http://127.0.0.1:8081', trial: '', release: '' };\n"
+  }
+}

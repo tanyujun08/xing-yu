@@ -1,0 +1,49 @@
+{
+  "name": "xingyu-miniprogram-offline-demo",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "packageManager": "npm@11.6.2",
+  "engines": {
+    "node": "24.13.x",
+    "npm": "11.6.x"
+  },
+  "scripts": {
+    "generate:api": "node scripts/generate-openapi.mjs",
+    "check:api": "node scripts/generate-openapi.mjs --check",
+    "check:package": "node scripts/check-package-assets.mjs",
+    "check:architecture": "node scripts/check-miniprogram-architecture.mjs",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "npm run test:demo",
+    "verify": "npm run typecheck && npm run test:demo",
+    "test:demo": "vitest run tests/offline-demo.test.ts tests/offline-pages.test.ts tests/offline-startup.test.ts tests/offline-rules.test.ts tests/offline-v102.test.ts tests/linked-transport.test.ts tests/linked-http.integration.test.ts"
+  },
+  "overrides": {
+    "jpeg-js": "0.4.4",
+    "minimist": "1.2.8",
+    "js-yaml": "4.3.2",
+    "phin": "3.7.1",
+    "minimatch@5.1.9": {
+      "brace-expansion": "2.1.7"
+    },
+    "minimatch@10.2.6": {
+      "brace-expansion": "5.0.12"
+    }
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@types/node": "26.2.0",
+    "eslint": "10.9.0",
+    "globals": "17.11.0",
+    "miniprogram-api-typings": "5.2.3",
+    "miniprogram-automator": "0.12.1",
+    "openapi-typescript": "7.13.0",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.67.0",
+    "vitest": "4.1.11"
+  },
+  "dependencies": {
+    "tdesign-miniprogram": "1.17.0"
+  }
+}

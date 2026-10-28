@@ -1,0 +1,55 @@
+.admin-async-state {
+  display: flex;
+  min-height: 160px;
+  align-items: center;
+  justify-content: center;
+  gap: var(--xy-space-3);
+  padding: var(--xy-space-6);
+  border: 1px dashed var(--xy-admin-surface-divider);
+  border-radius: var(--xy-admin-surface-radius);
+  background: var(--xy-admin-surface-subtle-bg);
+  text-align: left;
+}
+
+.admin-async-state--compact {
+  min-height: 96px;
+  padding: var(--xy-space-4);
+}
+
+.admin-async-state__indicator {
+  width: 10px;
+  height: 10px;
+  flex: 0 0 10px;
+  border-radius: var(--xy-radius-round);
+  background: var(--xy-text-tertiary);
+}
+
+.admin-async-state--forbidden .admin-async-state__indicator,
+.admin-async-state--timeout .admin-async-state__indicator,
+.admin-async-state--conflict .admin-async-state__indicator,
+.admin-async-state--unknown .admin-async-state__indicator {
+  background: var(--xy-status-warning);
+}
+
+.admin-async-state--error .admin-async-state__indicator,
+.admin-async-state--offline .admin-async-state__indicator {
+  background: var(--xy-status-danger);
+}
+
+.admin-async-state__copy {
+  min-width: 0;
+  max-width: 520px;
+}
+
+.admin-async-state__copy strong {
+  color: var(--xy-admin-text-primary);
+  font-size: var(--xy-font-size-14);
+  font-weight: var(--xy-font-weight-semibold);
+}
+
+.admin-async-state__copy p {
+  margin: var(--xy-space-1) 0 0;
+  color: var(--xy-admin-text-secondary);
+  font-size: var(--xy-admin-table-meta-size);
+  line-height: var(--xy-line-height-22);
+}

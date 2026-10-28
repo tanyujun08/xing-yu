@@ -1,0 +1,13 @@
+.order-recovery-card { box-sizing:border-box; padding:var(--xy-space-4); background:var(--xy-color-surface); border-radius:var(--xy-radius-md); }
+.order-recovery-heading { display:flex; flex-direction:column; align-items:center; padding:var(--xy-space-2) 0 var(--xy-space-6); text-align:center; }
+.order-recovery-symbol { position:relative; display:flex; align-items:center; justify-content:center; width:calc(var(--xy-control-height-order) + var(--xy-space-6)); height:calc(var(--xy-control-height-order) + var(--xy-space-6)); border-radius:var(--xy-radius-circle); background:var(--xy-color-brand-soft); margin-bottom:var(--xy-space-3); }
+.order-recovery-state { display:block; color:var(--xy-color-text-primary); font-size:var(--xy-order-status-size); line-height:var(--xy-order-status-line-height); font-weight:var(--xy-text-weight-semibold); overflow-wrap:anywhere; }
+.order-recovery-description { color:var(--xy-color-text-secondary); font-size:var(--xy-order-body-size); line-height:var(--xy-order-body-line-height); overflow-wrap:anywhere; }
+.order-recovery-heading .order-recovery-description { margin-top:var(--xy-space-2); }
+.order-recovery-facts { margin-top:var(--xy-space-4); border-top:1rpx solid var(--xy-color-divider); }
+.order-recovery-fact { display:flex; align-items:center; justify-content:space-between; gap:var(--xy-space-3); flex-wrap:wrap; padding:var(--xy-space-3) 0; border-bottom:1rpx solid var(--xy-color-divider); color:var(--xy-color-text-secondary); font-size:var(--xy-order-body-size); line-height:var(--xy-order-body-line-height); overflow-wrap:anywhere; }
+.order-recovery-value { margin-left:auto; text-align:right; color:var(--xy-color-text-primary); }
+.order-recovery-value--strong { font-weight:var(--xy-text-weight-semibold); }
+.order-recovery-notice { display:flex; align-items:flex-start; gap:var(--xy-space-3); padding:var(--xy-space-3); margin-top:var(--xy-space-3); border-radius:var(--xy-radius-md); background:var(--xy-color-brand-soft); color:var(--xy-color-text-secondary); font-size:var(--xy-order-body-size); line-height:var(--xy-order-body-line-height); }
+.order-recovery-notice>image { flex:none; width:var(--xy-size-icon-nav); height:var(--xy-size-icon-nav); }
+.order-recovery-notice>text { flex:1; min-width:0; overflow-wrap:anywhere; }

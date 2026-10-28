@@ -1,0 +1,28 @@
+<page-meta root-font-size="system" />
+<page-shell surface="page" has-footer>
+  <page-header title="{{title}}" bindback="onSecondaryNavigationBack" slot="header" />
+  <view class="cabinet-open-page">
+    <view wx:if="{{loading}}" role="status">正在查询原任务…</view>
+    <view wx:if="{{loaded}}" class="cabinet-open-card">
+      <text class="xy-empty-page__title">{{status}}</text>
+      <text class="xy-empty-page__copy">{{copy}}</text>
+      <view class="info-row"><text>柜门状态</text><text>{{door}}</text></view>
+      <view class="info-row"><text>设备识别</text><text>{{rfid}}</text></view>
+      <view class="info-row"><text>格口状态</text><text>{{occupancy}}</text></view>
+      <view class="info-row"><text>检查时间</text><text>{{observed}}</text></view>
+      <view class="info-row"><text>完成时间</text><text>{{confirmed}}</text></view>
+    </view>
+  </view>
+  <bottom-actions slot="footer" layout="custom">
+    <view slot="actions">
+      <button wx:if="{{canResumePickup}}" class="xy-action-primary" bindtap="goPickup" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">返回柜详情继续取件</button>
+      <view wx:if="{{monitoring}}" class="body-copy" role="status">正在自动同步取件结果，无需刷新</view>
+      <button wx:if="{{canQuery && !pickup}}" class="xy-action-primary" bindtap="query" disabled="{{busy || !canQuery}}" aria-disabled="{{busy || !canQuery}}">查询归还结果</button>
+      <button wx:if="{{!pickup || monitorPaused}}" class="xy-action-hit" bindtap="refresh" disabled="{{busy}}" aria-disabled="{{busy}}">{{pickup ? '继续核实' : '刷新状态'}}</button>
+      <button wx:if="{{loaded}}" class="xy-action-hit" bindtap="showResultFeedback" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">查看结果提示</button>
+      <button wx:if="{{orderId}}" class="xy-action-hit" bindtap="goDetail">返回订单</button>
+      <button class="xy-action-hit" bindtap="demoSupport">联系客服</button>
+    </view>
+  </bottom-actions>
+</page-shell>
+<confirmation-dialog visible="{{feedbackVisible || !!errorText}}" tone="{{errorText ? 'error' : feedbackTone}}" symbol="{{pickup && !errorText ? feedbackSymbol : ''}}" eyebrow="{{pickup && !errorText ? feedbackEyebrow : ''}}" hint="{{pickup && !errorText ? feedbackHint : ''}}" steps="{{pickup && !errorText ? feedbackSteps : []}}" quiet-confirm="{{pickup && !errorText && feedbackQuiet}}" show-contact="{{pickup && !errorText && feedbackContact}}" title="{{errorText ? '暂时无法查询' : feedbackTitle}}" content="{{errorText || feedbackContent}}" confirm-text="{{errorText ? '知道了' : feedbackPrimary}}" show-cancel="{{!errorText && (pickup ? feedbackPhase === 'done' : feedbackPrimary !== '知道了')}}" cancel-text="{{pickup ? '完成' : '稍后查看'}}" busy="{{busy}}" bindconfirm="confirmFeedback" bindcancel="dismissFeedback" />

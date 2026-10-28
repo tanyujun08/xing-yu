@@ -1,0 +1,10 @@
+<view class="status-view status-view--{{renderState}} status-view--{{renderDensity}}" role="status" aria-live="polite" aria-busy="{{renderState === 'loading' || busy}}" aria-label="{{accessibleLabel}}">
+  <view wx:if="{{renderState === 'loading' && spinnerVisible}}" class="status-spinner xy-loading-ring {{renderDensity === 'page' ? 'xy-loading-ring--page' : ''}}" aria-hidden="true"></view>
+  <image wx:elif="{{renderDensity === 'page' && (renderState === 'empty' || renderState === 'error') && illustrationSrc && !illustrationFailed}}" class="status-illustration" src="{{illustrationSrc}}" data-src="{{illustrationSrc}}" mode="aspectFit" binderror="onIllustrationError" aria-hidden="true" />
+  <view wx:elif="{{renderState !== 'loading' && renderState !== 'end'}}" class="status-mark" aria-hidden="true"></view>
+  <text wx:if="{{title}}" class="status-title">{{title}}</text>
+  <text wx:if="{{description}}" class="status-description">{{description}}</text>
+  <button wx:if="{{actionText}}" class="status-action xy-action-primary xy-action-text xy-button-reset xy-tap {{busy ? 'is-disabled is-waiting' : ''}}" disabled="{{busy}}" aria-disabled="{{busy}}" aria-busy="{{busy}}" aria-label="{{actionText}}" bindtap="onAction">
+    <view class="xy-action-content"><view wx:if="{{busy}}" class="xy-loading-ring" aria-hidden="true"></view><text>{{actionText}}</text></view>
+  </button>
+</view>

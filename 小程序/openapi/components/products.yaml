@@ -1,0 +1,426 @@
+{
+  "Schemas": {
+    "ProductMedia": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "material_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "COVER",
+            "IMAGE",
+            "VIDEO"
+          ]
+        },
+        "sort_order": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 99
+        }
+      },
+      "required": [
+        "material_id",
+        "role",
+        "sort_order"
+      ]
+    },
+    "ProductInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "brand_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "category_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "model": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 4000
+        },
+        "tags": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 20,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 32
+          }
+        },
+        "media": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 11,
+          "items": {
+            "$ref": "#/Schemas/ProductMedia"
+          }
+        }
+      },
+      "required": [
+        "name",
+        "brand_id",
+        "category_id",
+        "model",
+        "description",
+        "tags",
+        "media"
+      ]
+    },
+    "ProductPatch": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "brand_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "category_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "model": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 4000
+        },
+        "tags": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 20,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 32
+          }
+        },
+        "media": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 11,
+          "items": {
+            "$ref": "#/Schemas/ProductMedia"
+          }
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
+      },
+      "required": [
+        "reason"
+      ]
+    },
+    "ProductReason": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
+      },
+      "required": [
+        "reason"
+      ]
+    },
+    "Product": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "product_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "product_no": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{32}$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "brand_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "category_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "model": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 4000
+        },
+        "tags": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 20,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 32
+          }
+        },
+        "media": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 11,
+          "items": {
+            "$ref": "#/Schemas/ProductMedia"
+          }
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "DRAFT",
+            "ACTIVE",
+            "INACTIVE"
+          ]
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,19}$"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "product_id",
+        "product_no",
+        "name",
+        "brand_id",
+        "category_id",
+        "model",
+        "description",
+        "tags",
+        "media",
+        "status",
+        "version",
+        "created_at",
+        "updated_at"
+      ]
+    },
+    "ProductView": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "product_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "product_no": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{32}$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "brand_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "category_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "model": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 4000
+        },
+        "tags": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 20,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 32
+          }
+        },
+        "media": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 11,
+          "items": {
+            "$ref": "#/Schemas/ProductMedia"
+          }
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "DRAFT",
+            "ACTIVE",
+            "INACTIVE"
+          ]
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,19}$"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "brand_name": {
+          "type": "string"
+        },
+        "category_name": {
+          "type": "string"
+        },
+        "asset_count": {
+          "type": "string",
+          "pattern": "^[0-9]+$"
+        },
+        "allowed_actions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "UPDATE",
+                  "ACTIVATE",
+                  "DEACTIVATE"
+                ]
+              },
+              "enabled": {
+                "type": "boolean"
+              },
+              "blocked_reasons": {
+                "type": "array",
+                "items": {
+                  "$ref": "./addresses.yaml#/Schemas/ReasonItem"
+                }
+              }
+            },
+            "required": [
+              "code",
+              "enabled",
+              "blocked_reasons"
+            ]
+          }
+        },
+        "blocked_reasons": {
+          "type": "array",
+          "items": {
+            "$ref": "./addresses.yaml#/Schemas/ReasonItem"
+          }
+        }
+      },
+      "required": [
+        "product_id",
+        "product_no",
+        "name",
+        "brand_id",
+        "category_id",
+        "model",
+        "description",
+        "tags",
+        "media",
+        "status",
+        "version",
+        "created_at",
+        "updated_at",
+        "brand_name",
+        "category_name",
+        "asset_count",
+        "allowed_actions",
+        "blocked_reasons"
+      ]
+    },
+    "ProductPage": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/ProductView"
+          }
+        },
+        "page": {
+          "$ref": "./pagination.yaml#/CursorPageMeta"
+        }
+      },
+      "required": [
+        "items",
+        "page"
+      ]
+    }
+  }
+}

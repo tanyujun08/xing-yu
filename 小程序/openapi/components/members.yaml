@@ -1,0 +1,743 @@
+{
+  "Schemas": {
+    "MemberSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "account_id",
+        "user_no",
+        "display_name",
+        "rental_status",
+        "level_code",
+        "total_growth_units",
+        "available_pink_units",
+        "first_registered_at",
+        "version"
+      ],
+      "properties": {
+        "account_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "user_no": {
+          "type": "string"
+        },
+        "display_name": {
+          "type": "string"
+        },
+        "rental_status": {
+          "type": "string"
+        },
+        "level_code": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "total_growth_units": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "available_pink_units": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "first_registered_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        }
+      }
+    },
+    "MemberPointAccount": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "point_kind",
+        "total_earned_points",
+        "available_points",
+        "reserved_points",
+        "latest_sequence"
+      ],
+      "properties": {
+        "point_kind": {
+          "type": "string"
+        },
+        "total_earned_points": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]*)$"
+        },
+        "available_points": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]*)$"
+        },
+        "reserved_points": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]*)$"
+        },
+        "latest_sequence": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        }
+      }
+    },
+    "MemberEntitlementAccount": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "granted_qty",
+        "available_qty",
+        "reserved_qty",
+        "consumed_qty",
+        "refund_frozen_qty",
+        "revoked_qty",
+        "expired_qty",
+        "as_of_at",
+        "next_expiry_at",
+        "expiry_pending"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string"
+        },
+        "granted_qty": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]*)$"
+        },
+        "available_qty": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]*)$"
+        },
+        "reserved_qty": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]*)$"
+        },
+        "consumed_qty": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]*)$"
+        },
+        "refund_frozen_qty": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]*)$"
+        },
+        "revoked_qty": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]*)$"
+        },
+        "expired_qty": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]*)$"
+        },
+        "as_of_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "next_expiry_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "expiry_pending": {
+          "type": "boolean"
+        }
+      }
+    },
+    "MemberPointEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "entry_id",
+        "point_kind",
+        "account_sequence",
+        "action",
+        "available_delta",
+        "reserved_delta",
+        "earned_delta",
+        "available_after",
+        "reserved_after",
+        "source_id",
+        "rule_version_id",
+        "original_spend_entry_id",
+        "reversal_of",
+        "reason_code",
+        "occurred_at"
+      ],
+      "properties": {
+        "entry_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "point_kind": {
+          "type": "string"
+        },
+        "account_sequence": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "action": {
+          "type": "string"
+        },
+        "available_delta": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]*)$"
+        },
+        "reserved_delta": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]*)$"
+        },
+        "earned_delta": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]*)$"
+        },
+        "available_after": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]*)$"
+        },
+        "reserved_after": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]*)$"
+        },
+        "source_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "rule_version_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "original_spend_entry_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "reversal_of": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "reason_code": {
+          "type": "string"
+        },
+        "occurred_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "MemberEntitlementMovement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "movement_id",
+        "kind",
+        "account_sequence",
+        "lot_id",
+        "action",
+        "quantity",
+        "available_delta",
+        "reserved_delta",
+        "consumed_delta",
+        "granted_delta",
+        "refund_frozen_delta",
+        "revoked_delta",
+        "expired_delta",
+        "available_before_qty",
+        "available_after_qty",
+        "reversal_of",
+        "reason_code",
+        "occurred_at"
+      ],
+      "properties": {
+        "movement_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "kind": {
+          "type": "string"
+        },
+        "account_sequence": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "lot_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "action": {
+          "type": "string"
+        },
+        "quantity": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]*)$"
+        },
+        "available_delta": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]*)$"
+        },
+        "reserved_delta": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]*)$"
+        },
+        "consumed_delta": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]*)$"
+        },
+        "granted_delta": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]*)$"
+        },
+        "refund_frozen_delta": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]*)$"
+        },
+        "revoked_delta": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]*)$"
+        },
+        "expired_delta": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]*)$"
+        },
+        "available_before_qty": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]*)$"
+        },
+        "available_after_qty": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]*)$"
+        },
+        "reversal_of": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "reason_code": {
+          "type": "string"
+        },
+        "occurred_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "MemberCheckIn": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "check_in_id",
+        "business_date",
+        "timezone",
+        "checked_in_at",
+        "previous_check_in_id",
+        "streak_days",
+        "cumulative_days",
+        "rule_version_id"
+      ],
+      "properties": {
+        "check_in_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "business_date": {
+          "type": "string"
+        },
+        "timezone": {
+          "type": "string"
+        },
+        "checked_in_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "previous_check_in_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "streak_days": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "cumulative_days": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "rule_version_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        }
+      }
+    },
+    "MemberAddress": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "address_id",
+        "province_name",
+        "city_name",
+        "district_name",
+        "is_default",
+        "status",
+        "private_fields",
+        "created_at"
+      ],
+      "properties": {
+        "address_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "province_name": {
+          "type": "string"
+        },
+        "city_name": {
+          "type": "string"
+        },
+        "district_name": {
+          "type": "string"
+        },
+        "is_default": {
+          "type": "boolean"
+        },
+        "status": {
+          "type": "string"
+        },
+        "private_fields": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "MemberAllowance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "allowance_id",
+        "cycle_key",
+        "cycle_start",
+        "cycle_end",
+        "granted_count",
+        "reserved_count",
+        "consumed_count",
+        "revoked_count",
+        "available_count",
+        "initial_membership_period_id"
+      ],
+      "properties": {
+        "allowance_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "cycle_key": {
+          "type": "string"
+        },
+        "cycle_start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "cycle_end": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "granted_count": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]*)$"
+        },
+        "reserved_count": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]*)$"
+        },
+        "consumed_count": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]*)$"
+        },
+        "revoked_count": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]*)$"
+        },
+        "available_count": {
+          "type": "string",
+          "pattern": "^-?(0|[1-9][0-9]*)$"
+        },
+        "initial_membership_period_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        }
+      }
+    },
+    "MemberDossier": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "profile",
+        "point_accounts",
+        "entitlements",
+        "allowances",
+        "as_of_at"
+      ],
+      "properties": {
+        "profile": {
+          "$ref": "#/Schemas/MemberSummary"
+        },
+        "point_accounts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/MemberPointAccount"
+          }
+        },
+        "entitlements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/MemberEntitlementAccount"
+          }
+        },
+        "allowances": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/MemberAllowance"
+          }
+        },
+        "as_of_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "MemberSummaryPage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "items",
+        "page"
+      ],
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/MemberSummary"
+          }
+        },
+        "page": {
+          "$ref": "./pagination.yaml#/CursorPageMeta"
+        }
+      }
+    },
+    "MemberPointEntryPage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "items",
+        "page"
+      ],
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/MemberPointEntry"
+          }
+        },
+        "page": {
+          "$ref": "./pagination.yaml#/CursorPageMeta"
+        }
+      }
+    },
+    "MemberEntitlementMovementPage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "items",
+        "page"
+      ],
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/MemberEntitlementMovement"
+          }
+        },
+        "page": {
+          "$ref": "./pagination.yaml#/CursorPageMeta"
+        }
+      }
+    },
+    "MemberCheckInPage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "items",
+        "page"
+      ],
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/MemberCheckIn"
+          }
+        },
+        "page": {
+          "$ref": "./pagination.yaml#/CursorPageMeta"
+        }
+      }
+    },
+    "MemberAddressPage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "items",
+        "page"
+      ],
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/MemberAddress"
+          }
+        },
+        "page": {
+          "$ref": "./pagination.yaml#/CursorPageMeta"
+        }
+      }
+    },
+    "OwnPointEntry": {
+      "$ref": "./loyalty.yaml#/Schemas/PointEntryDetail"
+    },
+    "OwnPointStatistics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "timezone",
+        "day_start",
+        "week_start",
+        "today_earned_delta",
+        "week_earned_delta",
+        "month_start",
+        "month_increase_units",
+        "month_decrease_units"
+      ],
+      "properties": {
+        "timezone": {
+          "enum": [
+            "Asia/Shanghai"
+          ],
+          "type": "string"
+        },
+        "day_start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "week_start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "today_earned_delta": {
+          "type": "string",
+          "maxLength": 20,
+          "description": "Signed int64 smallest point units; PINK integer, GROWTH tenths. Never a floating point number.",
+          "pattern": "^-?(0|[1-9][0-9]{0,18})$"
+        },
+        "week_earned_delta": {
+          "type": "string",
+          "maxLength": 20,
+          "description": "Signed int64 smallest point units; PINK integer, GROWTH tenths. Never a floating point number.",
+          "pattern": "^-?(0|[1-9][0-9]{0,18})$"
+        },
+        "month_start": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "month_increase_units": {
+          "maxLength": 65,
+          "type": "string",
+          "description": "Exact nonnegative calendar-month aggregate of available_delta + reserved_delta. Independent of direction and pagination; may exceed int64. PINK integer units, GROWTH tenths.",
+          "pattern": "^(0|[1-9][0-9]{0,64})$"
+        },
+        "month_decrease_units": {
+          "maxLength": 65,
+          "type": "string",
+          "description": "Exact nonnegative calendar-month aggregate of available_delta + reserved_delta. Independent of direction and pagination; may exceed int64. PINK integer units, GROWTH tenths.",
+          "pattern": "^(0|[1-9][0-9]{0,64})$"
+        }
+      }
+    },
+    "OwnPointEntryPage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "account_id",
+        "account",
+        "items",
+        "statistics",
+        "as_of_at",
+        "page"
+      ],
+      "properties": {
+        "account_id": {
+          "type": "string",
+          "maxLength": 64,
+          "minLength": 1
+        },
+        "account": {
+          "$ref": "#/Schemas/MemberPointAccount"
+        },
+        "items": {
+          "items": {
+            "$ref": "#/Schemas/OwnPointEntry"
+          },
+          "type": "array"
+        },
+        "statistics": {
+          "$ref": "#/Schemas/OwnPointStatistics"
+        },
+        "as_of_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "page": {
+          "type": "object",
+          "required": [
+            "next_cursor"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "next_cursor": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

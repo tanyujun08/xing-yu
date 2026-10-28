@@ -1,0 +1,39 @@
+{
+  "source": "/Users/tantan/Documents/xy-next/xingyu-miniprogram",
+  "version": "1.0.2.0",
+  "commit": "9c97efebff5dc0c00029c5c76a829e4c7f080a26",
+  "apiCommit": "df1b2de7ad24b9ba5925e2b4be762bebb524a297",
+  "purpose": "LOCAL_LINKED_NATIVE_MINIPROGRAM_MOCK",
+  "externalBusinessNetwork": false,
+  "originalPageCount": 54,
+  "additionalPages": [
+    "pages/demo-center/index",
+    "pages/demo-support/index"
+  ],
+  "seedCounts": {
+    "supplies": 24,
+    "orders": 20,
+    "addresses": 3,
+    "coupons": 12,
+    "points": 24,
+    "drafts": 1
+  },
+  "storagePrefix": "xingyu.offline-v102.",
+  "defaultEntry": "pages/home/index",
+  "verification": {
+    "localTests": "PASS: typecheck and 132 demo tests in 7 files, including isolated loopback integration",
+    "actualSimulator": "PROFILE_AND_OFFLINE_SUPPORT_PASS; FULL_LINKED_FLOW_NOT_YET_VERIFIED",
+    "previousNativeReceipt": ".native-check/evidence/v102-startup-1793111107523/test-receipt.json",
+    "previousReceiptSourceHash": "62b7a2726bcf7578a6b35ef3fa59399e13a8a3e5ed50f5b031c02f7a1ccdbc1b",
+    "realIntegration": "NOT_RUN",
+    "linkedMock": "LOCAL_LOOPBACK_ONLY"
+  },
+  "notes": [
+    "原生页面保留原始结构；离线客服和授权等需要替代",
+    "旧产品缓存不读取不清理，Mock使用独立前缀",
+    "真实支付/签约/柜机/上传等使用本地替身",
+    "两端共享订单、支付退款、演示账号签到余额、持有优惠券及归还图片；后台显式保存的标准商品联动发布目录，商品图片和门店未完整联动",
+    "商城、服务购买、提现和异议为演示补充，操作写入本机共享状态；超期费用可按押金计算退补",
+    "开发者工具私有 urlCheck 关闭，仅用于本机 HTTP Mock"
+  ]
+}

@@ -1,0 +1,206 @@
+x-xingyu-error-catalog:
+  - code: EXPORT_RANGE_TOO_LARGE
+    http_status: 422
+    detail_schema: NONE
+    retryable: false
+    client_action: FIX_VALIDATION
+    redaction: STANDARD
+  - code: NO_EXPORT_DATA
+    http_status: 422
+    detail_schema: NONE
+    retryable: false
+    client_action: FIX_VALIDATION
+    redaction: STANDARD
+  - { code: ASSET_IDENTIFIER_CONFLICT, http_status: 409, detail_schema: BusinessConflictDetails, retryable: false, client_action: FIX_REQUEST, redaction: SECURITY }
+  - { code: ASSET_RFID_CONFLICT, http_status: 409, detail_schema: BusinessConflictDetails, retryable: false, client_action: FIX_REQUEST, redaction: SECURITY }
+  - { code: CABINET_REAL_OPEN_ALL_DISABLED, http_status: 403, detail_schema: NONE, retryable: false, client_action: DENY, redaction: SECURITY }
+  - { code: CABINET_REAL_RECOVERY_DISABLED, http_status: 403, detail_schema: NONE, retryable: false, client_action: DENY, redaction: SECURITY }
+  - { code: CABINET_OCCUPIED, http_status: 409, detail_schema: NONE, retryable: false, client_action: REFRESH_AUTHORITY, redaction: SECURITY }
+  - { code: CABINET_OCCUPANCY_UNKNOWN, http_status: 409, detail_schema: NONE, retryable: false, client_action: REFRESH_AUTHORITY, redaction: SECURITY }
+  - { code: CABINET_BUSINESS_PARENT_INVALID, http_status: 409, detail_schema: NONE, retryable: false, client_action: REFRESH_AUTHORITY, redaction: SECURITY }
+  - { code: CABINET_COMMAND_UNRESOLVED, http_status: 409, detail_schema: NONE, retryable: false, client_action: REFRESH_AUTHORITY, redaction: SECURITY }
+  - { code: CABINET_LIFECYCLE_CONFLICT, http_status: 409, detail_schema: NONE, retryable: false, client_action: REFRESH_AUTHORITY, redaction: SECURITY }
+  - { code: CABINET_TOPOLOGY_CHANGED, http_status: 409, detail_schema: NONE, retryable: false, client_action: REFRESH_AUTHORITY, redaction: SECURITY }
+  - { code: CABINET_CONNECTIVITY_UNCONFIRMED, http_status: 409, detail_schema: NONE, retryable: false, client_action: REFRESH_AUTHORITY, redaction: SECURITY }
+  - { code: SENSITIVE_ACTION_PROOF_INVALID, http_status: 422, detail_schema: NONE, retryable: false, client_action: FIX_VALIDATION, redaction: SECURITY }
+  - { code: SENSITIVE_ACTION_CHALLENGE_UNUSABLE, http_status: 409, detail_schema: NONE, retryable: false, client_action: RESTART_CHALLENGE, redaction: SECURITY }
+  - { code: REAUTHENTICATION_REQUIRED, http_status: 403, detail_schema: NONE, retryable: false, client_action: REAUTHENTICATE, redaction: SECURITY }
+  - { code: MALFORMED_JSON, http_status: 400, detail_schema: NONE, retryable: false, client_action: FIX_REQUEST, redaction: STANDARD }
+  - { code: INVALID_ARGUMENT, http_status: 400, detail_schema: NONE, retryable: false, client_action: FIX_REQUEST, redaction: STANDARD }
+  - { code: PAYLOAD_TOO_LARGE, http_status: 413, detail_schema: NONE, retryable: false, client_action: FIX_REQUEST, redaction: STANDARD }
+  - { code: UNSUPPORTED_MEDIA_TYPE, http_status: 415, detail_schema: NONE, retryable: false, client_action: FIX_REQUEST, redaction: STANDARD }
+  - { code: CURSOR_INVALID, http_status: 400, detail_schema: NONE, retryable: false, client_action: RESTART_PAGINATION, redaction: STANDARD }
+  - { code: AUTH_REQUIRED, http_status: 401, detail_schema: NONE, retryable: false, client_action: CLEAR_SESSION, redaction: SECURITY }
+  - { code: TOKEN_INVALID, http_status: 401, detail_schema: NONE, retryable: false, client_action: CLEAR_SESSION, redaction: SECURITY }
+  - { code: TOKEN_EXPIRED, http_status: 401, detail_schema: NONE, retryable: false, client_action: CLEAR_SESSION, redaction: SECURITY }
+  - { code: SESSION_REVOKED, http_status: 401, detail_schema: NONE, retryable: false, client_action: CLEAR_SESSION, redaction: SECURITY }
+  - { code: TOKEN_REPLAY_DETECTED, http_status: 401, detail_schema: NONE, retryable: false, client_action: CLEAR_SESSION, redaction: SECURITY }
+  - { code: PERMISSION_DENIED, http_status: 403, detail_schema: NONE, retryable: false, client_action: DENY, redaction: SECURITY }
+  - { code: OPS_WECHAT_NOT_BOUND, http_status: 403, detail_schema: NONE, retryable: false, client_action: DENY, redaction: SECURITY }
+  - { code: SCOPE_DENIED, http_status: 403, detail_schema: NONE, retryable: false, client_action: DENY, redaction: SECURITY }
+  - { code: ACCOUNT_DISABLED, http_status: 403, detail_schema: NONE, retryable: false, client_action: DENY, redaction: SECURITY }
+  - { code: ORIGIN_NOT_ALLOWED, http_status: 403, detail_schema: NONE, retryable: false, client_action: DENY, redaction: SECURITY }
+  - { code: RESOURCE_NOT_FOUND, http_status: 404, detail_schema: NONE, retryable: false, client_action: NOT_FOUND, redaction: STANDARD }
+  - { code: METHOD_NOT_ALLOWED, http_status: 405, detail_schema: NONE, retryable: false, client_action: METHOD_NOT_ALLOWED, redaction: STANDARD }
+  - { code: RESOURCE_CONFLICT, http_status: 409, detail_schema: ConflictDetails, retryable: false, client_action: REFRESH_AUTHORITY, redaction: STANDARD }
+  - { code: IDEMPOTENCY_CONFLICT, http_status: 409, detail_schema: ConflictDetails, retryable: false, client_action: REFRESH_AUTHORITY, redaction: SECURITY }
+  - { code: VERSION_CONFLICT, http_status: 409, detail_schema: ConflictDetails, retryable: false, client_action: REFRESH_AUTHORITY, redaction: STANDARD }
+  - { code: PRECONDITION_REQUIRED, http_status: 428, detail_schema: NONE, retryable: false, client_action: ADD_PRECONDITION, redaction: STANDARD }
+  - { code: PRECONDITION_FAILED, http_status: 412, detail_schema: NONE, retryable: false, client_action: REFRESH_AUTHORITY, redaction: STANDARD }
+  - { code: MATERIAL_UPLOAD_EXPIRED, http_status: 412, detail_schema: NONE, retryable: false, client_action: RESTART_UPLOAD, redaction: STANDARD }
+  - { code: VALIDATION_FAILED, http_status: 422, detail_schema: ValidationDetails, retryable: false, client_action: FIX_VALIDATION, redaction: STANDARD }
+  - { code: PAGINATION_WINDOW_EXCEEDED, http_status: 422, detail_schema: NONE, retryable: false, client_action: RESTART_PAGINATION, redaction: STANDARD }
+  - { code: RATE_LIMITED, http_status: 429, detail_schema: RetryDetails, retryable: true, client_action: BACKOFF, redaction: STANDARD }
+  - { code: INTERNAL_ERROR, http_status: 500, detail_schema: NONE, retryable: false, client_action: SHOW_REQUEST_ID, redaction: SECURITY }
+  - { code: AUTH_STORE_UNAVAILABLE, http_status: 503, detail_schema: RetryDetails, retryable: true, client_action: FAIL_CLOSED, redaction: SECURITY }
+  - { code: CONFIGURATION_REQUIRED, http_status: 503, detail_schema: NONE, retryable: false, client_action: FAIL_CLOSED, redaction: STANDARD }
+  - { code: DEPENDENCY_UNAVAILABLE, http_status: 503, detail_schema: RetryDetails, retryable: true, client_action: BACKOFF, redaction: STANDARD }
+
+ErrorCode:
+  type: string
+  enum:
+    - EXPORT_RANGE_TOO_LARGE
+    - NO_EXPORT_DATA
+    - CABINET_REAL_OPEN_ALL_DISABLED
+    - CABINET_REAL_RECOVERY_DISABLED
+    - CABINET_OCCUPIED
+    - CABINET_OCCUPANCY_UNKNOWN
+    - CABINET_BUSINESS_PARENT_INVALID
+    - CABINET_COMMAND_UNRESOLVED
+    - CABINET_LIFECYCLE_CONFLICT
+    - CABINET_TOPOLOGY_CHANGED
+    - CABINET_CONNECTIVITY_UNCONFIRMED
+    - SENSITIVE_ACTION_PROOF_INVALID
+    - SENSITIVE_ACTION_CHALLENGE_UNUSABLE
+    - REAUTHENTICATION_REQUIRED
+    - MALFORMED_JSON
+    - INVALID_ARGUMENT
+    - PAYLOAD_TOO_LARGE
+    - UNSUPPORTED_MEDIA_TYPE
+    - CURSOR_INVALID
+    - AUTH_REQUIRED
+    - TOKEN_INVALID
+    - TOKEN_EXPIRED
+    - SESSION_REVOKED
+    - TOKEN_REPLAY_DETECTED
+    - PERMISSION_DENIED
+    - OPS_WECHAT_NOT_BOUND
+    - SCOPE_DENIED
+    - ACCOUNT_DISABLED
+    - ORIGIN_NOT_ALLOWED
+    - RESOURCE_NOT_FOUND
+    - METHOD_NOT_ALLOWED
+    - RESOURCE_CONFLICT
+    - ASSET_IDENTIFIER_CONFLICT
+    - ASSET_RFID_CONFLICT
+    - IDEMPOTENCY_CONFLICT
+    - VERSION_CONFLICT
+    - PRECONDITION_REQUIRED
+    - PRECONDITION_FAILED
+    - MATERIAL_UPLOAD_EXPIRED
+    - VALIDATION_FAILED
+    - PAGINATION_WINDOW_EXCEEDED
+    - RATE_LIMITED
+    - INTERNAL_ERROR
+    - AUTH_STORE_UNAVAILABLE
+    - CONFIGURATION_REQUIRED
+    - DEPENDENCY_UNAVAILABLE
+
+FieldViolation:
+  type: object
+  additionalProperties: false
+  required: [field, reason, rule]
+  properties:
+    field:
+      type: string
+      pattern: ^[a-z][a-z0-9_]*(?:\.[a-z][a-z0-9_]*)*$
+    reason:
+      type: string
+      maxLength: 256
+    rule:
+      type: string
+      pattern: ^[A-Z][A-Z0-9_]*$
+
+ValidationDetails:
+  type: object
+  additionalProperties: false
+  required: [errors]
+  properties:
+    errors:
+      type: array
+      minItems: 1
+      items:
+        $ref: "#/FieldViolation"
+
+ConflictDetails:
+  type: object
+  additionalProperties: false
+  required: [resource_type, resource_id]
+  properties:
+    resource_type:
+      type: string
+    resource_id:
+      type: string
+    config_conflicts:
+      type: array
+      minItems: 1
+      maxItems: 16
+      items:
+        $ref: "#/LoyaltyConfigConflict"
+
+LoyaltyConfigConflict:
+  type: object
+  additionalProperties: false
+  required: [field, coupon_type, source_kind, source_config_key, source_config_version_id]
+  properties:
+    field:
+      type: string
+      pattern: ^value\.coupons\[[0-3]\]\.enabled$
+    coupon_type:
+      type: string
+      enum: [DEPOSIT_WAIVER, PUBLISH_ONCE, ONE_DAY_RENT, GUARD_DISCOUNT]
+    source_kind:
+      type: string
+      enum: [LOTTERY, CHECK_IN, PROGRESS, REDEMPTION]
+    source_config_key:
+      type: string
+      enum: [benefits.lottery, benefits.check_in, benefits.catalog]
+    source_config_version_id: { type: string, minLength: 1, maxLength: 64 }
+
+BusinessConflictDetails:
+  type: object
+  additionalProperties: false
+  required: [detail_type, resource_type, resource_id, reason_code]
+  properties:
+    detail_type: { type: string, const: BUSINESS_CONFLICT }
+    resource_type: { type: string, minLength: 1, maxLength: 64 }
+    resource_id: { type: string, minLength: 1, maxLength: 64 }
+    reason_code: { type: string, minLength: 1, maxLength: 80 }
+    request_index: { type: integer, minimum: 0, maximum: 99 }
+RetryDetails:
+  type: object
+  additionalProperties: false
+  required: [retry_after_seconds]
+  properties:
+    retry_after_seconds:
+      type: integer
+      minimum: 1
+      maximum: 86400
+
+Problem:
+  type: object
+  additionalProperties: false
+  required: [code, message, request_id]
+  properties:
+    code:
+      $ref: "#/ErrorCode"
+    message:
+      type: string
+    request_id:
+      type: string
+    details:
+      oneOf:
+        - $ref: "#/ValidationDetails"
+        - $ref: "#/ConflictDetails"
+        - $ref: "#/BusinessConflictDetails"
+        - $ref: "#/RetryDetails"

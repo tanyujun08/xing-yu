@@ -1,0 +1,13 @@
+/* Shared discovery rail and city bar: both pages use identical geometry. */
+.cabinet-rail,.region-list { box-sizing:border-box; flex:none; width:96px; height:100%; border-right:1px solid var(--xy-color-divider); background:var(--xy-color-page); }
+.rail-label { display:flex; box-sizing:border-box; min-height:40px; height:auto; align-items:center; padding:8px; color:var(--xy-color-text-muted); font-size:var(--xy-text-caption-size); line-height:var(--xy-text-body-small-line-height); font-weight:600; }
+.cabinet-rail-item,.region-item { display:flex; box-sizing:border-box; min-height:44px; align-items:center; padding:8px; border-left:2px solid transparent; color:var(--xy-color-text-secondary); font-size:var(--xy-text-caption-size); line-height:var(--xy-text-body-small-line-height); overflow-wrap:anywhere; }
+.cabinet-rail-item.is-active,.region-item.is-active { border-left-color:var(--xy-color-brand); background:var(--xy-color-surface); color:var(--xy-color-brand); font-weight:600; }
+.location-bar { padding-right:16px; padding-left:16px; }
+@media(max-width:390px) { .cabinet-rail,.region-list { width:80px; } }
+
+/* Visual spacing uses the text box; expanded touch bounds do not take layout space. */
+.location-bar .mode-switch { gap:28px; }
+.location-bar .mode-option { position:relative; min-width:0; min-height:0; padding:0; font-size:14px; line-height:20px; }
+.location-bar .mode-option::before { content:''; position:absolute; left:-8px; right:-8px; top:-12px; bottom:-12px; }
+.location-bar .mode-option .xy-tab__indicator { top:calc(100% + 4px); bottom:auto; left:50%; right:auto; width:8px; height:3px; margin-left:-4px; border-radius:2px; }

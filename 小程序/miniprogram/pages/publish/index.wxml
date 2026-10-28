@@ -1,0 +1,249 @@
+<page-meta root-font-size="system" />
+<view class="publish-page">
+  <page-header title="{{navigationTitle}}" bindback="handleNavigationBack" />
+
+  <status-view wx:if="{{!loggedIn}}" state="empty" title="登录后查看本人草稿" action-text="去登录" bindaction="openLogin" />
+  <status-view wx:elif="{{loading}}" state="loading" title="正在读取草稿" />
+  <status-view wx:elif="{{errorText && !draftId}}" state="error" title="草稿暂未完成操作" description="{{errorText}}" action-text="{{hasDraftTarget ? '重新读取草稿' : pendingCreate ? '重试原新建请求' : '重新新建草稿'}}" bindaction="handleErrorAction" />
+  <view wx:elif="{{!draftId}}" class="publish-content publish-preflight">
+    <view class="form-tip state-tip"><text class="tip-badge">第一步</text><text>先选择设备类型，再建立草稿填写设备资料；只有点击下方按钮才会创建草稿。</text></view>
+    <view class="form-card catalog-card">
+      <view class="section-head"><text class="form-heading">选择设备</text></view>
+      <view class="publish-field-row"><text class="form-label">设备类型</text><picker mode="selector" range="{{typePickerOptions}}" range-key="name" value="{{typeIndex}}" disabled="{{submitting || pendingCreate || typeLoading || types.length === 0}}" bindchange="chooseType">
+        <view class="form-input product-picker xy-hit-target {{!type ? 'is-placeholder' : ''}}" role="button" aria-label="选择设备类型">{{type || (typeLoading ? '正在读取设备类型…' : '请选择设备类型')}}<text class="publish-picker-chevron">⌄</text></view>
+      </picker></view>
+      <text wx:if="{{typeError}}" class="field-caption is-error xy-hit-target" role="button" aria-label="重新读取设备类型" bindtap="retryTypeOptions">{{typeError}}（点此重试）</text>
+      <view class="publish-field-row"><text class="form-label">标准商品</text><view class="form-input product-picker is-placeholder" aria-disabled="true">{{type ? '建立草稿后选择该类型的标准商品' : '请先选择设备类型'}}</view></view>
+      <text class="field-caption">类型选择不会保存数据；建立草稿后可继续选择商品。</text>
+    </view>
+    <button class="publish-preflight-create xy-action-primary" disabled="{{submitting}}" aria-disabled="{{submitting}}" bindtap="createDraft">{{submitting ? '正在确认草稿…' : pendingCreate ? '继续确认原新建请求' : '新建发布草稿，继续填写'}}</button>
+  </view>
+  <view wx:if="{{draftId}}" class="publish-content">
+    <view wx:if="{{mode === 'view'}}" class="form-tip state-tip"><text class="tip-badge">只读</text><text>查看模式：资料只读，不能修改已保存商品。</text></view>
+    <view wx:if="{{showDraftNotice && draftNoticeText}}" class="form-tip state-tip"><text class="tip-badge">草稿</text><text>{{draftNoticeText}}</text></view>
+    <view wx:if="{{errorText}}" class="form-error" role="alert">{{errorText}}</view>
+
+    <view class="form-card catalog-card">
+      <view class="section-head"><text class="form-heading">选择设备</text></view>
+      <view class="publish-field-row"><text class="form-label">设备类型</text><picker mode="selector" range="{{typePickerOptions}}" range-key="name" value="{{typeIndex}}" disabled="{{!editable || submitting || pendingSave || pendingSubmit || typeLoading || types.length === 0}}" bindchange="chooseType">
+        <view class="form-input product-picker xy-hit-target {{!type ? 'is-placeholder' : ''}}" role="button" aria-label="选择设备类型">{{type || (typeLoading ? '正在读取设备类型…' : '请选择设备类型')}}<text class="publish-picker-chevron">⌄</text></view>
+      </picker></view>
+      <text wx:if="{{typeError}}" class="field-caption is-error xy-hit-target" role="button" aria-label="重新读取设备类型" bindtap="retryTypeOptions">{{typeError}}（点此重试）</text>
+      <view class="publish-field-row"><text class="form-label">标准商品</text><view class="form-input product-picker xy-hit-target {{!productTypeFilter || productLabel === '尚未选择商品' ? 'is-placeholder' : ''}}" bindtap="openProductSheet" role="button" aria-label="选择标准商品">{{productTypeFilter ? productLabel : '请先选择设备类型'}}<text class="publish-picker-chevron">⌄</text></view></view>
+      <view wx:if="{{productMedia.length > 0}}" class="product-media">
+        <block wx:for="{{productMedia}}" wx:key="url">
+          <view wx:if="{{item.role === 'VIDEO'}}" style="display:inline-flex;flex-direction:column;vertical-align:top">
+            <video wx:if="{{videoFailures['catalog:' + item.url] !== item.playback && videoReloading['catalog:' + item.url] !== item.playback}}" class="product-media-item" src="{{item.playback}}" poster="{{item.poster}}" controls="true" data-kind="catalog" data-key="{{item.url}}" data-src="{{item.playback}}" data-epoch="{{mediaViewEpoch}}" binderror="onVideoMediaError" aria-label="标准商品视频" />
+            <view wx:else class="product-media-item" role="alert"><text>视频加载失败</text><button class="xy-button-reset xy-action-secondary xy-tap" data-kind="catalog" data-key="{{item.url}}" data-src="{{item.playback}}" data-epoch="{{mediaViewEpoch}}" catchtap="retryVideoMedia" disabled="{{videoReloading['catalog:' + item.url] === item.playback}}" aria-disabled="{{videoReloading['catalog:' + item.url] === item.playback}}" aria-label="重试标准商品视频">重试</button></view>
+            <text class="field-caption">视频封面</text>
+            <media-state class="product-media-item" style="display:block;overflow:hidden" density="thumbnail" state="real" src="{{item.poster}}" mode="aspectFill" alt="标准商品视频封面" retry-label="重试封面" data-kind="catalog" data-key="{{item.url}}" data-src="{{item.playback}}" data-poster="{{item.poster}}" data-epoch="{{mediaViewEpoch}}" binderror="onVideoMediaError" bindretry="retryVideoMedia" />
+          </view>
+          <media-state wx:else class="product-media-item" style="display:inline-flex;overflow:hidden" density="thumbnail" state="real" src="{{item.url}}" mode="aspectFill" failure-label="商品图片暂时无法加载" retry-label="重试" aria-label="标准商品图片" />
+        </block>
+      </view>
+      <text wx:if="{{productId}}" class="field-caption">已选「{{productLabel}}」，保存后平台按该标准商品校验；平台下架该商品时将无法提交。</text>
+    </view>
+
+    <view id="publish-media" class="form-card media-card {{missingMedia ? 'media-card-needs-action' : ''}}">
+      <view class="section-head"><text class="form-heading">设备图片</text></view>
+      <view wx:if="{{missingMedia}}" class="media-action-hint" role="alert">审核需要至少一张处理完成（READY）的设备实拍图。请点“添加图片”；第一张 READY 图片会自动成为封面，视频不能代替图片。</view>
+      <text class="form-hint">{{mediaNotice}}</text>
+      <view wx:if="{{hasPendingMedia && !uploadingMedia}}" class="sheet-confirm xy-tap" bindtap="recoverPendingMedia" role="button" aria-label="显式恢复原素材文件和原请求键">恢复原素材请求</view>
+      <view wx:if="{{hasPendingMedia}}" class="sheet-confirm xy-tap" bindtap="discardPendingMedia" role="button" aria-label="取消本次待确认素材并重新选择">取消本次素材处理</view>
+      <view wx:if="{{mediaItemsCount > mediaPreviewCount}}" class="sheet-confirm xy-tap" bindtap="loadDraftMedia" role="button" aria-label="加载已保存设备素材预览">{{uploadingMedia ? '加载中…' : '加载已保存素材预览'}}</view>
+      <view class="xy-draft-media-grid">
+        <view wx:if="{{mode !== 'view' && mediaItemsCount < 20}}" class="xy-draft-media-tile xy-draft-media-add xy-hit-target xy-tap" data-kind="photo" aria-label="添加设备实拍图" bindtap="selectImage" role="button"><text class="xy-draft-media-symbol">添加</text><text class="xy-draft-media-label">添加图片</text><text class="xy-draft-media-count">{{mediaItemsCount}}/20</text></view>
+        <view wx:for="{{photoPaths}}" wx:key="item" class="hero-card xy-draft-media-tile {{index === coverIndex ? 'is-cover' : ''}}" data-kind="photo" data-index="{{index}}" bindtap="previewMedia" role="button">
+          <media-state class="hero-image" state="real" src="{{item}}" mode="aspectFill" placeholder-src="{{icons.deviceMark}}" empty-label="暂无设备图片" failure-label="设备图片暂时无法加载" retry-label="重试" aria-label="{{index === coverIndex ? '设备封面' : '设备实拍图'}}" />
+          <text wx:if="{{index === coverIndex}}" class="media-badge">封面</text>
+          <view wx:if="{{mode !== 'view' && index > 0}}" class="rule-option" data-kind="photo" data-index="{{index}}" data-direction="-1" catchtap="moveMedia" role="button" aria-label="设备图片前移">前移</view>
+          <view wx:if="{{mode !== 'view'}}" class="xy-media-remove" data-kind="photo" data-index="{{index}}" catchtap="deleteMedia" role="button" aria-label="删除这张草稿图片"><view class="xy-media-remove__mark" aria-hidden="true"><text class="xy-media-remove__glyph">×</text></view></view>
+        </view>
+      </view>
+      <view wx:if="{{mode !== 'view' && mediaItemsCount < 20}}" class="sheet-confirm xy-tap" data-kind="video" bindtap="selectImage" role="button" aria-label="添加设备视频">{{uploadingMedia ? '素材处理中…' : '添加设备视频'}}</view>
+      <view wx:for="{{videoCards}}" wx:key="id" style="display:inline-flex;flex-direction:column;vertical-align:top">
+        <view class="hero-card xy-draft-media-tile">
+        <video wx:if="{{videoFailures['asset:' + item.id] !== item.url && videoReloading['asset:' + item.id] !== item.url}}" class="hero-image" src="{{item.url}}" poster="{{item.poster}}" controls="true" data-kind="asset" data-key="{{item.id}}" data-src="{{item.url}}" data-epoch="{{mediaViewEpoch}}" binderror="onVideoMediaError" aria-label="设备视频" />
+        <view wx:else class="hero-image" role="alert"><text>视频加载失败</text><button class="xy-button-reset xy-action-secondary xy-tap" data-kind="asset" data-key="{{item.id}}" data-src="{{item.url}}" data-epoch="{{mediaViewEpoch}}" catchtap="retryVideoMedia" disabled="{{videoReloading['asset:' + item.id] === item.url}}" aria-disabled="{{videoReloading['asset:' + item.id] === item.url}}" aria-label="重试设备视频">重试</button></view>
+        <view wx:if="{{mode !== 'view'}}" class="rule-option" data-kind="video" data-index="{{index}}" catchtap="deleteMedia" role="button" aria-label="移除设备视频">移除视频</view>
+        </view>
+        <text class="field-caption">视频封面</text>
+        <media-state class="product-media-item" style="display:block;overflow:hidden" density="thumbnail" state="real" src="{{item.poster}}" mode="aspectFill" alt="设备视频封面" retry-label="重试封面" data-kind="asset" data-key="{{item.id}}" data-src="{{item.url}}" data-poster="{{item.poster}}" data-epoch="{{mediaViewEpoch}}" binderror="onVideoMediaError" bindretry="retryVideoMedia" />
+      </view>
+      <view wx:if="{{mode === 'view' && mediaItemsCount === 0}}" class="media-empty-state"><text>暂无设备实拍图</text><text>添加 READY 图片后，第一张会自动作为封面。</text></view>
+      <text class="field-caption">第一张设备图片自动作为封面；调整顺序或删除首图后，新的第一张自动接替。</text>
+    </view>
+
+    <view class="form-card core-card">
+      <view class="section-head"><text class="form-heading">设备资料</text></view>
+      <view class="publish-field-row"><text class="form-label">设备名称</text><input maxlength="128" class="form-input" data-field="displayName" value="{{displayName}}" placeholder="请输入设备名称" disabled="{{!editable || submitting || pendingSave || pendingSubmit}}" bindinput="input" /></view>
+      <view class="publish-field-row"><text class="form-label">成色描述</text><input maxlength="128" class="form-input" data-field="condition" value="{{condition}}" placeholder="请描述设备实际成色" disabled="{{!editable || submitting || pendingSave || pendingSubmit}}" bindinput="input" /></view>
+      <text class="field-caption">如实描述成色，有助于减少归还时的争议。</text>
+      <view class="publish-field-row"><text class="form-label">设备标识类型</text><picker mode="selector" range="{{identifierTypeOptions}}" range-key="label" disabled="{{!editable || submitting || pendingSave || pendingSubmit || identityLocked}}" bindchange="changeIdentifierType"><view class="form-input product-picker">{{identifierType === 'IMEI' ? 'IMEI' : identifierType === 'MANUFACTURER_SERIAL' ? '厂家序列号' : '请选择设备标识类型'}}<text class="publish-picker-chevron">⌄</text></view></picker></view>
+      <view class="publish-field-row"><text class="form-label">{{identifierLabel}}{{identityLocked ? '（已锁定）' : ''}}</text><input maxlength="128" class="form-input" data-field="serialNumber" value="{{serialNumber}}" placeholder="请输入完整设备标识" disabled="{{!editable || submitting || pendingSave || pendingSubmit || identityLocked}}" bindinput="input" /></view>
+
+      <view class="disclosure-row" data-sheet="details" aria-label="编辑设备说明与使用提示" bindtap="openSheet" role="button">
+        <view class="disclosure-copy"><text class="disclosure-title">设备说明与使用提示</text><text class="disclosure-value">{{notes || description ? '已填写设备说明' : '选填，补充使用情况与瑕疵'}}</text></view>
+        <image class="disclosure-arrow" src="{{icons.arrowRight}}" mode="aspectFit" aria-label="展开设备说明" />
+      </view>
+    </view>
+
+    <view class="form-card pricing-card">
+      <view class="section-head"><text class="form-heading">出租条件</text></view>
+      <view class="price-capsule-grid">
+        <view class="price-capsule" data-sheet="pricing" aria-label="设置{{priceUnitLabel}}" bindtap="openSheet" role="button">
+          <view class="capsule-label"><text>{{priceUnitLabel}}</text><text class="capsule-action">调整</text></view>
+          <view class="capsule-value"><text class="currency">¥</text><text>{{expectedRent || '待填写'}}</text></view>
+          <text class="capsule-hint">请填写租金</text>
+        </view>
+        <view class="price-capsule-divider" aria-hidden="true"></view>
+        <view class="price-capsule" data-sheet="pricing" aria-label="设置期望押金" bindtap="openSheet" role="button">
+          <view class="capsule-label"><text>期望押金</text><text class="capsule-action">调整</text></view>
+          <view class="capsule-value"><text class="currency">¥</text><text>{{expectedDeposit || '待填写'}}</text></view>
+          <text class="capsule-hint">按设备和成色填写</text>
+        </view>
+      </view>
+      <text class="form-hint price-guidance">{{guidanceText}}</text>
+      <view class="availability-summary" data-sheet="pricing" aria-label="设置可租档期" bindtap="openSheet" role="button">
+        <view class="availability-copy"><text class="capsule-label">可租档期范围</text><text class="availability-value">{{availabilityStart || '待填写'}} ～ {{availabilityEnd || '待填写'}}</text><text class="capsule-hint">截止日包含当天</text></view>
+        <image class="disclosure-arrow" src="{{icons.arrowRight}}" mode="aspectFit" aria-label="编辑可租档期" />
+      </view>
+    </view>
+
+    <view class="form-card disclosure-card">
+      <view class="section-head"><text class="form-heading">其它规则</text></view>
+      <view class="disclosure-list">
+        <view class="disclosure-row" data-sheet="delivery" aria-label="编辑交付方式" bindtap="openSheet" role="button">
+          <view class="disclosure-copy"><text class="disclosure-title">交付方式</text><text class="disclosure-value">{{deliveryText}} · 实时定位非必填</text></view>
+          <image class="disclosure-arrow" src="{{icons.arrowRight}}" mode="aspectFit" aria-label="展开交付设置" />
+        </view>
+        <view class="disclosure-row" data-sheet="accessories" aria-label="编辑随附配件清单" bindtap="openSheet" role="button">
+          <view class="disclosure-copy"><text class="disclosure-title">随附配件清单</text><text class="disclosure-value">{{accessories || '选填，列出随设备提供的配件'}}</text></view>
+          <image class="disclosure-arrow" src="{{icons.arrowRight}}" mode="aspectFit" aria-label="展开配件清单" />
+        </view>
+        <view class="disclosure-row"><view class="disclosure-copy"><text class="disclosure-title">购买凭证 / 发票（选填）</text><text class="disclosure-value">本次发布无需填写；不会混入公开设备素材。</text></view></view>
+      </view>
+    </view>
+
+    <view wx:if="{{missingFields.length > 0}}" class="form-card missing-card"><view class="missing-card-head"><text class="form-heading">提交前还需完善</text><text class="missing-card-count">{{missingFields.length}} 项</text></view><view wx:for="{{missingFields}}" wx:key="id" class="publish-missing-item"><text class="missing-mark">!</text><text>{{item.label}}</text></view><view wx:if="{{missingMedia}}" class="missing-media-jump xy-tap" role="button" aria-label="前往设备图片添加实拍" bindtap="jumpToMedia">前往设备图片，添加实拍（首图自动封面）</view></view><view class="form-card review-card">
+      <view class="section-head"><text class="form-heading">审核流程</text></view>
+      <view class="review-step"><text class="step-number">1</text><view><text>提交设备资料与价格</text><text>提交前填妥租金、押金和出租条件；平台仅审核通过或驳回。</text></view></view>
+      <view class="review-step"><text class="step-number">2</text><view><text>查看审核结果</text><text>结果会在“我发布的设备”中更新。</text></view></view>
+    </view>
+  </view>
+
+  <view wx:if="{{draftId && !activeSheet}}" class="publish-bottom xy-bottom-action">
+    <text class="publish-bottom-copy {{submitHint ? 'is-warning' : ''}}">{{missingFields.length ? '还有 ' + missingFields.length + ' 项待完善，请按下方清单逐项补齐' : mode === 'view' ? '当前资料仅供查看' : '资料可随时保存为草稿'}}</text>
+    <view class="publish-bottom-actions">
+      <view wx:if="{{(editable && !pendingSubmit) || pendingSave}}" class="publish-draft-button xy-action-secondary {{submitting ? 'is-disabled' : ''}}" aria-label="{{pendingSave ? '重试原保存' : '保存草稿'}}" aria-disabled="{{submitting}}" bindtap="saveDraft" role="button">{{submitting ? '保存中…' : pendingSave ? '重试原保存' : '保存草稿'}}</view>
+      <button class="publish-submit-button xy-action-primary {{submitting || (mode === 'view' && !pendingSubmit) || !canSubmit ? 'is-disabled' : 'is-ready'}}" aria-label="{{pendingSubmit ? '重试原提交' : mode === 'view' ? '查看资料' : submitting ? '提交中' : mode === 'edit' ? '保存并重新审核' : '提交平台审核'}}" aria-disabled="{{submitting || (mode === 'view' && !pendingSubmit)}}" disabled="{{submitting || (mode === 'view' && !pendingSubmit)}}" bindtap="submit" role="button">{{submitting ? '提交中…' : pendingSubmit ? '重试原提交' : mode === 'view' ? '查看资料' : mode === 'edit' ? '保存并重新审核' : '提交平台审核'}}</button>
+    </view>
+  </view>
+
+  <view wx:if="{{activeSheet}}" class="sheet-mask" bindtap="closeSheet" role="button" aria-label="关闭设置面板">
+    <view class="publish-sheet {{activeSheet === 'pricing' && pricingCalendarOpen ? 'publish-sheet-calendar' : ''}}" catchtap="stopSheetTap" role="button" aria-label="设备设置面板">
+      <block wx:if="{{activeSheet === 'pricing' && pricingCalendarOpen}}">
+        <view class="calendar-sheet-head">
+          <view class="calendar-sheet-title"><view class="calendar-title-mark"></view><text>选择可租日期</text><view class="calendar-title-mark"></view></view>
+        </view>
+        <view class="calendar-weekdays" aria-label="星期">
+          <text wx:for="{{weekdays}}" wx:for-item="weekday" wx:for-index="weekdayIndex" wx:key="id" class="calendar-weekday {{weekdayIndex === 0 || weekdayIndex === 6 ? 'is-weekend' : ''}}">{{weekday.label}}</text>
+        </view>
+        <scroll-view class="calendar-month-scroll" scroll-y="true">
+          <view wx:for="{{sheetMonths}}" wx:for-item="month" wx:key="key" class="calendar-month">
+            <text class="calendar-month-title">{{month.title}}</text>
+            <view class="calendar-grid">
+              <view wx:for="{{month.days}}" wx:for-item="day" wx:key="key" class="calendar-day {{day.isPlaceholder ? 'is-placeholder' : ''}} {{day.disabled ? 'is-disabled' : ''}} {{day.inRange ? 'is-in-range' : ''}} {{day.isStart ? 'is-start' : ''}} {{day.isEnd ? 'is-end' : ''}} {{day.isToday ? 'is-today' : ''}} xy-tap" data-date="{{day.date}}" bindtap="chooseCalendarDate" role="button" aria-label="{{day.ariaLabel}}" aria-disabled="{{day.disabled}}">
+                <view class="calendar-day-inner"><text>{{day.dayLabel}}</text></view>
+                <text wx:if="{{day.isToday}}" class="calendar-day-caption">今天</text>
+                <text wx:elif="{{day.isStart}}" class="calendar-day-caption">开始</text>
+                <text wx:elif="{{day.isEnd}}" class="calendar-day-caption">结束</text>
+              </view>
+            </view>
+          </view>
+        </scroll-view>
+        <view class="calendar-sheet-summary">
+          <view class="calendar-summary-item"><text class="calendar-summary-label">开始日期</text><text class="calendar-summary-value {{sheetStartDate ? 'is-selected' : ''}}">{{sheetStartDate ? sheetStartDateText : '未选择'}}</text></view>
+          <view class="calendar-summary-days"><text>共</text><text class="calendar-summary-days-value">{{sheetDays}}</text><text>天</text></view>
+          <view class="calendar-summary-item calendar-summary-item-end"><text class="calendar-summary-label">结束日期</text><text class="calendar-summary-value {{sheetEndDate ? 'is-selected' : ''}}">{{sheetEndDate ? sheetEndDateText : '未选择'}}</text></view>
+        </view>
+        <view class="calendar-sheet-actions">
+          <view class="calendar-reset xy-tap {{mode === 'view' ? 'is-disabled' : ''}}" bindtap="resetPricingDates" role="button" aria-disabled="{{!editable || submitting || pendingSave || pendingSubmit}}">重置</view>
+          <view class="calendar-confirm xy-tap {{sheetStartDate && sheetEndDate && mode !== 'view' ? '' : 'is-disabled'}}" bindtap="applyPricingDates" role="button" aria-disabled="{{!sheetStartDate || !sheetEndDate || mode === 'view'}}">确定</view>
+        </view>
+      </block>
+
+      <block wx:else>
+        <view class="sheet-header">
+          <view><text class="sheet-eyebrow">补充设置</text><text wx:if="{{activeSheet === 'product'}}" class="sheet-title">选择标准商品</text><text wx:if="{{activeSheet === 'pricing'}}" class="sheet-title">定价</text><text wx:if="{{activeSheet === 'details'}}" class="sheet-title">设备说明与使用提示</text><text wx:if="{{activeSheet === 'delivery'}}" class="sheet-title">所在地与交付方式</text><text wx:if="{{activeSheet === 'accessories'}}" class="sheet-title">随附配件清单</text><text wx:if="{{activeSheet === 'proof'}}" class="sheet-title">购买凭证 / 发票</text></view>
+        </view>
+
+        <scroll-view class="sheet-scroll" scroll-y="true">
+          <block wx:if="{{activeSheet === 'pricing'}}">
+            <view class="sheet-field">
+              <text class="sheet-label">{{priceUnitLabel}}（元）</text>
+              <view class="money-input"><text>¥</text><input type="digit" maxlength="22" data-field="expectedRent" value="{{expectedRent}}" placeholder="请输入日租金" disabled="{{!editable || submitting || pendingSave || pendingSubmit}}" bindinput="input" /></view>
+            </view>
+            <view class="sheet-field">
+              <text class="sheet-label">期望押金（元）</text>
+              <view class="money-input"><text>¥</text><input type="digit" maxlength="22" data-field="expectedDeposit" value="{{expectedDeposit}}" placeholder="请输入押金" disabled="{{!editable || submitting || pendingSave || pendingSubmit}}" bindinput="input" /></view>
+            </view>
+            <view class="sheet-field"><text class="sheet-label">最低租期（天）</text><input type="number" class="form-input" data-field="minimumUnits" value="{{minimumUnits}}" placeholder="请输入正整数天" disabled="{{!editable || submitting || pendingSave || pendingSubmit}}" bindinput="input" /></view>
+            <view class="sheet-field"><text class="sheet-label">参考价值（元）</text><view class="money-input"><text>¥</text><input type="digit" data-field="referenceValue" value="{{referenceValue}}" placeholder="请输入设备参考价值" disabled="{{!editable || submitting || pendingSave || pendingSubmit}}" bindinput="input" /></view></view>
+            <view class="sheet-field"><text class="sheet-label">可租开始日</text><picker mode="date" value="{{availabilityStart}}" disabled="{{!editable || submitting || pendingSave || pendingSubmit}}" bindchange="changeStartDate"><view class="form-input">{{availabilityStart || '请选择开始日'}}</view></picker></view>
+            <view class="sheet-field"><text class="sheet-label">可租截止日（含）</text><picker mode="date" value="{{availabilityEnd}}" disabled="{{!editable || submitting || pendingSave || pendingSubmit}}" bindchange="changeEndDate"><view class="form-input">{{availabilityEnd || '请选择截止日'}}</view></picker></view>
+            <text class="sheet-hint">{{guidanceText}}</text>
+          </block>
+
+          <block wx:if="{{activeSheet === 'details'}}">
+            <view class="sheet-field"><text class="sheet-label">瑕疵说明</text><textarea maxlength="2000" class="sheet-textarea" data-field="notes" value="{{notes}}" placeholder="请如实填写划痕、使用痕迹或功能情况" disabled="{{!editable || submitting || pendingSave || pendingSubmit}}" bindinput="input"></textarea></view>
+            <view class="sheet-field"><text class="sheet-label">设备说明</text><textarea maxlength="4000" class="sheet-textarea" data-field="description" value="{{description}}" placeholder="介绍设备适用场景、使用情况或租用须知" disabled="{{!editable || submitting || pendingSave || pendingSubmit}}" bindinput="input"></textarea></view>
+          </block>
+
+          <block wx:if="{{activeSheet === 'accessories'}}">
+            <view class="sheet-field"><text class="sheet-label">随附配件</text><textarea maxlength="2000" class="sheet-textarea" data-field="accessories" value="{{accessories}}" placeholder="例如：电池、充电器、肩带" disabled="{{!editable || submitting || pendingSave || pendingSubmit}}" bindinput="input"></textarea><text class="sheet-hint">请列出交付时会随设备一并提供的配件。</text></view>
+          </block>
+
+          <block wx:if="{{activeSheet === 'product'}}">
+            <text class="sheet-hint">只显示平台在售的标准商品；归档商品和未就绪的媒体不会出现在这里。</text>
+            <view wx:if="{{catalogLoading}}" class="sheet-hint">正在读取可选商品…</view>
+            <view wx:elif="{{catalogError}}" class="sheet-hint is-error xy-hit-target" role="button" aria-label="重新读取可选商品" bindtap="retryCatalog">{{catalogError}}（点此重试）</view>
+            <view wx:elif="{{productList.length === 0}}" class="sheet-hint">{{catalogNotice || '平台暂无可选标准商品，请稍后再试。'}}</view>
+            <view wx:else class="product-option-list">
+              <view wx:for="{{productList}}" wx:key="id" class="product-option xy-hit-target {{productId === item.id ? 'is-selected' : ''}}" data-id="{{item.id}}" bindtap="selectProductFromSheet" role="button" aria-label="{{'选择' + item.label}}">
+                <view class="product-option-text"><text class="product-option-label">{{item.label}}</text><text class="product-option-detail">{{item.detail}}</text></view>
+                <text wx:if="{{productId === item.id}}" class="product-option-flag">已选</text>
+              </view>
+            </view>
+            <view wx:if="{{catalogHasMore && !catalogLoading}}" class="sheet-confirm xy-tap" bindtap="loadMoreCatalog" role="button">加载更多标准商品</view>
+          </block>
+          <block wx:if="{{activeSheet === 'proof'}}">
+            <text class="sheet-hint proof-hint">购买凭证为选填的私密证明资料，最多 6 张，不作为公开设备实拍。</text>
+            <view class="xy-draft-media-grid">
+              <view wx:if="{{mode !== 'view' && proofPaths.length < 6}}" class="xy-draft-media-tile xy-draft-media-add xy-hit-target xy-tap" data-kind="proof" aria-label="购买凭证上传暂不可用" bindtap="unavailable" role="button"><text class="xy-draft-media-symbol">选填</text><text class="xy-draft-media-label">不影响提交</text><text class="xy-draft-media-count">{{proofPaths.length}}/6</text></view>
+              <view wx:for="{{proofPaths}}" wx:key="item" class="media-thumb xy-draft-media-tile" data-kind="proof" data-index="{{index}}" bindtap="previewMedia" role="button"><media-state class="media-thumb-media" state="real" src="{{item}}" mode="aspectFill" placeholder-src="{{icons.deviceMark}}" empty-label="暂无凭证图片" failure-label="凭证图片暂时无法加载" retry-label="重试" aria-label="购买凭证" /><view wx:if="{{mode !== 'view'}}" class="xy-media-remove" data-kind="proof" data-index="{{index}}" catchtap="deleteMedia" role="button" aria-label="删除这张购买凭证"><view class="xy-media-remove__mark" aria-hidden="true"><text class="xy-media-remove__glyph">×</text></view></view></view>
+            </view>
+          </block>
+
+          <block wx:if="{{activeSheet === 'delivery'}}">
+            <text class="sheet-hint">发布时无需选择收货地址。保存草稿时会尝试记录微信实时位置；定位失败不影响发布，位置不作为快递或跑腿的发货地址。</text>
+            <view class="sheet-field">
+              <text class="sheet-label">支持的交付方式（至少选一项）</text>
+              <view class="delivery-grid"><view wx:for="{{deliveries}}" wx:key="id" class="delivery-item {{item.selected ? 'is-active' : ''}}" data-delivery="{{item.id}}" aria-label="{{item.selected ? '取消选择' : '选择'}}{{item.label}}" bindtap="chooseDelivery" role="button"><view class="delivery-check {{item.selected ? 'is-selected' : ''}}"><image wx:if="{{item.selected}}" class="delivery-check-icon" src="{{icons.deliveryCheck}}" mode="aspectFit" aria-label="已选择" /></view><text>{{item.label}}</text></view></view>
+            </view>
+            <view wx:for="{{deliveries}}" wx:key="id" wx:if="{{item.selected}}" class="rule-row">
+              <text class="sheet-label">{{item.label}}去程费用</text>
+              <view class="rule-options"><text class="rule-option {{item.outbound === 'TENANT' ? 'is-active' : ''}}" data-delivery="{{item.id}}" data-leg="outbound" data-payer="TENANT" catchtap="chooseRule" role="button">承租方承担</text><text class="rule-option {{item.outbound === 'LESSOR' ? 'is-active' : ''}}" data-delivery="{{item.id}}" data-leg="outbound" data-payer="LESSOR" catchtap="chooseRule" role="button">出租方承担</text></view>
+              <text class="sheet-label">{{item.label}}返程费用</text>
+              <view class="rule-options"><text class="rule-option {{item.return === 'TENANT' ? 'is-active' : ''}}" data-delivery="{{item.id}}" data-leg="return" data-payer="TENANT" catchtap="chooseRule" role="button">承租方承担</text><text class="rule-option {{item.return === 'LESSOR' ? 'is-active' : ''}}" data-delivery="{{item.id}}" data-leg="return" data-payer="LESSOR" catchtap="chooseRule" role="button">出租方承担</text></view>
+            </view>
+            <text class="sheet-hint delivery-sheet-hint">交付方式和费用承担规则会展示给承租方。</text>
+          </block>
+        </scroll-view>
+        <view class="sheet-actions">
+          <view class="sheet-confirm xy-tap" aria-label="确定设置" bindtap="confirmSheet" role="button">确定</view>
+        </view>
+      </block>
+    </view>
+  </view>
+</view>

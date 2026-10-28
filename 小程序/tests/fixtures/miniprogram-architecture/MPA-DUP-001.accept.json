@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "1.0",
+  "ruleId": "MPA-DUP-001",
+  "case": "accept",
+  "files": {
+    "miniprogram/pages/orders/index.wxml": "<view class=\"orders\"><text>订单状态</text><button>查看订单</button><view>这里是一个足够长、用于验证非重复文档可以通过架构门禁的本地测试结构。这里是一个足够长、用于验证非重复文档可以通过架构门禁的本地测试结构。</view></view>"
+  }
+}

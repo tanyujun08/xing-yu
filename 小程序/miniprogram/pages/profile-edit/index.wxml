@@ -1,0 +1,17 @@
+<page-meta root-font-size="system" />
+<page-shell surface="page" aria-busy="{{saving}}">
+<page-header title="{{secondaryNavigationTitle || '个人资料'}}" background="#ffffff" inverse="{{false}}" bindback="onSecondaryNavigationBack" slot="header" />
+  <view class="subpage">
+    <view class="profile-list">
+      <button class="profile-row avatar-row xy-button-reset xy-button-fluid" bindtap="chooseAvatar" disabled="{{selectingAvatar}}" aria-disabled="{{selectingAvatar}}" aria-busy="{{selectingAvatar}}" aria-label="选择头像"><text>{{selectingAvatar ? '选择中…' : '头像'}}</text><image wx:if="{{!avatarReloading}}" class="edit-avatar" src="{{avatarPath || icons.profileAvatar}}" mode="aspectFill" data-src="{{avatarPath}}" data-owner="{{avatarOwner}}" data-epoch="{{avatarEpoch}}" binderror="onAvatarImageError" /><image class="arrow" src="{{icons.arrowRight}}" mode="aspectFit" /></button>
+      <button wx:if="{{avatarFailed}}" class="profile-row xy-button-reset xy-button-fluid" data-src="{{avatarPath}}" data-owner="{{avatarOwner}}" data-epoch="{{avatarEpoch}}" catchtap="retryAvatarImage" disabled="{{avatarReloading}}" aria-disabled="{{avatarReloading}}" aria-label="重试当前头像">头像加载失败，重试</button>
+      <label class="profile-row nickname-row"><text>昵称</text><input value="{{name}}" maxlength="20" placeholder="请输入昵称" bindinput="inputName" /></label>
+      <button class="profile-row xy-button-reset xy-button-fluid" bindtap="openIdentity" aria-label="进入实名认证"><text>实名认证</text><text class="status status--{{identityTone}}">{{identityText}}</text><image class="arrow" src="{{icons.arrowRight}}" mode="aspectFit" /></button>
+    </view>
+    <text wx:if="{{avatarStatus}}" class="note" role="status">{{avatarStatus}}</text>
+    <button wx:if="{{avatarPending && !selectingAvatar}}" class="profile-row xy-button-reset xy-button-fluid" bindtap="recoverAvatar" aria-label="显式恢复原头像文件和原请求">恢复原头像请求</button>
+    <button wx:if="{{avatarPending}}" class="profile-row xy-button-reset xy-button-fluid" bindtap="cancelAvatar" aria-label="取消本次头像处理">取消本次头像处理</button>
+    <text wx:if="{{errorText}}" role="alert">{{errorText}}</text><text class="note">头像与昵称保存到本人账户；头像须通过服务端处理。</text>
+  </view>
+  <bottom-actions slot="footer" primary-text="保存资料" busy-text="保存中…" busy="{{saving}}" disabled="{{saving || avatarPending || selectingAvatar}}" bindprimary="save" />
+</page-shell>

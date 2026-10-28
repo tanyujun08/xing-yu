@@ -1,0 +1,103 @@
+.demo-migration-blocked {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: var(--xy-space-6);
+  background: var(--xy-color-neutral-50);
+  color: var(--xy-color-neutral-800);
+}
+
+.demo-migration-blocked__card {
+  width: min(100%, 640px);
+  padding: var(--xy-space-8);
+  border: 1px solid var(--xy-color-neutral-200);
+  border-radius: var(--xy-radius-lg);
+  background: var(--xy-color-neutral-0);
+  box-shadow: var(--xy-shadow-card);
+}
+
+.demo-migration-blocked__eyebrow {
+  margin: 0 0 var(--xy-space-2);
+  color: var(--xy-color-warning-700);
+  font-size: var(--xy-font-size-caption);
+  font-weight: var(--xy-font-weight-semibold);
+}
+
+.demo-migration-blocked h1 {
+  margin: 0 0 var(--xy-space-4);
+  font-size: var(--xy-font-size-page-title);
+  line-height: var(--xy-line-height-32);
+}
+
+.demo-migration-blocked p {
+  margin: 0;
+  line-height: var(--xy-line-height-24);
+}
+
+.demo-migration-blocked__facts {
+  display: grid;
+  gap: var(--xy-space-3);
+  margin: var(--xy-space-5) 0;
+}
+
+.demo-migration-blocked__facts > div {
+  display: grid;
+  grid-template-columns: 88px 1fr;
+  gap: var(--xy-space-3);
+  padding: var(--xy-space-3) var(--xy-space-4);
+  border-radius: var(--xy-radius-sm);
+  background: var(--xy-color-neutral-50);
+}
+
+.demo-migration-blocked__facts dt {
+  color: var(--xy-color-neutral-500);
+}
+
+.demo-migration-blocked__facts dd {
+  margin: 0;
+  font-weight: var(--xy-font-weight-medium);
+}
+
+.demo-migration-blocked__notice {
+  padding: var(--xy-space-3) var(--xy-space-4);
+  border: 1px solid var(--xy-color-warning-200);
+  border-radius: var(--xy-radius-sm);
+  background: var(--xy-color-warning-100);
+  color: var(--xy-color-warning-700);
+}
+
+.demo-migration-blocked__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--xy-space-3);
+  margin-top: var(--xy-space-4);
+}
+
+.demo-migration-blocked__actions button {
+  min-height: 40px;
+  padding: 0 var(--xy-space-4);
+  border: 0;
+  border-radius: var(--xy-radius-sm);
+  background: var(--xy-color-brand-600);
+  color: white;
+  cursor: pointer;
+}
+
+.demo-migration-blocked__actions span {
+  color: var(--xy-color-danger-700);
+}
+
+@media (max-width: 640px) {
+  .demo-migration-blocked {
+    padding: var(--xy-space-4);
+  }
+
+  .demo-migration-blocked__card {
+    padding: var(--xy-space-5);
+  }
+
+  .demo-migration-blocked__facts > div {
+    grid-template-columns: 1fr;
+    gap: var(--xy-space-1);
+  }
+}

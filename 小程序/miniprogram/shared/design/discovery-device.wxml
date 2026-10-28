@@ -1,0 +1,10 @@
+<template name="discovery-device">
+  <view class="xy-discovery-device {{narrow ? 'xy-discovery-device--narrow' : ''}} xy-tap" data-id="{{device.id}}" bindtap="openDevice" role="button" aria-label="查看{{device.name}}">
+    <view class="xy-discovery-device__media"><media-state class="xy-discovery-device__image" state="{{device.displayImage ? 'loading' : 'idle'}}" src="{{device.displayImage}}" density="thumbnail" mode="aspectFit" placeholder-src="/assets/figma-icons/device-mark.svg" empty-label="" alt="{{device.name}}设备图片" /></view>
+    <view class="xy-discovery-device__copy">
+      <view class="xy-discovery-device__line"><text class="xy-discovery-device__name">{{device.name}}</text><view class="xy-discovery-device__rent"><text class="xy-discovery-device__value">¥{{device.priceValue}}</text><text class="xy-discovery-device__unit">{{device.priceUnit}}</text></view></view>
+      <view class="xy-discovery-device__line"><view class="xy-discovery-device__tags"><text class="xy-discovery-device__channel xy-discovery-device__channel--{{device.supplyType}}">{{device.supplyType === 'cabinet' ? '自助柜' : device.supplyType === 'store' ? '门店' : '个人'}}</text><text class="xy-discovery-device__tag">{{device.location}}</text></view><text class="xy-discovery-device__deposit">押金 ¥{{device.depositValue}}</text></view>
+      <text class="xy-discovery-device__description">{{device.displayTags.length ? device.displayTags[0] + ' · ' : ''}}{{device.displayDescription || '查看设备详情'}}</text>
+    </view>
+  </view>
+</template>

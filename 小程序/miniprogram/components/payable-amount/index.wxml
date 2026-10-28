@@ -1,0 +1,4 @@
+<view class="payable">
+  <text class="payable__label">{{label}}</text>
+  <view class="payable__row"><text class="payable__value">¥{{amount}}</text><text wx:if="{{breakdown}}" class="payable__detail">{{breakdown}}</text></view>
+</view>

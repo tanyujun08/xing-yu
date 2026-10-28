@@ -1,0 +1,549 @@
+{
+  "Schemas": {
+    "StoreAddress": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dataset_id",
+        "province_id",
+        "city_id",
+        "district_id",
+        "detail_address",
+        "contact_name",
+        "phone_dial"
+      ],
+      "properties": {
+        "dataset_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "province_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "city_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "district_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "detail_address": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "contact_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "phone_dial": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 32,
+          "pattern": "^\\+?[0-9]{5,31}$"
+        },
+        "location": {
+          "anyOf": [
+            {
+              "$ref": "./addresses.yaml#/Schemas/AddressLocation"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "description": "Public operating address: phone_dial is canonical dial text, not a split private-phone projection. No is_default. Server validates the published dataset hierarchy; location null clears all coordinate provenance. PROVIDER_GEOCODE requires a verified adapter and currently returns 503."
+    },
+    "BusinessInterval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "start",
+        "end"
+      ],
+      "properties": {
+        "start": {
+          "type": "string",
+          "pattern": "^(?:[01][0-9]|2[0-3]):[0-5][0-9]$"
+        },
+        "end": {
+          "type": "string",
+          "pattern": "^(?:(?:[01][0-9]|2[0-3]):[0-5][0-9]|24:00)$"
+        }
+      }
+    },
+    "BusinessDay": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "day",
+        "closed",
+        "intervals"
+      ],
+      "properties": {
+        "day": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 7
+        },
+        "closed": {
+          "type": "boolean"
+        },
+        "intervals": {
+          "type": "array",
+          "maxItems": 2,
+          "items": {
+            "$ref": "#/Schemas/BusinessInterval"
+          }
+        }
+      }
+    },
+    "BusinessHours": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "timezone",
+        "week"
+      ],
+      "properties": {
+        "timezone": {
+          "type": "string",
+          "const": "Asia/Shanghai"
+        },
+        "week": {
+          "type": "array",
+          "minItems": 7,
+          "maxItems": 7,
+          "items": {
+            "$ref": "#/Schemas/BusinessDay"
+          }
+        }
+      },
+      "description": "Each day 1..7 exactly once, closed requires zero intervals, open requires one or two sorted non-overlapping intervals. No overnight range; 24:00 only permitted for end. Server canonicalizes day/time ordering."
+    },
+    "Store": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "store_id",
+        "merchant_id",
+        "responsible_lessor_id",
+        "name",
+        "address",
+        "province_name",
+        "city_name",
+        "district_name",
+        "business_hours",
+        "status",
+        "archive_reason",
+        "version",
+        "created_at",
+        "updated_at",
+        "location_verified_at"
+      ],
+      "properties": {
+        "store_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "merchant_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "responsible_lessor_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "address": {
+          "$ref": "#/Schemas/StoreAddress"
+        },
+        "province_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "city_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "district_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "business_hours": {
+          "$ref": "#/Schemas/BusinessHours"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "ACTIVE",
+            "ARCHIVED"
+          ]
+        },
+        "archive_reason": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,19}$"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "location_verified_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "photo_material_ids": {
+          "type": "array",
+          "maxItems": 9,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 64,
+            "pattern": "^mat_[!-~]+$"
+          },
+          "description": "Ordered READY system image materials. Empty array removes photos. Binding pins the object."
+        }
+      }
+    },
+    "StoreView": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "store_id",
+        "merchant_id",
+        "responsible_lessor_id",
+        "name",
+        "address",
+        "province_name",
+        "city_name",
+        "district_name",
+        "business_hours",
+        "status",
+        "archive_reason",
+        "version",
+        "created_at",
+        "updated_at",
+        "location_verified_at",
+        "allowed_actions",
+        "blocked_reasons"
+      ],
+      "properties": {
+        "store_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "merchant_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "responsible_lessor_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "address": {
+          "$ref": "#/Schemas/StoreAddress"
+        },
+        "province_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "city_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "district_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "business_hours": {
+          "$ref": "#/Schemas/BusinessHours"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "ACTIVE",
+            "ARCHIVED"
+          ]
+        },
+        "archive_reason": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,19}$"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "location_verified_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "allowed_actions": {
+          "type": "array",
+          "items": {
+            "$ref": "./merchants.yaml#/Schemas/MerchantAction"
+          }
+        },
+        "blocked_reasons": {
+          "type": "array",
+          "items": {
+            "$ref": "./addresses.yaml#/Schemas/ReasonItem"
+          }
+        },
+        "photo_material_ids": {
+          "type": "array",
+          "maxItems": 9,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 64,
+            "pattern": "^mat_[!-~]+$"
+          },
+          "description": "Ordered READY system image materials. Empty array removes photos. Binding pins the object."
+        }
+      }
+    },
+    "StoreInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "responsible_lessor_id",
+        "name",
+        "address",
+        "business_hours"
+      ],
+      "properties": {
+        "merchant_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "responsible_lessor_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "address": {
+          "$ref": "#/Schemas/StoreAddress"
+        },
+        "business_hours": {
+          "$ref": "#/Schemas/BusinessHours"
+        },
+        "photo_material_ids": {
+          "type": "array",
+          "maxItems": 9,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 64,
+            "pattern": "^mat_[!-~]+$"
+          },
+          "description": "Ordered READY system image materials. Empty array removes photos. Binding pins the object."
+        }
+      }
+    },
+    "StorePatch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reason"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "address": {
+          "$ref": "#/Schemas/StoreAddress"
+        },
+        "business_hours": {
+          "$ref": "#/Schemas/BusinessHours"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "photo_material_ids": {
+          "type": "array",
+          "maxItems": 9,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 64,
+            "pattern": "^mat_[!-~]+$"
+          },
+          "description": "Ordered READY system image materials. Empty array removes photos. Binding pins the object."
+        }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "name"
+          ]
+        },
+        {
+          "required": [
+            "address"
+          ]
+        },
+        {
+          "required": [
+            "business_hours"
+          ]
+        }
+      ]
+    },
+    "StoreReason": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reason"
+      ],
+      "properties": {
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
+      }
+    },
+    "StorePage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "items",
+        "page"
+      ],
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 100,
+          "items": {
+            "$ref": "#/Schemas/StoreView"
+          }
+        },
+        "page": {
+          "$ref": "./pagination.yaml#/CursorPageMeta"
+        }
+      }
+    }
+  }
+}

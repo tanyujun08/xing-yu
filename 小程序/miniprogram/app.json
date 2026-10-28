@@ -1,0 +1,98 @@
+{
+  "pages": [
+    "pages/home/index",
+    "pages/check-in/index",
+    "pages/orders/index",
+    "pages/info/index",
+    "pages/order-messages/index",
+    "pages/private-messages/index",
+    "pages/info-guide/index",
+    "pages/chat/index",
+    "pages/profile/index",
+    "pages/coupons/index",
+    "pages/coupon-detail/index",
+    "pages/profile-edit/index",
+    "pages/account-security/index",
+    "pages/about/index",
+    "pages/addresses/index",
+    "pages/detail/index",
+    "pages/confirm/index",
+    "pages/identity/index",
+    "pages/wechat-waiver/index",
+    "pages/contract/index",
+    "pages/contract-sign/index",
+    "pages/order-detail/index",
+    "pages/order-fees/index",
+    "pages/service-detail/index",
+    "pages/device-orders/index",
+    "pages/cabinet-open/index",
+    "pages/cabinet-code/index",
+    "pages/return-submit/index",
+    "pages/cabinet-return/index",
+    "pages/dispute/index",
+    "pages/cabinets/index",
+    "pages/cabinet-detail/index",
+    "pages/stores/index",
+    "pages/store-detail/index",
+    "pages/region/index",
+    "pages/publish-eligibility/index",
+    "pages/publish-quota/index",
+    "pages/rental-service/index",
+    "pages/publish/index",
+    "pages/listings/index",
+    "pages/listing-price/index",
+    "pages/wallet/index",
+    "pages/withdrawal/index",
+    "pages/login/index",
+    "pages/admin-approval/index",
+    "pages/membership/index",
+    "pages/level-rights/index",
+    "pages/growth-tasks/index",
+    "pages/powder-ledger/index",
+    "pages/powder-mall/index",
+    "pages/star-ledger/index",
+    "pages/lottery/index",
+    "pages/no-deposit/index",
+    "pages/address-edit/index",
+    "pages/demo-support/index",
+    "pages/demo-center/index"
+  ],
+  "window": {
+    "navigationBarTitleText": "星遇",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#F5F6FA",
+    "backgroundTextStyle": "light"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#9198A2",
+    "selectedColor": "#0A7F5E",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/orders/index",
+        "text": "订单"
+      },
+      {
+        "pagePath": "pages/info/index",
+        "text": "沟通"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "我的"
+      }
+    ]
+  },
+  "requiredPrivateInfos": [
+    "chooseLocation"
+  ],
+  "style": "v2",
+  "lazyCodeLoading": "requiredComponents",
+  "sitemapLocation": "sitemap.json"
+}

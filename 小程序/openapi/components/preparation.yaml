@@ -1,0 +1,1129 @@
+{
+  "Schemas": {
+    "OwnAssetPublicationContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "product_id",
+        "rental_unit",
+        "rule_version_id",
+        "eligibility_rule_version_id",
+        "read_at",
+        "pricing_guidance"
+      ],
+      "properties": {
+        "product_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "rental_unit": {
+          "type": "string",
+          "const": "DAY"
+        },
+        "rule_version_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "eligibility_rule_version_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "read_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "pricing_guidance": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "min_unit_price_fen",
+                "max_unit_price_fen",
+                "recommended_unit_price_fen"
+              ],
+              "properties": {
+                "min_unit_price_fen": {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]{0,18}$"
+                },
+                "max_unit_price_fen": {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]{0,18}$"
+                },
+                "recommended_unit_price_fen": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^[1-9][0-9]{0,18}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "AssetDraftInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [],
+      "properties": {
+        "product_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "display_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "condition": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "defect_description": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 2000
+        },
+        "accessories_text": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 2000
+        },
+        "description": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 4000
+        },
+        "identifier_type": {
+          "type": "string",
+          "enum": [
+            "IMEI",
+            "MANUFACTURER_SERIAL",
+            "PLATFORM_TAG"
+          ]
+        },
+        "identifier_value": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "rental_unit": {
+          "type": "string",
+          "enum": [
+            "HOUR",
+            "DAY"
+          ]
+        },
+        "unit_price_fen": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        },
+        "deposit_fen": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        },
+        "minimum_units": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        },
+        "reference_value_fen": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        },
+        "available_from": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "available_until": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "timezone": {
+          "type": "string",
+          "const": "Asia/Shanghai"
+        },
+        "publication_location": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "dataset_id",
+            "province_id",
+            "city_id",
+            "district_id",
+            "detail_address",
+            "recipient_name",
+            "phone_country_code",
+            "phone"
+          ],
+          "properties": {
+            "dataset_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            "province_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            "city_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            "district_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            "detail_address": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "recipient_name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            },
+            "phone_country_code": {
+              "type": "string",
+              "const": "+86"
+            },
+            "phone": {
+              "type": "string",
+              "pattern": "^1[3-9][0-9]{9}$"
+            },
+            "location": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "latitude",
+                "longitude",
+                "coordinate_system",
+                "source"
+              ],
+              "properties": {
+                "latitude": {
+                  "type": "string",
+                  "pattern": "^-?(?:(?:[0-9]|[1-8][0-9])\\.[0-9]{6}|90\\.000000)$"
+                },
+                "longitude": {
+                  "type": "string",
+                  "pattern": "^-?(?:(?:[0-9]|[1-9][0-9]|1[0-7][0-9])\\.[0-9]{6}|180\\.000000)$"
+                },
+                "coordinate_system": {
+                  "const": "GCJ02",
+                  "type": "string"
+                },
+                "source": {
+                  "const": "MAP_PICK",
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "publication_position": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "latitude",
+            "longitude",
+            "coordinate_system",
+            "source"
+          ],
+          "properties": {
+            "latitude": {
+              "type": "string",
+              "pattern": "^-?(?:(?:[0-9]|[1-8][0-9])\\.[0-9]{6}|90\\.000000)$"
+            },
+            "longitude": {
+              "type": "string",
+              "pattern": "^-?(?:(?:[0-9]|[1-9][0-9]|1[0-7][0-9])\\.[0-9]{6}|180\\.000000)$"
+            },
+            "coordinate_system": {
+              "type": "string",
+              "const": "GCJ02"
+            },
+            "source": {
+              "type": "string",
+              "const": "WECHAT_CLIENT"
+            }
+          }
+        },
+        "media": {
+          "type": "array",
+          "maxItems": 20,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "material_id",
+              "role",
+              "sort_order"
+            ],
+            "properties": {
+              "material_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64,
+                "pattern": "^[!-~]{1,64}$"
+              },
+              "role": {
+                "type": "string",
+                "enum": [
+                  "COVER",
+                  "IMAGE",
+                  "VIDEO",
+                  "OWNERSHIP",
+                  "DEFECT"
+                ]
+              },
+              "sort_order": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 99
+              }
+            }
+          }
+        },
+        "delivery_options": {
+          "type": "array",
+          "maxItems": 3,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "method"
+            ],
+            "properties": {
+              "method": {
+                "type": "string",
+                "enum": [
+                  "EXPRESS",
+                  "RUNNER",
+                  "MEET"
+                ]
+              },
+              "outbound_fee_payer": {
+                "type": "string",
+                "enum": [
+                  "TENANT",
+                  "LESSOR"
+                ]
+              },
+              "return_fee_payer": {
+                "type": "string",
+                "enum": [
+                  "TENANT",
+                  "LESSOR"
+                ]
+              },
+              "source_address_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64,
+                "pattern": "^[!-~]{1,64}$"
+              },
+              "meeting_location": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "latitude",
+                  "longitude",
+                  "coordinate_system",
+                  "source"
+                ],
+                "properties": {
+                  "latitude": {
+                    "type": "string",
+                    "pattern": "^-?(?:(?:[0-9]|[1-8][0-9])\\.[0-9]{6}|90\\.000000)$"
+                  },
+                  "longitude": {
+                    "type": "string",
+                    "pattern": "^-?(?:(?:[0-9]|[1-9][0-9]|1[0-7][0-9])\\.[0-9]{6}|180\\.000000)$"
+                  },
+                  "coordinate_system": {
+                    "const": "GCJ02",
+                    "type": "string"
+                  },
+                  "source": {
+                    "const": "MAP_PICK",
+                    "type": "string"
+                  }
+                }
+              },
+              "meeting_time_text": {
+                "type": "string",
+                "minLength": 0,
+                "maxLength": 128
+              },
+              "instruction": {
+                "type": "string",
+                "minLength": 0,
+                "maxLength": 1000
+              }
+            }
+          }
+        },
+        "rule_version_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "eligibility_rule_version_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        }
+      }
+    },
+    "SaveAssetDraft": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "asset"
+      ],
+      "properties": {
+        "asset": {
+          "$ref": "#/Schemas/AssetDraftInput"
+        }
+      }
+    },
+    "PublicationEligibilityRequirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "code",
+        "status",
+        "required",
+        "current_value",
+        "required_value",
+        "action"
+      ],
+      "properties": {
+        "code": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "SATISFIED",
+            "BLOCKED",
+            "NOT_REQUIRED"
+          ]
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "current_value": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "required_value": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "action": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "PublicationAgreementRequirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "document_version_id",
+        "kind",
+        "title",
+        "accepted"
+      ],
+      "properties": {
+        "document_version_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "type": "string"
+        },
+        "accepted": {
+          "type": "boolean"
+        }
+      }
+    },
+    "OwnPublicationEligibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "eligible",
+        "blocking_reasons",
+        "eligibility_rule_version_id",
+        "agreement_rule_version_id",
+        "membership_rule_version_id",
+        "minimum_level_code",
+        "current_level_code",
+        "identity_check_kind",
+        "identity_check_id",
+        "publish_quota_available",
+        "publish_quota_account_as_of_at",
+        "publish_quota_expiry_pending",
+        "agreements",
+        "assets",
+        "requirements",
+        "as_of_at"
+      ],
+      "properties": {
+        "eligible": {
+          "type": "boolean"
+        },
+        "blocking_reasons": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "eligibility_rule_version_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "agreement_rule_version_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "membership_rule_version_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "minimum_level_code": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "current_level_code": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "identity_check_kind": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "identity_check_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "publish_quota_available": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "publish_quota_account_as_of_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "publish_quota_expiry_pending": {
+          "type": "boolean"
+        },
+        "agreements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/PublicationAgreementRequirement"
+          }
+        },
+        "assets": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "total_count",
+            "online_count",
+            "editable_draft_count"
+          ],
+          "properties": {
+            "total_count": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$"
+            },
+            "online_count": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$"
+            },
+            "editable_draft_count": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$"
+            }
+          }
+        },
+        "requirements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/Schemas/PublicationEligibilityRequirement"
+          }
+        },
+        "as_of_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "PreparationReceipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "id",
+        "status",
+        "version"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "DRAFT",
+            "EVIDENCE",
+            "SUPPLEMENT"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "EDITING",
+            "DRAFT",
+            "SUBMITTED",
+            "PENDING"
+          ]
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,19}$"
+        },
+        "asset_version": {
+          "description": "Asset version at edit creation or formal submission; never the draft version.",
+          "type": "string",
+          "pattern": "^[1-9][0-9]*$"
+        },
+        "asset_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "revision_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        }
+      }
+    },
+    "OwnAssetDraft": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "draft_id",
+        "status",
+        "version",
+        "asset",
+        "origin_kind",
+        "base_version"
+      ],
+      "properties": {
+        "draft_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "EDITING",
+            "SUBMITTED",
+            "ARCHIVED"
+          ]
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,19}$"
+        },
+        "asset": {
+          "$ref": "#/Schemas/AssetDraftInput"
+        },
+        "asset_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "committed_revision_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "origin_kind": {
+          "enum": [
+            "CREATE",
+            "EDIT"
+          ],
+          "type": "string"
+        },
+        "base_version": {
+          "description": "Immutable parent asset version for EDIT; null for CREATE.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[1-9][0-9]*$"
+        }
+      }
+    },
+    "CreateEvidenceSet": {
+      "oneOf": [
+        {
+          "$ref": "#/Schemas/CreatePublicationEvidenceSet"
+        },
+        {
+          "$ref": "#/Schemas/CreateAssetHandoverEvidenceSet"
+        }
+      ]
+    },
+    "UpdateEvidenceSet": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "material_ids"
+      ],
+      "properties": {
+        "material_ids": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 20,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64,
+            "pattern": "^[!-~]{1,64}$"
+          }
+        }
+      }
+    },
+    "SubmitEvidenceSet": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "submitted"
+      ],
+      "properties": {
+        "submitted": {
+          "type": "boolean",
+          "const": true
+        }
+      }
+    },
+    "PublicationEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evidence_set_id",
+        "purpose",
+        "context",
+        "status",
+        "version",
+        "items"
+      ],
+      "properties": {
+        "evidence_set_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "purpose": {
+          "type": "string",
+          "const": "PUBLISH"
+        },
+        "context": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type",
+            "id"
+          ],
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "DRAFT"
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            }
+          }
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "DRAFT",
+            "SUBMITTED"
+          ]
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,19}$"
+        },
+        "items": {
+          "type": "array",
+          "maxItems": 20,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "material_id",
+              "role",
+              "object_version_ref",
+              "sort_order"
+            ],
+            "properties": {
+              "material_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64,
+                "pattern": "^[!-~]{1,64}$"
+              },
+              "role": {
+                "type": "string",
+                "enum": [
+                  "IMAGE",
+                  "VIDEO"
+                ]
+              },
+              "object_version_ref": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 256
+              },
+              "sort_order": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 19
+              }
+            }
+          }
+        }
+      }
+    },
+    "AssetSubmissionReceipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "id",
+        "status",
+        "version",
+        "asset_id",
+        "revision_id"
+      ],
+      "properties": {
+        "kind": {
+          "const": "DRAFT",
+          "type": "string"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "status": {
+          "const": "SUBMITTED",
+          "type": "string"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,19}$"
+        },
+        "asset_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "revision_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        }
+      }
+    },
+    "CreatePublicationEvidenceSet": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "purpose",
+        "context",
+        "material_ids"
+      ],
+      "properties": {
+        "purpose": {
+          "type": "string",
+          "const": "PUBLISH"
+        },
+        "context": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type",
+            "id"
+          ],
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "DRAFT"
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            }
+          }
+        },
+        "material_ids": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 20,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64,
+            "pattern": "^[!-~]{1,64}$"
+          }
+        }
+      }
+    },
+    "CreateAssetHandoverEvidenceSet": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "purpose",
+        "context",
+        "material_ids"
+      ],
+      "properties": {
+        "purpose": {
+          "type": "string",
+          "const": "HANDOVER"
+        },
+        "context": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type",
+            "id"
+          ],
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "ASSET"
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            }
+          }
+        },
+        "material_ids": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 20,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64,
+            "pattern": "^[!-~]{1,64}$"
+          }
+        }
+      }
+    },
+    "AssetHandoverEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evidence_set_id",
+        "purpose",
+        "context",
+        "status",
+        "version",
+        "items"
+      ],
+      "properties": {
+        "evidence_set_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[!-~]{1,64}$"
+        },
+        "purpose": {
+          "type": "string",
+          "const": "HANDOVER"
+        },
+        "context": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type",
+            "id"
+          ],
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "ASSET"
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[!-~]{1,64}$"
+            }
+          }
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "DRAFT",
+            "SUBMITTED"
+          ]
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,19}$"
+        },
+        "items": {
+          "type": "array",
+          "maxItems": 20,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "material_id",
+              "role",
+              "object_version_ref",
+              "sort_order"
+            ],
+            "properties": {
+              "material_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64,
+                "pattern": "^[!-~]{1,64}$"
+              },
+              "role": {
+                "type": "string",
+                "enum": [
+                  "IMAGE",
+                  "VIDEO"
+                ]
+              },
+              "object_version_ref": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 256
+              },
+              "sort_order": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 19
+              }
+            }
+          }
+        }
+      }
+    },
+    "EvidenceSet": {
+      "oneOf": [
+        {
+          "$ref": "#/Schemas/PublicationEvidence"
+        },
+        {
+          "$ref": "#/Schemas/AssetHandoverEvidence"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,6 @@
+.no-deposit-page { padding:var(--xy-space-4); color:var(--xy-color-text-primary); }
+.no-deposit-intro { display:block; font-size:var(--xy-text-body-small-size); line-height:var(--xy-text-body-small-line-height); color:var(--xy-color-text-secondary); margin-bottom:var(--xy-space-3); }
+.service-list { padding:var(--xy-space-3); border-radius:var(--xy-radius-md); background:var(--xy-color-surface); }
+.service-card + .service-card { margin-top:var(--xy-space-4); }
+.service-title { display:block; font-size:var(--xy-text-body-size); line-height:var(--xy-text-body-line-height); font-weight:var(--xy-text-weight-semibold); }
+.service-detail { display:block; margin-top:var(--xy-space-1); font-size:var(--xy-text-body-small-size); line-height:var(--xy-text-body-line-height); color:var(--xy-color-text-secondary); }

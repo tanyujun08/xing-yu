@@ -1,0 +1,41 @@
+.custom-tab-bar {
+  position: fixed;
+  z-index: var(--xy-z-overlay, 100);
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  height: calc(var(--xy-fixed-tab-visible-height, 64px) + env(safe-area-inset-bottom));
+  min-height: calc(var(--xy-fixed-tab-visible-height, 64px) + env(safe-area-inset-bottom));
+  padding: 0 0 env(safe-area-inset-bottom);
+  border-top: 1rpx solid var(--xy-color-divider, #e2e6e5);
+  /* Custom components do not reliably inherit page-scoped design tokens, so
+   * every semantic value has a safe fallback for the component scope. */
+  background: var(--xy-color-surface, #ffffff);
+  box-sizing: border-box;
+}
+
+.tab-item {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--xy-fixed-tab-visible-height, 64px);
+  color: var(--xy-color-text-muted, #67707c);
+  font-size: var(--xy-text-tab-label-size, 11px);
+  line-height: var(--xy-text-tab-label-line-height, 16px);
+}
+
+.tab-icon {
+  width: var(--xy-size-tab-icon, 22px);
+  height: var(--xy-size-tab-icon, 22px);
+  margin-bottom: var(--xy-gap-tab-icon-label, 3px);
+}
+
+.tab-item.is-active {
+  color: var(--xy-color-brand, #0a7f5e);
+  font-weight: var(--xy-text-weight-semibold, 600);
+}
+.tab-unread { position:absolute; top:4px; left:calc(50% + 8px); min-width:18px; padding:0 var(--xy-space-1, 4px); border-radius:var(--xy-radius-pill, 99px); background:var(--xy-color-danger, #d14343); color:var(--xy-color-text-inverse, #fff); font-size:var(--xy-text-caption-size, 12px); line-height:var(--xy-text-caption-line-height, 18px); text-align:center; }

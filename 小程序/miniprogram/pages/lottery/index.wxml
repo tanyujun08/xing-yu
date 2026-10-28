@@ -1,0 +1,44 @@
+<page-meta root-font-size="system" />
+<view class="lottery-page">
+<page-header title="每日抽奖" bindback="onSecondaryNavigationBack" />
+  <view class="lottery-main">
+    <view class="lottery-hero">
+      <image class="lottery-hero__image" src="{{icons.lotteryHero}}" mode="aspectFit" />
+      <view class="lottery-hero__copy"><text class="lottery-kicker">每日福利 ✦</text><text class="lottery-title">抽奖福利</text><view class="lottery-balance"><text>{{balance}}</text><text>粉钻</text></view><text class="lottery-meta">每次消耗 {{cost}} 粉钻，未中奖也会消耗</text></view>
+    </view>
+    <view wx:if="{{!loggedIn}}" class="lottery-action"><button class="draw-button lottery-login" bindtap="openLogin">登录后参与</button></view>
+    <view wx:else class="lottery-action">
+      <button class="draw-button lottery-draw" bindtap="draw" disabled="{{!canDraw || drawing || resultOpen}}" aria-disabled="{{!canDraw || drawing || resultOpen}}">{{drawing ? '正在核实…' : '立即抽奖'}}</button>
+      <status-view wx:if="{{loading}}" state="loading" title="正在读取抽奖信息" />
+      <status-view wx:if="{{errorText}}" state="error" title="暂无法完成读取" description="{{errorText}}" action-text="重新读取" bindaction="refresh" />
+      <text wx:if="{{pendingText}}" class="lottery-pending">{{pendingText}}</text>
+      <button wx:if="{{pendingText}}" class="lottery-query xy-button-reset" bindtap="queryOriginal" disabled="{{drawing}}" aria-disabled="{{drawing}}">查询原结果</button>
+      <button wx:if="{{restoreAvailable}}" class="lottery-restore xy-button-reset" bindtap="restoreOriginal" disabled="{{drawing}}" aria-disabled="{{drawing}}">恢复原请求</button>
+    </view>
+    <view class="lottery-section">
+      <view class="section-head"><view><text class="section-title">奖品清单</text><text class="section-copy">奖品权益以实际发放快照为准</text></view></view>
+      <view class="task-list"><view wx:for="{{prizes}}" wx:key="id" class="task-row"><view class="task-copy"><text>{{item.title}}</text><text>{{item.description}}</text></view><text class="task-done">{{item.status}}</text></view></view>
+    </view>
+    <view class="lottery-section">
+      <view class="section-head"><view><text class="section-title">赚取粉钻</text><text class="section-copy">查看当前签到奖励</text></view></view>
+      <view class="task-list"><view class="task-row"><view class="task-icon task-icon--pink">签</view><view class="task-copy"><text>每日签到</text><text>按已发布规则发放</text></view><button bindtap="goCheckIn" class="lottery-check-in">去签到</button></view></view>
+    </view>
+    <view class="lottery-section">
+      <view class="section-head"><view><text class="section-title">抽奖记录</text><text class="section-copy">包含未中奖、拒绝与未决结果</text></view><button class="lottery-coupons xy-button-reset" bindtap="goCoupons">查看券包</button></view>
+      <view class="lottery-filters"><button wx:for="{{stateFilters}}" wx:key="id" class="xy-button-reset lottery-state-filter" data-filter="{{item.id}}" bindtap="changeState" aria-pressed="{{stateFilter === item.id}}">{{item.label}}</button></view>
+      <view class="lottery-filters"><button wx:for="{{resultFilters}}" wx:key="id" class="xy-button-reset lottery-result-filter" data-filter="{{item.id}}" bindtap="changeResult" aria-pressed="{{resultFilter === item.id}}">{{item.label}}</button></view>
+      <view class="history-list">
+        <status-view wx:if="{{listState.phase === 'initial-loading'}}" state="loading" title="正在读取记录" />
+        <status-view wx:elif="{{listState.phase === 'initial-error'}}" state="error" title="记录读取失败" action-text="重试" bindaction="retryList" />
+        <status-view wx:elif="{{listState.phase === 'empty'}}" state="empty" title="暂无匹配记录" />
+        <button wx:for="{{records}}" wx:key="id" class="history-row lottery-record xy-button-reset" data-id="{{item.id}}" bindtap="openRecord"><view class="history-mark">◇</view><view class="history-copy"><text>{{item.title}}</text><text>{{item.time}} · {{item.cost}}</text></view><text class="history-status">{{item.status}}</text></button>
+        <status-view wx:if="{{listState.incremental === 'loading-more'}}" state="loading" density="compact-footer" title="正在加载更多" />
+        <status-view wx:elif="{{listState.incremental === 'load-more-error'}}" state="error" density="compact-footer" title="加载失败" action-text="重试" bindaction="retryMore" />
+        <status-view wx:elif="{{listState.incremental === 'done'}}" state="end" density="compact-footer" title="已显示全部匹配记录" />
+      </view>
+    </view>
+    <view class="lottery-section lottery-section--rules"><button class="rule-row" bindtap="showRules"><text>每次消耗 {{cost}} 粉钻，未中奖也会消耗</text><text>查看规则</text></button></view>
+  </view>
+  <view wx:if="{{confirmOpen}}" class="result-layer"><view class="result-dialog lottery-confirm-dialog"><text class="result-title">确认抽奖</text><text class="lottery-confirm-cost">每次消耗 {{confirmedCost}} 粉钻，未中奖也会消耗</text><text>预计扣费后可用 {{predictedBalance}} 粉钻；实际余额以服务端回执为准。</text><button class="result-confirm lottery-confirm" bindtap="confirmDraw">确认消耗并抽奖</button><button class="xy-button-reset lottery-cancel" bindtap="cancelDraw">取消</button></view></view>
+  <view wx:if="{{resultOpen && result}}" class="result-layer"><view class="result-dialog lottery-result-dialog"><text class="result-title lottery-result-title">{{result.title}}</text><text>{{result.status}}</text><text class="lottery-result-cost">实际消耗：{{result.cost}}</text><text wx:if="{{result.balance !== '—'}}">回执余额：{{result.balance}} 粉钻</text><text wx:if="{{result.reason}}">{{result.reason}}</text><button wx:if="{{result.pending}}" class="lottery-query xy-button-reset" bindtap="queryOriginal">查询原结果</button><button wx:if="{{result.couponId}}" class="lottery-result-coupon xy-button-reset" bindtap="openCoupon">查看奖励券</button><button wx:if="{{result.spendEntryId}}" class="lottery-result-spend xy-button-reset" bindtap="openSpend">查看扣费明细</button><button wx:if="{{result.rewardEntryId}}" class="lottery-result-reward xy-button-reset" bindtap="openReward">查看奖励明细</button><button class="result-confirm lottery-result-close" bindtap="closeResult">关闭结果</button></view></view>
+</view>

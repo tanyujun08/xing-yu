@@ -1,0 +1,61 @@
+<page-meta root-font-size="system" />
+<view class="return-theme">
+<page-shell surface="page" fixed-header has-footer>
+  <page-header variant="return" title="{{recordOnly ? '归还记录' : supplementing ? '补交归还材料' : isAfterOpen ? '入柜摆放照片' : '归还凭证'}}" slot="header" bindback="onSecondaryNavigationBack" />
+  <view class="return-page">
+    <return-progress wx:if="{{method === 'CABINET' && !recordOnly && !supplementing}}" step="{{isAfterOpen ? 2 : 1}}" />
+    <view wx:if="{{loading}}" class="return-card" role="status">正在读取归还信息…</view>
+    <view wx:if="{{errorText}}" class="return-card" role="alert"><button class="return-link" bindtap="demoSupport">联系客服</button><text class="error-copy">{{errorText}}</text><button class="xy-action-hit" bindtap="refresh" disabled="{{loading || busy}}" aria-disabled="{{loading || busy}}">查询最新记录</button></view>
+    <block wx:if="{{loaded}}">
+      <view wx:if="{{recordOnly}}" class="return-card"><text class="card-title">归还记录</text><text class="card-copy">实际收回：{{received || '暂无记录'}}</text><text class="card-copy">可查看本单已保存的照片、视频与补交历史。此页面仅供查看。</text></view>
+      <view wx:elif="{{supplementing}}" class="return-card"><text class="card-title">补交归还材料</text><text class="card-copy">实际收回：{{received}}</text><text class="card-copy">待补交项优先显示。按要求补充或更换，已有材料及历史记录会保留；实收后不继续累计逾期。</text></view>
+      <view class="return-card">
+        <view class="evidence-product"><image wx:if="{{media}}" src="{{media}}" mode="aspectFit" /><view><text class="card-title">{{title}}</text><text wx:if="{{!recordOnly && !readyCount}}" class="card-copy">{{photoCount}}张照片 + {{videoCount}}段视频</text></view><view wx:if="{{!recordOnly && !readyCount && !isAfterOpen}}" class="ready-count"><text>已就绪</text><text class="ready-number">0/{{totalCount}}</text></view></view>
+        <view wx:if="{{!recordOnly && (readyCount || isAfterOpen)}}" class="evidence-summary"><text>{{isAfterOpen ? '拍清设备与全部配件' : canProceed ? '凭证已准备好' : readyCount ? '还差' + (totalCount - readyCount) + '项，继续完成' : '按示例拍摄'}}</text><view class="ready-count"><text>已就绪</text><text class="ready-number">{{readyCount}}/{{totalCount}}</text></view></view>
+        <text wx:if="{{!recordOnly && (readyCount || isAfterOpen)}}" class="card-copy">{{isAfterOpen ? '请在关门前拍摄。已关门可从相册补传，不要再次开柜。' : '点击缩略图预览，点击更换可重新上传'}}</text>
+        <text wx:for="{{missing}}" wx:key="key" class="error-copy" role="alert">{{item.text}}</text>
+        <view class="evidence-content"><return-evidence-grid focus-key="{{focusKey}}" tiles="{{tiles}}" busy="{{busy}}" read-only="{{recordOnly}}" single="{{isAfterOpen && !recordOnly && !supplementing}}" album-only="{{isAfterOpen}}" bindselect="selectEvidence" bindpreview="previewEvidence" bindexample="showExample" bindrecover="recoverEvidence" /></view>
+        <text wx:if="{{recordOnly}}" class="card-copy">{{tiles.length ? '点击照片或视频查看原凭证' : '暂无已保存的归还凭证'}}</text>
+        <text wx:elif="{{supplementing}}" class="card-copy">{{pendingCount ? '材料上传或保存尚未完成，请查看原请求进度。' : missing.length ? '请按缺项说明继续补交，费用仍以官方核定为准。' : '已保存的材料以订单审核进度为准，请返回订单查看。'}}</text>
+        <text wx:else class="card-copy">{{pendingCount ? '有凭证尚未完成，请查看上传进度。' : canProceed ? '提交后将保存本次凭证，后续更换会保留历史记录' : '请补齐' + (totalCount - readyCount) + '项凭证'}}{{blockers}}</text>
+      </view>
+      <view wx:if="{{recordOnly}}" class="return-card"><text class="card-title">补交历史</text><text wx:if="{{!history.length}}" class="card-copy">暂无历史版本</text><view wx:for="{{history}}" wx:key="id"><text class="card-title">{{item.title}}</text><text class="card-copy">{{item.time}}</text><text wx:if="{{item.reason}}" class="card-copy">{{item.reason}}</text><button wx:if="{{item.url}}" class="return-link xy-action-hit" data-id="{{item.id}}" bindtap="previewHistory">查看{{item.kind === 'VIDEO' ? '视频' : '照片'}}原凭证</button><text wx:else class="card-copy">该版本凭证暂不可用</text></view></view>
+      <view wx:if="{{method === 'EXPRESS' && !canStart}}" class="return-card">
+        <text class="card-title">返程快递</text><text class="card-copy">{{address || '等待出租方设置返程地址，请勿寄往未经确认的地址'}}</text>
+        <block wx:if="{{canShip || canCorrect}}">
+          <button class="xy-action-hit" role="checkbox" aria-checked="{{addressConfirmed}}" bindtap="confirmAddress" disabled="{{busy}}" aria-disabled="{{busy}}">{{addressConfirmed ? '已核对返程地址' : '核对返程地址'}}</button>
+          <text class="card-copy">返程快递单号（必填）</text>
+          <input class="detail-input" value="{{tracking}}" data-field="tracking" maxlength="64" bindinput="input" disabled="{{busy}}" aria-disabled="{{busy}}" placeholder="返程快递单号（必填）" aria-label="返程快递单号" />
+          <text class="card-copy">快递公司（选填）</text>
+          <input class="detail-input" value="{{carrier}}" data-field="carrier" maxlength="64" bindinput="input" disabled="{{busy}}" aria-disabled="{{busy}}" placeholder="快递公司（选填）" aria-label="快递公司" />
+          <text wx:if="{{canCorrect}}" class="card-copy">更正原因（必填）</text>
+          <textarea wx:if="{{canCorrect}}" class="detail-textarea" value="{{correctionReason}}" data-field="correctionReason" maxlength="500" bindinput="input" disabled="{{busy}}" aria-disabled="{{busy}}" placeholder="更正原因（必填）" aria-label="快递单号更正原因" />
+          <button class="xy-action-primary" bindtap="saveShipment" disabled="{{busy || !addressConfirmed}}" aria-disabled="{{busy || !addressConfirmed}}">{{canCorrect ? '确认更正' : '确认寄回'}}</button>
+        </block>
+        <text wx:else class="card-copy">{{carrier}} {{tracking}}</text>
+      </view>
+      <view wx:if="{{method !== 'CABINET' && !recordOnly && !supplementing}}" class="return-card"><text class="card-copy">{{instructions}}</text><text class="card-copy">实际收回：{{received}}</text><text class="card-copy">租期超时不影响归还。费用由后台在退押审核时扣除或安排补缴。</text></view>
+    </block>
+  </view>
+  <view slot="footer" class="return-actions">
+    <button wx:if="{{recordOnly || supplementing}}" class="return-primary" bindtap="returnToOrder">{{supplementing ? '返回订单查看进度' : '返回订单'}}</button>
+    <button wx:elif="{{method === 'CABINET'}}" class="return-primary" bindtap="openCabinet" disabled="{{busy || !canProceed}}" aria-disabled="{{busy || !canProceed}}">{{isAfterOpen ? '返回归还核验' : '提交凭证并选柜'}}</button>
+    <button wx:elif="{{canStart}}" class="return-primary" bindtap="start" disabled="{{busy}}" aria-disabled="{{busy}}">开始上传凭证</button>
+    <button wx:if="{{!recordOnly && !supplementing}}" class="return-link" bindtap="onSecondaryNavigationBack">暂存返回</button>
+  </view>
+</page-shell>
+<view wx:if="{{example}}" class="example-page">
+  <page-shell surface="page" scroll-mode="viewport" has-footer>
+    <page-header variant="return" title="{{example.kind === 'VIDEO' ? '验机视频示例' : '照片示例'}}" slot="header" bindback="closeExample" />
+    <view class="return-page">
+      <view wx:if="{{example.kind === 'PHOTO'}}" class="example-heading"><text class="return-title">{{example.title}}</text><text class="example-count">{{exampleIndex + 1}} / {{exampleCount}}</text></view>
+      <view class="return-note return-note--success"><image class="return-status-icon" src="{{example.kind === 'VIDEO' ? icons.returnSound : icons.returnCamera}}" mode="aspectFit" />{{example.kind === 'PHOTO' ? '拍摄参考，不计入归还凭证' : '连续拍摄，清楚展示操作过程'}}</view>
+      <image wx:if="{{example.kind === 'PHOTO'}}" class="example-image" src="{{example.example}}" mode="aspectFill" bindtap="previewExample" role="button" aria-label="放大{{example.title}}示例" />
+      <video wx:else id="return-slot-example" class="example-video" src="{{example.example}}" poster="{{example.examplePoster}}" controls show-center-play-btn show-play-btn enable-play-gesture object-fit="contain" />
+      <view class="{{example.kind === 'VIDEO' ? 'return-card' : 'example-photo-steps'}}"><text wx:if="{{example.kind === 'VIDEO'}}" class="return-subtitle">视频需要展示</text><view wx:for="{{exampleSteps}}" wx:key="key" class="example-step"><text class="example-step-number">{{item.number}}</text><image wx:if="{{example.kind === 'VIDEO'}}" src="{{item.icon}}" mode="aspectFit" /><text>{{item.label}}</text></view><text wx:if="{{example.kind === 'VIDEO'}}" class="card-copy">示例时长仅供参考，上传限制以本单要求为准</text></view>
+      <view wx:if="{{example.kind === 'PHOTO'}}" class="example-navigation"><button class="return-secondary" data-direction="-1" bindtap="changeExample" disabled="{{exampleIndex === 0}}" aria-disabled="{{exampleIndex === 0}}">上一张</button><button class="return-secondary" data-direction="1" bindtap="changeExample" disabled="{{exampleIndex + 1 === exampleCount}}" aria-disabled="{{exampleIndex + 1 === exampleCount}}">下一张</button></view>
+    </view>
+    <view slot="footer" class="return-actions"><button class="return-primary" data-source="camera" bindtap="selectExample" disabled="{{busy || !example.editable}}" aria-disabled="{{busy || !example.editable}}"><image src="{{example.kind === 'VIDEO' ? icons.returnVideo : icons.returnCamera}}" mode="aspectFit" />{{example.kind === 'VIDEO' ? '录制验机视频' : '拍摄' + example.title}}</button><button class="return-secondary" data-source="album" bindtap="selectExample" disabled="{{busy || !example.editable}}" aria-disabled="{{busy || !example.editable}}"><image src="{{icons.returnAlbum}}" mode="aspectFit" />从相册选择</button></view>
+  </page-shell>
+</view>
+</view>

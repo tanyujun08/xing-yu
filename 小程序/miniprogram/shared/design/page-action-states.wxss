@@ -1,0 +1,9 @@
+/* Page-level attribute selectors retain the native disabled appearance without
+ * importing unsupported selectors into isolated custom components. */
+.xy-action-text[aria-disabled="true"], .xy-action-text[disabled] { color: var(--xy-color-brand-disabled, #98b4ac); opacity: 1; }
+.xy-action-primary[aria-disabled="false"]:active:not(.is-waiting) { background: var(--xy-color-action-pressed, #075f48); }
+.xy-action-primary[aria-disabled="true"], .xy-action-primary[disabled] { background: linear-gradient(var(--xy-member-color-button-overlay), var(--xy-member-color-button-overlay)), var(--xy-color-action-primary, #0a7f5e); border-color: var(--xy-color-action-primary, #0a7f5e); color: var(--xy-color-text-inverse, #fff); opacity: 1; }
+.xy-action-secondary[aria-disabled="true"], .xy-action-secondary[disabled] { border-color: var(--xy-color-brand-disabled, #98b4ac); background: var(--xy-color-surface, #fff); color: var(--xy-color-text-disabled, #c4c6cc); opacity: 1; }
+.xy-action-danger[aria-disabled="true"], .xy-action-danger[disabled] { background: linear-gradient(var(--xy-member-color-button-overlay), var(--xy-member-color-button-overlay)), var(--xy-color-action-danger, #c62828); border-color: var(--xy-color-action-danger, #c62828); color: var(--xy-color-text-inverse, #fff); opacity: 1; }
+.xy-action-primary.xy-action-text[aria-disabled="true"], .xy-action-primary.xy-action-text[disabled] { border-color: transparent; background: transparent; color: var(--xy-color-brand-disabled, #98b4ac); }
+.xy-action-hit[disabled] { opacity: 1; }

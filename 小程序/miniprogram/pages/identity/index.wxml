@@ -1,0 +1,16 @@
+<page-meta root-font-size="system" />
+<page-shell surface="page" has-footer="{{false}}">
+  <page-header variant="order" title="实名信息" bindback="onSecondaryNavigationBack" slot="header" />
+  <view class="identity-page">
+    <text class="identity-title">{{loading ? '读取实名信息…' : completed ? '实名信息已填写' : '签约前请完善实名信息'}}</text>
+    <text class="identity-copy">用于签约信息登记；当前为本人信息登记，本期不进行第三方身份核验。</text>
+    <view wx:if="{{loaded && !completed}}" class="identity-card">
+      <view class="identity-row"><text class="identity-label">真实姓名 <text class="identity-required">*</text></text><input aria-label="真实姓名，必填" value="{{realName}}" maxlength="50" placeholder="请输入真实姓名" disabled="{{busy}}" aria-disabled="{{busy}}" bindinput="inputName" /><text wx:if="{{errorField === 'realName'}}" class="form-error" role="alert">{{errorText}}</text></view>
+      <view class="identity-row"><text class="identity-label">身份证号 <text class="identity-required">*</text></text><input aria-label="身份证号，必填" value="{{identityNumber}}" type="idcard" maxlength="18" placeholder="请输入18位身份证号" disabled="{{busy}}" aria-disabled="{{busy}}" bindinput="inputIdentity" /><text wx:if="{{errorField === 'identityNumber'}}" class="form-error" role="alert">{{errorText}}</text></view>
+    </view>
+    <text wx:if="{{completed}}" class="identity-copy" role="status">实名信息已保存，完整姓名和身份证号不在此展示。</text>
+    <text wx:if="{{errorText && !errorField}}" class="form-error" role="alert">{{errorText}}</text>
+    <button wx:if="{{errorText && !errorField}}" class="retry-button xy-tap" bindtap="loadStatus" disabled="{{busy}}" aria-disabled="{{busy}}">重新查询实名状态</button>
+    <view class="identity-actions"><button class="identity-submit xy-button-fluid xy-action-primary" disabled="{{busy || loading || !loaded}}" aria-disabled="{{busy || loading || !loaded}}" bindtap="primary">{{completed ? '返回' : '保存并继续'}}</button><button wx:if="{{!completed}}" class="identity-later xy-button-fluid xy-action-hit" bindtap="onSecondaryNavigationBack" disabled="{{busy}}" aria-disabled="{{busy}}">稍后填写</button></view>
+  </view>
+</page-shell>

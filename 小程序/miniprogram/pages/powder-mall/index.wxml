@@ -1,0 +1,30 @@
+<page-meta root-font-size="system" />
+<view class="mall-page">
+<page-header title="{{secondaryNavigationTitle || '粉钻商城'}}" background="var(--xy-member-color-green-surface)" inverse="{{false}}" bindback="onSecondaryNavigationBack" />
+  <view class="mall-main">
+    <view class="mall-hero">
+      <view class="mall-hero__copy">
+        <text class="mall-eyebrow">当前粉钻</text>
+        <view class="mall-balance"><text>{{balance}}</text><text>粉钻</text></view>
+        <view class="mall-ledger"><text>粉钻账单</text><image class="mall-ledger-arrow" src="{{icons.arrowRight}}" mode="aspectFit" aria-hidden="true" /><button class="mall-ledger-hit xy-button-reset" bindtap="goLedger" aria-label="查看粉钻账单" /></view>
+        <view class="mall-actions"><button class="mall-action xy-button-reset" bindtap="goCheckIn"><view class="mall-action-shell mall-action-shell--primary">每日签到</view></button><button class="mall-action xy-button-reset" bindtap="goLottery"><view class="mall-action-shell">每日抽奖</view></button></view>
+      </view>
+      <image class="mall-hero__visual" src="{{icons.powderMallHero}}" mode="aspectFit" />
+    </view>
+
+    <view class="mall-products">
+      <view class="product-grid">
+        <button wx:for="{{mallProducts}}" wx:key="id" class="product-card xy-button-reset xy-button-fluid" data-product-id="{{item.id}}" bindtap="redeem" aria-label="{{item.title}}，{{item.statusText}}">
+          <view class="product-media product-media--{{item.tone}}"><image src="{{item.image}}" mode="aspectFit" /></view>
+          <view class="product-body">
+            <text class="product-title">{{item.title}}</text>
+            <view class="product-price"><text>{{item.statusText}}</text></view>
+          </view>
+        </button>
+      </view>
+    </view>
+
+    <text wx:if="{{errorText}}" class="mall-result">{{errorText}}</text>
+    <button class="mall-action xy-button-reset" bindtap="goCoupons"><view class="mall-action-shell">查看优惠券</view></button>
+  </view>
+</view>

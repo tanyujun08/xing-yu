@@ -1,0 +1,3 @@
+.rental-order-table td { vertical-align: top; overflow-wrap: anywhere; }
+.rental-order-table .rental-record-link { max-width: 100%; }
+.rental-order-table .rental-record-link .t-button__text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

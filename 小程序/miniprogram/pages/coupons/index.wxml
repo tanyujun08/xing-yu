@@ -1,0 +1,35 @@
+<page-meta root-font-size="system" />
+<page-shell has-footer="{{false}}">
+  <page-header slot="header" title="优惠券管理" bindback="onBack" />
+  <view class="coupons-page">
+    <view wx:if="{{!loggedIn}}" class="coupons-login">
+      <text class="coupons-login__title">登录后查看优惠券</text>
+      <text class="coupons-login__copy">查看你的权益券和兑换记录</text>
+      <button class="coupons-action xy-button-reset" bindtap="openLogin" role="button" aria-label="登录后查看优惠券">去登录</button>
+    </view>
+    <block wx:else>
+      <view class="coupon-tabs" role="tablist" aria-label="优惠券状态筛选">
+        <button wx:for="{{filters}}" wx:key="id" class="coupon-tab xy-button-reset {{filter === item.id ? 'coupon-tab--active' : ''}}" data-filter="{{item.id}}" bindtap="changeFilter" role="tab" aria-label="{{item.label}}" aria-selected="{{filter === item.id}}"><text>{{item.label}}</text><view wx:if="{{filter === item.id}}" class="coupon-tab__indicator" aria-hidden="true" /></button>
+      </view>
+      <view class="coupon-tabs" role="tablist" aria-label="优惠券类型筛选"><button wx:for="{{types}}" wx:key="id" class="coupon-tab xy-button-reset {{type === item.id ? 'coupon-tab--active' : ''}}" data-type="{{item.id}}" bindtap="changeType" role="tab" aria-selected="{{type === item.id}}">{{item.label}}</button></view>
+      <view class="coupon-list" aria-busy="{{listState.phase === 'initial-loading'}}">
+        <status-view wx:if="{{listState.phase === 'initial-loading'}}" state="loading" title="正在读取优惠券" />
+        <status-view wx:elif="{{listState.phase === 'initial-error'}}" state="error" title="优惠券暂时无法加载" description="请稍后重试" action-text="重试" bindaction="retryInitial" illustration-src="{{illustration}}" />
+        <status-view wx:elif="{{listState.phase === 'empty'}}" state="empty" title="{{emptyTitle}}" description="可切换状态查看其他优惠券" illustration-src="{{illustration}}" />
+        <block wx:else>
+          <status-view wx:if="{{listState.incremental === 'refreshing'}}" state="loading" density="compact-footer" title="正在刷新" />
+          <status-view wx:elif="{{listState.incremental === 'refresh-error'}}" state="error" density="compact-footer" title="刷新失败，已保留当前列表" action-text="重试" bindaction="retryRefresh" />
+          <view wx:for="{{items}}" wx:key="id" class="coupon-card">
+            <view class="coupon-heading"><text class="coupon-title">{{item.title}}</text><text class="coupon-status coupon-status--{{item.tone}}">{{item.status}}</text></view>
+            <text class="coupon-amount">{{item.amount}}</text>
+            <text class="coupon-description">{{item.description}}</text>
+            <view class="coupon-footer"><text class="coupon-expiry">{{item.expiry}}</text><button class="coupons-action coupon-detail-link coupon-order-link xy-button-reset" data-id="{{item.id}}" bindtap="openCoupon" role="button" aria-label="查看{{item.title}}详情">查看详情</button></view>
+          </view>
+          <status-view wx:if="{{listState.incremental === 'loading-more'}}" state="loading" density="compact-footer" title="正在加载更多" />
+          <status-view wx:elif="{{listState.incremental === 'load-more-error'}}" state="error" density="compact-footer" title="加载更多失败" action-text="重试" bindaction="retryLoadMore" />
+          <status-view wx:elif="{{listState.incremental === 'done'}}" state="end" density="compact-footer" title="已显示全部优惠券" />
+        </block>
+      </view>
+    </block>
+  </view>
+</page-shell>

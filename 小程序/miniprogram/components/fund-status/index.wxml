@@ -1,0 +1,1 @@
+<view class="fund-status fund-status--{{state}}" aria-label="{{label}}"><text>{{label}}</text></view>

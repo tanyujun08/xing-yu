@@ -1,0 +1,20 @@
+<page-meta root-font-size="system" />
+<view class="region-page">
+<page-header title="{{secondaryNavigationTitle || '切换城市'}}" background="#ffffff" inverse="{{false}}" bindback="onSecondaryNavigationBack" />
+  <view class="region-search-wrap"><view class="region-search"><image src="{{icons.search}}" mode="aspectFit" /><input value="{{keyword}}" focus="{{inputFocused}}" placeholder="搜索城市名称" bindinput="onSearchInput" confirm-type="search" bindconfirm="onSearchConfirm" /><view wx:if="{{keyword}}" class="search-clear xy-tap" bindtap="clearSearch" role="button" aria-label="清空搜索"><image src="{{icons.loginClear}}" mode="aspectFit" /></view></view></view>
+  <view class="region-body">
+    <scroll-view class="region-scroll" scroll-y="true" show-scrollbar="false" scroll-into-view="{{scrollIntoView}}" enable-back-to-top="true">
+      <view id="city-content-top" class="city-content {{searching ? 'is-searching' : 'has-alpha-index'}}">
+        <view wx:if="{{!searching}}" class="city-default-sections">
+          <view class="current-city xy-tap" data-id="{{currentCityId}}" data-city="{{currentCity}}" bindtap="selectCity" role="button" aria-label="当前城市{{currentCity}}"><text class="current-city-label">当前城市</text><text class="current-city-value">{{currentCity}}</text><image src="{{icons.arrowRight}}" mode="aspectFit" /></view>
+          <view class="city-section"><text class="city-section-title">热门城市</text><view class="city-grid"><view wx:for="{{hotCities}}" wx:for-item="city" wx:key="id" class="city-option xy-tap" data-id="{{city.id}}" data-city="{{city.name}}" bindtap="selectCity" role="button"><view class="city-option-label">{{city.name}}</view></view></view></view>
+        </view>
+        <view wx:if="{{loading}}" role="status">正在读取城市…</view><view wx:if="{{errorText}}"><text>{{errorText}}</text><button class="xy-action-hit" bindtap="loadCities">重新读取</button></view><button class="xy-action-hit" bindtap="selectAllCities">全部城市</button><view class="city-directory"><text wx:if="{{searching}}" class="city-section-title search-title">搜索结果</text>
+          <view wx:if="{{cityGroups.length}}" class="city-list"><view wx:for="{{cityGroups}}" wx:for-item="group" wx:key="letter" id="city-{{group.letter}}" class="city-group"><text wx:if="{{!searching}}" class="city-letter">{{group.letter}}</text><view wx:for="{{group.cities}}" wx:for-item="city" wx:key="id" class="city-row xy-tap" data-id="{{city.id}}" data-city="{{city.name}}" bindtap="selectCity" role="button"><text class="city-row-name">{{city.name}}</text><text wx:if="{{city.name === currentCity}}" class="city-current-mark">当前</text></view></view></view>
+          <view wx:elif="{{!loading && !errorText}}" class="city-empty"><image class="xy-empty-illustration" src="{{icons.emptySearch}}" mode="aspectFit" /><text class="city-empty-title">没有找到相关城市</text><text class="city-empty-help">试试其他城市名称</text></view>
+        </view>
+      </view>
+    </scroll-view>
+    <scroll-view wx:if="{{!searching && cityGroups.length}}" class="alpha-index" scroll-y="true" show-scrollbar="false" aria-label="城市首字母索引"><view class="alpha-index-track" bindtap="jumpLetter" role="group" aria-label="按字母跳转城市"><view wx:for="{{alphaLetters}}" wx:for-item="item" wx:key="letter" class="alpha-index-item" data-letter="{{item.letter}}">{{item.letter}}</view></view></scroll-view>
+  </view>
+</view>

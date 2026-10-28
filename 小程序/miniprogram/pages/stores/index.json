@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "门店列表",
+  "usingComponents": {
+    "media-state": "/components/media-state/index",
+    "page-header": "../../components/page-header/index",
+    "login-sheet": "../../components/login-sheet/index"
+  },
+  "navigationStyle": "custom",
+  "navigationBarTextStyle": "black"
+}

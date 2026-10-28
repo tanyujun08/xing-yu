@@ -1,0 +1,71 @@
+WechatNotificationEnvelope:
+  type: object
+  additionalProperties: false
+  required:
+    - id
+    - create_time
+    - event_type
+    - resource_type
+    - resource
+  properties:
+    id:
+      type: string
+      minLength: 1
+      maxLength: 128
+    create_time:
+      type: string
+      format: date-time
+    event_type:
+      type: string
+      enum:
+        - TRANSACTION.SUCCESS
+        - REFUND.SUCCESS
+        - REFUND.CLOSED
+        - REFUND.ABNORMAL
+    resource_type:
+      type: string
+      const: encrypt-resource
+    summary:
+      type: string
+      maxLength: 256
+    resource:
+      type: object
+      additionalProperties: false
+      required:
+        - algorithm
+        - original_type
+        - ciphertext
+        - nonce
+      properties:
+        algorithm:
+          type: string
+          const: AEAD_AES_256_GCM
+        original_type:
+          type: string
+          enum:
+            - transaction
+            - refund
+        ciphertext:
+          type: string
+          minLength: 1
+          maxLength: 65536
+        nonce:
+          type: string
+          minLength: 12
+          maxLength: 12
+        associated_data:
+          type: string
+          maxLength: 32
+WechatNotificationFailure:
+  type: object
+  additionalProperties: false
+  required:
+    - code
+    - message
+  properties:
+    code:
+      type: string
+      const: FAIL
+    message:
+      type: string
+      maxLength: 256

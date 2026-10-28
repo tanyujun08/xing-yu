@@ -1,0 +1,8 @@
+<view class="page-header-space" style="height:{{totalHeight}}px;"></view>
+<view class="page-header {{variant ? 'page-header--' + variant : ''}} {{inverse ? 'page-header--inverse' : ''}}" style="height:{{totalHeight}}px;padding-top:{{statusBarHeight}}px;{{variant ? '' : 'background:' + background + ';'}}" role="heading" aria-level="1" aria-label="{{ariaLabel || title}}">
+ <view class="page-header__bar" style="height:{{contentHeight}}px;">
+  <button wx:if="{{showBack}}" class="page-header__back xy-button-reset" aria-label="返回" bindtap="onBack"><image class="page-header__back-icon" src="{{inverse ? '/assets/icons/navigation-back-white.svg' : '/assets/icons/navigation-back.svg'}}" mode="aspectFit" /></button>
+  <text class="page-header__title">{{title}}</text>
+  <button wx:if="{{actionText}}" class="page-header__action xy-button-reset" aria-label="{{actionText}}" bindtap="onAction">{{actionText}}</button>
+ </view>
+</view>
