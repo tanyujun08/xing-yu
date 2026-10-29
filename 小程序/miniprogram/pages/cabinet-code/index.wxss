@@ -41,3 +41,8 @@
 .link-icon { flex:none; width:var(--xy-space-5); height:var(--xy-space-5); }
 .link-label { flex:1; min-width:0; color:var(--xy-color-text-primary); font-size:var(--xy-text-body-size); line-height:var(--xy-text-body-line-height); }
 .link-arrow { flex:none; width:12px; height:12px; }
+
+/* 尺寸逐项对齐画布：状态与步骤说明用 12 号字 */
+.state-label { font-size:var(--xy-text-body-small-size); line-height:var(--xy-text-body-small-line-height); }
+.step-index { font-size:var(--xy-text-body-small-size); line-height:var(--xy-text-body-small-line-height); font-weight:var(--xy-text-weight-bold); }
+.step-desc { margin-top:calc(var(--xy-space-1) / 2); color:var(--xy-color-text-muted); font-size:var(--xy-text-body-small-size); line-height:var(--xy-text-body-small-line-height); }
