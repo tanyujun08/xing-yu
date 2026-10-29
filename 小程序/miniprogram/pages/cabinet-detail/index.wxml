@@ -26,17 +26,18 @@
     <block wx:else>
       <view class="entity-hero"><swiper class="entity-swiper" current="{{heroCurrent}}" bindchange="onHeroChange" circular="true"><swiper-item wx:for="{{heroImages}}" wx:key="id"><image class="entity-slide" src="{{item.src}}" mode="aspectFill" /></swiper-item></swiper><text class="cabinet-illustration">柜机示意图</text><text class="gallery-count">{{heroCurrent + 1}}/{{heroImages.length}}</text></view>
       <view class="entity-card xy-card-key">
-      <view class="xy-discovery-inset"><view class="xy-discovery-identity"><text class="xy-discovery-identity__title">{{cabinet.name}}</text><text wx:if="{{cabinet.site}}" class="cabinet-site">{{cabinet.site}}</text></view></view>
-      <view class="xy-discovery-inset">
-        <view class="xy-discovery-info"><image class="xy-discovery-icon" src="/assets/figma-icons/discovery-location.svg" mode="aspectFit" /><text class="xy-discovery-info__label">柜机位置</text><view class="xy-discovery-info__content"><text class="xy-discovery-info__value">{{cabinet.address}}</text><view class="xy-discovery-icon-action xy-hit-target xy-tap" bindtap="showAddress" role="button" aria-label="打开柜机地图导航"><text class="cabinet-view-action">导航</text></view></view></view>
-      </view>
+        <view class="entity-main">
+          <view class="entity-copy"><view class="entity-title-row"><text class="xy-tag xy-tag--cabinet">柜</text><text class="entity-title">{{cabinet.name}}</text></view><text class="entity-line">{{cabinet.address}}</text><text class="entity-line">{{cabinet.site ? cabinet.site + ' · ' : ''}}24 小时自助取还</text></view>
+          <view class="entity-nav xy-tap" bindtap="showAddress" role="button" aria-label="打开柜机地图导航"><image class="entity-nav-icon" src="{{icons.homeLocation}}" mode="aspectFit" /><text>导航</text></view>
+        </view>
+        <view class="entity-stats"><text class="entity-stats-total">柜内 {{devices.length}} 台</text><text class="entity-dot"></text><text>扫码或取件码开柜</text></view>
       </view>
       <view class="xy-discovery-inset entity-block">
-        <view class="xy-discovery-heading"><text class="xy-discovery-heading__title">柜内设备 <text class="cabinet-device-count">{{devices.length}}台</text></text></view>
+        <view class="xy-discovery-heading"><text class="xy-discovery-heading__title">柜内设备 · {{devices.length}} 台</text></view>
         <view class="device-list xy-product-list">
           <view wx:for="{{devices}}" wx:key="id" class="cabinet-device xy-tap" data-id="{{item.id}}" bindtap="openDevice" role="button" aria-label="查看{{item.name}}租赁详情">
-            <view class="cabinet-device-media"><media-state src="{{item.displayImage}}" state="{{item.displayImage ? 'loading' : 'idle'}}" mode="aspectFit" density="thumbnail" alt="{{item.name}}设备图片" /></view>
-            <view class="cabinet-device-copy"><text class="cabinet-device-name">{{item.name}}</text><text class="cabinet-device-description">{{item.displayDescription || '查看设备详情'}}</text><view class="cabinet-device-price"><text>¥{{item.priceValue}}</text><text class="cabinet-device-unit">{{item.priceUnit}}</text></view><text class="cabinet-device-deposit">押金 ¥{{item.depositValue}} · 自助柜</text></view><text class="cabinet-device-arrow" aria-hidden="true">›</text>
+            <view class="cabinet-device-media"><media-state src="{{item.displayImage}}" state="{{item.displayImage ? 'loading' : 'idle'}}" mode="aspectFill" density="thumbnail" alt="{{item.name}}设备图片" /></view>
+            <view class="cabinet-device-copy"><text class="cabinet-device-name">{{item.name}}</text><text class="cabinet-device-description">{{item.displayDescription || '查看设备详情'}}</text><view class="cabinet-device-foot"><view class="cabinet-device-price"><text>¥{{item.priceValue}}</text><text class="cabinet-device-unit">{{item.priceUnit}}</text></view><text class="cabinet-device-deposit">押金 ¥{{item.depositValue}}</text></view></view><text class="cabinet-device-arrow" aria-hidden="true">›</text>
           </view>
           <view wx:if="{{devices.length === 0}}" class="empty-card xy-empty-section"><text class="xy-empty-section__title">当前暂无可租设备</text><text class="xy-empty-section__copy">可以切换其他柜机继续查看。</text></view>
         </view>
