@@ -1,4 +1,5 @@
 <page-meta root-font-size="system" />
+<wxs module="m">module.exports = { yuan: function (v) { var s = v ? v + "" : ""; return s.length > 3 && s.substring(s.length - 3) === ".00" ? s.substring(0, s.length - 3) : s; } };</wxs>
 <view class="{{returnMode ? 'return-theme' : ''}}">
 <page-shell surface="page" footer-surface="page" aria-busy="{{loading}}" has-footer="{{returnMode || (!loading && !errorText && !!cabinet.id)}}">
 <page-header variant="{{returnMode ? 'return' : ''}}" title="{{returnMode ? '选择归还格口' : (secondaryNavigationTitle || '柜机详情')}}" background="#ffffff" inverse="{{false}}" bindback="onSecondaryNavigationBack" slot="header" />
@@ -37,7 +38,7 @@
         <view class="device-list xy-product-list">
           <view wx:for="{{devices}}" wx:key="id" class="cabinet-device xy-tap" data-id="{{item.id}}" bindtap="openDevice" role="button" aria-label="查看{{item.name}}租赁详情">
             <view class="cabinet-device-media"><media-state src="{{item.displayImage}}" state="{{item.displayImage ? 'loading' : 'idle'}}" mode="aspectFill" density="thumbnail" alt="{{item.name}}设备图片" /></view>
-            <view class="cabinet-device-copy"><text class="cabinet-device-name">{{item.name}}</text><text class="cabinet-device-description">{{item.displayDescription || '查看设备详情'}}</text><view class="cabinet-device-foot"><view class="cabinet-device-price"><text>¥{{item.priceValue}}</text><text class="cabinet-device-unit">{{item.priceUnit}}</text></view><text class="cabinet-device-deposit">押金 ¥{{item.depositValue}}</text></view></view><text class="cabinet-device-arrow" aria-hidden="true">›</text>
+            <view class="cabinet-device-copy"><text class="cabinet-device-name">{{item.name}}</text><text class="cabinet-device-description">{{item.displayDescription || '查看设备详情'}}</text><view class="cabinet-device-foot"><view class="cabinet-device-price"><text class="cabinet-device-symbol">¥</text><text class="cabinet-device-amount">{{m.yuan(item.priceValue)}}</text><text class="cabinet-device-unit">{{item.priceUnit}}</text></view><text class="cabinet-device-deposit">押金 <text class="cabinet-device-deposit-value">¥{{m.yuan(item.depositValue)}}</text></text></view></view><text class="cabinet-device-arrow" aria-hidden="true">›</text>
           </view>
           <view wx:if="{{devices.length === 0}}" class="empty-card xy-empty-section"><text class="xy-empty-section__title">当前暂无可租设备</text><text class="xy-empty-section__copy">可以切换其他柜机继续查看。</text></view>
         </view>
