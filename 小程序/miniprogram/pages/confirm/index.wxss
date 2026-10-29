@@ -99,3 +99,22 @@
 .pickup-tile-address { color:var(--xy-color-text-secondary); font-size:var(--xy-text-caption-size); line-height:var(--xy-text-caption-line-height); }
 .pickup-tile-mode { flex:none; color:var(--xy-color-brand); font-size:var(--xy-text-body-small-size); line-height:var(--xy-text-body-small-line-height); font-weight:var(--xy-text-weight-semibold); }
 .checkout-step { margin:calc(-1 * var(--xy-space-3)) calc(-1 * var(--xy-space-4)) 0; padding:var(--xy-space-2) var(--xy-space-4); background:var(--xy-color-surface); }
+
+/* 尺寸逐项对齐画布：步骤条横排（20 圆点 + 12 字）、费用行间距 12、说明文字 12 灰 */
+.checkout-step { padding:var(--xy-space-3) var(--xy-space-4) var(--xy-space-4); }
+.step-bar { display:flex; align-items:center; }
+.step-item { display:flex; align-items:center; flex:none; gap:var(--xy-space-1); color:var(--xy-color-text-muted); font-size:var(--xy-text-body-small-size); line-height:var(--xy-text-body-small-line-height); }
+.step-dot { display:flex; align-items:center; justify-content:center; width:var(--xy-space-5); height:var(--xy-space-5); border-radius:50%; background:var(--xy-color-control-surface); color:var(--xy-color-text-muted); font-size:var(--xy-text-caption-size); line-height:var(--xy-text-caption-line-height); font-weight:var(--xy-text-weight-bold); }
+.step-item.is-current { color:var(--xy-color-text-strong); font-weight:var(--xy-text-weight-semibold); }
+.step-item.is-current .step-dot { background:var(--xy-color-brand); color:var(--xy-color-text-inverse); }
+.step-line { flex:1; height:1px; margin:0 var(--xy-space-2); background:var(--xy-color-border); }
+.section-head { margin-bottom:var(--xy-space-3); }
+.section-head .section-title { font-weight:var(--xy-text-weight-bold); }
+.section-head .section-note { color:var(--xy-color-text-muted); }
+.pickup-address { margin-top:var(--xy-space-2); color:var(--xy-color-text-muted); font-size:var(--xy-text-body-small-size); line-height:var(--xy-text-body-small-line-height); }
+.pickup-summary-row { min-height:0; color:var(--xy-color-text-secondary); font-size:var(--xy-text-body-size); line-height:var(--xy-text-body-line-height); }
+.pickup-summary-row > text:last-child { color:var(--xy-color-text-strong); }
+.pickup-summary-row + .pickup-summary-row { margin-top:var(--xy-space-3); }
+.confirm-total { margin-top:var(--xy-space-3); padding-top:var(--xy-space-3); border-top:1px solid var(--xy-color-border-weak); align-items:baseline; color:var(--xy-color-text-strong); font-weight:var(--xy-text-weight-semibold); }
+.confirm-total-value { font-size:var(--xy-text-page-title-size); line-height:var(--xy-text-page-title-line-height); font-weight:var(--xy-text-weight-heavy); }
+.confirm-total + .pickup-address { line-height:var(--xy-text-body-line-height); }
