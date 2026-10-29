@@ -7,8 +7,8 @@
       <view class="home-actions"><view class="check-in-hit xy-tap" bindtap="openCheckIn" role="button" aria-label="进入签到"><view class="check-in"><image src="{{icons.homeCheckIn}}" mode="aspectFit" /><text>签到</text></view></view></view>
     </view>
   </view>
-  <view class="cabinet-banner xy-elevation-banner xy-tap {{windowWidth < 360 || fontSizeSetting > 20 ? 'cabinet-banner--stacked' : ''}}" bindtap="openCabinets" role="button" aria-label="查看柜机">
-    <view class="banner-content"><text class="banner-eyebrow">全国线下</text><text class="banner-title">CCD租赁柜</text><text class="banner-copy">发现身边的相机</text><text class="banner-meta">24 小时 · 就近取还</text></view>
+  <view class="cabinet-banner xy-card-key xy-tap {{windowWidth < 360 || fontSizeSetting > 20 ? 'cabinet-banner--stacked' : ''}}" bindtap="openCabinets" role="button" aria-label="查看柜机">
+    <view class="banner-content"><view class="banner-head"><text class="xy-tag xy-tag--cabinet">柜</text><text class="banner-title">CCD租赁柜</text></view><text class="banner-copy">发现身边的相机</text><text class="banner-meta">24 小时 · 就近取还</text></view><text class="banner-more">查看柜机 ›</text>
     <image class="banner-media" src="{{icons.homeBanner}}" mode="aspectFill" />
   </view>
   <view class="section-head"><text class="section-title">门店</text><view class="section-more xy-tap" bindtap="openStores" role="button" aria-label="查看全部门店">查看全部<image src="{{icons.arrowRight}}" mode="aspectFit" /></view></view>

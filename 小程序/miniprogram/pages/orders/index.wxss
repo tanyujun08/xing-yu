@@ -33,3 +33,17 @@
 .order-card-action { display:flex; flex:none; align-items:center; justify-content:center; max-width:100%; min-height:var(--xy-control-height-large); margin:0; padding:0 var(--xy-space-4); box-sizing:border-box; border:1rpx solid var(--xy-color-border-strong); border-radius:var(--xy-radius-md); background:var(--xy-color-surface); color:var(--xy-color-text-secondary); font-size:var(--xy-text-section-title-size); line-height:var(--xy-text-section-title-line-height); font-weight:var(--xy-text-weight-semibold); }
 .order-card-action::after { border:0; }
 .order-card-action.is-primary { background:var(--xy-color-brand); border-color:var(--xy-color-brand); color:var(--xy-color-text-inverse); }
+
+/* 视觉规范 v1：我租的/我出租的是分段控件；筛选是 4 圆角小块（视觉 28，点击区仍 44）；进行中订单带阴影。 */
+.role-tabs { min-height:0; gap:0; padding:var(--xy-space-1); border-radius:var(--xy-radius-container); background:var(--xy-color-canvas-muted); box-sizing:border-box; }
+.role-tab { border-radius:var(--xy-radius-md); font-size:var(--xy-text-body-size); line-height:var(--xy-text-body-line-height); }
+.role-tab-label { padding:0; }
+.role-tab.is-active { background:var(--xy-color-surface); color:var(--xy-color-text-strong); box-shadow:var(--xy-shadow-segment); }
+.role-tab.is-active::after { display:none; }
+.filter-list { gap:var(--xy-space-2); flex-wrap:nowrap; overflow-x:auto; }
+.filter-chip { position:relative; z-index:0; flex:none; min-width:0; padding:0 var(--xy-space-3); background:transparent; font-size:var(--xy-text-body-small-size); line-height:var(--xy-text-body-small-line-height); }
+.filter-chip::before { position:absolute; z-index:var(--xy-z-behind); top:var(--xy-space-2); right:0; bottom:var(--xy-space-2); left:0; border-radius:var(--xy-radius-sm); background:var(--xy-color-surface); box-shadow:inset 0 0 0 1rpx var(--xy-color-border); content:''; }
+.filter-chip.is-active { background:transparent; }
+.filter-chip.is-active::before { background:var(--xy-color-text-strong); box-shadow:none; }
+.order-card-action { border-color:var(--xy-color-border); }
+.order-card-action.is-primary { border-color:var(--xy-color-brand); }

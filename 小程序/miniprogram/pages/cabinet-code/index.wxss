@@ -10,3 +10,10 @@
 .credential-card .section-title { margin-bottom: var(--xy-space-3); }
 .pickup-guidance { margin-top:var(--xy-space-3); }
 .progress-card .xy-action-hit { margin-top:var(--xy-space-2); }
+
+/* 视觉规范 v1：取件码输入卡是页面重点，加柔和阴影；卡片内边距 16。 */
+.intro-block { display: none; }
+.code-page { padding-top: var(--xy-space-3); }
+.code-page .surface-card { padding: var(--xy-space-4); }
+.code-page .credential-card { box-shadow: var(--xy-shadow-key); }
+.code-page .body-copy { font-size: var(--xy-text-body-small-size); line-height: var(--xy-text-body-small-line-height); color: var(--xy-color-text-muted); }

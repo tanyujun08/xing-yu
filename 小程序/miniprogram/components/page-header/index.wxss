@@ -15,5 +15,5 @@
 .page-header--inverse { color:var(--xy-color-text-inverse); }
 .page-header--primary .page-header__bar,.page-header--profile-hero .page-header__bar { justify-content:flex-start; padding:0 var(--xy-space-4); box-sizing:border-box; }
 .page-header--primary .page-header__title,.page-header--profile-hero .page-header__title { font-size:var(--xy-text-page-title-size); font-weight:var(--xy-text-weight-semibold); text-align:left; }
-.page-header--profile-hero { background:linear-gradient(135deg,var(--xy-color-brand-light,#e7f7f1),var(--xy-color-surface-subtle,#f5f6fa)); }
+.page-header--profile-hero { background:var(--xy-color-page,#f5f5f7); }
 .page-header__back, .page-header__action { min-width:var(--xy-size-touch-min); }

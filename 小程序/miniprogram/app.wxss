@@ -162,6 +162,13 @@ page {
   --xy-radius-control: var(--xy-radius-md);
   --xy-radius-circle: 50%;
   --xy-shadow-card: none;
+  --xy-z-behind: -1;
+  --xy-color-glass: rgba(255, 255, 255, .96);
+  --xy-color-glass-soft: rgba(255, 255, 255, .88);
+  --xy-shadow-ring: 0 0 0 2px var(--xy-color-surface);
+  --xy-shadow-segment: 0 1px 3px rgba(17, 24, 39, .08);
+  --xy-blur-glass: blur(20px);
+  --xy-text-code-cell-size: calc(16px + .5rem);
   --xy-shadow-key: 0 6px 20px rgba(17, 24, 39, .06), 0 1px 3px rgba(17, 24, 39, .04);
   --xy-shadow-banner: 0 4px 12px rgba(18, 28, 26, .08);
   --xy-shadow-floating-action: 0 8px 20px rgba(18, 28, 26, .12);

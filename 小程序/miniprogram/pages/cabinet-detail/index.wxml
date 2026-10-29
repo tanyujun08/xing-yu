@@ -1,6 +1,6 @@
 <page-meta root-font-size="system" />
 <view class="{{returnMode ? 'return-theme' : ''}}">
-<page-shell surface="{{returnMode ? 'page' : 'surface'}}" footer-surface="page" aria-busy="{{loading}}" has-footer="{{returnMode || (!loading && !errorText && !!cabinet.id)}}">
+<page-shell surface="page" footer-surface="page" aria-busy="{{loading}}" has-footer="{{returnMode || (!loading && !errorText && !!cabinet.id)}}">
 <page-header variant="{{returnMode ? 'return' : ''}}" title="{{returnMode ? '选择归还格口' : (secondaryNavigationTitle || '柜机详情')}}" background="#ffffff" inverse="{{false}}" bindback="onSecondaryNavigationBack" slot="header" />
   <view wx:if="{{returnMode}}" class="return-page">
     <return-progress step="2" />
@@ -25,13 +25,14 @@
     <view wx:elif="{{missing}}" class="empty-card xy-empty-page xy-empty-page--surface"><image class="xy-empty-page__illustration" src="{{icons.emptyLocation}}" mode="aspectFit" aria-hidden="true" /><text class="xy-empty-page__title">柜机不存在</text><text class="xy-empty-page__copy">请返回柜机列表重新选择。</text><view class="xy-empty-page__action xy-action-primary xy-action-text xy-tap" bindtap="goBack" role="button" aria-label="返回柜机列表">返回</view></view>
     <block wx:else>
       <view class="entity-hero"><swiper class="entity-swiper" current="{{heroCurrent}}" bindchange="onHeroChange" circular="true"><swiper-item wx:for="{{heroImages}}" wx:key="id"><image class="entity-slide" src="{{item.src}}" mode="aspectFill" /></swiper-item></swiper><text class="cabinet-illustration">柜机示意图</text><text class="gallery-count">{{heroCurrent + 1}}/{{heroImages.length}}</text></view>
+      <view class="entity-card xy-card-key">
       <view class="xy-discovery-inset"><view class="xy-discovery-identity"><text class="xy-discovery-identity__title">{{cabinet.name}}</text><text wx:if="{{cabinet.site}}" class="cabinet-site">{{cabinet.site}}</text></view></view>
       <view class="xy-discovery-inset">
         <view class="xy-discovery-info"><image class="xy-discovery-icon" src="/assets/figma-icons/discovery-location.svg" mode="aspectFit" /><text class="xy-discovery-info__label">柜机位置</text><view class="xy-discovery-info__content"><text class="xy-discovery-info__value">{{cabinet.address}}</text><view class="xy-discovery-icon-action xy-hit-target xy-tap" bindtap="showAddress" role="button" aria-label="打开柜机地图导航"><text class="cabinet-view-action">导航</text></view></view></view>
       </view>
-      <view class="xy-discovery-band"></view>
-      <view class="xy-discovery-inset">
-        <view class="xy-discovery-heading"><text class="xy-discovery-heading__title">柜内设备 <text class="cabinet-device-count">{{devices.length}}台</text></text></view><text class="cabinet-device-hint">点击设备查看租赁详情</text>
+      </view>
+      <view class="xy-discovery-inset entity-block">
+        <view class="xy-discovery-heading"><text class="xy-discovery-heading__title">柜内设备 <text class="cabinet-device-count">{{devices.length}}台</text></text></view>
         <view class="device-list xy-product-list">
           <view wx:for="{{devices}}" wx:key="id" class="cabinet-device xy-tap" data-id="{{item.id}}" bindtap="openDevice" role="button" aria-label="查看{{item.name}}租赁详情">
             <view class="cabinet-device-media"><media-state src="{{item.displayImage}}" state="{{item.displayImage ? 'loading' : 'idle'}}" mode="aspectFit" density="thumbnail" alt="{{item.name}}设备图片" /></view>

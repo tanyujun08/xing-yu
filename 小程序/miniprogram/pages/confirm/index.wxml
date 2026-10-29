@@ -53,10 +53,10 @@
       </view>
       <view class="confirm-section xy-card pickup-section">
         <view class="section-head">
-          <text class="section-title">{{method === 'CABINET' ? '租赁柜取还' : '快递往返'}}</text>
+          <text class="section-title">取还方式</text><text class="section-note">{{method === 'CABINET' ? '官方设备仅限柜机取还' : '个人设备通过快递寄送与归还'}}</text>
         </view>
-        <text class="pickup-address">{{method === 'CABINET' ? '官方设备仅可在租赁柜取还；到租期开始后，扫描柜机小程序码取件。' : '个人设备通过快递寄送与归还。'}}</text>
-        <text wx:if="{{method === 'CABINET' && pickupLocation}}" class="pickup-address">{{pickupLocation}}</text>
+        <view wx:if="{{method === 'CABINET' && pickupLocation}}" class="pickup-tile"><text class="xy-tag xy-tag--cabinet">柜</text><text class="pickup-tile-name">{{pickupLocation}}</text></view>
+        <text wx:if="{{method === 'CABINET'}}" class="pickup-address">租期开始后，凭取件码或扫柜机码开柜取件</text>
         <button wx:if="{{method === 'EXPRESS' && !frozen}}" class="pickup-card xy-button-reset" bindtap="openAddressBook" disabled="{{busy}}" aria-disabled="{{busy}}" aria-label="选择收货地址">{{recipientAddress || '选择收货地址'}}</button>
         <text wx:elif="{{recipientAddress}}" class="pickup-address">{{recipientAddress}}</text>
         <view wx:if="{{method === 'EXPRESS'}}" class="checkout-notice"><text>{{outboundFreight || '寄出运费待核实'}}；{{returnFreight || '寄回运费待核实'}}。</text><text>{{!outboundFreight || !returnFreight ? '选好地址与租期后核对运费承担方。' : ''}}运费不计本单应付，运输不顺延租期。</text></view>

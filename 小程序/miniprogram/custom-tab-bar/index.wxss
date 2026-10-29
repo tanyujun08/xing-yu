@@ -11,9 +11,9 @@
   border-top: 1rpx solid var(--xy-color-divider, #ebebed);
   /* Custom components do not reliably inherit page-scoped design tokens, so
    * every semantic value has a safe fallback for the component scope. */
-  background: rgba(255, 255, 255, .96);
-  -webkit-backdrop-filter: blur(20px);
-  backdrop-filter: blur(20px);
+  background: var(--xy-color-glass, #fff);
+  -webkit-backdrop-filter: var(--xy-blur-glass);
+  backdrop-filter: var(--xy-blur-glass);
   box-sizing: border-box;
 }
 
@@ -28,7 +28,7 @@
   color: var(--xy-color-text-muted, #86868b);
   font-size: var(--xy-text-tab-label-size, 11px);
   line-height: var(--xy-text-tab-label-line-height, 16px);
-  font-weight: 500;
+  font-weight: var(--xy-text-weight-medium, 500);
   transition: color .2s ease;
 }
 
@@ -50,19 +50,19 @@
 
 .tab-unread {
   position: absolute;
-  top: 6px;
-  left: calc(50% + 4px);
+  top: var(--xy-space-1, 4px);
+  left: calc(50% + var(--xy-space-1, 4px));
   box-sizing: border-box;
-  min-width: 16px;
-  height: 16px;
-  padding: 0 4px;
-  border-radius: 8px;
+  min-width: var(--xy-size-icon-base, 16px);
+  height: var(--xy-size-icon-base, 16px);
+  padding: 0 var(--xy-space-1, 4px);
+  border-radius: var(--xy-radius-container, 8px);
   background: var(--xy-color-danger, #d9381e);
-  box-shadow: 0 0 0 2px #fff;
+  box-shadow: var(--xy-shadow-ring);
   color: var(--xy-color-text-inverse, #fff);
-  font-size: 11px;
-  line-height: 16px;
-  font-weight: 600;
+  font-size: var(--xy-text-caption-size, 11px);
+  line-height: var(--xy-text-tab-label-line-height, 16px);
+  font-weight: var(--xy-text-weight-semibold, 600);
   text-align: center;
 }
 

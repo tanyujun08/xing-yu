@@ -57,3 +57,27 @@
 .detail-benefit-link { position:relative; }
 .touch-overlay { position:absolute; left:50%; top:50%; width:100% !important; height:100%; min-width:var(--xy-size-touch-min); min-height:var(--xy-size-touch-min); transform:translate(-50%,-50%); box-sizing:border-box; padding:0; margin:0; border:0; border-radius:0; background:transparent; }
 .touch-overlay::after { border:0; }
+
+/* 视觉规范 v1：设备详情去卡片化 —— 图片通栏，信息块全部是满宽白底，块间 12 灰缝。 */
+.gallery { padding:0; }
+.gallery-frame,.gallery-image,.gallery-swiper { height:100vw; border-radius:0; background:var(--xy-color-canvas-muted); }
+.gallery.is-empty .gallery-image { height:calc(48px + var(--xy-text-caption-line-height)); background:var(--xy-color-canvas-muted); }
+.gallery-count { right:var(--xy-space-4); bottom:var(--xy-space-3); padding:0 var(--xy-space-2); border-radius:var(--xy-radius-lg); background:var(--xy-color-gallery-counter); }
+.detail-card,.pickup-card,.detail-section,.detail-videos { margin:var(--xy-space-3) 0 0; padding:var(--xy-space-4); border-radius:0; }
+.gallery + .detail-card { margin-top:0; }
+.detail-card { display:flex; flex-direction:column; }
+.detail-card > * { align-self:stretch; }
+.detail-commerce { order:-1; margin:0 0 var(--xy-space-2); padding:0; background:transparent; }
+.detail-price-row,.detail-deposit-row { grid-template-columns:minmax(0,1fr); }
+.detail-price-label { display:none; }
+.detail-deposit-row { display:flex; align-items:baseline; gap:var(--xy-space-1); }
+.detail-price-symbol { color:var(--xy-color-brand); font-size:var(--xy-text-body-size); font-weight:var(--xy-text-weight-bold); }
+.detail-price-value { color:var(--xy-color-brand); font-size:var(--xy-text-asset-summary-size); line-height:var(--xy-text-asset-summary-line-height); font-weight:var(--xy-text-weight-heavy); }
+.detail-deposit-row { margin-top:var(--xy-space-1); }
+.detail-deposit-value { color:var(--xy-color-text-secondary); font-weight:var(--xy-text-weight-semibold); }
+.detail-name { font-weight:var(--xy-text-weight-bold); }
+.detail-benefit { margin-top:var(--xy-space-3); padding:var(--xy-space-2) var(--xy-space-3); border-top:0; border-radius:var(--xy-radius-control); background:var(--xy-color-control-surface); }
+.section-title { margin-bottom:var(--xy-space-3); font-size:var(--xy-text-section-title-size); line-height:var(--xy-text-section-title-line-height); font-weight:var(--xy-text-weight-bold); }
+.detail-group + .detail-group { margin-top:var(--xy-space-6); padding-top:0; border-top:0; }
+.info-line { grid-template-columns:72px minmax(0,1fr); padding:var(--xy-space-1) 0; }
+.detail-section { margin-bottom:var(--xy-space-3); }

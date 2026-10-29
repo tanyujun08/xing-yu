@@ -132,3 +132,11 @@
 
 .slot-selection.return-note { padding:var(--xy-space-2); }
 .return-slot-grid .return-slot { padding:var(--xy-space-1) var(--xy-space-2); }
+
+/* 视觉规范 v1：图片通栏；图下第一块是带阴影的信息卡；设备列表是白底卡。 */
+.cabinet-detail-page--browse .entity-hero { margin:0 calc(-1 * var(--xy-layout-page-padding-x)); }
+.entity-card { margin-top:var(--xy-space-3); overflow:hidden; border-radius:var(--xy-radius-container); background:var(--xy-color-surface); }
+.entity-card .xy-discovery-identity { padding-bottom:var(--xy-space-2); }
+.entity-card .xy-discovery-info { min-height:var(--xy-size-touch-min); }
+.entity-block { margin-top:var(--xy-space-6); border-radius:var(--xy-radius-container); background:var(--xy-color-surface); }
+.cabinet-device-media { width:72px; height:72px; border-radius:var(--xy-radius-media); background:var(--xy-color-canvas-muted); }
