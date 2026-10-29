@@ -124,3 +124,4 @@
 .bottom-rent { font-size:var(--xy-text-page-title-size); line-height:var(--xy-text-page-title-line-height); font-weight:var(--xy-text-weight-heavy); }
 .detail-action-group { flex:none; width:160px; }
 .detail-action-group .xy-action-shell { font-size:var(--xy-text-body-size); line-height:var(--xy-text-body-line-height); }
+.detail-group + .detail-group { padding-top:var(--xy-space-4); }
