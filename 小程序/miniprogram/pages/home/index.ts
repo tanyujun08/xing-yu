@@ -81,7 +81,7 @@ Page({
       const stores: HomeStore[] = (Array.isArray(page?.items) ? page.items : []).filter(store => !!store && !!store.store_id && store.status === 'ACTIVE').map(store => {
         const deviceCount = (Array.isArray(store.supplies) ? store.supplies : []).length;
         const hours = businessHoursText(store.business_hours);
-        const base = { id: store.store_id, name: store.name, media: publicPhoto(store.cover ?? undefined), hours, deviceCount, deviceCountText: deviceCount ? `${deviceCount} 台` : '查看门店', meta: [hours, deviceCount ? `${deviceCount} 台设备` : ''].filter(Boolean).join(' · ') };
+        const base = { id: store.store_id, name: store.name, media: publicPhoto(store.cover ?? undefined), hours, deviceCount, deviceCountText: deviceCount ? `${deviceCount} 台` : '查看门店', meta: [hours, deviceCount ? `${deviceCount} 台` : ''].filter(Boolean).join(' · ') };
         if ('region' in store) return { ...base, location: [store.region.city_name, store.region.district_name].filter(Boolean).join(''), address: [store.region.district_name, store.public_address].filter(Boolean).join(' '), phone: store.public_phone ?? '' };
         return { ...base, location: [store.address?.city_name, store.address?.district_name].filter(Boolean).join(''), address: [store.address?.district_name, store.address?.detail_address].filter(Boolean).join(' '), phone: store.address?.phone_dial ?? '', ...(navigableLocation(store.address?.location) ?? {}) };
       });

@@ -102,7 +102,7 @@ page {
   --xy-text-body-size: calc(6px + .5rem);
   --xy-text-body-line-height: calc(12px + .5rem);
   --xy-text-body-small-size: calc(4px + .5rem);
-  --xy-text-body-small-line-height: calc(10px + .5rem);
+  --xy-text-body-small-line-height: calc(8px + .5rem);
   --xy-text-caption-size: calc(3px + .5rem);
   --xy-text-caption-line-height: calc(8px + .5rem);
   --xy-text-weight-regular: 400;

@@ -6,9 +6,9 @@
       <view class="search-pill">
         <view class="location-copy xy-tap" bindtap="openRegion" role="button" aria-label="选择城市：{{regionShort}}"><text class="location-value">{{regionShort}}</text><image class="location-chevron" src="{{icons.homeChevronDown}}" mode="aspectFit" /></view>
         <view class="search-divider" aria-hidden="true"></view>
-        <view class="search-field"><icon type="search" size="14" color="#86868B" aria-hidden="true" /><input class="search-input" value="{{keyword}}" placeholder="搜索设备、地点" placeholder-class="search-placeholder" confirm-type="search" bindinput="onSearchInput" aria-label="搜索设备" /><view wx:if="{{keyword}}" class="search-clear xy-tap" bindtap="clearSearch" role="button" aria-label="清除搜索"><icon type="clear" size="14" color="#86868B" /></view></view>
+        <view class="search-field"><icon class="search-icon" type="search" size="16" color="#86868B" aria-hidden="true" /><input class="search-input" value="{{keyword}}" placeholder="搜索设备、门店" placeholder-class="search-placeholder" confirm-type="search" bindinput="onSearchInput" aria-label="搜索设备" /><view wx:if="{{keyword}}" class="search-clear xy-tap" bindtap="clearSearch" role="button" aria-label="清除搜索"><icon type="clear" size="14" color="#86868B" /></view></view>
       </view>
-      <view class="check-in-hit xy-tap" bindtap="openCheckIn" role="button" aria-label="进入签到"><view class="check-in"><image src="{{icons.homeCheckIn}}" mode="aspectFit" /><text>签到</text></view></view>
+      <view class="check-in-hit xy-tap" bindtap="openCheckIn" role="button" aria-label="进入签到"><view class="check-in"><text class="check-in-star" aria-hidden="true">★</text><text>签到</text></view></view>
     </view>
   </view>
   <view wx:if="{{cabinet}}" class="cabinet-module xy-card-key">
@@ -30,7 +30,7 @@
       <view class="cabinet-actions">
         <view class="cabinet-action cabinet-action--primary xy-tap" bindtap="openCabinetDetail" role="button">看整柜</view>
         <view class="cabinet-action cabinet-action--outline xy-tap" bindtap="pickupWithCode" role="button">取件码取件</view>
-        <view class="cabinet-action cabinet-action--soft xy-tap" bindtap="navigateCabinet" role="button" aria-label="导航到{{cabinet.name}}"><image class="cabinet-action-icon" src="{{icons.homeLocation}}" mode="aspectFit" />导航</view>
+        <view class="cabinet-action cabinet-action--soft xy-tap" bindtap="navigateCabinet" role="button" aria-label="导航到{{cabinet.name}}"><image class="cabinet-nav-icon" src="{{icons.homeLocation}}" mode="aspectFit" />导航</view>
       </view>
     </view>
   </view>
@@ -43,7 +43,7 @@
     <view class="store-main">
       <view class="store-main-body xy-tap" data-id="{{stores[0].id}}" bindtap="openStore" role="button" aria-label="查看{{stores[0].name}}">
         <view class="store-thumb"><media-state class="media-fill" state="{{stores[0].media ? 'loading' : 'idle'}}" src="{{stores[0].media}}" density="thumbnail" mode="aspectFill" placeholder-src="{{icons.deviceMark}}" empty-label="" alt="{{stores[0].name}}图片" /></view>
-        <view class="store-main-copy"><view class="store-name-row"><text class="xy-tag xy-tag--store">店</text><text class="store-name">{{stores[0].name}}</text></view><text class="store-line">{{stores[0].address || stores[0].location}}</text><text wx:if="{{stores[0].meta}}" class="store-line"><text wx:if="{{stores[0].hours}}" class="store-open">营业 </text>{{stores[0].meta}}</text></view>
+        <view class="store-main-copy"><text class="store-name">{{stores[0].name}}</text><text class="store-line">{{stores[0].address || stores[0].location}}</text><text wx:if="{{stores[0].meta}}" class="store-line"><text wx:if="{{stores[0].hours}}" class="store-open">营业中</text><text wx:if="{{stores[0].hours}}"> · </text>{{stores[0].meta}}</text></view>
       </view>
       <view class="store-main-actions"><view class="store-mini-btn store-mini-btn--outline xy-tap" data-id="{{stores[0].id}}" bindtap="navigateStore" role="button">导航</view><view class="store-mini-btn xy-tap" data-id="{{stores[0].id}}" bindtap="callStore" role="button">电话</view></view>
     </view>
@@ -52,21 +52,32 @@
     </view>
   </view>
   <scroll-view class="device-category-scroll" scroll-x="true" show-scrollbar="false"><view class="category-tab-list"><view wx:for="{{categoryFilterOptions}}" wx:key="value" class="category-tab xy-tap {{selectedCategory === item.value ? 'is-active' : ''}}" data-category="{{item.value}}" bindtap="selectCategory" role="tab" aria-selected="{{selectedCategory === item.value}}"><text>{{item.label}}</text></view></view></scroll-view>
-  <scroll-view class="filter-scroll" scroll-x="true" show-scrollbar="false"><view class="filter-list"><text class="filter-caption">来源</text><view wx:for="{{supplyFilterOptions}}" wx:key="value" class="filter-chip xy-tap {{selectedSupply === item.value ? 'is-active' : ''}}" data-supply="{{item.value}}" bindtap="selectSupply" role="button" aria-label="按{{item.label}}筛选"><text class="filter-chip-label">{{item.label}}</text></view></view></scroll-view>
+  <scroll-view class="filter-scroll" scroll-x="true" show-scrollbar="false"><view class="filter-list"><view wx:for="{{supplyFilterOptions}}" wx:key="value" class="filter-chip xy-tap {{selectedSupply === item.value ? 'is-active' : ''}}" data-supply="{{item.value}}" bindtap="selectSupply" role="button" aria-label="按{{item.label}}筛选"><text class="filter-chip-label">{{item.label}}</text></view></view></scroll-view>
   <view wx:if="{{visibleDevices.length > 0}}" class="device-list">
-    <view wx:for="{{visibleDevices}}" wx:key="id" class="device-row device-row--{{item.homeLayout}} xy-tap" data-id="{{item.id}}" bindtap="openDevice" role="button" aria-label="查看{{item.name}}">
-      <view class="device-thumb"><media-state class="media-fill" state="{{item.homeImage ? 'loading' : 'idle'}}" src="{{item.homeImage}}" density="thumbnail" mode="aspectFill" placeholder-src="{{icons.deviceMark}}" empty-label="" alt="{{item.name}}设备图片" /></view>
-      <view class="device-copy"><view class="device-main-row"><text class="device-name">{{item.name}}</text>
-      <view class="device-price-row"><block wx:if="{{item.homePrice}}"><text class="device-price-amount">¥{{item.homePrice}}</text><text class="device-price-unit">{{item.homePriceUnit}}</text></block><text wx:else class="device-price-missing">价格待确认</text></view>
-      </view><view class="device-meta-row"><view class="device-source-row"><text class="device-source device-source--{{item.supplyType}}">{{item.homeSourceLabel}}</text><text class="device-location">{{item.location || '取还地点待确认'}}</text></view>
-      <text class="device-deposit">押金 ¥{{item.deposit}}</text></view>
-      <text wx:if="{{item.homeSummary}}" class="device-description">{{item.homeSummary}}</text>
-      </view>
+    <view class="device-col">
+      <block wx:for="{{visibleDevices}}" wx:key="id"><view wx:if="{{index % 2 === 0}}" class="device-row xy-tap" data-id="{{item.id}}" bindtap="openDevice" role="button" aria-label="查看{{item.name}}">
+        <view class="device-thumb"><media-state class="media-fill" state="{{item.homeImage ? 'loading' : 'idle'}}" src="{{item.homeImage}}" density="thumbnail" mode="aspectFill" placeholder-src="{{icons.deviceMark}}" empty-label="" alt="{{item.name}}设备图片" /></view>
+        <view class="device-copy">
+          <text class="device-name">{{item.name}}</text>
+          <text class="device-meta"><text class="device-source device-source--{{item.supplyType}}">{{item.homeSourceLabel}}</text> · {{item.location || '取还地点待确认'}}{{item.homeSummary ? ' · ' + item.homeSummary : ''}}</text>
+          <view class="device-price-row"><view wx:if="{{item.homePrice}}" class="device-price"><text class="device-price-symbol">¥</text><text class="device-price-amount">{{item.homePrice}}</text><text class="device-price-unit">{{item.homePriceUnit}}</text></view><text wx:else class="device-price-missing">价格待确认</text><text class="device-deposit">押金 <text class="device-deposit-value">¥{{item.deposit}}</text></text></view>
+        </view>
+      </view></block>
+    </view>
+    <view class="device-col">
+      <block wx:for="{{visibleDevices}}" wx:key="id"><view wx:if="{{index % 2 === 1}}" class="device-row xy-tap" data-id="{{item.id}}" bindtap="openDevice" role="button" aria-label="查看{{item.name}}">
+        <view class="device-thumb"><media-state class="media-fill" state="{{item.homeImage ? 'loading' : 'idle'}}" src="{{item.homeImage}}" density="thumbnail" mode="aspectFill" placeholder-src="{{icons.deviceMark}}" empty-label="" alt="{{item.name}}设备图片" /></view>
+        <view class="device-copy">
+          <text class="device-name">{{item.name}}</text>
+          <text class="device-meta"><text class="device-source device-source--{{item.supplyType}}">{{item.homeSourceLabel}}</text> · {{item.location || '取还地点待确认'}}{{item.homeSummary ? ' · ' + item.homeSummary : ''}}</text>
+          <view class="device-price-row"><view wx:if="{{item.homePrice}}" class="device-price"><text class="device-price-symbol">¥</text><text class="device-price-amount">{{item.homePrice}}</text><text class="device-price-unit">{{item.homePriceUnit}}</text></view><text wx:else class="device-price-missing">价格待确认</text><text class="device-deposit">押金 <text class="device-deposit-value">¥{{item.deposit}}</text></text></view>
+        </view>
+      </view></block>
     </view>
   </view>
   <view wx:elif="{{!loading && !errorText}}" class="device-empty xy-empty-page"><image class="xy-empty-page__illustration" src="{{icons.emptyDevices}}" mode="aspectFit" aria-hidden="true" /><text class="xy-empty-section__title">{{devices.length === 0 ? '当前区域暂无可租设备' : '当前筛选暂无可租设备'}}</text><view wx:if="{{devices.length > 0}}" class="xy-empty-section__action xy-action-primary xy-action-text xy-tap" bindtap="resetDeviceFilters" role="button">查看全部设备</view><view wx:else class="xy-empty-section__action xy-action-primary xy-action-text xy-tap" bindtap="openRegion" role="button">切换城市</view></view>
   <view wx:if="{{loading}}" class="notice-copy" role="status">正在读取设备…</view>
   <view wx:if="{{errorText}}" class="device-empty"><text>{{errorText}}</text><button class="xy-action-hit" bindtap="retrySupplies">重新读取</button></view>
-  <button class="xy-action-hit" wx:if="{{hasMore && !loading}}" bindtap="loadMore">继续加载设备</button>
+  <view wx:if="{{hasMore && !loading}}" class="load-more xy-tap" bindtap="loadMore" role="button">继续加载设备</view>
   <login-sheet id="login-sheet" bindwechatlogin="onWechatLogin" bindphonelogin="onPhoneLogin" bindlegal="onLoginLegal" />
 </view>
