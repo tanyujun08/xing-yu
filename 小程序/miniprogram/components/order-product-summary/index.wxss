@@ -16,3 +16,5 @@
 .summary--order-list .summary__title-measure { position:absolute; top:0; left:0; width:100%; display:block; visibility:hidden; pointer-events:none; }
 .summary__title-action { display:block; box-sizing:border-box; min-height:var(--xy-size-touch-min); margin:var(--xy-space-1) 0 0; padding:var(--xy-space-2) 0; border:0; border-radius:0; background:transparent; color:var(--xy-color-brand); font-size:var(--xy-text-body-small-size); line-height:var(--xy-text-body-small-line-height); text-align:right; }
 .summary__title-action::after { border:0; }
+.summary--compact .summary__title { font-size:var(--xy-text-body-size); line-height:var(--xy-text-body-line-height); font-weight:var(--xy-text-weight-bold); }
+.summary--order-list .summary__title { font-weight:var(--xy-text-weight-bold); }

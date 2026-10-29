@@ -8,7 +8,7 @@ page {
   --xy-order-status-line-height: calc(24px + .5rem);
   --xy-order-amount-size: calc(20px + .5rem);
   --xy-order-amount-line-height: calc(28px + .5rem);
-  --xy-order-thumbnail-size: 80px;
+  --xy-order-thumbnail-size: 56px;
   --xy-control-height-order: 48px;
   --xy-chat-composer-height: 56px;
   --xy-chat-input-max-height: 124px;

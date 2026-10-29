@@ -16,6 +16,7 @@ Component({
     mediaState: { type: String, value: 'idle' },
     variant: { type: String, value: 'detail' },
     clickable: { type: Boolean, value: false },
+    compact: { type: Boolean, value: false },
   },
   data: { titleOverflow: false, titleExpanded: false },
   observers: {
