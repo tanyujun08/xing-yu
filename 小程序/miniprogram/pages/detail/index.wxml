@@ -1,5 +1,7 @@
 <page-meta root-font-size="system" />
-<wxs module="m">module.exports = { yuan: function (v) { var s = v ? v + "" : ""; return s.length > 3 && s.substring(s.length - 3) === ".00" ? s.substring(0, s.length - 3) : s; } };</wxs>
+<wxs module="m">function yuan(v) { var s = v ? v + "" : ""; return s.length > 3 && s.substring(s.length - 3) === ".00" ? s.substring(0, s.length - 3) : s; }
+function join(list) { var out = []; for (var i = 0; i < (list ? list.length : 0); i++) out.push(list[i].label); return out.join("、"); }
+module.exports = { yuan: yuan, join: join };</wxs>
 <view class="detail-page {{stackedInfo ? 'detail-page--stacked' : ''}}">
 <page-header title="{{secondaryNavigationTitle || '设备详情'}}" background="#ffffff" inverse="{{false}}" bindback="goBack" />
   <block wx:if="{{loaded}}">
@@ -7,9 +9,10 @@
     <swiper wx:if="{{galleryItems.length > 1}}" class="gallery-swiper" current="{{galleryCurrent}}" bindchange="onGalleryChange" circular="true"><swiper-item wx:for="{{galleryItems}}" wx:key="src"><view class="gallery-frame"><media-state class="gallery-image" state="loading" src="{{item.src}}" mode="aspectFill" alt="设备图片" /></view></swiper-item></swiper>
     <view wx:elif="{{galleryItems.length === 1}}" class="gallery-frame"><media-state class="gallery-image" state="loading" src="{{galleryItems[0].src}}" mode="aspectFill" alt="设备图片" /></view>
     <block wx:else><media-state class="gallery-image" state="idle" src="" placeholder-src="{{icons.deviceMark}}" empty-label="暂无设备图片" alt="暂无设备图片" /><text class="gallery-empty-copy">请以设备资料为准</text></block>
+    <button wx:if="{{videoButtons.length}}" class="gallery-video" data-id="{{videoButtons[0].materialId}}" disabled="{{videoBusy}}" aria-disabled="{{videoBusy}}" bindtap="playVideo" aria-label="播放设备视频"><text class="gallery-video-pill">{{videoBusy ? '加载中…' : '▷ 视频 ' + videoButtons.length}}</text></button>
     <text wx:if="{{galleryItems.length}}" class="gallery-count">{{galleryCurrent + 1}}/{{galleryItems.length}}</text>
   </view>
-  <view wx:if="{{videoMediaIds.length}}" class="detail-videos">
+  <view wx:if="{{videoState || videoErrorText || videoButtons.length > 1}}" class="detail-videos">
     <text class="detail-videos__title">设备视频</text>
     <view class="detail-videos__actions"><button wx:for="{{videoButtons}}" wx:key="materialId" class="detail-videos__play" data-id="{{item.materialId}}" disabled="{{videoBusy}}" aria-disabled="{{videoBusy}}" bindtap="playVideo">{{videoBusy ? '正在加载视频…' : '播放原视频 ' + (index + 1)}}</button></view>
     <video id="detail-original-video" wx:if="{{videoState}}" class="detail-videos__player" src="{{videoState.src}}" poster="{{videoState.poster}}" controls autoplay binderror="onVideoError" bindtimeupdate="onVideoTimeUpdate" aria-label="设备原视频" />
@@ -20,24 +23,23 @@
     <text wx:if="{{videoErrorText}}" class="detail-videos__error">{{videoErrorText}}</text>
   </view>
   <view class="detail-card">
-    <text class="detail-name">{{device.name}}</text><text wx:if="{{showModel}}" class="detail-model">{{device.model}}</text>
     <view class="detail-commerce"><view class="detail-price-row"><text class="detail-price-label">租金</text><view class="detail-price"><text class="detail-price-symbol">¥</text><text class="detail-price-value">{{m.yuan(rentText)}}</text><text class="detail-price-unit">{{device.rentalMode === 'hourly' ? '/小时' : '/天'}}</text></view></view><view class="detail-deposit-row"><text class="detail-deposit-label">押金</text><text class="detail-deposit-value">¥{{m.yuan(depositText)}}</text></view></view>
+    <text class="detail-name">{{device.name}}</text><text wx:if="{{showModel}}" class="detail-model">{{device.model}}</text>
     <text wx:if="{{device.description}}" class="detail-description">{{device.description}}</text><text wx:if="{{attributeFacts}}" class="detail-attributes">{{attributeFacts}}</text>
-    <view class="detail-benefit"><text wx:if="{{rentCapText}}">{{device.rentalMode === 'hourly' ? '不足一小时向上取整，同一订单累计租金最高为产品价值¥' + rentCapText : '同一订单累计租金最高为产品价值¥' + rentCapText + '；押金与保障费另行核算'}}</text><text wx:else>具体租金规则将在申请报价时由平台确认。</text><view class="detail-benefit-link xy-tap"><text>查看押金规则</text><text>›</text><button class="touch-overlay" hover-class="none" bindtap="openNoDeposit" aria-label="查看押金规则"></button></view></view>
+    <view class="detail-benefit"><text wx:if="{{rentCapText}}">{{device.rentalMode === 'hourly' ? '不足一小时向上取整，同一订单累计租金最高为产品价值¥' + rentCapText : '同一订单累计租金最高为产品价值¥' + rentCapText + '；押金与保障费另行核算'}}</text><text wx:else>具体租金规则将在申请报价时由平台确认。</text><view class="detail-benefit-link xy-tap"><text>押金规则 ›</text><button class="touch-overlay" hover-class="none" bindtap="openNoDeposit" aria-label="查看押金规则"></button></view></view>
   </view>
   <view class="pickup-card">
     <text class="section-title">取还地点</text>
     <view class="pickup-row xy-tap" bindtap="openStores" role="button" aria-label="查看供给详情"><view class="pickup-icon"><image class="pickup-icon-image" src="{{icons.homeLocation}}" mode="aspectFit" /></view><view class="pickup-copy"><view class="pickup-title-row"><text class="pickup-title">{{device.supplyType === 'personal' ? lessorName : device.location}}</text><text class="xy-tag {{device.supplyType === 'cabinet' ? 'xy-tag--cabinet' : device.supplyType === 'store' ? 'xy-tag--store' : ''}}">{{device.supplyType === 'cabinet' ? '共享柜' : device.supplyType === 'store' ? '门店' : '个人'}}</text></view><text class="pickup-address">{{device.address}}</text></view><image class="pickup-arrow" src="{{icons.arrowRight}}" mode="aspectFit" /></view>
   </view>
   <view class="detail-section">
-    <view class="detail-group"><text class="section-title">设备资料</text><view wx:for="{{equipmentRows}}" wx:key="label" class="info-line"><text class="info-label">{{item.label}}</text><text class="info-value">{{item.value}}</text></view></view>
-    <view wx:if="{{pickupMethods.length}}" class="detail-group"><text class="section-title">租还方式</text><view class="info-line"><text class="info-label">取货方式</text><view class="info-value"><text wx:for="{{pickupMethods}}" wx:key="id" class="method-value">{{item.label}}</text></view></view><view class="info-line"><text class="info-label">归还方式</text><view class="info-value"><text wx:for="{{returnMethods}}" wx:key="id" class="method-value">{{item.label}}</text></view></view></view>
+    <view class="detail-group"><text class="section-title">设备资料</text><view wx:for="{{equipmentRows}}" wx:key="label" class="info-line"><text class="info-label">{{item.label}}</text><text class="info-value">{{item.value}}</text></view><view wx:if="{{pickupMethods.length}}" class="info-line"><text class="info-label">取还方式</text><view class="info-value"><text class="info-value-strong">{{m.join(pickupMethods)}}</text><text wx:if="{{m.join(returnMethods) && m.join(returnMethods) !== m.join(pickupMethods)}}" class="info-value-muted"> · 归还 {{m.join(returnMethods)}}</text></view></view></view>
     <view class="detail-group"><text class="section-title">租赁须知</text><text wx:if="{{quoteBlockedText}}" class="notice-copy" role="status">{{quoteBlockedText}}</text><text class="notice-copy">请在取用时核对设备、配件和成色。归还后平台完成验机，押金将按订单规则处理。</text></view>
   </view>
   <view class="detail-bottom xy-bottom-action">
     <button class="support-action" bindtap="demoSupport" aria-label="联系客服"><image class="support-icon" src="{{icons.profileSupport}}" mode="aspectFit" aria-hidden="true" /><text>客服</text></button>
     <view wx:if="{{manageMode}}" class="manage-bottom-copy"><text>个人出租商品</text><text>{{managementStatusText}}</text></view>
-    <view wx:else class="bottom-price"><view class="bottom-rent-row"><text class="bottom-rent-symbol">¥</text><text class="bottom-rent">{{m.yuan(rentText)}}</text><text>{{device.rentalMode === 'hourly' ? '/小时' : '/天'}}</text></view><text>押金 ¥{{m.yuan(depositText)}}</text></view>
+    <view wx:else class="bottom-price"><view class="bottom-rent-row"><text class="bottom-rent-symbol">¥</text><text class="bottom-rent">{{m.yuan(rentText)}}</text><text class="bottom-rent-unit">{{device.rentalMode === 'hourly' ? '/小时' : '/天'}}</text></view><text class="bottom-deposit">押金 <text class="bottom-deposit-value">¥{{m.yuan(depositText)}}</text></text></view>
     <view class="detail-action-group"><view wx:if="{{manageMode}}" class="buy-button xy-action-hit xy-tap" role="button" aria-label="编辑内容" bindtap="editListing"><view class="xy-action-primary xy-action-shell">编辑内容</view></view><view wx:elif="{{quoteBlockedText}}" class="buy-button" role="button" aria-disabled="true" aria-label="{{quoteBlockedText}}"><view class="xy-action-secondary xy-action-shell">暂不可租</view></view><view wx:else class="buy-button xy-action-hit xy-tap" bindtap="buy" role="button" aria-label="{{loggedIn ? '立即下单' : '登录后下单'}}"><view class="xy-action-primary xy-action-shell">{{loggedIn ? '立即下单' : '登录后下单'}}</view></view></view>
   </view>
   </block>
