@@ -1,4 +1,5 @@
 <page-meta root-font-size="system" />
+<wxs module="m">module.exports = { yuan: function (v) { var s = v ? v + "" : ""; return s.length > 3 && s.substring(s.length - 3) === ".00" ? s.substring(0, s.length - 3) : s; } };</wxs>
 <view class="home-page xy-page xy-page--white">
   <view class="home-header">
     <view class="page-navigation" style="height:{{navigationHeight}}px;padding-top:{{statusBarHeight}}px;"><view class="page-navigation-title">星遇</view></view>
@@ -21,7 +22,7 @@
       <view class="cabinet-strip">
         <view wx:for="{{cabinet.devices}}" wx:key="id" class="cabinet-slot xy-tap" data-id="{{item.id}}" bindtap="openCabinetDevice" role="button" aria-label="查看{{item.name}}">
           <view class="cabinet-slot-media"><media-state class="media-fill" state="{{item.homeImage ? 'loading' : 'idle'}}" src="{{item.homeImage}}" density="thumbnail" mode="aspectFill" placeholder-src="{{icons.deviceMark}}" empty-label="" alt="{{item.name}}图片" /></view>
-          <view class="cabinet-slot-copy"><text class="cabinet-slot-name">{{item.name}}</text><view class="cabinet-slot-price"><text class="cabinet-slot-amount">¥{{item.homePrice}}</text><text class="cabinet-slot-unit">{{item.homePriceUnit}}</text></view></view>
+          <view class="cabinet-slot-copy"><text class="cabinet-slot-name">{{item.name}}</text><view class="cabinet-slot-price"><text class="cabinet-slot-amount">¥{{m.yuan(item.homePrice)}}</text><text class="cabinet-slot-unit">{{item.homePriceUnit}}</text></view></view>
         </view>
       </view>
     </scroll-view>
@@ -60,7 +61,7 @@
         <view class="device-copy">
           <text class="device-name">{{item.name}}</text>
           <text class="device-meta"><text class="device-source device-source--{{item.supplyType}}">{{item.homeSourceLabel}}</text> · {{item.location || '取还地点待确认'}}{{item.homeSummary ? ' · ' + item.homeSummary : ''}}</text>
-          <view class="device-price-row"><view wx:if="{{item.homePrice}}" class="device-price"><text class="device-price-symbol">¥</text><text class="device-price-amount">{{item.homePrice}}</text><text class="device-price-unit">{{item.homePriceUnit}}</text></view><text wx:else class="device-price-missing">价格待确认</text><text class="device-deposit">押金 <text class="device-deposit-value">¥{{item.deposit}}</text></text></view>
+          <view class="device-price-row"><view wx:if="{{item.homePrice}}" class="device-price"><text class="device-price-symbol">¥</text><text class="device-price-amount">{{m.yuan(item.homePrice)}}</text><text class="device-price-unit">{{item.homePriceUnit}}</text></view><text wx:else class="device-price-missing">价格待确认</text><text class="device-deposit">押金 <text class="device-deposit-value">¥{{m.yuan(item.deposit)}}</text></text></view>
         </view>
       </view></block>
     </view>
@@ -70,7 +71,7 @@
         <view class="device-copy">
           <text class="device-name">{{item.name}}</text>
           <text class="device-meta"><text class="device-source device-source--{{item.supplyType}}">{{item.homeSourceLabel}}</text> · {{item.location || '取还地点待确认'}}{{item.homeSummary ? ' · ' + item.homeSummary : ''}}</text>
-          <view class="device-price-row"><view wx:if="{{item.homePrice}}" class="device-price"><text class="device-price-symbol">¥</text><text class="device-price-amount">{{item.homePrice}}</text><text class="device-price-unit">{{item.homePriceUnit}}</text></view><text wx:else class="device-price-missing">价格待确认</text><text class="device-deposit">押金 <text class="device-deposit-value">¥{{item.deposit}}</text></text></view>
+          <view class="device-price-row"><view wx:if="{{item.homePrice}}" class="device-price"><text class="device-price-symbol">¥</text><text class="device-price-amount">{{m.yuan(item.homePrice)}}</text><text class="device-price-unit">{{item.homePriceUnit}}</text></view><text wx:else class="device-price-missing">价格待确认</text><text class="device-deposit">押金 <text class="device-deposit-value">¥{{m.yuan(item.deposit)}}</text></text></view>
         </view>
       </view></block>
     </view>
