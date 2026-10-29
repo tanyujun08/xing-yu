@@ -1,6 +1,6 @@
 @import "../../shared/design/components.wxss";
 
-.bottom-actions { width: 100%; background: var(--xy-color-surface, #fff); color: var(--xy-color-text-primary, #202937); font-family: var(--xy-font-family-sans, sans-serif); }
+.bottom-actions { width: 100%; border-top: 1rpx solid var(--xy-color-divider, #ebebed); background: var(--xy-color-surface, #fff); color: var(--xy-color-text-primary, #202937); font-family: var(--xy-font-family-sans, sans-serif); }
 .bottom-actions__hint:empty { display: none; }
 .bottom-actions__hint { padding: var(--xy-space-2, 8px) var(--xy-space-4, 16px) 0; color: var(--xy-color-text-secondary, #58616e); font-size: var(--xy-text-body-small-size, 12px); line-height: var(--xy-text-body-small-line-height, 18px); overflow-wrap: anywhere; }
 .bottom-actions__button { min-width: 0; min-height: var(--xy-control-height, 44px); flex: 1; }

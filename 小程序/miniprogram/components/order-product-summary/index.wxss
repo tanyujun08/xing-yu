@@ -1,6 +1,6 @@
 .summary { min-width:0; color:var(--xy-color-text-primary); }
 .summary__main { display:flex; align-items:flex-start; gap:var(--xy-space-3,12px); min-width:0; min-height:var(--xy-size-touch-min); }
-.summary__media { display:block; flex:0 0 64px; width:64px; height:64px; overflow:hidden; border-radius:var(--xy-radius-md); background:var(--xy-color-page); }
+.summary__media { display:block; flex:0 0 64px; width:64px; height:64px; overflow:hidden; border-radius:var(--xy-radius-sm); background:var(--xy-color-canvas-muted); }
 .summary__copy { position:relative; flex:1; min-width:0; }
 .summary__title { display:block; font-size:var(--xy-text-body-size,14px); line-height:var(--xy-text-body-line-height,20px); font-weight:var(--xy-text-weight-semibold,600); overflow-wrap:anywhere; }
 .summary__secondary { display:block; margin-top:var(--xy-space-1,4px); font-size:var(--xy-text-body-small-size,12px); line-height:var(--xy-text-body-small-line-height,18px); color:var(--xy-color-text-secondary); overflow-wrap:anywhere; }

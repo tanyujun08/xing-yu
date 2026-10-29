@@ -4,7 +4,7 @@
 .page-header-space { flex:none; }
 .page-header { position:fixed; z-index:var(--xy-z-navigation); top:0; left:0; width:100%; box-sizing:border-box; background:var(--xy-color-surface); color:var(--xy-color-text-primary,#202937); }
 .page-header__bar { position:relative; display:flex; align-items:center; justify-content:center; width:100%; min-height:44px; }
-.page-header__title { display:block; max-width:calc(100% - 192px); font-size:var(--xy-text-navigation-title-size); font-weight:var(--xy-text-weight-regular); line-height:var(--xy-text-section-title-line-height); text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:inherit; }
+.page-header__title { display:block; max-width:calc(100% - 192px); font-size:var(--xy-text-navigation-title-size); font-weight:var(--xy-text-weight-semibold); line-height:var(--xy-text-section-title-line-height); text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:inherit; }
 .page-header__back { position:absolute; left:0; top:50%; transform:translateY(-50%); display:flex; align-items:center; width:44px; height:44px; min-height:44px; box-sizing:border-box; padding:0 0 0 var(--xy-space-4); margin:0; border:0; border-radius:0; overflow:visible; background:transparent; }
 .page-header__back::after,.page-header__action::after { border:0; }
 .page-header__back-icon { display:block; width:12px; height:20px; flex:none; }

@@ -168,10 +168,10 @@ page {
   --xy-shadow-overlap-card: 0 8px 24px rgba(0, 0, 0, .14);
   --xy-shadow-float: 0 16rpx 40rpx rgba(19, 25, 38, .12);
   --xy-shadow-fixed: 0 -8rpx 24rpx rgba(19, 25, 38, .08);
-  --xy-fixed-tab-visible-height: 64px;
+  --xy-fixed-tab-visible-height: 56px;
   --xy-fixed-tab-clearance: calc(var(--xy-fixed-tab-visible-height) + var(--xy-space-4) + env(safe-area-inset-bottom));
-  --xy-gap-tab-icon-label: 3px;
-  --xy-size-tab-icon: 22px;
+  --xy-gap-tab-icon-label: 2px;
+  --xy-size-tab-icon: 24px;
   --xy-text-tab-label-size: calc(3px + .5rem);
   --xy-text-tab-label-line-height: calc(8px + .5rem);
   --xy-fixed-bottom-height: 56px;
