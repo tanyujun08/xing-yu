@@ -1,4 +1,4 @@
-<view class="summary summary--{{variant}}" role="group" aria-label="{{title}}">
+<view class="summary summary--{{variant}} {{compact ? 'summary--compact' : ''}}" role="group" aria-label="{{title}}">
   <view class="summary__main" bindtap="open" role="{{clickable ? 'button' : 'group'}}" aria-label="{{clickable ? '查看' + title + '详情' : title}}">
     <media-state class="summary__media" state="{{mediaState}}" src="{{mediaSrc}}" density="thumbnail" mode="aspectFit" alt="{{title}}" bindretry="retry" />
     <view class="summary__copy">

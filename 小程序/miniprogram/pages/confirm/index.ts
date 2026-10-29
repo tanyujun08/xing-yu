@@ -30,7 +30,7 @@ function captureCheckoutSessionLoss(s: ReturnType<typeof state>) {
     return () => s.visible && !s.scope.disposed && s.epoch === epoch && s.owner === owner && (accountApi.sessionIdentity() ?? '') !== owner;
 }
 Page({
-    data: { outboundFreight: '', returnFreight: '', pickupLocation: '', quoteChange: null as ReturnType<typeof rentalQuoteChange> | null, quoteIcons: { document: designAssets.returnDocument, refresh: designAssets.returnRefresh, info: designAssets.returnInfo }, loaded: false, loading: false, busy: false, errorText: '', step: 1, title: '', productMedia: '', method: '' as '' | 'CABINET' | 'EXPRESS', addressId: '', recipientAddress: '', couponId: '', couponLabel: '不使用优惠券', startDate: '', endDate: '', termText: '请选择完整租期', termSheetOpen: false, frozen: false, orderId: '', statusText: '', deadlineText: '', rent: '—', deposit: '—', total: '—', discount: '—', blockers: '', canPrepare: false, canConfirm: false, voucherSheetOpen: false, voucherLoading: false, voucherError: '', voucherCursor: null as string | null, vouchers: [] as {
+    data: { outboundFreight: '', returnFreight: '', pickupLocation: '', pickupName: '', pickupAddress: '', quoteChange: null as ReturnType<typeof rentalQuoteChange> | null, quoteIcons: { document: designAssets.returnDocument, refresh: designAssets.returnRefresh, info: designAssets.returnInfo }, loaded: false, loading: false, busy: false, errorText: '', step: 1, title: '', productMedia: '', method: '' as '' | 'CABINET' | 'EXPRESS', addressId: '', recipientAddress: '', couponId: '', couponLabel: '不使用优惠券', startDate: '', endDate: '', termText: '请选择完整租期', termSheetOpen: false, frozen: false, orderId: '', statusText: '', deadlineText: '', rent: '—', deposit: '—', total: '—', discount: '—', blockers: '', canPrepare: false, canConfirm: false, voucherSheetOpen: false, voucherLoading: false, voucherError: '', voucherCursor: null as string | null, vouchers: [] as {
             id: string;
             label: string;
         }[], frozenNeedsConfirmation: true, frozenActionText: '确认订单并付款', frozenSigned: false, signedAt: '', confirmationDeadline: '', zeroCash: false, icons: { success: designAssets.returnSuccess, contract: designAssets.returnDocument, chevron: designAssets.returnChevron }, termHint: '', formStartDate: '', formEndDate: '', minimumDays: 1, earliestDate: '', latestDate: '', termDays: 0, formDays: 0, calendarMonths: [] as ReturnType<typeof buildCalendarMonths>, monthIndex: 0, calendarWeekdays, errorOpen: false, hasPendingPreparation: false },
@@ -48,7 +48,7 @@ Page({
         const s = state(this); s.current = null; s.quote = null;
         // Keep explicit selections and the account-bound UNKNOWN preparation; only remove its displayed projection.
         this.setData({ quoteChange: null, loading: false, busy: false, voucherLoading: false, loaded: false, canPrepare: false, canConfirm: false,
-            outboundFreight: '', returnFreight: '', pickupLocation: '', title: '', productMedia: '', recipientAddress: '', statusText: '', deadlineText: '', blockers: '', frozenSigned: false, signedAt: '', confirmationDeadline: '', zeroCash: false,
+            outboundFreight: '', returnFreight: '', pickupLocation: '', pickupName: '', pickupAddress: '', title: '', productMedia: '', recipientAddress: '', statusText: '', deadlineText: '', blockers: '', frozenSigned: false, signedAt: '', confirmationDeadline: '', zeroCash: false,
             rent: '—', deposit: '—', total: '—', discount: '—', vouchers: [], voucherCursor: null,
             termSheetOpen: false, voucherSheetOpen: false, voucherError: '', errorOpen: true, errorText: '登录状态已失效或变化，请重新登录后读取确认订单' });
     },
@@ -62,7 +62,7 @@ Page({
             return;
         }
         s.current = null;
-        this.setData({ loading: true, loaded: false, outboundFreight: '', returnFreight: '', pickupLocation: '', canConfirm: false, frozenSigned: false, signedAt: '', confirmationDeadline: '', zeroCash: false, errorText: '', errorOpen: false });
+        this.setData({ loading: true, loaded: false, outboundFreight: '', returnFreight: '', pickupLocation: '', pickupName: '', pickupAddress: '', canConfirm: false, frozenSigned: false, signedAt: '', confirmationDeadline: '', zeroCash: false, errorText: '', errorOpen: false });
         try {
             const pending = rentalOrderApi.pendingPreparation();
             this.setData({ hasPendingPreparation: !!pending });
@@ -101,7 +101,7 @@ Page({
                     confirmationDeadline = deadlines.sort((a, b) => Date.parse(a) - Date.parse(b))[0]!;
                 }
                 s.current = record;
-                this.setData({ outboundFreight: rentalFreight(value.requirements?.outbound_freight_payer, '寄出'), returnFreight: rentalFreight(value.requirements?.return_freight_payer, '寄回'), pickupLocation: value.pickup ? value.pickup.name + ' ' + value.pickup.address : '' });
+                this.setData({ outboundFreight: rentalFreight(value.requirements?.outbound_freight_payer, '寄出'), returnFreight: rentalFreight(value.requirements?.return_freight_payer, '寄回'), pickupLocation: value.pickup ? value.pickup.name + ' ' + value.pickup.address : '', pickupName: value.pickup?.name ?? '', pickupAddress: value.pickup?.address ?? '' });
                 this.setData({ frozenNeedsConfirmation: preparing, frozenSigned, signedAt, confirmationDeadline, zeroCash, frozenActionText: preparing ? zeroCash ? '确认订单 ¥0' : '确认订单并付款' : value.order.stage === 'AWAITING_PAYMENT' ? '查看原订单付款状态' : '查看原订单状态' });
                 this.setData({ loaded: true, frozen: true, title: value.order.asset.title, productMedia: value.order.asset.cover_media?.url ?? '', method: value.delivery.method, termText: rentalDateRange(value.order.rental_start_at, value.order.rental_end_at), termHint: '', termDays: dateDiffDays(rentalDate(value.order.rental_start_at), rentalDate(value.order.rental_end_at)), recipientAddress: value.delivery.recipient ? [value.delivery.recipient.recipient_name, value.delivery.recipient.phone, value.delivery.recipient.region_text + value.delivery.recipient.detail].join(' ') : '', statusText: frozenSigned ? '合同已签署' : value.order.display_status, deadlineText: preparing ? beijingTime(confirmationDeadline) : value.order.stage === 'AWAITING_PAYMENT' ? beijingTime(value.payment_due_at) : '', rent: rentalMoney(value.fees.rent_gross_fen), deposit: rentalMoney(value.fees.deposit_due_fen), discount: rentalMoney(value.fees.rent_discount_fen), total: rentalMoney(value.fees.initial_due_fen), blockers: rentalBlockers(value.order.blockers), canConfirm: preparing && frozenSigned && rentalActionAllowed(value.order.allowed_actions, 'CONFIRM_ORDER'), step: 2 });
                 return;
@@ -121,7 +121,7 @@ Page({
             // Clamp it to the calendar's four-digit domain before comparing date strings.
             const until = Date.parse(supply.available_until);
             const latestDate = Number.isFinite(until) ? rentalDate(new Date(Math.min(until, Date.parse('9999-12-30T16:00:00Z'))).toISOString()) : '';
-            this.setData({ pickupLocation, loaded: true, title: supply.display_name, method: supply.supply_type === 'CABINET' ? 'CABINET' : 'EXPRESS', productMedia: supply.media.find(media => media.role === 'COVER')?.url ?? '', minimumDays, earliestDate, latestDate, termHint: `${minimumDays} 天起租，结束日期为归还日` });
+            this.setData({ pickupLocation, pickupName: pickup?.name ?? '', pickupAddress: pickup ? [pickup.address.district_name, pickup.address.detail_address].join(' ') : '', loaded: true, title: supply.display_name, method: supply.supply_type === 'CABINET' ? 'CABINET' : 'EXPRESS', productMedia: supply.media.find(media => media.role === 'COVER')?.url ?? '', minimumDays, earliestDate, latestDate, termHint: `${minimumDays} 天起租，结束日期为归还日` });
             if (this.data.addressId) {
                 const address = await findOwnAddress(this.data.addressId);
                 if (!active())

@@ -1,41 +1,84 @@
 <page-meta root-font-size="system" />
+<wxs module="m">module.exports = { yuan: function (v) { var s = v ? v + "" : ""; return s.length > 3 && s.substring(s.length - 3) === ".00" ? s.substring(0, s.length - 3) : s; } };</wxs>
 <view class="home-page xy-page xy-page--white">
   <view class="home-header">
     <view class="page-navigation" style="height:{{navigationHeight}}px;padding-top:{{statusBarHeight}}px;"><view class="page-navigation-title">星遇</view></view>
-    <view class="home-location-row {{fontSizeSetting > 24 ? 'home-location-row--stacked' : ''}}">
-      <view class="location-copy xy-tap" bindtap="openRegion" role="button" aria-label="选择城市：{{regionShort}}"><image class="location-icon" src="{{icons.homeLocation}}" mode="aspectFit" /><text class="location-value">{{regionShort}}</text><image class="location-chevron" src="{{icons.homeChevronDown}}" mode="aspectFit" /></view>
-      <view class="home-actions"><view class="check-in-hit xy-tap" bindtap="openCheckIn" role="button" aria-label="进入签到"><view class="check-in"><image src="{{icons.homeCheckIn}}" mode="aspectFit" /><text>签到</text></view></view></view>
+    <view class="home-search-row {{fontSizeSetting > 24 ? 'home-search-row--stacked' : ''}}">
+      <view class="search-pill">
+        <view class="location-copy xy-tap" bindtap="openRegion" role="button" aria-label="选择城市：{{regionShort}}"><text class="location-value">{{regionShort}}</text><image class="location-chevron" src="{{icons.homeChevronDown}}" mode="aspectFit" /></view>
+        <view class="search-divider" aria-hidden="true"></view>
+        <view class="search-field"><icon class="search-icon" type="search" size="16" color="#86868B" aria-hidden="true" /><input class="search-input" value="{{keyword}}" placeholder="搜索设备、门店" placeholder-class="search-placeholder" confirm-type="search" bindinput="onSearchInput" aria-label="搜索设备" /><view wx:if="{{keyword}}" class="search-clear xy-tap" bindtap="clearSearch" role="button" aria-label="清除搜索"><icon type="clear" size="14" color="#86868B" /></view></view>
+      </view>
+      <view class="check-in-hit xy-tap" bindtap="openCheckIn" role="button" aria-label="进入签到"><view class="check-in"><text class="check-in-star" aria-hidden="true">★</text><text>签到</text></view></view>
     </view>
   </view>
-  <view class="cabinet-banner xy-elevation-banner xy-tap {{windowWidth < 360 || fontSizeSetting > 20 ? 'cabinet-banner--stacked' : ''}}" bindtap="openCabinets" role="button" aria-label="查看柜机">
-    <view class="banner-content"><text class="banner-eyebrow">全国线下</text><text class="banner-title">CCD租赁柜</text><text class="banner-copy">发现身边的相机</text><text class="banner-meta">24 小时 · 就近取还</text></view>
+  <view wx:if="{{cabinet}}" class="cabinet-module xy-card-key">
+    <view class="cabinet-head">
+      <view class="cabinet-title-row xy-tap" bindtap="openCabinetDetail" role="button" aria-label="查看{{cabinet.name}}"><text class="xy-tag xy-tag--cabinet">柜</text><text class="cabinet-name">{{cabinet.name}}</text></view>
+      <view wx:if="{{cabinetCount > 1}}" class="section-more xy-tap" bindtap="openCabinetList" role="button" aria-label="查看更多柜机">更多柜机 {{cabinetCount}} 台<image src="{{icons.arrowRight}}" mode="aspectFit" /></view>
+    </view>
+    <text class="cabinet-address">{{cabinet.address || '地址待确认'}} · 24 小时自助取还</text>
+    <scroll-view wx:if="{{cabinet.devices.length > 0}}" class="cabinet-strip-scroll" scroll-x="true" show-scrollbar="false">
+      <view class="cabinet-strip">
+        <view wx:for="{{cabinet.devices}}" wx:key="id" class="cabinet-slot xy-tap" data-id="{{item.id}}" bindtap="openCabinetDevice" role="button" aria-label="查看{{item.name}}">
+          <view class="cabinet-slot-media"><media-state class="media-fill" state="{{item.homeImage ? 'loading' : 'idle'}}" src="{{item.homeImage}}" density="thumbnail" mode="aspectFill" placeholder-src="{{icons.deviceMark}}" empty-label="" alt="{{item.name}}图片" /></view>
+          <view class="cabinet-slot-copy"><text class="cabinet-slot-name">{{item.name}}</text><view class="cabinet-slot-price"><text class="cabinet-slot-amount">¥{{m.yuan(item.homePrice)}}</text><text class="cabinet-slot-unit">{{item.homePriceUnit}}</text></view></view>
+        </view>
+      </view>
+    </scroll-view>
+    <view class="cabinet-foot">
+      <view class="cabinet-stats"><text class="cabinet-stats-total">柜内 {{cabinet.devices.length}} 台</text><text class="cabinet-stats-dot"></text><text>可在线预订，到柜扫码取</text></view>
+      <view class="cabinet-actions">
+        <view class="cabinet-action cabinet-action--primary xy-tap" bindtap="openCabinetDetail" role="button">看整柜</view>
+        <view class="cabinet-action cabinet-action--outline xy-tap" bindtap="pickupWithCode" role="button">取件码取件</view>
+        <view class="cabinet-action cabinet-action--soft xy-tap" bindtap="navigateCabinet" role="button" aria-label="导航到{{cabinet.name}}"><image class="cabinet-nav-icon" src="{{icons.homeLocation}}" mode="aspectFit" />导航</view>
+      </view>
+    </view>
+  </view>
+  <view wx:else class="cabinet-banner xy-card-key xy-tap {{windowWidth < 360 || fontSizeSetting > 20 ? 'cabinet-banner--stacked' : ''}}" bindtap="openCabinets" role="button" aria-label="查看柜机">
+    <view class="banner-content"><view class="banner-head"><text class="xy-tag xy-tag--cabinet">柜</text><text class="banner-title">CCD租赁柜</text></view><text class="banner-copy">发现身边的相机</text><text class="banner-meta">24 小时 · 就近取还</text></view><text class="banner-more">查看柜机 ›</text>
     <image class="banner-media" src="{{icons.homeBanner}}" mode="aspectFill" />
   </view>
-  <view class="section-head"><text class="section-title">门店</text><view class="section-more xy-tap" bindtap="openStores" role="button" aria-label="查看全部门店">查看全部<image src="{{icons.arrowRight}}" mode="aspectFit" /></view></view>
-  <scroll-view wx:if="{{stores.length > 0}}" class="store-scroll" scroll-x="true" show-scrollbar="false">
-    <view class="store-list">
-      <view wx:for="{{stores}}" wx:key="id" class="store-card xy-tap" data-id="{{item.id}}" bindtap="openStore" role="button" aria-label="查看{{item.name}}">
-        <view class="store-media"><media-state class="media-fill" state="{{item.media ? 'loading' : 'idle'}}" src="{{item.media}}" density="thumbnail" mode="aspectFill" placeholder-src="{{icons.deviceMark}}" empty-label="" alt="{{item.name}}图片" /></view>
-      <view class="store-card-copy"><text class="store-name">{{item.name}}</text><view class="store-summary"><text>{{item.location}}</text><text class="store-count">{{item.deviceCountText}}</text></view></view>
+  <view class="section-head"><text class="section-title">附近门店</text><view class="section-more xy-tap" bindtap="openStores" role="button" aria-label="查看全部门店">全部 {{storeCount}} 家<image src="{{icons.arrowRight}}" mode="aspectFit" /></view></view>
+  <view wx:if="{{stores.length > 0}}" class="store-panel">
+    <view class="store-main">
+      <view class="store-main-body xy-tap" data-id="{{stores[0].id}}" bindtap="openStore" role="button" aria-label="查看{{stores[0].name}}">
+        <view class="store-thumb"><media-state class="media-fill" state="{{stores[0].media ? 'loading' : 'idle'}}" src="{{stores[0].media}}" density="thumbnail" mode="aspectFill" placeholder-src="{{icons.deviceMark}}" empty-label="" alt="{{stores[0].name}}图片" /></view>
+        <view class="store-main-copy"><text class="store-name">{{stores[0].name}}</text><text class="store-line">{{stores[0].address || stores[0].location}}</text><text wx:if="{{stores[0].meta}}" class="store-line"><text wx:if="{{stores[0].hours}}" class="store-open">营业中</text><text wx:if="{{stores[0].hours}}"> · </text>{{stores[0].meta}}</text></view>
       </view>
+      <view class="store-main-actions"><view class="store-mini-btn store-mini-btn--outline xy-tap" data-id="{{stores[0].id}}" bindtap="navigateStore" role="button">导航</view><view class="store-mini-btn xy-tap" data-id="{{stores[0].id}}" bindtap="callStore" role="button">电话</view></view>
     </view>
-  </scroll-view>
+    <view wx:if="{{stores.length > 1}}" class="store-more-grid">
+      <block wx:for="{{stores}}" wx:key="id"><view wx:if="{{index > 0 && index < 3}}" class="store-mini xy-tap" data-id="{{item.id}}" bindtap="openStore" role="button" aria-label="查看{{item.name}}"><view class="store-mini-copy"><text class="store-mini-name">{{item.name}}</text><text class="store-line">{{item.location}}{{item.deviceCount ? ' · ' + item.deviceCountText : ''}}</text></view><image class="store-mini-arrow" src="{{icons.arrowRight}}" mode="aspectFit" /></view></block>
+    </view>
+  </view>
   <scroll-view class="device-category-scroll" scroll-x="true" show-scrollbar="false"><view class="category-tab-list"><view wx:for="{{categoryFilterOptions}}" wx:key="value" class="category-tab xy-tap {{selectedCategory === item.value ? 'is-active' : ''}}" data-category="{{item.value}}" bindtap="selectCategory" role="tab" aria-selected="{{selectedCategory === item.value}}"><text>{{item.label}}</text></view></view></scroll-view>
-  <scroll-view class="filter-scroll" scroll-x="true" show-scrollbar="false"><view class="filter-list"><text class="filter-caption">来源</text><view wx:for="{{supplyFilterOptions}}" wx:key="value" class="filter-chip xy-tap {{selectedSupply === item.value ? 'is-active' : ''}}" data-supply="{{item.value}}" bindtap="selectSupply" role="button" aria-label="按{{item.label}}筛选"><text class="filter-chip-label">{{item.label}}</text></view></view></scroll-view>
+  <scroll-view class="filter-scroll" scroll-x="true" show-scrollbar="false"><view class="filter-list"><view wx:for="{{supplyFilterOptions}}" wx:key="value" class="filter-chip xy-tap {{selectedSupply === item.value ? 'is-active' : ''}}" data-supply="{{item.value}}" bindtap="selectSupply" role="button" aria-label="按{{item.label}}筛选"><text class="filter-chip-label">{{item.label}}</text></view></view></scroll-view>
   <view wx:if="{{visibleDevices.length > 0}}" class="device-list">
-    <view wx:for="{{visibleDevices}}" wx:key="id" class="device-row device-row--{{item.homeLayout}} xy-tap" data-id="{{item.id}}" bindtap="openDevice" role="button" aria-label="查看{{item.name}}">
-      <view class="device-thumb"><media-state class="media-fill" state="{{item.homeImage ? 'loading' : 'idle'}}" src="{{item.homeImage}}" density="thumbnail" mode="aspectFit" placeholder-src="{{icons.deviceMark}}" empty-label="" alt="{{item.name}}设备图片" /></view>
-      <view class="device-copy"><view class="device-main-row"><text class="device-name">{{item.name}}</text>
-      <view class="device-price-row"><block wx:if="{{item.homePrice}}"><text class="device-price-amount">¥{{item.homePrice}}</text><text class="device-price-unit">{{item.homePriceUnit}}</text></block><text wx:else class="device-price-missing">价格待确认</text></view>
-      </view><view class="device-meta-row"><view class="device-source-row"><text class="device-source device-source--{{item.supplyType}}">{{item.homeSourceLabel}}</text><text class="device-location">{{item.location || '取还地点待确认'}}</text></view>
-      <text class="device-deposit">押金 ¥{{item.deposit}}</text></view>
-      <text wx:if="{{item.homeSummary}}" class="device-description">{{item.homeSummary}}</text>
-      </view>
+    <view class="device-col">
+      <block wx:for="{{visibleDevices}}" wx:key="id"><view wx:if="{{index % 2 === 0}}" class="device-row xy-tap" data-id="{{item.id}}" bindtap="openDevice" role="button" aria-label="查看{{item.name}}">
+        <view class="device-thumb"><media-state class="media-fill" state="{{item.homeImage ? 'loading' : 'idle'}}" src="{{item.homeImage}}" density="thumbnail" mode="aspectFill" placeholder-src="{{icons.deviceMark}}" empty-label="" alt="{{item.name}}设备图片" /></view>
+        <view class="device-copy">
+          <text class="device-name">{{item.name}}</text>
+          <text class="device-meta"><text class="device-source device-source--{{item.supplyType}}">{{item.homeSourceLabel}}</text> · {{item.location || '取还地点待确认'}}{{item.homeSummary ? ' · ' + item.homeSummary : ''}}</text>
+          <view class="device-price-row"><view wx:if="{{item.homePrice}}" class="device-price"><text class="device-price-symbol">¥</text><text class="device-price-amount">{{m.yuan(item.homePrice)}}</text><text class="device-price-unit">{{item.homePriceUnit}}</text></view><text wx:else class="device-price-missing">价格待确认</text><text class="device-deposit">押金 <text class="device-deposit-value">¥{{m.yuan(item.deposit)}}</text></text></view>
+        </view>
+      </view></block>
+    </view>
+    <view class="device-col">
+      <block wx:for="{{visibleDevices}}" wx:key="id"><view wx:if="{{index % 2 === 1}}" class="device-row xy-tap" data-id="{{item.id}}" bindtap="openDevice" role="button" aria-label="查看{{item.name}}">
+        <view class="device-thumb"><media-state class="media-fill" state="{{item.homeImage ? 'loading' : 'idle'}}" src="{{item.homeImage}}" density="thumbnail" mode="aspectFill" placeholder-src="{{icons.deviceMark}}" empty-label="" alt="{{item.name}}设备图片" /></view>
+        <view class="device-copy">
+          <text class="device-name">{{item.name}}</text>
+          <text class="device-meta"><text class="device-source device-source--{{item.supplyType}}">{{item.homeSourceLabel}}</text> · {{item.location || '取还地点待确认'}}{{item.homeSummary ? ' · ' + item.homeSummary : ''}}</text>
+          <view class="device-price-row"><view wx:if="{{item.homePrice}}" class="device-price"><text class="device-price-symbol">¥</text><text class="device-price-amount">{{m.yuan(item.homePrice)}}</text><text class="device-price-unit">{{item.homePriceUnit}}</text></view><text wx:else class="device-price-missing">价格待确认</text><text class="device-deposit">押金 <text class="device-deposit-value">¥{{m.yuan(item.deposit)}}</text></text></view>
+        </view>
+      </view></block>
     </view>
   </view>
   <view wx:elif="{{!loading && !errorText}}" class="device-empty xy-empty-page"><image class="xy-empty-page__illustration" src="{{icons.emptyDevices}}" mode="aspectFit" aria-hidden="true" /><text class="xy-empty-section__title">{{devices.length === 0 ? '当前区域暂无可租设备' : '当前筛选暂无可租设备'}}</text><view wx:if="{{devices.length > 0}}" class="xy-empty-section__action xy-action-primary xy-action-text xy-tap" bindtap="resetDeviceFilters" role="button">查看全部设备</view><view wx:else class="xy-empty-section__action xy-action-primary xy-action-text xy-tap" bindtap="openRegion" role="button">切换城市</view></view>
   <view wx:if="{{loading}}" class="notice-copy" role="status">正在读取设备…</view>
   <view wx:if="{{errorText}}" class="device-empty"><text>{{errorText}}</text><button class="xy-action-hit" bindtap="retrySupplies">重新读取</button></view>
-  <button class="xy-action-hit" wx:if="{{hasMore && !loading}}" bindtap="loadMore">继续加载设备</button>
+  <view wx:if="{{hasMore && !loading}}" class="load-more xy-tap" bindtap="loadMore" role="button">继续加载设备</view>
   <login-sheet id="login-sheet" bindwechatlogin="onWechatLogin" bindphonelogin="onPhoneLogin" bindlegal="onLoginLegal" />
 </view>

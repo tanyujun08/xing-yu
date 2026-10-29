@@ -1,4 +1,5 @@
 <page-meta root-font-size="system" />
+<wxs module="m">module.exports = { yuan: function (v) { var s = v ? v + "" : ""; return s.length > 3 && s.substring(s.length - 3) === ".00" ? s.substring(0, s.length - 3) : s; } };</wxs>
 <import src="../../shared/design/discovery-device.wxml" />
 <view class="store-detail-page {{largeType ? 'page--large' : ''}} {{missing ? 'is-missing' : ''}}">
 <page-header title="{{secondaryNavigationTitle || '门店详情'}}" background="#ffffff" inverse="{{false}}" bindback="onSecondaryNavigationBack" />
@@ -7,15 +8,24 @@
   <view wx:elif="{{loading}}" class="xy-empty-page">正在加载门店…</view>
   <block wx:elif="{{store}}">
     <view wx:if="{{heroImages.length}}" class="entity-hero"><swiper class="entity-swiper" current="{{heroCurrent}}" bindchange="onHeroChange" indicator-dots="{{heroImages.length > 1}}"><swiper-item wx:for="{{heroImages}}" wx:key="id"><media-state class="entity-slide" src="{{item.src}}" state="loading" mode="aspectFill" alt="门店照片" /></swiper-item></swiper><text class="gallery-count">{{heroCurrent + 1}}/{{heroImages.length}}</text></view>
-    <view class="store-identity"><text class="store-title">{{store.name}}</text><text wx:if="{{store.distance}}" class="store-distance">{{store.distance}}</text></view>
+    <view class="entity-card xy-card-key">
+    <view class="store-head"><view class="store-identity"><view class="store-title-row"><text class="xy-tag xy-tag--store">店</text><text class="store-title">{{store.name}}</text></view><text wx:if="{{store.distance}}" class="store-distance">{{store.distance}}</text></view><text class="store-status-line"><text wx:if="{{store.hours}}" class="store-open">营业中</text><text wx:if="{{store.hours}}"> · </text>{{deviceCount}} 台设备可租 · 到店自提</text></view>
     <text wx:if="{{store.serviceCopy}}" class="store-service-copy">{{store.serviceCopy}}</text>
-    <view class="xy-discovery-band"></view>
     <view class="store-info">
       <view class="store-info-row"><image class="store-info-icon" src="{{icons.discoveryClock}}" mode="aspectFit" /><text class="store-info-label">营业时间</text><text class="store-info-value">{{store.hours || '暂未提供'}}</text></view>
       <view class="store-info-row"><image class="store-info-icon" src="{{icons.discoveryPhone}}" mode="aspectFit" /><text class="store-info-label">联系电话</text><text class="store-info-value">{{store.phone || '暂未提供'}}</text><view wx:if="{{store.phone}}" class="store-info-action xy-tap" bindtap="showContact" role="button" aria-label="拨打门店电话">拨打</view></view>
       <view class="store-info-row xy-tap" bindtap="showAddress" role="button" aria-label="打开门店地图导航：{{store.address}}"><image class="store-info-icon" src="{{icons.discoveryLocation}}" mode="aspectFit" /><text class="store-info-label">门店位置</text><text class="store-info-value">{{store.address || '暂未提供'}}</text><view wx:if="{{store.location}}" class="store-info-action">导航</view></view>
     </view>
-    <view class="xy-discovery-band"></view>
-    <view class="xy-discovery-inset"><view class="xy-discovery-heading"><text class="xy-discovery-heading__title">门店设备</text><text class="xy-discovery-meta">{{deviceCount}}台</text></view><view class="device-list"><block wx:for="{{devices}}" wx:key="id"><template is="discovery-device" data="{{device: item}}" /></block><view wx:if="{{!devices.length}}" class="xy-empty-section"><text class="xy-empty-section__title">当前暂无可租设备</text><text class="xy-empty-section__copy">可以稍后再来查看。</text></view></view></view>
+    </view>
+    <view class="store-devices">
+      <view class="store-devices-head"><text class="store-devices-title">门店设备 · {{deviceCount}} 台</text></view>
+      <view wx:if="{{devices.length}}" class="store-grid">
+        <view wx:for="{{devices}}" wx:key="id" class="store-grid-card xy-tap" data-id="{{item.id}}" bindtap="openDevice" role="button" aria-label="查看{{item.name}}">
+          <view class="store-grid-media"><media-state class="store-grid-image" state="{{item.displayImage ? 'loading' : 'idle'}}" src="{{item.displayImage}}" density="thumbnail" mode="aspectFill" placeholder-src="/assets/figma-icons/device-mark.svg" empty-label="" alt="{{item.name}}设备图片" /></view>
+          <view class="store-grid-copy"><text class="store-grid-name">{{item.name}}</text><text class="store-grid-meta"><text class="store-grid-source">门店</text> · 到店自提</text><view class="store-grid-foot"><view class="store-grid-price"><text class="store-grid-symbol">¥</text><text class="store-grid-amount">{{m.yuan(item.priceValue)}}</text><text class="store-grid-unit">{{item.priceUnit}}</text></view><text class="store-grid-deposit">押金 <text class="store-grid-deposit-value">¥{{m.yuan(item.depositValue)}}</text></text></view></view>
+        </view>
+      </view>
+      <view wx:else class="xy-empty-section"><text class="xy-empty-section__title">当前暂无可租设备</text><text class="xy-empty-section__copy">可以稍后再来查看。</text></view>
+    </view>
   </block>
 </view>

@@ -6,25 +6,34 @@
     <view wx:if="{{loading}}" class="body-copy" role="status">正在读取柜机…</view>
     <block wx:if="{{loaded}}">
       <view class="surface-card cabinet-card">
-        <view class="card-head"><text class="section-title">{{cabinetName}}</text><text class="state-label {{pickupEnabled ? 'is-success' : 'is-warning'}}">{{pickupEnabled ? '柜机可用' : '暂不可用'}}</text></view>
+        <view class="card-head"><view class="cabinet-title-row"><text class="xy-tag xy-tag--cabinet">柜</text><text class="cabinet-name">{{cabinetName}}</text></view><view class="state-label {{pickupEnabled ? 'is-success' : 'is-warning'}}"><text class="state-dot"></text><text>{{pickupEnabled ? '柜机可用' : '暂不可用'}}</text></view></view>
         <text wx:if="{{cabinetAddress}}" class="body-copy">{{cabinetAddress}}</text>
-        <text class="body-copy">{{pickupEnabled ? '请确认您已到达此柜机' : '柜机暂不可用，请稍后刷新或联系客服'}}</text>
+        <text class="cabinet-hint">{{pickupEnabled ? '请确认您已到达此柜机，再输入取件码' : '柜机暂不可用，请稍后刷新或联系客服'}}</text>
       </view>
       <view wx:if="{{taskStatus}}" class="surface-card progress-card" role="status">
         <text class="section-title">{{taskStatus}}</text><text class="body-copy">{{taskCopy}}</text>
         <button wx:if="{{canCancel}}" class="xy-action-hit" bindtap="cancelReservation" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">取消本次取件预留</button>
       </view>
-      <view wx:if="{{!taskId || canResume}}" class="surface-card credential-card">
-        <text class="section-title">{{canResume ? '继续本次取件' : '输入取件码'}}</text>
-        <cabinet-credential-input label="取件码" show-display-code="{{false}}" value="{{credentialInput}}" bindinput="inputCredential" />
-        <text class="body-copy">{{canResume ? '请重新输入本单取件码，确认后继续开柜。' : '请使用当前账号订单中的六位取件码，仅在约定租期内取件。'}}</text>
+      <block wx:if="{{!taskId || canResume}}">
+        <text class="group-title">{{canResume ? '继续本次取件' : '输入取件码'}}</text>
+        <view class="surface-card credential-card">
+          <cabinet-credential-input label="取件码" show-display-code="{{false}}" value="{{credentialInput}}" bindinput="inputCredential" />
+          <text class="body-copy">{{canResume ? '请重新输入本单取件码，确认后继续开柜。' : '请使用当前账号订单中的六位取件码，仅在约定租期内取件。'}}</text>
+        </view>
+      </block>
+      <text class="group-title">取件步骤</text>
+      <view class="surface-card steps-card">
+        <view class="step-row"><text class="step-index">1</text><view class="step-copy"><text class="step-title">输入取件码</text><text class="step-desc">取件码在「订单」对应订单里</text></view></view>
+        <view class="step-row"><text class="step-index">2</text><view class="step-copy"><text class="step-title">柜门自动打开</text><text class="step-desc">按提示找到对应格口</text></view></view>
+        <view class="step-row"><text class="step-index">3</text><view class="step-copy"><text class="step-title">取出设备并关好柜门</text><text class="step-desc">取件结果将自动更新到订单</text></view></view>
       </view>
-      <text class="body-copy pickup-guidance">取出设备并关好柜门，取件结果将自动更新。</text>
-      <button wx:if="{{!pickupEnabled}}" class="xy-action-hit" bindtap="refresh" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">重新连接柜机</button>
-      <button class="xy-action-hit" bindtap="goOrders">去我的订单查看取件码</button>
-      <button wx:if="{{!loggedIn}}" class="xy-action-hit" bindtap="openLogin">登录后取件</button>
+      <view class="surface-card link-card">
+        <view wx:if="{{!pickupEnabled && !busy && !loading}}" class="link-row xy-tap" bindtap="refresh" role="button"><image class="link-icon" src="/assets/return-icons/refresh.svg" mode="aspectFit" /><text class="link-label">重新连接柜机</text><image class="link-arrow" src="/assets/figma-icons/arrow-right.svg" mode="aspectFit" /></view>
+        <view class="link-row xy-tap" bindtap="goOrders" role="button"><image class="link-icon" src="/assets/return-icons/article.svg" mode="aspectFit" /><text class="link-label">去我的订单查看取件码</text><image class="link-arrow" src="/assets/figma-icons/arrow-right.svg" mode="aspectFit" /></view>
+        <view wx:if="{{!loggedIn}}" class="link-row xy-tap" bindtap="openLogin" role="button"><image class="link-icon" src="/assets/icons/login-mark.svg" mode="aspectFit" /><text class="link-label">登录后取件</text><image class="link-arrow" src="/assets/figma-icons/arrow-right.svg" mode="aspectFit" /></view>
+        <view class="link-row xy-tap" bindtap="demoSupport" role="button"><image class="link-icon" src="/assets/figma-icons/profile-support.svg" mode="aspectFit" /><text class="link-label">联系客服</text><image class="link-arrow" src="/assets/figma-icons/arrow-right.svg" mode="aspectFit" /></view>
+      </view>
     </block>
-    <button class="xy-action-hit" bindtap="demoSupport">联系客服</button>
   </view>
   <bottom-actions slot="footer" primary-text="{{taskId ? (canResume ? '继续开柜取件' : '查看取件进度') : '确认并开柜'}}" busy="{{busy}}" disabled="{{credentialErrorOpen || loading || !loggedIn || (taskId && !canResume ? false : (!pickupEnabled || credentialInput.length !== 6))}}" aria-disabled="{{credentialErrorOpen || loading || !loggedIn || (taskId && !canResume ? false : (!pickupEnabled || credentialInput.length !== 6))}}" bindprimary="submitCredential" />
 </page-shell>

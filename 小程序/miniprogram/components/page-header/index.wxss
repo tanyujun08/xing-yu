@@ -4,7 +4,7 @@
 .page-header-space { flex:none; }
 .page-header { position:fixed; z-index:var(--xy-z-navigation); top:0; left:0; width:100%; box-sizing:border-box; background:var(--xy-color-surface); color:var(--xy-color-text-primary,#202937); }
 .page-header__bar { position:relative; display:flex; align-items:center; justify-content:center; width:100%; min-height:44px; }
-.page-header__title { display:block; max-width:calc(100% - 192px); font-size:var(--xy-text-navigation-title-size); font-weight:var(--xy-text-weight-regular); line-height:var(--xy-text-section-title-line-height); text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:inherit; }
+.page-header__title { display:block; max-width:calc(100% - 192px); font-size:var(--xy-text-navigation-title-size); font-weight:var(--xy-text-weight-semibold); line-height:var(--xy-text-section-title-line-height); text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:inherit; }
 .page-header__back { position:absolute; left:0; top:50%; transform:translateY(-50%); display:flex; align-items:center; width:44px; height:44px; min-height:44px; box-sizing:border-box; padding:0 0 0 var(--xy-space-4); margin:0; border:0; border-radius:0; overflow:visible; background:transparent; }
 .page-header__back::after,.page-header__action::after { border:0; }
 .page-header__back-icon { display:block; width:12px; height:20px; flex:none; }
@@ -15,5 +15,8 @@
 .page-header--inverse { color:var(--xy-color-text-inverse); }
 .page-header--primary .page-header__bar,.page-header--profile-hero .page-header__bar { justify-content:flex-start; padding:0 var(--xy-space-4); box-sizing:border-box; }
 .page-header--primary .page-header__title,.page-header--profile-hero .page-header__title { font-size:var(--xy-text-page-title-size); font-weight:var(--xy-text-weight-semibold); text-align:left; }
-.page-header--profile-hero { background:linear-gradient(135deg,var(--xy-color-brand-light,#e7f7f1),var(--xy-color-surface-subtle,#f5f6fa)); }
+.page-header--profile-hero { background:var(--xy-color-page,#f5f5f7); }
 .page-header__back, .page-header__action { min-width:var(--xy-size-touch-min); }
+/* 一级页标题：按画布 20 粗体，灰底与页面连成一片 */
+.page-header--order-primary { background:var(--xy-color-page); }
+.page-header--order-primary .page-header__title,.page-header--primary .page-header__title,.page-header--profile-hero .page-header__title { max-width:none; font-size:var(--xy-text-page-title-size); line-height:var(--xy-text-page-title-line-height); font-weight:var(--xy-text-weight-bold); text-align:left; }
