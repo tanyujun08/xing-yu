@@ -61,7 +61,7 @@
     "navigationBarTitleText": "星遇",
     "navigationBarBackgroundColor": "#ffffff",
     "navigationBarTextStyle": "black",
-    "backgroundColor": "#F5F6FA",
+    "backgroundColor": "#F5F5F7",
     "backgroundTextStyle": "light"
   },
   "tabBar": {
