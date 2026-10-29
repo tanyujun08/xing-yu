@@ -66,7 +66,6 @@
 .detail-card,.pickup-card,.detail-section,.detail-videos { margin:var(--xy-space-3) 0 0; padding:var(--xy-space-4); border-radius:0; }
 .gallery + .detail-card { margin-top:0; }
 .detail-card { display:flex; flex-direction:column; }
-.detail-card > * { align-self:stretch; }
 .detail-commerce { order:-1; margin:0 0 var(--xy-space-2); padding:0; background:transparent; }
 .detail-price-row,.detail-deposit-row { grid-template-columns:minmax(0,1fr); }
 .detail-price-label { display:none; }
