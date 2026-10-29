@@ -1,6 +1,7 @@
 <page-meta root-font-size="system" />
+<wxs module="g">module.exports = { count: function (items, group) { var n = 0; for (var i = 0; i < items.length; i++) { if (items[i].group === group) n++; } return n; } };</wxs>
 <page-shell surface="page" has-footer="{{false}}" fixed-header>
-  <page-header slot="header" title="我的订单" show-back="{{false}}" variant="order-primary" />
+  <page-header slot="header" title="订单" show-back="{{false}}" variant="order-primary" />
   <view class="orders-page">
   <view wx:if="{{!loggedIn}}" class="orders-login-card xy-card"><text class="orders-login-title">登录后查看订单</text><text class="orders-login-copy">你的租赁、出租和资金状态会保存在当前账号中</text><view class="orders-login-button xy-action-primary xy-tap" bindtap="openLogin" role="button">去登录</view></view>
   <view wx:if="{{loggedIn && showLendTab}}" class="role-tabs">
@@ -17,11 +18,26 @@
     <status-view wx:if="{{listState.phase === 'initial-loading'}}" state="loading" title="正在加载订单" description="请稍候" />
     <status-view wx:elif="{{listState.phase === 'initial-error'}}" state="error" title="订单加载失败" description="{{listState.error.message}}" action-text="重试" bindaction="retryInitial" illustration-src="{{icons.emptyGeneric}}" />
     <status-view wx:elif="{{listState.phase === 'empty'}}" state="empty" title="暂无相关订单" description="{{role === 'lend' ? '你的设备产生出租订单后，会显示在这里' : '浏览设备，开启你的租赁体验'}}" illustration-src="{{icons.emptyOrders}}" />
-    <view wx:for="{{items}}" wx:key="id" class="order-card xy-card {{item.statusTone === 'success' ? 'xy-card-key' : ''}} xy-tap" data-id="{{item.id}}" bindtap="openOrder" role="button" aria-label="查看{{item.deviceName}}订单">
-      <view class="order-card-main"><order-product-summary variant="order-list" title="{{item.deviceName}}" media-state="{{item.mediaState}}" media-src="{{item.image}}"><view slot="meta"><text class="order-meta">{{item.supplyText}} · {{item.pickupText}}</text><text class="order-meta">{{item.rentalText}}</text></view></order-product-summary><text class="order-status order-status--{{item.statusTone}}">{{item.currentNodeText || item.mainStatusText}}</text></view>
-      <view wx:if="{{item.deadlineText}}" class="order-deadline">{{item.deadlineText}}</view>
-      <view class="order-card-foot {{!item.showAmount ? 'order-card-foot--task' : ''}}"><view wx:if="{{item.showAmount}}" class="order-price"><text class="order-amount-label">{{item.amountLabel}}</text><text class="order-amount">{{item.amountText}}</text></view><button class="order-card-action {{item.actionPrimary ? 'is-primary' : ''}}" data-id="{{item.id}}" catchtap="openOrder" aria-label="{{item.actionLabel}} {{item.deviceName}}">{{item.actionLabel}}</button></view>
-    </view>
+    <block wx:for="{{items}}" wx:key="id"><view wx:if="{{item.group === 'active'}}" class="order-hero xy-card-key">
+      <view class="order-hero-head xy-tap" data-id="{{item.id}}" bindtap="openOrder" role="button" aria-label="查看{{item.deviceName}}订单详情"><view class="order-hero-status"><text class="order-hero-dot"></text><text>{{item.currentNodeText || item.mainStatusText}} · {{item.pickupText}}</text></view><text class="order-hero-link">订单详情 ›</text></view>
+      <view class="order-hero-body">
+        <view class="order-hero-time"><text class="order-hero-label">距离归还</text><view class="order-hero-count"><text class="order-hero-num">{{item.remainHours}}</text><text class="order-hero-unit">时</text><text class="order-hero-num">{{item.remainMinutes}}</text><text class="order-hero-unit">分</text></view><view wx:if="{{item.usedText}}" class="order-hero-progress"><view class="order-hero-bar"><view class="order-hero-bar-fill" style="width:{{item.usedPercent}}%"></view></view><text class="order-hero-used">{{item.usedText}}</text></view></view>
+        <view class="order-hero-main"><order-product-summary variant="order-list" title="{{item.deviceName}}" media-state="{{item.mediaState}}" media-src="{{item.image}}"><view slot="meta"><text class="order-meta">{{item.supplyText}}</text><text class="order-meta order-meta--nowrap">{{item.amountText}}</text></view></order-product-summary><button class="order-hero-action" data-id="{{item.id}}" catchtap="openOrder" aria-label="{{item.actionLabel}} {{item.deviceName}}">{{item.actionLabel === '查看订单' ? '查看进度' : item.actionLabel}}</button></view>
+      </view>
+      <view wx:if="{{item.endText}}" class="order-hero-foot"><text>归还截点：{{item.endText}} 前</text></view>
+    </view></block>
+    <view wx:if="{{g.count(items, 'todo') > 0}}" class="order-group-title">待你处理 · {{g.count(items, 'todo')}}</view>
+    <block wx:for="{{items}}" wx:key="id"><block wx:if="{{item.group === 'todo'}}"><view class="order-card xy-tap" data-id="{{item.id}}" bindtap="openOrder" role="button" aria-label="查看{{item.deviceName}}订单">
+          <view class="order-card-head"><text class="order-status order-status--{{item.statusTone}}">{{item.currentNodeText || item.mainStatusText}}</text><text wx:if="{{item.deadlineText}}" class="order-head-note order-head-note--danger">{{item.deadlineText}}</text><text wx:else class="order-head-note">{{item.orderNo}}</text></view>
+          <view class="order-card-main"><order-product-summary variant="order-list" title="{{item.deviceName}}" media-state="{{item.mediaState}}" media-src="{{item.image}}"><view slot="meta"><text class="order-meta">{{item.supplyText}} · {{item.pickupText}}</text><text class="order-meta">{{item.rentalText}}</text></view></order-product-summary></view>
+          <view class="order-card-foot {{!item.showAmount ? 'order-card-foot--task' : ''}}"><view wx:if="{{item.showAmount}}" class="order-price"><text class="order-amount-label">{{item.amountLabel}}</text><text class="order-amount">{{item.amountText}}</text></view><button class="order-card-action {{item.actionPrimary ? 'is-primary' : ''}}" data-id="{{item.id}}" catchtap="openOrder" aria-label="{{item.actionLabel}} {{item.deviceName}}">{{item.actionLabel}}</button></view>
+        </view></block></block>
+    <view wx:if="{{g.count(items, 'other') > 0 && (g.count(items, 'todo') > 0 || g.count(items, 'active') > 0)}}" class="order-group-title">其他订单</view>
+    <block wx:for="{{items}}" wx:key="id"><block wx:if="{{item.group === 'other'}}"><view class="order-card xy-tap" data-id="{{item.id}}" bindtap="openOrder" role="button" aria-label="查看{{item.deviceName}}订单">
+          <view class="order-card-head"><text class="order-status order-status--{{item.statusTone}}">{{item.currentNodeText || item.mainStatusText}}</text><text wx:if="{{item.deadlineText}}" class="order-head-note order-head-note--danger">{{item.deadlineText}}</text><text wx:else class="order-head-note">{{item.orderNo}}</text></view>
+          <view class="order-card-main"><order-product-summary variant="order-list" title="{{item.deviceName}}" media-state="{{item.mediaState}}" media-src="{{item.image}}"><view slot="meta"><text class="order-meta">{{item.supplyText}} · {{item.pickupText}}</text><text class="order-meta">{{item.rentalText}}</text></view></order-product-summary></view>
+          <view class="order-card-foot {{!item.showAmount ? 'order-card-foot--task' : ''}}"><view wx:if="{{item.showAmount}}" class="order-price"><text class="order-amount-label">{{item.amountLabel}}</text><text class="order-amount">{{item.amountText}}</text></view><button class="order-card-action {{item.actionPrimary ? 'is-primary' : ''}}" data-id="{{item.id}}" catchtap="openOrder" aria-label="{{item.actionLabel}} {{item.deviceName}}">{{item.actionLabel}}</button></view>
+        </view></block></block>
     <status-view wx:if="{{listState.phase === 'ready' && listState.incremental === 'refreshing'}}" state="loading" density="compact-footer" title="正在刷新订单" />
     <status-view wx:elif="{{listState.phase === 'ready' && listState.incremental === 'refresh-error'}}" state="error" density="compact-footer" title="刷新失败" action-text="重试刷新" bindaction="retryRefresh" />
     <status-view wx:elif="{{listState.phase === 'ready' && listState.incremental === 'loading-more'}}" state="loading" density="compact-footer" title="正在加载更多" />

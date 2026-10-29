@@ -98,7 +98,17 @@ export function rentalOrderCard(order: {
     const lessor = order.viewer_role === 'LESSOR';
     const lessorTask = can('SHIP') ? '填写运单' : ['RETURNING', 'RETURN_REVIEW'].includes(order.display_status_code) ? '查看归还' : ['AWAITING_SUPPLEMENT', 'REFUND_PROCESSING', 'SETTLEMENT_CONFIRMING', 'COMPLETED'].includes(order.display_status_code) ? '查看结算' : '查看订单';
     const actionLabel = lessor ? lessorTask : supplement ? '查看费用' : can('SIGN_CONTRACT') ? '继续签约' : can('PAY_INITIAL') ? '去支付' : can('SHIP') ? '填写运单' : can('READ_PICKUP_CODE') ? '查看取件码' : can('START_RETURN') || can('SAVE_RETURN_EVIDENCE') ? '去归还' : '查看订单';
+    const actionPrimary = ['继续签约', '去支付', '填写运单', '去归还'].includes(actionLabel);
+    const inProgress = !lessor && ['ACTIVE', 'IN_USE', 'RETURNING'].includes(order.display_status_code);
+    const startMs = Date.parse(order.rental_start_at), endMs = Date.parse(order.rental_end_at), nowMs = Date.now();
+    const remainMs = Number.isFinite(endMs) ? Math.max(0, endMs - nowMs) : 0;
+    const totalDays = Number.isFinite(startMs) && Number.isFinite(endMs) ? Math.max(1, Math.round((endMs - startMs) / 86400000)) : 0;
+    const usedDays = totalDays ? Math.min(totalDays, Math.max(0, Math.ceil((nowMs - startMs) / 86400000))) : 0;
     return { id: order.order_id, orderNo: order.order_no, deviceName: order.asset.title,
+        group: inProgress ? 'active' as const : actionPrimary ? 'todo' as const : 'other' as const,
+        remainHours: String(Math.floor(remainMs / 3600000)), remainMinutes: String(Math.floor((remainMs % 3600000) / 60000)),
+        usedText: totalDays ? `已租 ${usedDays}/${totalDays} 天` : '', usedPercent: totalDays ? Math.round(usedDays / totalDays * 100) : 0,
+        endText: Number.isFinite(endMs) ? beijingTime(order.rental_end_at) : '',
         createdText: beijingTime(order.created_at), mainStatusText: order.display_status, currentNodeText: order.display_status,
         statusTone: order.has_exception || order.display_status_code === 'AWAITING_PAYMENT' ? 'warning' : order.display_status_code === 'COMPLETED' || order.display_status_code === 'PREPARING' ? 'success' : 'muted',
         rentalText: rentalDateRange(order.rental_start_at, order.rental_end_at),
@@ -108,7 +118,7 @@ export function rentalOrderCard(order: {
         amountLabel: lessor ? '' : supplement ? '待补缴金额' : paid ? '实付金额' : '应付金额',
         amountText: lessor ? '' : supplement ? rentalMoney(order.supplement_due_fen) : paid ? rentalMoney(order.initial_payer_total_fen) : rentalMoney(order.initial_due_fen),
         deadlineText: !lessor && order.display_status_code === 'AWAITING_PAYMENT' && order.payment_due_at ? '请在 ' + beijingTime(order.payment_due_at) + ' 前完成支付' : '',
-        actionLabel, actionPrimary: ['继续签约', '去支付', '填写运单', '去归还'].includes(actionLabel), destination: actionLabel === '继续签约' ? 'contract' as const : 'detail' as const,
+        actionLabel, actionPrimary, destination: actionLabel === '继续签约' ? 'contract' as const : 'detail' as const,
         image: order.asset.cover_media?.url ?? order.asset.cover_media?.access_url ?? '', mediaState: order.asset.cover_media ? 'ready' : 'idle' };
 }
 export function rentalStateLabel(code: string): string {
