@@ -70,3 +70,18 @@
 .service-list .service-row .row-value { position:absolute; top:var(--xy-space-2); right:var(--xy-space-2); font-size:var(--xy-text-micro-size); line-height:var(--xy-text-micro-line-height); }
 .service-list .service-row .service-icon { flex:none; margin-right:0; }
 .service-list .service-row .row-value--green { top:var(--xy-space-3); right:calc(50% - var(--xy-space-4)); width:var(--xy-space-2); height:var(--xy-space-2); overflow:hidden; border-radius:50%; background:var(--xy-color-brand); font-size:0; line-height:0; }
+
+/* 尺寸逐项对齐画布：姓名 20、资产数字 16 黑、出租行 44 高、服务宫格 72 高 + 12 字、退出登录白卡 */
+.profile-name { font-size:var(--xy-text-page-title-size); line-height:var(--xy-text-page-title-line-height); font-weight:var(--xy-text-weight-bold); }
+.profile-state { color:var(--xy-color-text-muted); }
+.asset-value,.asset-value--pink { color:var(--xy-color-text-strong); font-size:var(--xy-text-section-title-size); line-height:var(--xy-text-section-title-line-height); }
+.asset-value--green { color:var(--xy-color-text-secondary); font-size:var(--xy-text-body-small-size); line-height:var(--xy-text-section-title-line-height); font-weight:var(--xy-text-weight-semibold); }
+.rent-row { min-height:var(--xy-size-touch-min); padding:var(--xy-space-3) var(--xy-space-4); }
+.rent-row:not(:last-child) { border-bottom:0; }
+.rent-row + .rent-row::before { position:absolute; top:0; right:0; left:48px; height:1px; background:var(--xy-color-border-weak); content:''; }
+.rent-row .row-value { color:var(--xy-color-text-muted); font-size:var(--xy-text-body-small-size); line-height:var(--xy-text-body-small-line-height); }
+.service-list .service-row { gap:var(--xy-space-1); min-height:72px; padding:0 var(--xy-space-1); }
+.service-list .service-row .service-icon { width:24px; height:24px; flex-basis:24px; }
+.service-list .service-row .service-title { font-size:var(--xy-text-body-small-size); line-height:var(--xy-text-body-small-line-height); color:var(--xy-color-text-secondary); }
+.service-list .service-row .row-value--green { top:var(--xy-space-4); right:auto; left:calc(50% + var(--xy-space-2)); box-shadow:0 0 0 2px var(--xy-color-surface); }
+.logout-button { width:auto; margin:var(--xy-space-6) 0 0; border-radius:var(--xy-radius-lg); background:var(--xy-color-surface); color:var(--xy-color-text-secondary); font-size:var(--xy-text-body-size); line-height:var(--xy-text-body-line-height); }
