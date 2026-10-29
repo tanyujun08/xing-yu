@@ -1,4 +1,5 @@
 <page-meta root-font-size="system" />
+<wxs module="m">module.exports = { yuan: function (v) { var s = v ? v + "" : ""; return s.length > 3 && s.substring(s.length - 3) === ".00" ? s.substring(0, s.length - 3) : s; } };</wxs>
 <view class="detail-page {{stackedInfo ? 'detail-page--stacked' : ''}}">
 <page-header title="{{secondaryNavigationTitle || '设备详情'}}" background="#ffffff" inverse="{{false}}" bindback="goBack" />
   <block wx:if="{{loaded}}">
@@ -20,7 +21,7 @@
   </view>
   <view class="detail-card">
     <text class="detail-name">{{device.name}}</text><text wx:if="{{showModel}}" class="detail-model">{{device.model}}</text>
-    <view class="detail-commerce"><view class="detail-price-row"><text class="detail-price-label">租金</text><view class="detail-price"><text class="detail-price-symbol">¥</text><text class="detail-price-value">{{rentText}}</text><text class="detail-price-unit">{{device.rentalMode === 'hourly' ? '/小时' : '/天'}}</text></view></view><view class="detail-deposit-row"><text class="detail-deposit-label">押金</text><text class="detail-deposit-value">¥{{depositText}}</text></view></view>
+    <view class="detail-commerce"><view class="detail-price-row"><text class="detail-price-label">租金</text><view class="detail-price"><text class="detail-price-symbol">¥</text><text class="detail-price-value">{{m.yuan(rentText)}}</text><text class="detail-price-unit">{{device.rentalMode === 'hourly' ? '/小时' : '/天'}}</text></view></view><view class="detail-deposit-row"><text class="detail-deposit-label">押金</text><text class="detail-deposit-value">¥{{m.yuan(depositText)}}</text></view></view>
     <text wx:if="{{device.description}}" class="detail-description">{{device.description}}</text><text wx:if="{{attributeFacts}}" class="detail-attributes">{{attributeFacts}}</text>
     <view class="detail-benefit"><text wx:if="{{rentCapText}}">{{device.rentalMode === 'hourly' ? '不足一小时向上取整，同一订单累计租金最高为产品价值¥' + rentCapText : '同一订单累计租金最高为产品价值¥' + rentCapText + '；押金与保障费另行核算'}}</text><text wx:else>具体租金规则将在申请报价时由平台确认。</text><view class="detail-benefit-link xy-tap"><text>查看押金规则</text><text>›</text><button class="touch-overlay" hover-class="none" bindtap="openNoDeposit" aria-label="查看押金规则"></button></view></view>
   </view>
@@ -34,9 +35,10 @@
     <view class="detail-group"><text class="section-title">租赁须知</text><text wx:if="{{quoteBlockedText}}" class="notice-copy" role="status">{{quoteBlockedText}}</text><text class="notice-copy">请在取用时核对设备、配件和成色。归还后平台完成验机，押金将按订单规则处理。</text></view>
   </view>
   <view class="detail-bottom xy-bottom-action">
+    <button class="support-action" bindtap="demoSupport" aria-label="联系客服"><image class="support-icon" src="{{icons.profileSupport}}" mode="aspectFit" aria-hidden="true" /><text>客服</text></button>
     <view wx:if="{{manageMode}}" class="manage-bottom-copy"><text>个人出租商品</text><text>{{managementStatusText}}</text></view>
-    <view wx:else class="bottom-price"><view><text class="bottom-rent">¥{{rentText}}</text><text>{{device.rentalMode === 'hourly' ? '/小时' : '/天'}}</text></view><text>押金 ¥{{depositText}}</text></view>
-    <view class="detail-action-group"><button class="support-action xy-action-secondary" bindtap="demoSupport" aria-label="联系客服">客服</button><view wx:if="{{manageMode}}" class="buy-button xy-action-hit xy-tap" role="button" aria-label="编辑内容" bindtap="editListing"><view class="xy-action-primary xy-action-shell">编辑内容</view></view><view wx:elif="{{quoteBlockedText}}" class="buy-button" role="button" aria-disabled="true" aria-label="{{quoteBlockedText}}"><view class="xy-action-secondary xy-action-shell">暂不可租</view></view><view wx:else class="buy-button xy-action-hit xy-tap" bindtap="buy" role="button" aria-label="{{loggedIn ? '立即下单' : '登录后下单'}}"><view class="xy-action-primary xy-action-shell">{{loggedIn ? '立即下单' : '登录后下单'}}</view></view></view>
+    <view wx:else class="bottom-price"><view class="bottom-rent-row"><text class="bottom-rent-symbol">¥</text><text class="bottom-rent">{{m.yuan(rentText)}}</text><text>{{device.rentalMode === 'hourly' ? '/小时' : '/天'}}</text></view><text>押金 ¥{{m.yuan(depositText)}}</text></view>
+    <view class="detail-action-group"><view wx:if="{{manageMode}}" class="buy-button xy-action-hit xy-tap" role="button" aria-label="编辑内容" bindtap="editListing"><view class="xy-action-primary xy-action-shell">编辑内容</view></view><view wx:elif="{{quoteBlockedText}}" class="buy-button" role="button" aria-disabled="true" aria-label="{{quoteBlockedText}}"><view class="xy-action-secondary xy-action-shell">暂不可租</view></view><view wx:else class="buy-button xy-action-hit xy-tap" bindtap="buy" role="button" aria-label="{{loggedIn ? '立即下单' : '登录后下单'}}"><view class="xy-action-primary xy-action-shell">{{loggedIn ? '立即下单' : '登录后下单'}}</view></view></view>
   </view>
   </block>
   <view wx:if="{{loading}}" class="detail-card" role="status">正在读取设备资料…</view>

@@ -96,3 +96,31 @@
 .pickup-title-row { display:flex; align-items:center; gap:var(--xy-space-2); min-width:0; }
 .pickup-title { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .pickup-address { font-size:var(--xy-text-caption-size); line-height:var(--xy-text-caption-line-height); }
+
+/* 尺寸逐项对齐画布：价格 28、资料各自成块（块间 12 灰缝）、标签列 64、行距 12、底栏客服在左 */
+.detail-price-value { font-size:var(--xy-text-asset-summary-size); line-height:var(--xy-text-asset-summary-line-height); }
+.detail-price-unit { margin-left:calc(var(--xy-space-1) / 2); color:var(--xy-color-text-muted); }
+.detail-deposit-row { padding-bottom:var(--xy-space-1); }
+.detail-deposit-label { color:var(--xy-color-text-muted); font-size:var(--xy-text-body-small-size); line-height:var(--xy-text-body-small-line-height); }
+.detail-deposit-value { color:var(--xy-color-text-secondary); font-size:var(--xy-text-body-size); line-height:var(--xy-text-body-line-height); }
+.detail-model,.detail-description,.detail-attributes { color:var(--xy-color-text-muted); }
+.detail-benefit { color:var(--xy-color-text-secondary); }
+.pickup-title { font-size:var(--xy-text-body-size); line-height:var(--xy-text-body-line-height); }
+.pickup-address { display:block; margin-top:calc(var(--xy-space-1) / 2); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--xy-color-text-muted); font-size:var(--xy-text-body-small-size); line-height:var(--xy-text-body-small-line-height); }
+.detail-section { margin:0; padding:0; background:transparent; }
+.detail-group { margin-top:var(--xy-space-3); padding:var(--xy-space-4); background:var(--xy-color-surface); }
+.detail-group + .detail-group { margin-top:var(--xy-space-3); }
+.info-line { grid-template-columns:64px minmax(0,1fr); column-gap:var(--xy-space-3); padding:0; }
+.info-line + .info-line { margin-top:var(--xy-space-3); }
+.info-label { padding-top:calc(var(--xy-space-1) / 2); }
+.notice-copy { color:var(--xy-color-text-secondary); line-height:var(--xy-text-body-line-height); }
+.detail-bottom.xy-bottom-action { display:flex; align-items:center; gap:var(--xy-space-3); background:var(--xy-color-glass); border-top:1px solid var(--xy-color-border-weak); }
+.detail-bottom .support-action { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:calc(var(--xy-space-1) / 2); flex:none; width:var(--xy-size-touch-min); min-height:var(--xy-size-touch-min); margin:0; padding:0; border:0; background:transparent; color:var(--xy-color-text-secondary); font-size:var(--xy-text-caption-size); line-height:var(--xy-text-caption-line-height); }
+.detail-bottom .support-action::after { border:0; }
+.support-icon { width:20px; height:20px; }
+.bottom-price { flex:1; gap:0; color:var(--xy-color-text-muted); font-size:var(--xy-text-caption-size); line-height:var(--xy-text-caption-line-height); }
+.bottom-rent-row { display:flex; align-items:baseline; gap:calc(var(--xy-space-1) / 2); color:var(--xy-color-text-muted); font-size:var(--xy-text-body-small-size); line-height:var(--xy-text-body-small-line-height); }
+.bottom-rent-symbol { color:var(--xy-color-text-strong); font-weight:var(--xy-text-weight-bold); }
+.bottom-rent { font-size:var(--xy-text-page-title-size); line-height:var(--xy-text-page-title-line-height); font-weight:var(--xy-text-weight-heavy); }
+.detail-action-group { flex:none; width:160px; }
+.detail-action-group .xy-action-shell { font-size:var(--xy-text-body-size); line-height:var(--xy-text-body-line-height); }
