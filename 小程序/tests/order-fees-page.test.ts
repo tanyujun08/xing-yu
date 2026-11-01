@@ -63,7 +63,7 @@ test('unfinalized or mismatched review never becomes final just because a query 
 });
 test('huge fen sums preserve exact integer precision and missing values stay unknown', () => {
   order.bill.overtime_fen = '9007199254740993'; order.bill.loss_fen = '2';
-  expect(rentalFeeView(order)!.total).toBe('¥90071992547409.95');
+  expect(rentalFeeView(order)!.total).toBe('¥90,071,992,547,409.95');
   order.bill.loss_fen = null; expect(rentalFeeView(order)!.total).toBe('待核实');
 });
 test('cash expense uses the complete server aggregate and withholds an unresolved amount', () => {

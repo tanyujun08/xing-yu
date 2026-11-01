@@ -46,6 +46,8 @@
 
 /* 规则条：灰底 6 圆角，左说明右链接 */
 .detail-benefit { display:flex; align-items:center; justify-content:space-between; gap:var(--xy-space-3); margin-top:var(--xy-space-3); padding:var(--xy-space-2) var(--xy-space-3); border-radius:var(--xy-radius-md); background:var(--xy-color-control-surface); color:var(--xy-color-text-secondary); font-size:var(--xy-text-body-small-size); line-height:var(--xy-text-body-small-line-height); }
+.detail-benefit-copy { min-width:0; }
+.detail-benefit-amount { font-weight:var(--xy-text-weight-semibold); }
 .detail-benefit-link { position:relative; display:flex; flex:none; align-items:center; color:var(--xy-color-brand); font-weight:var(--xy-text-weight-semibold); }
 .touch-overlay { position:absolute; left:50%; top:50%; width:100% !important; height:100%; min-width:var(--xy-size-touch-min); min-height:var(--xy-size-touch-min); transform:translate(-50%,-50%); box-sizing:border-box; padding:0; margin:0; border:0; border-radius:0; background:transparent; }
 .touch-overlay::after { border:0; }
@@ -71,12 +73,14 @@
 .notice-copy { display:block; color:var(--xy-color-text-secondary); font-size:var(--xy-text-body-small-size); line-height:var(--xy-text-body-line-height); }
 .notice-copy + .notice-copy { margin-top:var(--xy-space-2); }
 
-/* 底栏：客服 44 | ¥80/天 + 押金 | 立即下单 160×44 */
+/* 底栏：客服（热区 44，右侧收回到文字边）| 16 分割线 16 | ¥80/天 + 押金 | 立即下单 160×44
+ * 客服图标与价格行同高，「客服」二字与押金行对齐。 */
 .detail-bottom.xy-bottom-action { position:sticky; bottom:0; z-index:var(--xy-z-fab); display:flex; align-items:center; gap:var(--xy-space-3); margin-top:auto; padding:var(--xy-space-3) var(--xy-space-4) calc(var(--xy-space-3) + env(safe-area-inset-bottom)); border-top:1px solid var(--xy-color-border-weak); background:var(--xy-color-glass); }
-.detail-bottom .support-action { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:calc(var(--xy-space-1) / 2); flex:none; width:var(--xy-size-touch-min) !important; min-width:var(--xy-size-touch-min); min-height:var(--xy-size-touch-min); margin:0; padding:0; border:0; background:transparent; color:var(--xy-color-text-secondary); font-size:var(--xy-text-caption-size); line-height:var(--xy-text-caption-line-height); }
+.detail-bottom .support-action { display:flex; flex-direction:column; align-items:center; justify-content:flex-end; gap:var(--xy-space-1); flex:none; width:var(--xy-size-touch-min) !important; min-width:var(--xy-size-touch-min); min-height:var(--xy-size-touch-min); margin:0 calc((var(--xy-size-touch-min) - var(--xy-space-5) - var(--xy-space-1) / 2) / -2) 0 0; padding:0; border:0; background:transparent; color:var(--xy-color-text-secondary); font-size:var(--xy-text-caption-size); line-height:var(--xy-text-caption-line-height); }
 .detail-bottom .support-action::after { border:0; }
-.support-icon { width:20px; height:20px; }
-.bottom-price,.manage-bottom-copy { display:flex; flex:1; flex-direction:column; min-width:0; }
+.support-icon { flex:none; width:20px; height:20px; }
+.bottom-price,.manage-bottom-copy { position:relative; display:flex; flex:1; flex-direction:column; min-width:0; margin-left:var(--xy-space-1); padding-left:calc(var(--xy-space-4) + var(--xy-space-1) / 4); }
+.bottom-price::before,.manage-bottom-copy::before { content:""; position:absolute; left:0; top:var(--xy-space-1); bottom:var(--xy-space-1); border-left:1px solid var(--xy-color-border); }
 .bottom-rent-row { display:flex; align-items:baseline; gap:calc(var(--xy-space-1) / 2); }
 .bottom-rent-symbol { color:var(--xy-color-text-strong); font-size:var(--xy-text-body-small-size); line-height:var(--xy-text-body-small-line-height); font-weight:var(--xy-text-weight-bold); }
 .bottom-rent { color:var(--xy-color-text-strong); font-size:var(--xy-text-page-title-size); line-height:var(--xy-text-page-title-line-height); font-weight:var(--xy-text-weight-heavy); }

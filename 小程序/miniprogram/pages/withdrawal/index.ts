@@ -24,7 +24,7 @@ function amountCanSubmit(raw: string, availableFen: number | null): boolean {
 }
 
 function amountValueText(fen: number): string {
-  return formatCNYMinorUnits(String(fen)).replace('¥', '').replace(/\.00$/, '');
+  return formatCNYMinorUnits(String(fen)).replace('¥', '').replace(/,/g, '').replace(/\.00$/, '');
 }
 
 type WithdrawalExplanationView = { id: string; title: string; detail: string; icon: string };
