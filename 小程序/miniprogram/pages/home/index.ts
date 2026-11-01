@@ -6,7 +6,7 @@ import { accountApi } from '../../shared/api/account-api';
 import { supplyCard, publicSupplyGallery } from '../../shared/presentation/api-supply';
 import { publicPhoto } from '../../shared/presentation/material-media';
 import { storeApi, cabinetApi, type PublicCabinet } from '../../shared/api/supply-api';
-import { businessHoursText, navigableLocation } from '../../shared/presentation/store-details';
+import { businessHoursText, isOpenNow, navigableLocation } from '../../shared/presentation/store-details';
 import { openSupplyLocation } from '../../shared/presentation/supply-location';
 import { discoveryApi, type DiscoverySupply } from '../../shared/api/supply-api';
 import { readNavigationMetrics } from '../../shared/presentation/navigation-metrics';
@@ -17,13 +17,13 @@ const sources = ['全部', '柜机', '门店', '个人'];
 const sourceCodes: Record<string, RentalSupply['supply_type'] | undefined> = { 全部: undefined, 柜机: 'CABINET', 门店: 'STORE', 个人: 'PERSONAL' };
 const storeEpochs = new WeakMap<object, number>();
 const cabinetEpochs = new WeakMap<object, number>();
-type HomeStore = { id: string; name: string; media: string; location: string; address: string; hours: string; phone: string; deviceCount: number; deviceCountText: string; meta: string; latitude?: number; longitude?: number };
+type HomeStore = { id: string; name: string; media: string; location: string; address: string; hours: string; open: boolean; district: string; phone: string; deviceCount: number; deviceCountText: string; meta: string; latitude?: number; longitude?: number };
 type HomeCabinet = { id: string; name: string; address: string; pickupScene: string; latitude?: number; longitude?: number; devices: ReturnType<typeof supplyCard>[] };
 function matchKeyword(devices: ReturnType<typeof supplyCard>[], keyword: string) { const text = keyword.trim().toLowerCase(); return text ? devices.filter(item => item.name.toLowerCase().includes(text) || item.location.toLowerCase().includes(text)) : devices; }
 function cabinetCard(cabinet: PublicCabinet, covers: Map<string, string>, width: number, fontSize: number): HomeCabinet {
   const latitude = Number(cabinet.address.location?.latitude), longitude = Number(cabinet.address.location?.longitude);
   return { id: cabinet.cabinet_id, name: cabinet.name, pickupScene: cabinet.pickup_scene ?? '',
-    address: [cabinet.address.district_name, cabinet.address.detail_address, cabinet.deployment_site_name].filter(Boolean).join(' · '),
+    address: [cabinet.address.district_name, cabinet.address.detail_address].filter(Boolean).join(' · '),
     ...(Number.isFinite(latitude) && Number.isFinite(longitude) && cabinet.address.location ? { latitude, longitude } : {}),
     devices: cabinet.supplies.map(supply => supplyCard(supply, width, fontSize, covers.get(supply.asset_id) ?? '')) };
 }
@@ -80,12 +80,21 @@ Page({
       const page = await handle.promise; if (!s.visible || epoch !== storeEpochs.get(this) || (accountApi.sessionIdentity() ?? '') !== owner) return;
       const stores: HomeStore[] = (Array.isArray(page?.items) ? page.items : []).filter(store => !!store && !!store.store_id && store.status === 'ACTIVE').map(store => {
         const deviceCount = (Array.isArray(store.supplies) ? store.supplies : []).length;
-        const hours = businessHoursText(store.business_hours);
-        const base = { id: store.store_id, name: store.name, media: publicPhoto(store.cover ?? undefined), hours, deviceCount, deviceCountText: deviceCount ? `${deviceCount} 台` : '查看门店', meta: [hours, deviceCount ? `${deviceCount} 台` : ''].filter(Boolean).join(' · ') };
+        const hours = businessHoursText(store.business_hours), open = isOpenNow(store.business_hours);
+        const district = 'region' in store ? store.region.district_name : store.address?.district_name;
+        const base = { id: store.store_id, name: store.name, media: publicPhoto(store.cover ?? undefined), hours, open, district: district ?? '', deviceCount, deviceCountText: deviceCount ? `${deviceCount} 台` : '查看门店', meta: [hours, deviceCount ? `${deviceCount} 台` : ''].filter(Boolean).join(' · ') };
         if ('region' in store) return { ...base, location: [store.region.city_name, store.region.district_name].filter(Boolean).join(''), address: [store.region.district_name, store.public_address].filter(Boolean).join(' '), phone: store.public_phone ?? '' };
         return { ...base, location: [store.address?.city_name, store.address?.district_name].filter(Boolean).join(''), address: [store.address?.district_name, store.address?.detail_address].filter(Boolean).join(' '), phone: store.address?.phone_dial ?? '', ...(navigableLocation(store.address?.location) ?? {}) };
       });
       this.setData({ stores, storeCount: stores.length });
+      const lead = stores[0];
+      if (lead && !owner) {
+        const detail = await discoveryApi.getStore(lead.id).promise.catch(() => null);
+        if (detail && s.visible && epoch === storeEpochs.get(this) && (accountApi.sessionIdentity() ?? '') === owner) {
+          const hours = businessHoursText(detail.business_hours), count = Array.isArray(detail.supplies) ? detail.supplies.length : lead.deviceCount;
+          this.setData({ 'stores[0]': { ...lead, hours, open: isOpenNow(detail.business_hours), address: [detail.region.district_name, detail.public_address].filter(Boolean).join(' ') || lead.address, phone: detail.public_phone || lead.phone, deviceCount: count, deviceCountText: count ? `${count} 台` : '查看门店', meta: [hours, count ? `${count} 台` : ''].filter(Boolean).join(' · ') } });
+        }
+      }
     } catch { if (s.visible && epoch === storeEpochs.get(this) && (accountApi.sessionIdentity() ?? '') === owner) this.setData({ stores: [], storeCount: 0 }); }
   },
   async loadCabinets() {

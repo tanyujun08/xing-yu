@@ -17,6 +17,16 @@ export function businessHoursText(hours?: BusinessHours | null): string {
   }).join('；');
 }
 
+export function isOpenNow(hours?: BusinessHours | null, now: Date = new Date()): boolean {
+  if (!hours || !Array.isArray(hours.week)) return false;
+  const day = now.getDay() === 0 ? 7 : now.getDay();
+  const today = hours.week.find(item => item.day === day);
+  if (!today || today.closed) return false;
+  const minutes = now.getHours() * 60 + now.getMinutes();
+  const toMinutes = (text: string) => { const [h, m] = text.split(':'); return Number(h) * 60 + Number(m); };
+  return today.intervals.some(interval => minutes >= toMinutes(interval.start) && minutes < toMinutes(interval.end));
+}
+
 export function navigableLocation(location?: { latitude: string; longitude: string; coordinate_system: string } | null) {
   if (!location || location.coordinate_system !== 'GCJ02' || !location.latitude.trim() || !location.longitude.trim()) return null;
   const latitude = Number(location.latitude), longitude = Number(location.longitude);

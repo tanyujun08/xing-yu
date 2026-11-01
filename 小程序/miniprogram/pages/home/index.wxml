@@ -44,12 +44,12 @@
     <view class="store-main">
       <view class="store-main-body xy-tap" data-id="{{stores[0].id}}" bindtap="openStore" role="button" aria-label="查看{{stores[0].name}}">
         <view class="store-thumb"><media-state class="media-fill" state="{{stores[0].media ? 'loading' : 'idle'}}" src="{{stores[0].media}}" density="thumbnail" mode="aspectFill" placeholder-src="{{icons.deviceMark}}" empty-label="" alt="{{stores[0].name}}图片" /></view>
-        <view class="store-main-copy"><text class="store-name">{{stores[0].name}}</text><text class="store-line">{{stores[0].address || stores[0].location}}</text><text wx:if="{{stores[0].meta}}" class="store-line"><text wx:if="{{stores[0].hours}}" class="store-open">营业中</text><text wx:if="{{stores[0].hours}}"> · </text>{{stores[0].meta}}</text></view>
+        <view class="store-main-copy"><text class="store-name">{{stores[0].name}}</text><text class="store-line">{{stores[0].address || stores[0].location}}</text><text wx:if="{{stores[0].meta}}" class="store-line"><text wx:if="{{stores[0].open}}" class="store-open">营业中</text><text wx:if="{{stores[0].open}}"> · </text>{{stores[0].meta}}</text></view>
       </view>
       <view class="store-main-actions"><view class="store-mini-btn store-mini-btn--outline xy-tap" data-id="{{stores[0].id}}" bindtap="navigateStore" role="button">导航</view><view class="store-mini-btn xy-tap" data-id="{{stores[0].id}}" bindtap="callStore" role="button">电话</view></view>
     </view>
     <view wx:if="{{stores.length > 1}}" class="store-more-grid">
-      <block wx:for="{{stores}}" wx:key="id"><view wx:if="{{index > 0 && index < 3}}" class="store-mini xy-tap" data-id="{{item.id}}" bindtap="openStore" role="button" aria-label="查看{{item.name}}"><view class="store-mini-copy"><text class="store-mini-name">{{item.name}}</text><text class="store-line">{{item.location}}{{item.deviceCount ? ' · ' + item.deviceCountText : ''}}</text></view><image class="store-mini-arrow" src="{{icons.arrowRight}}" mode="aspectFit" /></view></block>
+      <block wx:for="{{stores}}" wx:key="id"><view wx:if="{{index > 0 && index < 3}}" class="store-mini xy-tap" data-id="{{item.id}}" bindtap="openStore" role="button" aria-label="查看{{item.name}}"><view class="store-mini-copy"><text class="store-mini-name">{{item.name}}</text><text class="store-line">{{item.district || item.location}}{{item.deviceCount ? ' · ' + item.deviceCountText : ''}}</text></view><image class="store-mini-arrow" src="{{icons.arrowRight}}" mode="aspectFit" /></view></block>
     </view>
   </view>
   <scroll-view class="device-category-scroll" scroll-x="true" show-scrollbar="false"><view class="category-tab-list"><view wx:for="{{categoryFilterOptions}}" wx:key="value" class="category-tab xy-tap {{selectedCategory === item.value ? 'is-active' : ''}}" data-category="{{item.value}}" bindtap="selectCategory" role="tab" aria-selected="{{selectedCategory === item.value}}"><text>{{item.label}}</text></view></view></scroll-view>
