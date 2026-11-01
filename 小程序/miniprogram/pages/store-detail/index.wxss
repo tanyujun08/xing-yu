@@ -76,3 +76,9 @@
 .store-grid-unit,.store-grid-deposit { color:var(--xy-color-text-muted); }
 .store-grid-deposit { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .store-grid-deposit-value { color:var(--xy-color-text-secondary); }
+
+/* 体验优化：顶图底部渐变，信息卡压在图上并加阴影；设备卡片加淡阴影 */
+.entity-hero::after { position:absolute; right:0; bottom:0; left:0; height:calc(var(--xy-space-6) * 4); background:linear-gradient(to top, var(--xy-color-gallery-counter) 0%, transparent 100%); content:''; pointer-events:none; }
+.entity-card { position:relative; margin-top:calc(var(--xy-space-6) * -1); box-shadow:var(--xy-shadow-key); }
+.entity-hero .gallery-count { bottom:calc(var(--xy-space-6) + var(--xy-space-3)); }
+.store-grid-card { box-shadow:var(--xy-shadow-key); }

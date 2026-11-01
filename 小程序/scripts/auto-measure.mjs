@@ -84,6 +84,9 @@ try {
       await page.waitFor(500);
       await mp.screenshot({ path: path.join(outDir, `${name}-${i}.png`) });
     }
+    await mp.pageScrollTo(99999);
+    await page.waitFor(600);
+    await mp.screenshot({ path: path.join(outDir, `${name}-end.png`) });
     await mp.pageScrollTo(0);
     console.log('完成', name, Object.keys(rows).length, '个 class');
   }
