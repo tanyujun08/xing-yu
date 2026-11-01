@@ -36,31 +36,36 @@ function classesOf(name) {
   return [...set];
 }
 
+process.on('uncaughtException', (error) => console.log('忽略自动化接口的内部报错：', error.message));
 const mp = await automator.launch({ cliPath, projectPath: root });
 const result = {};
 try {
   for (const name of names) {
     const route = routes[name];
     if (!route) { console.log('未知页面', name); continue; }
-    await mp[route.open](route.url);
+    console.log('打开', name);
+    await mp.evaluate((how, url) => { wx[how]({ url }); return 1; }, route.open, route.url);
+    console.log('已发出跳转');
+    await new Promise((resolve) => setTimeout(resolve, 4000));
     const page = await mp.currentPage();
-    await page.waitFor(2500);
+    console.log('当前页', page.path);
+    await page.waitFor(1000);
     const classes = classesOf(name);
-    const rows = await mp.evaluate((cls) => new Promise((resolve) => {
-      const pg = getCurrentPages().slice(-1)[0];
-      const q = wx.createSelectorQuery().in(pg);
-      cls.forEach((c) => q.selectAll('.' + c).fields({ rect: true, size: true, computedStyle: ['font-size', 'line-height', 'font-weight', 'color', 'background-color'] }));
-      q.selectViewport().scrollOffset();
-      q.exec((r) => {
-        const top = r[cls.length].scrollTop || 0;
-        const o = {};
-        cls.forEach((c, i) => {
-          if (!r[i] || !r[i].length) return;
-          o[c] = r[i].slice(0, 6).map((e) => [Math.round(e.left), Math.round(e.top + top), Math.round(e.width), Math.round(e.height), e['font-size'] + '/' + e['line-height'] + '/' + e['font-weight'], e.color, e['background-color']].join('|'));
-        });
-        resolve(o);
-      });
-    }), classes);
+    console.log('class 数', classes.length);
+    const rows = {};
+    for (const c of classes) {
+      let els = [];
+      try { els = await page.$$('.' + c); } catch { continue; }
+      if (!els.length) continue;
+      rows[c] = [];
+      for (const el of els.slice(0, 6)) {
+        try {
+          const [size, offset, fs, lh, fw, color, bg] = await Promise.all([el.size(), el.offset(), el.style('font-size'), el.style('line-height'), el.style('font-weight'), el.style('color'), el.style('background-color')]);
+          rows[c].push([Math.round(offset.left), Math.round(offset.top), Math.round(size.width), Math.round(size.height), `${fs}/${lh}/${fw}`, color, bg].join('|'));
+        } catch { /* 个别元素读不到就跳过 */ }
+      }
+    }
+    console.log('量完', Object.keys(rows).length);
     result[name] = rows;
     let bottom = 0;
     for (const list of Object.values(rows)) for (const row of list) { const p = row.split('|'); bottom = Math.max(bottom, Number(p[1]) + Number(p[3])); }
