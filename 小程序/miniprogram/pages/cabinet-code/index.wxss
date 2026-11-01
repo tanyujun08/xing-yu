@@ -52,3 +52,5 @@
 .cabinet-card .card-head { margin-bottom:0; }
 .cabinet-card .body-copy { margin-top:var(--xy-space-1); }
 .steps-card { gap:var(--xy-space-3); }
+
+.cabinet-name { font-size:var(--xy-text-section-title-size); }

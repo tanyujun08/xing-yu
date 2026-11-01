@@ -79,10 +79,11 @@
           <text>{{discount === '¥0.00' ? '未使用' : discount === '—' ? '—' : '−' + discount}}</text>
         </view>
         <view wx:else class="pickup-summary-row voucher-row xy-tap" bindtap="openVoucherSheet" role="button" aria-label="选择优惠券，{{couponLabel}}（限一张）">
-          <view class="voucher-row-label"><text>优惠券</text><text class="voucher-row-limit">限一张</text></view>
+          <view class="voucher-row-label"><text>优惠券</text></view>
           <view class="voucher-row-value"><text class="{{discount === '¥0.00' || discount === '—' ? '' : 'is-discount'}}">{{discount === '¥0.00' ? '未使用' : discount === '—' ? '—' : '−' + discount}}</text><text class="voucher-row-arrow">›</text></view>
         </view>
-        <view class="pickup-summary-row confirm-total"><text>本单应付</text><text class="confirm-total-value">{{total}}</text></view>
+        <view wx:if="{{frozen}}" class="pickup-summary-row confirm-total"><text>本单应付</text><text class="confirm-total-value">{{total}}</text></view>
+        <view wx:else class="confirm-total-rule"></view>
         <text class="pickup-address">请按约定时间归还设备；设备收回后，由官方验机并核定费用。</text>
       </view>
       <button wx:if="{{frozen}}" class="confirm-section signed-contract-entry xy-button-reset xy-button-fluid" bindtap="openContract" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}" aria-label="{{frozenSigned ? '查看已签合同' : '查看租赁合同'}}">
@@ -103,8 +104,8 @@
     <button class="quote-change-button xy-action-secondary xy-button-fluid" bindtap="returnToDevice" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">返回设备详情</button>
   </view>
   <bottom-actions wx:else slot="footer" layout="custom" primary-text="{{canPrepare ? '确认信息并去签约' : '核对费用'}}" busy="{{busy}}" disabled="{{loading || !loaded}}" bindprimary="next">
-    <view wx:if="{{!frozen}}" slot="hint" class="confirm-hint"><text class="confirm-hint-label">{{total === '—' ? '费用以服务端最新报价为准' : '本单应付'}}</text><text wx:if="{{total !== '—'}}" class="confirm-hint-amount">{{total}}</text></view>
-    <view slot="actions"><button wx:if="{{!frozen}}" class="confirm-submit xy-action-primary xy-button-fluid" bindtap="next" disabled="{{busy || loading || !loaded}}" aria-disabled="{{busy || loading || !loaded}}" aria-busy="{{busy}}">{{busy ? '正在核对…' : canPrepare ? '确认信息并去签约' : '核对费用'}}</button><button wx:else class="confirm-submit xy-action-primary xy-button-fluid" bindtap="next" disabled="{{busy || loading || !loaded || (frozenNeedsConfirmation && !canConfirm)}}" aria-disabled="{{busy || loading || !loaded || (frozenNeedsConfirmation && !canConfirm)}}" aria-busy="{{busy}}">{{busy ? '正在确认…' : frozenActionText}}</button></view>
+    <view wx:if="{{!frozen && total === '—'}}" slot="hint" class="confirm-hint-note"><text>费用以服务端最新报价为准</text></view>
+    <view slot="actions" class="confirm-actions-row"><view wx:if="{{!frozen}}" class="confirm-pay"><text class="confirm-pay-label">本单应付</text><text class="confirm-pay-amount">{{total}}</text></view><button wx:if="{{!frozen}}" class="confirm-submit xy-action-primary xy-button-fluid" bindtap="next" disabled="{{busy || loading || !loaded}}" aria-disabled="{{busy || loading || !loaded}}" aria-busy="{{busy}}">{{busy ? '正在核对…' : canPrepare ? '确认信息并去签约' : '核对费用'}}</button><button wx:else class="confirm-submit xy-action-primary xy-button-fluid" bindtap="next" disabled="{{busy || loading || !loaded || (frozenNeedsConfirmation && !canConfirm)}}" aria-disabled="{{busy || loading || !loaded || (frozenNeedsConfirmation && !canConfirm)}}" aria-busy="{{busy}}">{{busy ? '正在确认…' : frozenActionText}}</button></view>
   </bottom-actions>
 </page-shell>
 <task-sheet open="{{termSheetOpen}}" title="选择租期" show-footer bindclose="closeTermSheet">

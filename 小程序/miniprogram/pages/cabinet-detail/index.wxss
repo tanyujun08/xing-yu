@@ -198,3 +198,7 @@
 .cabinet-detail-page--browse .gallery-count, .cabinet-detail-page--browse .cabinet-illustration { bottom:calc(var(--xy-space-6) + var(--xy-space-3)); }
 .entity-block .device-list { box-shadow:var(--xy-shadow-key); }
 .cabinet-device-amount { font-size:var(--xy-text-page-title-size); line-height:var(--xy-text-page-title-line-height); }
+
+/* 第二轮：标题 16；柜机信息卡的统计条用品牌浅绿，与门店区分 */
+.entity-title { font-size:var(--xy-text-section-title-size); line-height:var(--xy-text-section-title-line-height); }
+.entity-card .entity-stats { background:var(--xy-color-brand-soft); border-top:0; }

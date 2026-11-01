@@ -82,3 +82,7 @@
 .entity-card { position:relative; margin-top:calc(var(--xy-space-6) * -1); box-shadow:var(--xy-shadow-key); }
 .entity-hero .gallery-count { bottom:calc(var(--xy-space-6) + var(--xy-space-3)); }
 .store-grid-card { box-shadow:var(--xy-shadow-key); }
+
+/* 第二轮：标题 16；门店信息卡头部带浅暖色，与柜机区分 */
+.store-title, .store-title-row .store-title { font-size:var(--xy-text-section-title-size); line-height:var(--xy-text-section-title-line-height); }
+.store-head { background:linear-gradient(to bottom, var(--xy-color-warning-soft), var(--xy-color-surface)); }
