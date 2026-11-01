@@ -46,3 +46,9 @@
 .state-label { font-size:var(--xy-text-body-small-size); line-height:var(--xy-text-body-small-line-height); }
 .step-index { font-size:var(--xy-text-body-small-size); line-height:var(--xy-text-body-small-line-height); font-weight:var(--xy-text-weight-bold); }
 .step-desc { margin-top:calc(var(--xy-space-1) / 2); color:var(--xy-color-text-muted); font-size:var(--xy-text-body-small-size); line-height:var(--xy-text-body-small-line-height); }
+
+/* 对照画布修正：柜机卡顶部间距 12、卡头与地址间距 4、步骤行间距 12 */
+.code-page .cabinet-card { margin-top:0; }
+.cabinet-card .card-head { margin-bottom:0; }
+.cabinet-card .body-copy { margin-top:var(--xy-space-1); }
+.steps-card { gap:var(--xy-space-3); }
