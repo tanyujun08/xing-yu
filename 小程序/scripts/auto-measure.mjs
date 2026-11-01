@@ -13,8 +13,8 @@ const cliPath = process.env.WX_CLI || '/Applications/wechatwebdevtools.app/Conte
 // 页面名 → 打开方式。参数用演示数据里固定存在的 id。
 const routes = {
   home: { open: 'reLaunch', url: '/pages/home/index' },
-  orders: { open: 'reLaunch', url: '/pages/orders/index' },
-  profile: { open: 'reLaunch', url: '/pages/profile/index' },
+  orders: { open: 'switchTab', url: '/pages/orders/index' },
+  profile: { open: 'switchTab', url: '/pages/profile/index' },
   detail: { open: 'navigateTo', url: '/pages/detail/index?id=asset-1', dir: 'detail' },
   'cabinet-detail': { open: 'navigateTo', url: '/pages/cabinet-detail/index?id=cabinet-1' },
   'cabinet-code': { open: 'navigateTo', url: '/pages/cabinet-code/index?scene=cab_demo1234567890123456' },
@@ -38,17 +38,26 @@ function classesOf(name) {
 
 process.on('uncaughtException', (error) => console.log('忽略自动化接口的内部报错：', error.message));
 const mp = await automator.launch({ cliPath, projectPath: root });
+mp.on('exception', (e) => console.log('页面异常：', (e && e.message || '').slice(0, 300)));
+mp.on('console', (e) => { if (e.type === 'error' || e.type === 'warn') console.log('控制台', e.type, JSON.stringify(e.args).slice(0, 300)); });
 const result = {};
 try {
   for (const name of names) {
     const route = routes[name];
     if (!route) { console.log('未知页面', name); continue; }
     console.log('打开', name);
-    await mp.evaluate((how, url) => { wx[how]({ url }); return 1; }, route.open, route.url);
+    await mp.evaluate((how, url) => { globalThis.__nav = ''; wx[how]({ url, success: () => { globalThis.__nav = 'ok'; }, fail: (e) => { globalThis.__nav = 'fail:' + (e && e.errMsg); } }); return 1; }, route.open, route.url);
     console.log('已发出跳转');
-    await new Promise((resolve) => setTimeout(resolve, 4000));
-    const page = await mp.currentPage();
-    console.log('当前页', page.path);
+    const want = route.url.split('?')[0].slice(1);
+    let page;
+    for (let i = 0; i < 60; i += 1) {
+      await new Promise((resolve) => setTimeout(resolve, 800));
+      if (i > 0 && i % 8 === 0 && !(page && page.path === want)) await mp.evaluate((how, url) => { wx[how]({ url }); return 1; }, route.open, route.url);
+      try { page = await mp.currentPage(); } catch { page = undefined; }
+      if (page && page.path === want) break;
+    }
+    await new Promise((resolve) => setTimeout(resolve, 2500));
+    console.log('当前页', page && page.path, '跳转结果', await mp.evaluate(() => (globalThis.__nav || '') + ' 页面栈=' + getCurrentPages().map((x) => x.route).join(',') + ' 存储=' + wx.getStorageInfoSync().keys.join(',').slice(0, 300)));
     await page.waitFor(1000);
     const classes = classesOf(name);
     console.log('class 数', classes.length);
