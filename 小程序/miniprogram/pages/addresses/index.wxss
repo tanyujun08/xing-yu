@@ -1,6 +1,6 @@
 /* 视觉规范 v1：说明 12 灰 → 12 → 地址白卡（内边距 16，卡间 12）；卡尾操作条用 1px 线隔开 */
 .address-page { padding: var(--xy-space-3) var(--xy-layout-page-padding-x) var(--xy-space-6); color: var(--xy-color-text-primary); }
-.address-intro { margin-bottom: var(--xy-space-3); padding: 0 var(--xy-space-1); }
+.address-intro { margin-bottom: var(--xy-space-3); padding: 0; }
 .address-intro > text { display: block; color: var(--xy-color-text-muted); font-size: var(--xy-text-body-small-size); line-height: var(--xy-text-body-small-line-height); }
 .address-card { box-sizing: border-box; min-height: var(--xy-size-touch-min); padding: var(--xy-space-4) var(--xy-space-4) 0; border-radius: var(--xy-radius-lg); background: var(--xy-color-surface); }
 .address-card + .address-card { margin-top: var(--xy-space-3); }

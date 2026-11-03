@@ -11,5 +11,5 @@
 .security-value { min-width: 0; max-width: 68%; margin-left: var(--xy-space-3); color: var(--xy-color-text-secondary); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; text-align: right; }
 .security-arrow { flex: 0 0 var(--xy-size-icon-base); width: var(--xy-size-icon-base); height: var(--xy-size-icon-base); margin-left: var(--xy-space-2); opacity: .6; }
 
-.note { display: block; margin-top: var(--xy-space-3); padding: 0 var(--xy-space-4); color: var(--xy-color-text-muted); font-size: var(--xy-text-body-small-size); line-height: var(--xy-text-body-small-line-height); overflow-wrap: anywhere; }
+.note { display: block; margin-top: var(--xy-space-3); padding: 0; color: var(--xy-color-text-muted); font-size: var(--xy-text-body-small-size); line-height: var(--xy-text-body-small-line-height); overflow-wrap: anywhere; }
 .retry-button { min-height: var(--xy-size-touch-min); color: var(--xy-color-brand); }

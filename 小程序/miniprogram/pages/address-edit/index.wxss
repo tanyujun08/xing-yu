@@ -22,7 +22,7 @@
 .switch.is-on { background: var(--xy-color-brand); }
 .switch.is-on > view { margin-left: var(--xy-space-5); }
 .form-error, .field-error { display: block; color: var(--xy-color-danger); font-size: var(--xy-text-body-small-size); line-height: var(--xy-text-body-small-line-height); }
-.form-error { margin-top: var(--xy-space-3); padding: 0 var(--xy-space-4); }
+.form-error { margin-top: var(--xy-space-3); padding: 0; }
 .editor-actions { display: flex; gap: var(--xy-space-2); }
 .save-primary, .save-secondary { display: flex; align-items: center; justify-content: center; min-height: var(--xy-size-touch-min); box-sizing: border-box; margin: 0; padding: 0 var(--xy-space-3); border-radius: var(--xy-radius-md); font-size: var(--xy-text-body-size); font-weight: var(--xy-text-weight-semibold); line-height: var(--xy-text-body-line-height); }
 .save-primary::after, .save-secondary::after { border: 0; }
