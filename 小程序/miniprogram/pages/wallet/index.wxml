@@ -2,7 +2,6 @@
 <page-shell surface="page">
   <page-header title="我的钱包" bindback="onSecondaryNavigationBack" slot="header" />
   <view class="wallet-page">
-    <text class="section-title">钱包</text>
     <view class="wallet-card">
       <view class="wallet-main">
         <view class="wallet-copy">
@@ -32,7 +31,7 @@
       <view wx:if="{{loading}}" class="income-status" role="status">正在读取收益…</view>
       <button wx:for="{{items}}" wx:key="id" class="income-row xy-button-reset" data-id="{{item.id}}" bindtap="openIncome" disabled="{{busy}}" aria-disabled="{{busy}}" aria-label="查看{{item.title}}收益明细">
         <view class="income-copy"><text class="income-name">{{item.title}}</text><text class="income-meta">订单尾号 {{item.orderTail}} · {{item.time}}</text></view>
-        <text class="income-money">+{{item.amount}}</text>
+        <text class="income-money"><text class="income-plus">+</text>{{item.amount}}</text>
         <image class="income-arrow" src="/assets/figma-icons/arrow-right.svg" mode="aspectFit" aria-hidden="true" />
       </button>
       <view wx:if="{{!loading && !items.length && !errorText}}" class="empty-note xy-empty-section">
@@ -60,15 +59,17 @@
       <button class="withdraw-all xy-button-reset" bindtap="withdrawAll" disabled="{{wSubmitting}}" aria-disabled="{{wSubmitting}}" aria-label="全部提现">全部提现</button>
     </view>
     <text wx:if="{{wError}}" class="withdraw-error" role="alert">{{wError}}</text>
-    <view class="withdraw-row withdraw-row--boxed">
+    <view class="withdraw-group">
+    <view class="withdraw-row">
       <image class="withdraw-row__icon" src="{{icons.loginWechat}}" mode="aspectFit" aria-hidden="true" />
       <text class="withdraw-row__label">到账账户</text>
       <text class="withdraw-row__value">微信零钱</text>
     </view>
     <view class="withdraw-row">
       <image class="withdraw-row__icon withdraw-row__icon--muted" src="/assets/figma-icons/discovery-clock.svg" mode="aspectFit" aria-hidden="true" />
-      <text class="withdraw-row__label withdraw-row__label--muted">预计到账时间</text>
+      <text class="withdraw-row__label">预计到账时间</text>
       <text class="withdraw-row__value">1–3 个工作日</text>
+    </view>
     </view>
     <button class="withdraw-submit xy-button-reset {{wSubmitting ? 'is-busy' : ''}}" bindtap="submitWithdrawal" disabled="{{wSubmitting}}" aria-disabled="{{wSubmitting}}">{{wSubmitting ? '提交中…' : '确认提现'}}</button>
   </view>

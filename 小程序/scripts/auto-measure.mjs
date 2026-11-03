@@ -28,7 +28,7 @@ const routes = {
   'address-edit': { open: 'navigateTo', url: '/pages/address-edit/index' },
   coupons: { open: 'navigateTo', url: '/pages/coupons/index' },
   'coupon-detail': { open: 'navigateTo', url: '/pages/coupon-detail/index?coupon_id=coupon-1' },
-  wallet: { open: 'navigateTo', url: '/pages/wallet/index' },
+  wallet: { open: 'reLaunch', url: '/pages/wallet/index' },
   // call：页面打开后再调用页面方法（如打开弹窗）再截图
   'wallet-withdraw': { open: 'reLaunch', url: '/pages/wallet/index', dir: 'wallet', call: 'openWithdrawal' },
   withdrawal: { open: 'navigateTo', url: '/pages/withdrawal/index' },
