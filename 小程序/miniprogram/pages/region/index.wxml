@@ -6,6 +6,12 @@
     <scroll-view class="region-scroll" scroll-y="true" show-scrollbar="false" scroll-into-view="{{scrollIntoView}}" enable-back-to-top="true">
       <view id="city-content-top" class="city-content {{searching ? 'is-searching' : 'has-alpha-index'}}">
         <view wx:if="{{!searching}}" class="city-default-sections">
+          <text class="city-section-title">当前定位</text>
+          <view class="locate-row">
+            <view wx:if="{{locateState === 'done'}}" class="locate-city xy-tap" bindtap="selectLocated" role="button" aria-label="选择定位城市{{locatedCity.name}}"><image class="locate-icon" src="{{icons.discoveryLocation}}" mode="aspectFit" aria-hidden="true" /><text>{{locatedCity.name}}</text></view>
+            <view wx:else class="locate-status"><image class="locate-icon locate-icon--muted" src="{{icons.discoveryLocation}}" mode="aspectFit" aria-hidden="true" /><text>{{locateState === 'locating' ? '正在定位…' : locateState === 'denied' ? '未开启定位权限' : '暂时无法定位'}}</text></view>
+            <button wx:if="{{locateState !== 'locating'}}" class="locate-retry xy-button-reset" bindtap="retryLocate" aria-label="{{locateState === 'denied' ? '去开启定位权限' : '重新定位'}}">{{locateState === 'denied' ? '去开启' : '重新定位'}}</button>
+          </view>
           <text class="city-section-title">快速选择</text>
           <view class="city-grid">
             <view class="city-option xy-tap {{currentCityId ? '' : 'is-current'}}" bindtap="selectAllCities" role="button" aria-label="全部城市{{currentCityId ? '' : '，当前选择'}}"><view class="city-option-label">全部城市</view></view>

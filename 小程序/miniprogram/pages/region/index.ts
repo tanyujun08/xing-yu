@@ -2,17 +2,28 @@ import { designAssets } from '../../shared/design/assets';
 import { loadDiscoveryRegions, type DiscoveryRegion } from '../../shared/api/supply-api';
 import { readDiscoveryCity, selectDiscoveryCity } from '../../shared/api/supply-api';
 import { cityInitial } from '../../shared/presentation/city-initial';
+import { nearestCityName } from '../../shared/presentation/city-locate';
 const states = new WeakMap<object, { epoch: number; visible: boolean; cities: DiscoveryRegion[]; active?: { abort: () => void } }>();
 function state(page: object) { let s = states.get(page); if (!s) { s = { epoch: 0, visible: true, cities: [] }; states.set(page, s); } return s; }
 Page({
- data: { icons: designAssets, keyword: '', inputFocused: false, searching: false, currentRegion: '', currentCity: '全部城市', currentCityId: '', datasetId: '', hotCities: [] as DiscoveryRegion[], cityGroups: [] as { letter: string; cities: DiscoveryRegion[] }[], alphaLetters: [] as {letter:string}[], scrollIntoView: '', loading: false, errorText: '' },
+ data: { icons: designAssets, keyword: '', inputFocused: false, searching: false, currentRegion: '', currentCity: '全部城市', currentCityId: '', datasetId: '', hotCities: [] as DiscoveryRegion[], cityGroups: [] as { letter: string; cities: DiscoveryRegion[] }[], alphaLetters: [] as {letter:string}[], scrollIntoView: '', loading: false, errorText: '', locateState: 'idle' as 'idle' | 'locating' | 'done' | 'failed' | 'denied', locatedCity: null as DiscoveryRegion | null },
  onLoad() {},
  onShow() { state(this).visible = true; const selected = readDiscoveryCity(); this.setData({ currentRegion: selected?.name ?? '', currentCity: selected?.name ?? '全部城市', currentCityId: selected?.cityId ?? '' }); return this.loadCities(); },
  async loadCities() { const s = state(this); s.active?.abort(); const epoch = ++s.epoch; const handle = loadDiscoveryRegions(); s.active = handle; s.cities = []; this.setData({ loading: true, errorText: '', cityGroups: [], hotCities: [], alphaLetters: [] });
-  try { const value = await handle.promise; if (!s.visible || epoch !== s.epoch) return; s.cities = value.cities; this.setData({ datasetId: value.datasetId, hotCities: value.cities.filter(item => ['上海市', '北京市', '深圳市', '杭州市', '南京市', '成都市'].includes(item.name)) }); this.filterCities(); }
+  try { const value = await handle.promise; if (!s.visible || epoch !== s.epoch) return; s.cities = value.cities; this.setData({ datasetId: value.datasetId, hotCities: value.cities.filter(item => ['上海市', '北京市', '深圳市', '杭州市', '南京市', '成都市'].includes(item.name)) }); this.filterCities(); void this.locate(); }
   catch (error) { if (s.visible && epoch === s.epoch) this.setData({ errorText: error instanceof Error ? error.message : '城市读取失败' }); }
   finally { if (s.visible && epoch === s.epoch) this.setData({ loading: false }); }
  },
+ /** 定位：拿到经纬度后找最近的城市，再到城市列表里匹配 */
+ locate() {
+  const s = state(this), epoch = s.epoch;
+  this.setData({ locateState: 'locating', locatedCity: null });
+  wx.getLocation({ type: 'gcj02',
+   success: (res) => { if (!s.visible || epoch !== s.epoch) return; const name = nearestCityName(res.latitude, res.longitude); const city = name ? s.cities.find((item) => item.name === name) ?? null : null; this.setData({ locateState: city ? 'done' : 'failed', locatedCity: city }); },
+   fail: (err) => { if (!s.visible || epoch !== s.epoch) return; this.setData({ locateState: /auth|deny/i.test(String(err?.errMsg ?? '')) ? 'denied' : 'failed' }); } });
+ },
+ retryLocate() { if (this.data.locateState === 'denied') { wx.openSetting({ success: () => this.locate() }); return; } this.locate(); },
+ selectLocated() { const s = state(this), city = this.data.locatedCity; if (!city || !s.visible || !this.data.datasetId) return; selectDiscoveryCity({ datasetId: this.data.datasetId, cityId: city.id, name: city.name }); wx.navigateBack({ delta: 1 }); },
  filterCities() { const byLetter = new Map<string, DiscoveryRegion[]>(); for (const city of state(this).cities) { if (!city.name.includes(this.data.keyword.trim())) continue; const letter = cityInitial(city.name); byLetter.set(letter, [...(byLetter.get(letter) ?? []), city]); } const cityGroups = [...byLetter.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([letter, cities]) => ({ letter, cities })); this.setData({ cityGroups, alphaLetters: cityGroups.map(group => ({letter:group.letter})), searching: !!this.data.keyword.trim() }); },
  onSearchInput(event: WechatMiniprogram.CustomEvent<{ value: string }>) { this.setData({ keyword: String(event.detail.value ?? ''), scrollIntoView: 'city-content-top' }); this.filterCities(); },
  clearSearch() { this.setData({ keyword: '', inputFocused: true, scrollIntoView: 'city-content-top' }); this.filterCities(); },

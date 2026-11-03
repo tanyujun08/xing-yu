@@ -91,8 +91,12 @@
   },
   "requiredPrivateInfos": [
     "chooseLocation",
-    "chooseAddress"
+    "chooseAddress",
+    "getLocation"
   ],
+  "permission": {
+    "scope.userLocation": { "desc": "用于定位你所在的城市，推荐附近的柜机和门店" }
+  },
   "style": "v2",
   "lazyCodeLoading": "requiredComponents",
   "sitemapLocation": "sitemap.json"
