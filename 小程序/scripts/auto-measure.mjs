@@ -31,6 +31,10 @@ const routes = {
   wallet: { open: 'reLaunch', url: '/pages/wallet/index' },
   // call：页面打开后再调用页面方法（如打开弹窗）再截图
   'wallet-withdraw': { open: 'reLaunch', url: '/pages/wallet/index', dir: 'wallet', call: 'openWithdrawal' },
+  // set：页面打开后直接改页面数据，用来看空状态 / 失败 / 未登录
+  'wallet-empty': { open: 'reLaunch', url: '/pages/wallet/index', dir: 'wallet', set: { loading: false, items: [], hasMore: false, errorText: '' } },
+  'wallet-error': { open: 'reLaunch', url: '/pages/wallet/index', dir: 'wallet', set: { loading: false, errorText: '网络异常，收益读取失败' } },
+  'wallet-guest': { open: 'reLaunch', url: '/pages/wallet/index', dir: 'wallet', set: { guest: true, loading: false, items: [], hasMore: false, booked: '—', estimated: '—', estimatedCount: 0, errorText: '请重新登录后查看本人租赁收益' } },
   withdrawal: { open: 'navigateTo', url: '/pages/withdrawal/index' },
   identity: { open: 'navigateTo', url: '/pages/identity/index' },
   'wechat-waiver': { open: 'navigateTo', url: '/pages/wechat-waiver/index' },
@@ -87,6 +91,7 @@ try {
     await new Promise((resolve) => setTimeout(resolve, 2500));
     console.log('当前页', page && page.path, '跳转结果', await mp.evaluate(() => (globalThis.__nav || '') + ' 页面栈=' + getCurrentPages().map((x) => x.route).join(',') + ' 存储=' + wx.getStorageInfoSync().keys.join(',').slice(0, 300)));
     await page.waitFor(1000);
+    if (route.set) { await page.waitFor(2500); try { await mp.evaluate((d) => { const ps = getCurrentPages(); ps[ps.length - 1].setData(d); }, route.set); console.log('改数据', Object.keys(route.set).join(',')); } catch (e) { console.log('改数据失败', e && e.message); } await page.waitFor(800); }
     if (route.call) { try { const r = await mp.evaluate((m) => { const ps = getCurrentPages(); const top = ps[ps.length - 1]; if (typeof top[m] !== 'function') return 'no-method:' + Object.keys(top).filter((k) => typeof top[k] === 'function').slice(0, 40).join(','); top[m](); return 'ok'; }, route.call); console.log('调用', route.call, r); } catch (e) { console.log('调用失败', route.call, e && e.message); } await page.waitFor(1500); }
     const classes = shotsOnly ? [] : classesOf(name);
     console.log('class 数', classes.length);

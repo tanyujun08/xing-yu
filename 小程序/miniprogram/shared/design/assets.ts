@@ -121,6 +121,8 @@ export const designAssets = {
   walletWithdraw: '/assets/figma-media/wallet-withdraw.webp',
   walletEstimate: '/assets/figma-media/wallet-estimate.webp',
   walletWechat: '/assets/figma-media/wallet-wechat.webp',
+  wechatLine: '/assets/figma-icons/wechat-line.svg',
+  clockLine: '/assets/figma-icons/discovery-clock.svg',
   loginSheetDeco: '/assets/illustrations/login-sheet-deco.svg',
   loginPhoneDark: '/assets/figma-icons/login-phone-dark.svg',
   loginGuestArrow: '/assets/figma-icons/login-guest-arrow.svg',
