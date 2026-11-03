@@ -1,5 +1,5 @@
 <page-meta root-font-size="system" />
-<page-shell surface="surface">
+<page-shell surface="page">
 <page-header title="{{secondaryNavigationTitle || '提现'}}" background="#ffffff" inverse="{{false}}" bindback="onSecondaryNavigationBack" slot="header" />
   <view class="withdrawal-page">
     <view class="withdrawal-tabs" role="tablist" aria-label="提现页面切换">

@@ -1,4 +1,12 @@
 @import "../coupons/index.wxss";
+/* 详情页：卡片纵向排列，卡间 12；操作按钮做成白底整行按钮 */
+.coupons-page { display: flex; flex-direction: column; gap: var(--xy-space-3); padding: var(--xy-space-3) var(--xy-layout-page-padding-x) var(--xy-space-6); }
+.coupon-card > .coupon-expiry { margin-top: var(--xy-space-3); padding-top: var(--xy-space-3); border-top: 1px solid var(--xy-color-divider); }
+.coupon-card > .coupons-action { justify-content: flex-start; margin: 0 calc(var(--xy-space-3) * -1); }
+.coupons-page > .coupons-action { min-height: var(--xy-size-touch-min); border-radius: var(--xy-radius-md); background: var(--xy-color-surface); }
+.coupons-page > .coupon-redeem { background: var(--xy-color-brand); color: var(--xy-color-text-inverse); }
 .coupon-confirm-layer { position: fixed; inset: 0; z-index: var(--xy-z-modal); display: flex; align-items: center; justify-content: center; padding: var(--xy-space-6); background: var(--xy-color-scrim); }
 .coupon-confirm-dialog { width: 100%; }
-.coupons-page { display: flex; flex-direction: column; gap: var(--xy-gap-group); padding: var(--xy-layout-card-stack-start-gap) var(--xy-layout-page-padding-x) var(--xy-space-6); }
+.coupon-confirm-dialog .coupons-action { margin-top: var(--xy-space-2); min-height: var(--xy-size-touch-min); border-radius: var(--xy-radius-md); }
+.coupon-confirm-dialog .coupon-confirm { margin-top: var(--xy-space-4); background: var(--xy-color-brand); color: var(--xy-color-text-inverse); }
+.coupon-confirm-dialog .coupon-cancel { color: var(--xy-color-text-secondary); }

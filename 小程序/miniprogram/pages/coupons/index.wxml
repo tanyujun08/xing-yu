@@ -11,7 +11,7 @@
       <view class="coupon-tabs" role="tablist" aria-label="优惠券状态筛选">
         <button wx:for="{{filters}}" wx:key="id" class="coupon-tab xy-button-reset {{filter === item.id ? 'coupon-tab--active' : ''}}" data-filter="{{item.id}}" bindtap="changeFilter" role="tab" aria-label="{{item.label}}" aria-selected="{{filter === item.id}}"><text>{{item.label}}</text><view wx:if="{{filter === item.id}}" class="coupon-tab__indicator" aria-hidden="true" /></button>
       </view>
-      <view class="coupon-tabs" role="tablist" aria-label="优惠券类型筛选"><button wx:for="{{types}}" wx:key="id" class="coupon-tab xy-button-reset {{type === item.id ? 'coupon-tab--active' : ''}}" data-type="{{item.id}}" bindtap="changeType" role="tab" aria-selected="{{type === item.id}}">{{item.label}}</button></view>
+      <view class="coupon-filters" role="tablist" aria-label="优惠券类型筛选"><button wx:for="{{types}}" wx:key="id" class="coupon-filter xy-button-reset {{type === item.id ? 'coupon-filter--active' : ''}}" data-type="{{item.id}}" bindtap="changeType" role="tab" aria-selected="{{type === item.id}}">{{item.label}}</button></view>
       <view class="coupon-list" aria-busy="{{listState.phase === 'initial-loading'}}">
         <status-view wx:if="{{listState.phase === 'initial-loading'}}" state="loading" title="正在读取优惠券" />
         <status-view wx:elif="{{listState.phase === 'initial-error'}}" state="error" title="优惠券暂时无法加载" description="请稍后重试" action-text="重试" bindaction="retryInitial" illustration-src="{{illustration}}" />

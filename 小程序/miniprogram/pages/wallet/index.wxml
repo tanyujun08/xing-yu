@@ -1,5 +1,5 @@
 <page-meta root-font-size="system" />
-<page-shell surface="surface">
+<page-shell surface="page">
   <page-header title="我的钱包" bindback="onSecondaryNavigationBack" slot="header" />
   <view class="wallet-page">
     <view class="wallet-section wallet-hero-section">

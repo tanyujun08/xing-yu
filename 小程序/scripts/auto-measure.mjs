@@ -20,9 +20,30 @@ const routes = {
   'cabinet-code': { open: 'navigateTo', url: '/pages/cabinet-code/index?scene=cab_demo1234567890123456' },
   'store-detail': { open: 'navigateTo', url: '/pages/store-detail/index?id=store-1' },
   confirm: { open: 'navigateTo', url: '/pages/confirm/index?deviceId=asset-1' },
+  // 第 1 批「我的」子页
+  'profile-edit': { open: 'navigateTo', url: '/pages/profile-edit/index' },
+  'account-security': { open: 'navigateTo', url: '/pages/account-security/index' },
+  about: { open: 'navigateTo', url: '/pages/about/index' },
+  addresses: { open: 'navigateTo', url: '/pages/addresses/index' },
+  'address-edit': { open: 'navigateTo', url: '/pages/address-edit/index' },
+  coupons: { open: 'navigateTo', url: '/pages/coupons/index' },
+  'coupon-detail': { open: 'navigateTo', url: '/pages/coupon-detail/index?coupon_id=coupon-1' },
+  wallet: { open: 'navigateTo', url: '/pages/wallet/index' },
+  withdrawal: { open: 'navigateTo', url: '/pages/withdrawal/index' },
+  identity: { open: 'navigateTo', url: '/pages/identity/index' },
+  'wechat-waiver': { open: 'navigateTo', url: '/pages/wechat-waiver/index' },
+  'no-deposit': { open: 'navigateTo', url: '/pages/no-deposit/index' },
+  login: { open: 'navigateTo', url: '/pages/login/index' },
+  region: { open: 'navigateTo', url: '/pages/region/index' },
 };
 
-const names = process.argv.slice(2).length ? process.argv.slice(2) : Object.keys(routes);
+// 参数里可带 --shots（只截图不量尺寸，快）和 --prefix=before（截图文件名前缀，用于改前/改后对照）
+const args = process.argv.slice(2);
+const shotsOnly = args.includes('--shots');
+const prefixArg = args.find((a) => a.startsWith('--prefix='));
+const prefix = prefixArg ? prefixArg.slice('--prefix='.length) + '-' : '';
+const pageArgs = args.filter((a) => !a.startsWith('--'));
+const names = pageArgs.length ? pageArgs : Object.keys(routes);
 fs.mkdirSync(outDir, { recursive: true });
 
 function classesOf(name) {
@@ -46,7 +67,8 @@ try {
     const route = routes[name];
     if (!route) { console.log('未知页面', name); continue; }
     console.log('打开', name);
-    await mp.evaluate((how, url) => { globalThis.__nav = ''; wx[how]({ url, success: () => { globalThis.__nav = 'ok'; }, fail: (e) => { globalThis.__nav = 'fail:' + (e && e.errMsg); } }); return 1; }, route.open, route.url);
+    // 页面栈最多 10 层：快满时先回到首页再打开，避免 navigateTo 失败
+    await mp.evaluate((how, url) => { globalThis.__nav = ''; const go = () => wx[how]({ url, success: () => { globalThis.__nav = 'ok'; }, fail: (e) => { globalThis.__nav = 'fail:' + (e && e.errMsg); } }); if (how === 'navigateTo' && getCurrentPages().length >= 8) wx.reLaunch({ url: '/pages/home/index', success: () => setTimeout(go, 600) }); else go(); return 1; }, route.open, route.url);
     console.log('已发出跳转');
     const want = route.url.split('?')[0].slice(1);
     let page;
@@ -59,7 +81,7 @@ try {
     await new Promise((resolve) => setTimeout(resolve, 2500));
     console.log('当前页', page && page.path, '跳转结果', await mp.evaluate(() => (globalThis.__nav || '') + ' 页面栈=' + getCurrentPages().map((x) => x.route).join(',') + ' 存储=' + wx.getStorageInfoSync().keys.join(',').slice(0, 300)));
     await page.waitFor(1000);
-    const classes = classesOf(name);
+    const classes = shotsOnly ? [] : classesOf(name);
     console.log('class 数', classes.length);
     const rows = {};
     for (const c of classes) {
@@ -78,20 +100,23 @@ try {
     result[name] = rows;
     let bottom = 0;
     for (const list of Object.values(rows)) for (const row of list) { const p = row.split('|'); bottom = Math.max(bottom, Number(p[1]) + Number(p[3])); }
+    if (shotsOnly) { try { const s = await page.size(); bottom = s.height; } catch { bottom = 1400; } }
     // 分屏截图：每 600px 一张
     for (let y = 0, i = 0; y < Math.max(bottom - 400, 1) && i < 8; y += 600, i += 1) {
       await mp.pageScrollTo(y);
       await page.waitFor(500);
-      await mp.screenshot({ path: path.join(outDir, `${name}-${i}.png`) });
+      await mp.screenshot({ path: path.join(outDir, `${prefix}${name}-${i}.png`) });
     }
-    await mp.pageScrollTo(99999);
-    await page.waitFor(600);
-    await mp.screenshot({ path: path.join(outDir, `${name}-end.png`) });
+    if (bottom > 1000) {
+      await mp.pageScrollTo(99999);
+      await page.waitFor(600);
+      await mp.screenshot({ path: path.join(outDir, `${prefix}${name}-end.png`) });
+    }
     await mp.pageScrollTo(0);
     console.log('完成', name, Object.keys(rows).length, '个 class');
   }
 } finally {
-  fs.writeFileSync(path.join(outDir, 'sim.json'), JSON.stringify(result, null, 1));
+  if (!shotsOnly) fs.writeFileSync(path.join(outDir, 'sim.json'), JSON.stringify(result, null, 1));
   await mp.disconnect();
 }
 console.log('结果已写入', outDir);

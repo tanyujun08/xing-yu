@@ -32,3 +32,12 @@
 .consent-actions { display: flex; gap: var(--xy-space-3); margin-top: var(--xy-space-5); }
 .consent-cancel, .consent-confirm { min-height: var(--xy-size-touch-min); flex: 1; margin: 0; overflow-wrap: anywhere; }
 .consent-confirm { background: var(--xy-color-brand); color: var(--xy-color-text-inverse); }
+
+/* 视觉规范 v1：弹层左右 24；按钮高 44、圆角 6、字 16/600；圆角不超过 8 */
+.login-sheet { padding-right: var(--xy-space-6); padding-left: var(--xy-space-6); border-radius: var(--xy-radius-lg) var(--xy-radius-lg) 0 0; }
+.login-heading { font-size: var(--xy-text-page-title-size); line-height: var(--xy-text-page-title-line-height); }
+.login-copy { font-size: var(--xy-text-body-small-size); line-height: var(--xy-text-body-small-line-height); }
+.quick-button, .phone-button { min-height: var(--xy-size-touch-min); gap: var(--xy-space-2); border-radius: var(--xy-radius-md); font-size: var(--xy-text-section-title-size); line-height: var(--xy-text-section-title-line-height); }
+.phone-hint { color: var(--xy-color-text-muted); }
+.agreement-row { color: var(--xy-color-text-secondary); }
+.guest-button { color: var(--xy-color-text-secondary); font-size: var(--xy-text-body-small-size); }
