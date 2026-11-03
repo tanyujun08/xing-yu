@@ -21,4 +21,3 @@
 .page-header--order-primary { background:var(--xy-color-page); }
 .page-header--order-primary .page-header__title,.page-header--primary .page-header__title,.page-header--profile-hero .page-header__title { max-width:none; font-size:var(--xy-text-page-title-size); line-height:var(--xy-text-page-title-line-height); font-weight:var(--xy-text-weight-bold); text-align:left; }
 .page-header--profile-hero { background:transparent; }
-.page-header--profile-hero .page-header__title { color:var(--xy-color-text-inverse); }

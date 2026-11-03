@@ -55,9 +55,9 @@ Page({
  rentalItems:[{title:'我租的设备',route:'/pages/device-orders/index?mode=rent'},{title:'我出租的设备',route:'/pages/device-orders/index?mode=lend'},{title:'我的钱包',route:'/pages/wallet/index'},{title:'免押服务',route:'/pages/no-deposit/index?from=profile'}],
  lendItems:[{ title: '发布额度', route: '/pages/publish-quota/index' },{ title: '出租服务', route: '/pages/rental-service/index' }],
  },
- onPageScroll(event:WechatMiniprogram.Page.IPageScrollOption){const headerScrolled=event.scrollTop>0;if(headerScrolled!==this.data.headerScrolled){this.setData({headerScrolled});wx.setNavigationBarColor({frontColor:headerScrolled?'#000000':'#ffffff',backgroundColor:'#ffffff'})}},
+ onPageScroll(event:WechatMiniprogram.Page.IPageScrollOption){const headerScrolled=event.scrollTop>0;if(headerScrolled!==this.data.headerScrolled)this.setData({headerScrolled})},
  clearPrivate(){this.setData({loggedIn:false,showLendSection:false,avatarFailed:false,avatarReloading:false,avatarEpoch:0,localProfile:{name:'',avatarPath:''},assetItems:assets(false),memberLevel:'—',memberLevelCode:'',identityRegistered:false,identityText:'—',currentAccount:{id:''},rentalSummary:null})},
- async onShow(){this.getTabBar()?.setData({selected:3});wx.setNavigationBarColor({frontColor:this.data.headerScrolled?'#000000':'#ffffff',backgroundColor:'#ffffff'});orderUnreadLifecycle.show(this);const s=state(this);s.visible=true;const epoch=++s.epoch;const owner=accountApi.sessionIdentity();this.clearPrivate();this.setData({errorText:''});if(!owner)return;
+ async onShow(){this.getTabBar()?.setData({selected:3});orderUnreadLifecycle.show(this);const s=state(this);s.visible=true;const epoch=++s.epoch;const owner=accountApi.sessionIdentity();this.clearPrivate();this.setData({errorText:''});if(!owner)return;
  this.setData({loggedIn:true,showLendSection:true,avatarEpoch:epoch,assetItems:assets(true)});
  try{const result=await s.scope.latest('profile',()=>Promise.allSettled([accountApi.profile().promise,benefitApi.summary().promise,couponApi.list('AVAILABLE',null).promise,accountApi.identity().promise,rentalOrderApi.list({role:'TENANT'}).promise,rentalOrderApi.list({role:'LESSOR'}).promise,ownAssetsApi.list().promise]));
  if(!result.accepted||!s.visible||epoch!==s.epoch)return; if(owner!==accountApi.sessionIdentity()){this.clearPrivate();return;}

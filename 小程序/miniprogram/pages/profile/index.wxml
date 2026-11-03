@@ -8,12 +8,13 @@ module.exports = {
 };
 </wxs>
 <view class="profile-page">
+  <image class="profile-bg" src="{{icons.profileHeaderBg}}" mode="widthFix" aria-hidden="true" />
   <page-header title="我的" show-back="{{false}}" variant="{{headerScrolled ? 'primary' : 'profile-hero'}}" />
   <view class="profile-card xy-card-key">
   <view class="profile-hero">
     <image class="profile-scene" src="{{icons.profileScene}}" mode="aspectFill" aria-hidden="true" />
     <view class="profile-user-row">
-      <view wx:if="{{loggedIn}}" class="profile-entry xy-tap" bindtap="openProfileEdit" role="button" aria-label="编辑个人资料"><image wx:if="{{!avatarReloading}}" class="avatar" src="{{localProfile.avatarPath || icons.profileAvatarDefault}}" mode="aspectFill" data-src="{{localProfile.avatarPath}}" data-owner="{{currentAccount.id}}" data-epoch="{{avatarEpoch}}" binderror="onAvatarImageError" /><view class="profile-copy"><view class="profile-name-row"><text class="profile-name">{{localProfile.name}}</text><text wx:if="{{memberLevel && memberLevel !== '—'}}" class="profile-level">{{memberLevel}}</text></view><text class="profile-state {{identityRegistered ? 'profile-state--ok' : ''}}">{{identityText}}</text></view></view>
+      <view wx:if="{{loggedIn}}" class="profile-entry xy-tap" bindtap="openProfileEdit" role="button" aria-label="编辑个人资料"><image wx:if="{{!avatarReloading}}" class="avatar" src="{{localProfile.avatarPath || icons.profileAvatarDefault}}" mode="aspectFill" data-src="{{localProfile.avatarPath}}" data-owner="{{currentAccount.id}}" data-epoch="{{avatarEpoch}}" binderror="onAvatarImageError" /><view class="profile-copy"><view class="profile-name-row"><text class="profile-name">{{localProfile.name}}</text></view><text class="profile-state {{identityRegistered ? 'profile-state--ok' : ''}}">{{identityText}}</text></view></view>
       <view wx:else class="profile-entry xy-tap" bindtap="openLogin" role="button" aria-label="点击登录"><image class="avatar" src="{{icons.profileAvatarDefault}}" mode="aspectFill" /><view class="profile-copy"><text class="profile-name">点击登录</text><text class="profile-state">登录后查看账户信息</text></view></view>
       <view wx:if="{{loggedIn}}" class="member-entry xy-tap" bindtap="openMember" role="button" aria-label="查看会员等级：{{memberLevel}} {{memberLevelCode}}"><view class="member-entry-shell"><text>会员中心</text><image src="{{icons.arrowRight}}" mode="aspectFit" /></view></view>
     </view>
