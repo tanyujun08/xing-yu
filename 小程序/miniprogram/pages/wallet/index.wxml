@@ -51,8 +51,20 @@
     <view class="support-row"><text class="support-copy">收益有疑问？</text><button class="text-action xy-button-reset" bindtap="demoSupport">联系客服</button></view>
   </view>
 </page-shell>
-<task-sheet open="{{withdrawOpen}}" title="申请提现" show-footer="{{false}}" busy="{{wSubmitting}}" bindclose="closeWithdrawal">
-  <view class="withdraw-sheet">
+<task-sheet open="{{withdrawOpen}}" title="{{wDone ? '提现结果' : '申请提现'}}" show-footer="{{false}}" busy="{{wSubmitting}}" bindclose="closeWithdrawal">
+  <view wx:if="{{wDone}}" class="withdraw-sheet withdraw-done" role="status">
+    <image class="withdraw-done__icon" src="{{icons.returnSuccess}}" mode="aspectFit" aria-hidden="true" />
+    <text class="withdraw-done__title">提现申请已提交</text>
+    <text class="wallet-amount withdraw-done__amount"><text class="money-sign">¥</text>{{money.num(wDoneAmount)}}</text>
+    <view class="withdraw-group withdraw-done__group">
+      <view class="withdraw-row"><image class="withdraw-row__icon" src="{{icons.wechatLine}}" mode="aspectFit" aria-hidden="true" /><text class="withdraw-row__label">到账账户</text><text class="withdraw-row__value">微信零钱</text></view>
+      <view class="withdraw-row"><image class="withdraw-row__icon" src="{{icons.clockLine}}" mode="aspectFit" aria-hidden="true" /><text class="withdraw-row__label">预计到账时间</text><text class="withdraw-row__value">1–3 个工作日</text></view>
+    </view>
+    <text class="withdraw-hint withdraw-done__hint">到账后微信会通知你，也可以在提现记录里查看进度</text>
+    <button class="withdraw-submit xy-button-reset" bindtap="closeWithdrawal">完成</button>
+    <button class="withdraw-done__link xy-button-reset" bindtap="openWithdrawalRecords">查看提现记录</button>
+  </view>
+  <view wx:else class="withdraw-sheet">
     <view class="withdraw-hero">
       <view class="withdraw-hero__copy">
         <view class="wallet-label-row"><text class="wallet-label">可提现余额</text><button class="help-button xy-button-reset" bindtap="showBalanceHelp" aria-label="可提现余额说明"><image class="help-icon" src="{{icons.withdrawalHelp}}" mode="aspectFit" aria-hidden="true" /></button></view>

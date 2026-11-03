@@ -34,6 +34,7 @@ const routes = {
   // set：页面打开后直接改页面数据，用来看空状态 / 失败 / 未登录
   'wallet-empty': { open: 'reLaunch', url: '/pages/wallet/index', dir: 'wallet', set: { loading: false, items: [], hasMore: false, errorText: '' } },
   'wallet-error': { open: 'reLaunch', url: '/pages/wallet/index', dir: 'wallet', set: { loading: false, errorText: '网络异常，收益读取失败' } },
+  'wallet-withdraw-done': { open: 'reLaunch', url: '/pages/wallet/index', dir: 'wallet', set: { withdrawOpen: true, wDone: true, wDoneAmount: '¥500.00' } },
   'wallet-guest': { open: 'reLaunch', url: '/pages/wallet/index', dir: 'wallet', set: { guest: true, loading: false, items: [], hasMore: false, booked: '—', estimated: '—', estimatedCount: 0, errorText: '请重新登录后查看本人租赁收益' } },
   withdrawal: { open: 'navigateTo', url: '/pages/withdrawal/index' },
   identity: { open: 'navigateTo', url: '/pages/identity/index' },
@@ -69,6 +70,9 @@ const port = Number(process.env.WX_AUTO_PORT || 9420);
 let mp;
 try { mp = await automator.connect({ wsEndpoint: `ws://127.0.0.1:${port}` }); console.log('复用已打开的开发者工具'); }
 catch { mp = await automator.launch({ cliPath, projectPath: root, port }); console.log('首次启动开发者工具（端口', port, '）'); }
+// 连上了但不响应（比如重新打开过项目），就重新开启自动化端口再连
+const alive = await Promise.race([mp.currentPage().then(() => true, () => false), new Promise((r) => setTimeout(() => r(false), 8000))]);
+if (!alive) { console.log('开发者工具不响应，重新开启自动化'); try { mp.disconnect(); } catch {} mp = await automator.launch({ cliPath, projectPath: root, port }); console.log('已重新连接'); }
 mp.on('exception', (e) => console.log('页面异常：', (e && e.message || '').slice(0, 300)));
 mp.on('console', (e) => { if (e.type === 'error' || e.type === 'warn') console.log('控制台', e.type, JSON.stringify(e.args).slice(0, 300)); });
 const result = {};

@@ -14,7 +14,7 @@ function state(page: object) { let s = states.get(page); if (!s) {
 function captureView(s: ReturnType<typeof state>) { const epoch = s.epoch, sequence = s.readSequence; return () => s.visible && !s.scope.disposed && s.epoch === epoch && s.readSequence === sequence; }
 function captureExpiredView(s: ReturnType<typeof state>) { const epoch = s.epoch, owner = s.owner; return () => s.visible && !s.scope.disposed && s.epoch === epoch && s.owner === owner && (accountApi.sessionIdentity() ?? '') !== owner; }
 function incomeRow(v: RentalIncome) { return { id: v.earning_id, orderId: v.order_id, orderNo: v.order_no, orderTail: String(v.order_no ?? "").slice(-6), title: v.asset_title, amount: rentalMoney(v.beneficiary_fen), time: beijingTime(v.posted_at).replace(/^\d{4}-/, "") }; }
-Page({ ...loginHostMethods, data: { guest: false, icons: designAssets, availableFen: null as number | null, available: '—', withdrawOpen: false, wAmount: '', wError: '', wValid: false, wSubmitting: false, loading: false, busy: false, errorText: '', booked: '—', estimated: '—', estimatedCount: 0, items: [] as ReturnType<typeof incomeRow>[], cursor: null as string | null, hasMore: false, detailOpen: false, detailTitle: '', detailOrderId: '', detailOrderNo: '', detailRows: [] as {
+Page({ ...loginHostMethods, data: { guest: false, icons: designAssets, availableFen: null as number | null, available: '—', withdrawOpen: false, wAmount: '', wError: '', wValid: false, wDone: false, wDoneAmount: '', wSubmitting: false, loading: false, busy: false, errorText: '', booked: '—', estimated: '—', estimatedCount: 0, items: [] as ReturnType<typeof incomeRow>[], cursor: null as string | null, hasMore: false, detailOpen: false, detailTitle: '', detailOrderId: '', detailOrderNo: '', detailRows: [] as {
             label: string;
             value: string;
         }[] },
@@ -96,8 +96,8 @@ Page({ ...loginHostMethods, data: { guest: false, icons: designAssets, available
     } }, onSecondaryNavigationBack() { navigateBackWithFallback(state(this).navigation); },
 openLogin() { openLoginHere(this, () => wx.navigateTo({ url: '/pages/login/index?source=wallet' })); },
 demoSupport() { wx.navigateTo({ url: '/pages/demo-support/index' }); },
-openWithdrawal() { this.setData({ withdrawOpen: true, wAmount: '', wError: '', wValid: false }); if (this.data.availableFen === null) void this.loadCash(); },
-openWithdrawalRecords() { state(this).navigation.navigateOnce('wallet:withdrawal-records', callbacks => wx.navigateTo({ url: '/pages/withdrawal/index?view=records', ...callbacks })); },
+openWithdrawal() { this.setData({ withdrawOpen: true, wDone: false, wAmount: '', wError: '', wValid: false }); if (this.data.availableFen === null) void this.loadCash(); },
+openWithdrawalRecords() { if (this.data.withdrawOpen) this.setData({ withdrawOpen: false }); state(this).navigation.navigateOnce('wallet:withdrawal-records', callbacks => wx.navigateTo({ url: '/pages/withdrawal/index?view=records', ...callbacks })); },
 async loadCash() { try { const cash = await cashApi.balance().promise; const fen = Number(cash.withdrawable_fen ?? cash.available_fen); if (Number.isFinite(fen)) this.setData({ availableFen: fen, available: rentalMoney(String(fen)) }); } catch { this.setData({ availableFen: null, available: '—' }); } },
 closeWithdrawal() { if (!this.data.wSubmitting) this.setData({ withdrawOpen: false }); },
 withdrawInput(event: WechatMiniprogram.CustomEvent<{ value: string }>) { const wAmount = String(event.detail.value ?? ''); this.setData({ wAmount, wError: '', wValid: this.amountValid(wAmount) }); },
@@ -113,14 +113,11 @@ submitWithdrawal() {
     if (!/^(0|[1-9]\d*)(\.\d{1,2})?$/.test(text)) { this.setData({ wError: '请输入最多两位小数的金额' }); return; }
     const amount = Math.round(Number(text) * 100);
     if (amount < 100 || amount > fen) { this.setData({ wError: '请输入 ¥1 至可提现余额之间的金额' }); return; }
-    wx.showModal({ title: '确认提现', content: '提现 ' + rentalMoney(String(amount)) + ' 到微信零钱，预计 1–3 个工作日到账。', confirmText: '确认提现', success: (result) => {
-        if (!result.confirm) return;
-        this.setData({ wSubmitting: true });
-        void cashApi.withdraw(amount, cashApi.newIntent()).promise.then(async () => {
-            this.setData({ withdrawOpen: false, wAmount: '', wValid: false });
-            wx.showToast({ title: '提现申请已提交', icon: 'success' });
-            await this.loadCash();
-        }).catch((error: unknown) => { this.setData({ wError: error instanceof Error ? error.message : '提现提交失败，请稍后再试' }); }).finally(() => this.setData({ wSubmitting: false }));
-    } });
+    // 正式接入：后台创建转账单后调用 wx.requestMerchantTransfer 进入微信“确认收款”页，这里不再自己弹确认框
+    this.setData({ wSubmitting: true });
+    void cashApi.withdraw(amount, cashApi.newIntent()).promise.then(async () => {
+        this.setData({ wDone: true, wDoneAmount: rentalMoney(String(amount)), wAmount: '', wValid: false });
+        await this.loadCash();
+    }).catch((error: unknown) => { this.setData({ wError: error instanceof Error ? error.message : '提现提交失败，请稍后再试' }); }).finally(() => this.setData({ wSubmitting: false }));
 },
 });
