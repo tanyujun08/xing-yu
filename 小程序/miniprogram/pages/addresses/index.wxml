@@ -2,13 +2,22 @@
 <page-shell surface="page" has-footer="{{loggedIn}}">
 <page-header title="{{secondaryNavigationTitle || '地址管理'}}" background="#ffffff" inverse="{{false}}" bindback="onSecondaryNavigationBack" slot="header" />
 <view class="address-page">
-  <view class="address-intro"><text>{{selectMode ? '选择后回填本次租赁信息。' : '默认地址将在下单时优先回显。'}}</text></view>
-  <view wx:for="{{addresses}}" wx:key="id" class="address-card" data-id="{{item.id}}" bindtap="chooseAddress" role="{{selectMode ? 'button' : 'group'}}">
+  <text class="address-intro">{{selectMode ? '选择后回填本次租赁信息。' : '默认地址将在下单时优先回显。'}}</text>
+  <view wx:for="{{addresses}}" wx:key="id" class="address-card {{selectMode ? 'address-card--select' : ''}} {{selectMode && item.isDefault ? 'is-picked' : ''}}" data-id="{{item.id}}" bindtap="chooseAddress" role="{{selectMode ? 'button' : 'group'}}">
     <view class="address-main" aria-label="{{selectMode ? '选择' : ''}}地址：{{item.name}}，{{item.region}}{{item.detail}}">
-      <view class="address-person"><text>{{item.name}}</text><text class="address-phone">{{item.phone}}</text><text wx:if="{{item.isDefault}}" class="default-chip">默认</text></view>
-      <text class="address-line">{{item.region}}{{item.detail}}</text>
+      <view wx:if="{{selectMode}}" class="radio {{item.isDefault ? 'is-on' : ''}}" aria-hidden="true" />
+      <view class="address-copy">
+        <view class="address-person"><text class="address-name">{{item.name}}</text><text class="address-phone">{{item.phone}}</text><text wx:if="{{item.isDefault}}" class="default-chip">默认</text></view>
+        <text class="address-line">{{item.region}}{{item.detail}}</text>
+      </view>
+      <view class="address-edit"><text>编辑</text><button class="touch-overlay" hover-class="none" data-id="{{item.id}}" disabled="{{busy || !item.canEdit}}" aria-disabled="{{busy || !item.canEdit}}" catchtap="editAddress" aria-label="编辑"></button></view>
     </view>
-    <view class="address-actions"><view class="address-action" wx:if="{{!item.isDefault && item.canDefault}}"><text>设为默认</text><button class="touch-overlay" hover-class="none" data-id="{{item.id}}" disabled="{{busy}}" aria-disabled="{{busy}}" catchtap="setDefault" aria-label="设为默认"></button></view><view class="actions-spacer" /><view class="address-action"><text>编辑</text><button class="touch-overlay" hover-class="none" data-id="{{item.id}}" disabled="{{busy || !item.canEdit}}" aria-disabled="{{busy || !item.canEdit}}" catchtap="editAddress" aria-label="编辑"></button></view><view class="address-action"><text>删除</text><button class="touch-overlay" hover-class="none" data-id="{{item.id}}" disabled="{{busy || !item.canArchive}}" aria-disabled="{{busy || !item.canArchive}}" catchtap="removeAddress" aria-label="删除"></button></view></view>
+    <view wx:if="{{!selectMode}}" class="address-actions">
+      <view wx:if="{{item.isDefault}}" class="address-default"><view class="radio is-on" aria-hidden="true" /><text>默认地址</text></view>
+      <view wx:elif="{{item.canDefault}}" class="address-default"><view class="radio" aria-hidden="true" /><text>设为默认</text><button class="touch-overlay" hover-class="none" data-id="{{item.id}}" disabled="{{busy}}" aria-disabled="{{busy}}" catchtap="setDefault" aria-label="设为默认"></button></view>
+      <view class="actions-spacer" />
+      <view class="address-action"><text>删除</text><button class="touch-overlay" hover-class="none" data-id="{{item.id}}" disabled="{{busy || !item.canArchive}}" aria-disabled="{{busy || !item.canArchive}}" catchtap="removeAddress" aria-label="删除"></button></view>
+    </view>
   </view>
   <status-view wx:if="{{loggedIn && !loading && !errorText && addresses.length === 0}}" state="empty" title="还没有保存地址" description="新增后，下单时可以直接选择。" illustration-src="{{icons.emptyLocation}}" />
   <status-view wx:if="{{loading && addresses.length === 0}}" state="loading" title="正在读取地址" />

@@ -1,16 +1,22 @@
 <page-meta root-font-size="system" />
-<page-shell surface="page" has-footer="{{false}}">
+<page-shell surface="page" has-footer="{{loaded}}">
   <page-header variant="order" title="实名信息" bindback="onSecondaryNavigationBack" slot="header" />
   <view class="identity-page">
-    <text class="identity-title">{{loading ? '读取实名信息…' : completed ? '实名信息已填写' : '签约前请完善实名信息'}}</text>
-    <text class="identity-copy">用于签约信息登记；当前为本人信息登记，本期不进行第三方身份核验。</text>
-    <view wx:if="{{loaded && !completed}}" class="identity-card">
-      <view class="identity-row"><text class="identity-label">真实姓名 <text class="identity-required">*</text></text><input aria-label="真实姓名，必填" value="{{realName}}" maxlength="50" placeholder="请输入真实姓名" disabled="{{busy}}" aria-disabled="{{busy}}" bindinput="inputName" /><text wx:if="{{errorField === 'realName'}}" class="form-error" role="alert">{{errorText}}</text></view>
-      <view class="identity-row"><text class="identity-label">身份证号 <text class="identity-required">*</text></text><input aria-label="身份证号，必填" value="{{identityNumber}}" type="idcard" maxlength="18" placeholder="请输入18位身份证号" disabled="{{busy}}" aria-disabled="{{busy}}" bindinput="inputIdentity" /><text wx:if="{{errorField === 'identityNumber'}}" class="form-error" role="alert">{{errorText}}</text></view>
+    <view wx:if="{{completed}}" class="done-card" role="status">
+      <view class="done-mark" aria-hidden="true"><view class="done-check" /></view>
+      <text class="done-title">已完成实名登记</text>
+      <text class="done-copy">实名信息已保存，完整姓名和身份证号不在此展示。</text>
     </view>
-    <text wx:if="{{completed}}" class="identity-copy" role="status">实名信息已保存，完整姓名和身份证号不在此展示。</text>
-    <text wx:if="{{errorText && !errorField}}" class="form-error" role="alert">{{errorText}}</text>
-    <button wx:if="{{errorText && !errorField}}" class="retry-button xy-tap" bindtap="loadStatus" disabled="{{busy}}" aria-disabled="{{busy}}">重新查询实名状态</button>
-    <view class="identity-actions"><button class="identity-submit xy-button-fluid xy-action-primary" disabled="{{busy || loading || !loaded}}" aria-disabled="{{busy || loading || !loaded}}" bindtap="primary">{{completed ? '返回' : '保存并继续'}}</button><button wx:if="{{!completed}}" class="identity-later xy-button-fluid xy-action-hit" bindtap="onSecondaryNavigationBack" disabled="{{busy}}" aria-disabled="{{busy}}">稍后填写</button></view>
+    <block wx:else>
+      <view class="identity-head"><text class="identity-title">{{loading ? '读取实名信息…' : '签约前请完善实名信息'}}</text><text class="identity-copy">用于签约信息登记</text></view>
+      <view wx:if="{{loaded}}" class="identity-card">
+        <view class="identity-row {{errorField === 'realName' ? 'is-error' : ''}}"><text class="identity-label">真实姓名</text><input aria-label="真实姓名，必填" value="{{realName}}" maxlength="50" placeholder="请输入真实姓名" placeholder-class="identity-placeholder" disabled="{{busy}}" aria-disabled="{{busy}}" bindinput="inputName" /><text wx:if="{{errorField === 'realName'}}" class="field-error" role="alert">{{errorText}}</text></view>
+        <view class="identity-row {{errorField === 'identityNumber' ? 'is-error' : ''}}"><text class="identity-label">身份证号</text><input aria-label="身份证号，必填" value="{{identityNumber}}" type="idcard" maxlength="18" placeholder="请输入 18 位身份证号" placeholder-class="identity-placeholder" disabled="{{busy}}" aria-disabled="{{busy}}" bindinput="inputIdentity" /><text wx:if="{{errorField === 'identityNumber'}}" class="field-error" role="alert">{{errorText}}</text></view>
+      </view>
+      <view class="privacy-note"><image class="privacy-icon" src="/assets/figma-icons/login-shield.svg" mode="aspectFit" aria-hidden="true" /><text>当前为本人信息登记，本期不进行第三方身份核验。</text></view>
+    </block>
+    <view wx:if="{{errorText && !errorField}}" class="alert-row"><text class="form-error" role="alert">{{errorText}}</text><button class="retry-button xy-button-reset" bindtap="loadStatus" disabled="{{busy}}" aria-disabled="{{busy}}">重新查询实名状态</button></view>
   </view>
+  <bottom-actions wx:if="{{loaded && completed}}" slot="footer" secondary-text="返回" bindsecondary="primary" />
+  <bottom-actions wx:elif="{{loaded}}" slot="footer" layout="primary-emphasis" primary-text="保存并继续" secondary-text="稍后填写" busy="{{busy}}" disabled="{{busy || loading}}" bindprimary="primary" bindsecondary="onSecondaryNavigationBack" />
 </page-shell>

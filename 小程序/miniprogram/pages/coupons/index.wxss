@@ -1,15 +1,15 @@
-/* 视觉规范 v1：状态 tab（44 高，16 字，选中 700 + 2 高绿下划线）→ 类型筛选块（28 高，间距 8，选中黑底白字）→ 12 → 券卡 */
+/* 重设计 第 1 批：状态 tab（44 高，16 字，选中 700 + 绿短下划线）→ 类型筛选块（浅绿选中，可横滑）→ 票券卡（左票根放权益，右侧券名/权益/发放时间，整张可点） */
 .coupons-page { color: var(--xy-color-text-primary); }
 .coupon-tabs { display: flex; gap: var(--xy-space-6); padding: 0 var(--xy-layout-page-padding-x); background: var(--xy-color-surface); border-bottom: 1px solid var(--xy-color-divider); }
 .coupon-tab { position: relative; display: flex; align-items: center; justify-content: center; min-width: var(--xy-size-touch-min); min-height: var(--xy-size-touch-min); box-sizing: border-box; color: var(--xy-color-text-muted); font-size: var(--xy-text-section-title-size); font-weight: var(--xy-text-weight-medium); line-height: var(--xy-text-section-title-line-height); white-space: nowrap; transition: color var(--xy-duration-normal) ease; }
 .coupon-tab--active { color: var(--xy-color-text-strong); font-weight: var(--xy-text-weight-bold); }
 .coupon-tab__indicator { position: absolute; bottom: 0; left: 50%; width: var(--xy-space-4); height: 2px; border-radius: var(--xy-radius-pill); background: var(--xy-color-brand); transform: translateX(-50%); }
-/* 第二行是类型筛选：筛选块（视觉 28 高，热区 44），选中黑底白字 */
-.coupon-filters { display: flex; gap: var(--xy-space-2); padding: var(--xy-space-1) var(--xy-layout-page-padding-x) 0; }
-.coupon-filter { position: relative; isolation: isolate; display: flex; align-items: center; justify-content: center; min-height: var(--xy-size-touch-min); padding: 0 var(--xy-space-3); color: var(--xy-color-text-secondary); font-size: var(--xy-text-body-small-size); font-weight: var(--xy-text-weight-medium); line-height: var(--xy-text-body-small-line-height); white-space: nowrap; }
-.coupon-filter::before { position: absolute; z-index: var(--xy-z-behind); top: var(--xy-space-2); right: 0; bottom: var(--xy-space-2); left: 0; box-sizing: border-box; border: 1px solid var(--xy-color-border); border-radius: var(--xy-radius-sm); background: var(--xy-color-surface); content: ''; transition: background var(--xy-duration-normal) ease; }
-.coupon-filter--active { color: var(--xy-color-text-inverse); font-weight: var(--xy-text-weight-semibold); }
-.coupon-filter--active::before { border-color: var(--xy-color-text-strong); background: var(--xy-color-text-strong); }
+/* 类型筛选：视觉 28 高，热区 44，选中浅绿底绿字 */
+.coupon-filters { display: flex; gap: var(--xy-space-2); overflow-x: auto; padding: var(--xy-space-1) var(--xy-layout-page-padding-x) 0; white-space: nowrap; }
+.coupon-filter { position: relative; isolation: isolate; display: flex; flex: none; align-items: center; justify-content: center; min-height: var(--xy-size-touch-min); padding: 0 var(--xy-space-3); color: var(--xy-color-text-secondary); font-size: var(--xy-text-body-small-size); font-weight: var(--xy-text-weight-medium); line-height: var(--xy-text-body-small-line-height); white-space: nowrap; }
+.coupon-filter::before { position: absolute; z-index: var(--xy-z-behind); top: var(--xy-space-2); right: 0; bottom: var(--xy-space-2); left: 0; border-radius: var(--xy-radius-sm); background: var(--xy-color-surface); content: ''; transition: background var(--xy-duration-normal) ease; }
+.coupon-filter--active { color: var(--xy-color-brand); font-weight: var(--xy-text-weight-semibold); }
+.coupon-filter--active::before { background: var(--xy-color-brand-light); }
 .coupon-list { display: flex; flex-direction: column; gap: var(--xy-space-3); padding: var(--xy-space-1) var(--xy-layout-page-padding-x) var(--xy-space-6); }
 .coupon-card { overflow: hidden; padding: var(--xy-space-4); border-radius: var(--xy-radius-lg); background: var(--xy-color-surface); }
 .coupon-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--xy-space-3); }
@@ -28,3 +28,20 @@
 .coupons-login__title { color: var(--xy-color-text-strong); font-size: var(--xy-text-section-title-size); font-weight: var(--xy-text-weight-bold); line-height: var(--xy-text-section-title-line-height); }
 .coupons-login__copy { color: var(--xy-color-text-secondary); font-size: var(--xy-text-body-small-size); line-height: var(--xy-text-body-small-line-height); }
 .coupons-login .coupons-action { margin-top: var(--xy-space-3); min-height: var(--xy-size-touch-min); padding: 0 var(--xy-space-6); border-radius: var(--xy-radius-md); background: var(--xy-color-brand); color: var(--xy-color-text-inverse); }
+
+/* 票券卡 */
+.ticket { position: relative; display: flex; min-height: var(--xy-size-touch-min); overflow: hidden; border-radius: var(--xy-radius-lg); background: var(--xy-color-surface); }
+.ticket:active { background: var(--xy-color-surface-subtle); }
+.ticket::before, .ticket::after { position: absolute; left: calc(var(--xy-space-6) * 4 - var(--xy-space-2)); z-index: var(--xy-z-local); width: var(--xy-space-4); height: var(--xy-space-4); border-radius: var(--xy-radius-circle); background: var(--xy-color-page); content: ''; }
+.ticket::before { top: calc(var(--xy-space-2) * -1); }
+.ticket::after { bottom: calc(var(--xy-space-2) * -1); }
+.ticket-stub { display: flex; flex: 0 0 calc(var(--xy-space-6) * 4); flex-direction: column; align-items: center; justify-content: center; gap: var(--xy-space-0-5); padding: var(--xy-space-3) var(--xy-space-1); border-right: 1.5px dashed var(--xy-color-border); background: var(--xy-color-brand-light); color: var(--xy-color-brand); text-align: center; }
+.ticket-value { font-family: var(--xy-font-family-numeric); font-size: var(--xy-text-order-navigation-size); font-weight: var(--xy-text-weight-bold); line-height: var(--xy-text-order-navigation-line-height); overflow-wrap: anywhere; }
+.ticket-unit { font-size: var(--xy-text-caption-size); font-weight: var(--xy-text-weight-semibold); line-height: var(--xy-text-caption-line-height); }
+.ticket--used .ticket-stub { background: var(--xy-color-control-surface); color: var(--xy-color-text-weak); }
+.ticket-body { display: flex; min-width: 0; flex: 1; flex-direction: column; gap: var(--xy-space-1); padding: var(--xy-space-3) var(--xy-space-3) var(--xy-space-3) var(--xy-space-4); }
+.ticket-heading { display: flex; align-items: center; gap: var(--xy-space-2); }
+.ticket-title { min-width: 0; flex: 1; color: var(--xy-color-text-strong); font-size: var(--xy-text-section-title-size); font-weight: var(--xy-text-weight-bold); line-height: var(--xy-text-section-title-line-height); }
+.ticket--used .ticket-title { color: var(--xy-color-text-secondary); }
+.ticket-rights { color: var(--xy-color-text-secondary); font-size: var(--xy-text-body-small-size); line-height: var(--xy-text-body-small-line-height); overflow-wrap: anywhere; }
+.ticket-expiry { color: var(--xy-color-text-weak); font-size: var(--xy-text-body-small-size); font-variant-numeric: tabular-nums; line-height: var(--xy-text-body-small-line-height); }
