@@ -1,4 +1,4 @@
 <page-meta root-font-size="system" />
 <page-shell surface="page">
-  <login-sheet id="login-sheet" visible="{{true}}" bindwechatlogin="onWechatLogin" bindphonelogin="onPhoneLogin" bindlegal="onLoginLegal" bindcancel="onLoginCancel" />
+  <login-sheet id="login-sheet" visible="{{true}}" standalone="{{true}}" bindback="goBack" bindwechatlogin="onWechatLogin" bindphonelogin="onPhoneLogin" bindlegal="onLoginLegal" bindcancel="onLoginCancel" />
 </page-shell>

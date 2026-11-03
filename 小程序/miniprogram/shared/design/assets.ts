@@ -115,6 +115,8 @@ export const designAssets = {
   loginShield: '/assets/figma-icons/login-shield.svg',
   loginClear: '/assets/figma-icons/login-clear.svg',
   loginWechat: '/assets/figma-icons/login-wechat.svg',
+  loginWechatWhite: '/assets/figma-icons/login-wechat-white.svg',
+  loginHero: '/assets/figma-media/login-hero.jpg',
   loginChevron: '/assets/figma-icons/login-chevron.svg',
   emptyGeneric: '/assets/illustrations/empty-generic.png',
   emptyLedger: '/assets/illustrations/empty-ledger.webp',
