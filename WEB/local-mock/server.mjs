@@ -20,6 +20,11 @@ export function linkedMock() {
       let initialized = fs.existsSync(stateFile);
       let stateVersion = 0;
       let loading;
+      // GET 只会追加请求日志：不写盘、不升版本；业务数据真的变了（如订单到期）才落盘
+      let quietPersist = false;
+      const business = value => JSON.stringify(value, (k, v) => k === 'requestLog' ? undefined : v);
+      // 小程序已持有同版本数据时不再回传整份状态（约 250KB），避免每个请求都在小程序里解析和写缓存
+      const stateFor = (e, known) => known === stateVersion ? { stateVersion } : { state: e.readDemo(), stateVersion };
       function persist(value) {
         fs.mkdirSync(stateDir, { recursive: true });
         const tmp = path.join(stateDir, `.state-${process.pid}.tmp`);
@@ -37,7 +42,7 @@ export function linkedMock() {
           }
           globalThis.wx = {
             getStorageSync: (name) => storage.get(name),
-            setStorageSync: (name, value) => { if (name === key) persist(value); storage.set(name, globalThis.structuredClone(value)); },
+            setStorageSync: (name, value) => { if (name === key && !quietPersist) persist(value); storage.set(name, globalThis.structuredClone(value)); },
             removeStorageSync: (name) => storage.delete(name),
             getStorageInfoSync: () => ({ keys: [...storage.keys()] }),
           };
@@ -84,10 +89,14 @@ export function linkedMock() {
             const method = String(body.method || 'GET').toUpperCase(), requested = String(body.path || '');
             if (!['GET','POST','PUT','PATCH','DELETE'].includes(method) || !requested.startsWith('/v1/') || requested.includes('://')) throw new Error('只允许调用本机演示接口');
             try {
-              const result = e.handleDemo(method, requested, body.body || {}, body.headers || {});
-              send(res, 200, { ...result, state: e.readDemo(), stateVersion });
+              const before = method === 'GET' ? business(e.readDemo()) : '';
+              let result;
+              quietPersist = method === 'GET';
+              try { result = e.handleDemo(method, requested, body.body || {}, body.headers || {}); } finally { quietPersist = false; }
+              if (method === 'GET' && business(e.readDemo()) !== before) e.saveDemo();
+              send(res, 200, { ...result, ...stateFor(e, body.knownVersion) });
             } catch (error) {
-              send(res, 200, { status: error.status || 500, data: { code:error.code || 'DEMO_ERROR', message:error.message || '模拟操作失败', request_id:'linked-demo' }, headers:{}, state:e.readDemo(), stateVersion });
+              send(res, 200, { status: error.status || 500, data: { code:error.code || 'DEMO_ERROR', message:error.message || '模拟操作失败', request_id:'linked-demo' }, headers:{}, ...stateFor(e, body.knownVersion) });
             }
             return;
           }
@@ -154,7 +163,7 @@ export function linkedMock() {
               case 'support': e.readDemo().receipts['support-messages']={items:body.messages}; e.saveDemo(); break;
               default: throw new Error('未配置的联动操作');
             }
-            send(res, 200, { result:result ?? null, state:e.readDemo(), stateVersion }); return;
+            send(res, 200, { result:result ?? null, ...stateFor(e, body.knownVersion) }); return;
           }
           next();
         } catch (error) {
