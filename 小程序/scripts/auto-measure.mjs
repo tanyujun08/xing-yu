@@ -42,6 +42,21 @@ const routes = {
   'no-deposit': { open: 'navigateTo', url: '/pages/no-deposit/index' },
   login: { open: 'navigateTo', url: '/pages/login/index' },
   region: { open: 'navigateTo', url: '/pages/region/index' },
+  // 第 2 批 订单流程
+  contract: { open: 'navigateTo', url: '/pages/contract/index?orderId=order-1' },
+  'contract-sign': { open: 'navigateTo', url: '/pages/contract-sign/index?orderId=order-1' },
+  'order-detail': { open: 'navigateTo', url: '/pages/order-detail/index?orderId=order-4' },
+  'order-detail-pay': { open: 'navigateTo', url: '/pages/order-detail/index?orderId=order-2', dir: 'order-detail' },
+  'order-detail-return': { open: 'navigateTo', url: '/pages/order-detail/index?orderId=order-5', dir: 'order-detail' },
+  'order-detail-supplement': { open: 'navigateTo', url: '/pages/order-detail/index?orderId=order-7', dir: 'order-detail' },
+  'order-detail-done': { open: 'navigateTo', url: '/pages/order-detail/index?orderId=order-9', dir: 'order-detail' },
+  'order-fees': { open: 'navigateTo', url: '/pages/order-fees/index?orderId=order-7' },
+  'service-detail': { open: 'navigateTo', url: '/pages/service-detail/index?mode=preview&service=guard' },
+  'device-orders': { open: 'navigateTo', url: '/pages/device-orders/index?mode=rent' },
+  'cabinet-open': { open: 'navigateTo', url: '/pages/cabinet-open/index?taskId=task-demo' },
+  'return-submit': { open: 'navigateTo', url: '/pages/return-submit/index?orderId=order-5' },
+  'cabinet-return': { open: 'navigateTo', url: '/pages/cabinet-return/index?orderId=order-4' },
+  dispute: { open: 'navigateTo', url: '/pages/dispute/index?orderId=order-6' },
 };
 
 // 参数里可带 --shots（只截图不量尺寸，快）和 --prefix=before（截图文件名前缀，用于改前/改后对照）
