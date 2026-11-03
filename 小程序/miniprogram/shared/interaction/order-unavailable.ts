@@ -63,7 +63,7 @@ export function unavailableOrderPage<T extends object>(
     goOrders(this: object) { navigate(this, '/pages/orders/index', true); },
     openLogin(this: object) { openLoginHere(this, () => navigate(this, '/pages/login/index')); },
     openSupport(this: object) { navigate(this, '/pages/chat/index?mode=support'); },
-    openWithdrawal(this: object) { navigate(this, '/pages/withdrawal/index'); },
+    openWithdrawal(this: object) { navigate(this, '/pages/wallet/index'); },
     openWithdrawalRecords(this: object) { navigate(this, '/pages/withdrawal/index?view=records'); },
     goDetail(this: ViewPage) {
       if (this.data.routeId) navigate(this, '/pages/order-detail/index?id=' + encodeURIComponent(this.data.routeId));

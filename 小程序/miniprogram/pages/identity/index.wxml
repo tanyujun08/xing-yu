@@ -1,12 +1,18 @@
 <page-meta root-font-size="system" />
-<page-shell surface="page" has-footer="{{loaded}}">
+<page-shell surface="page" has-footer="{{loaded && !completed}}">
   <page-header variant="order" title="实名信息" bindback="onSecondaryNavigationBack" slot="header" />
   <view class="identity-page">
     <view wx:if="{{completed}}" class="done-card" role="status">
-      <view class="done-mark" aria-hidden="true"><view class="done-check" /></view>
-      <text class="done-title">已完成实名登记</text>
-      <text class="done-copy">实名信息已保存，完整姓名和身份证号不在此展示。</text>
+      <image class="done-icon" src="{{icons.returnSuccess}}" mode="aspectFit" aria-hidden="true" />
+      <text class="done-title">已完成实名认证</text>
+      <text class="done-copy">签约和租赁时会自动使用你的实名信息</text>
     </view>
+    <view wx:if="{{completed}}" class="done-list">
+      <view class="done-row"><text class="done-label">实名认证</text><text class="done-value done-value--ok">已认证</text></view>
+      <view wx:if="{{verifiedText}}" class="done-row"><text class="done-label">认证时间</text><text class="done-value">{{verifiedText}}</text></view>
+      <view class="done-row"><text class="done-label">人脸核验</text><text class="done-value">{{faceText}}</text></view>
+    </view>
+    <text wx:if="{{completed}}" class="done-note">为保护隐私，完整姓名和身份证号不在此显示。</text>
     <block wx:else>
       <view class="identity-head"><text class="identity-title">{{loading ? '读取实名信息…' : '签约前请完善实名信息'}}</text><text class="identity-copy">用于签约信息登记</text></view>
       <view wx:if="{{loaded}}" class="identity-card">
@@ -17,6 +23,5 @@
     </block>
     <view wx:if="{{errorText && !errorField}}" class="alert-row"><text class="form-error" role="alert">{{errorText}}</text><button class="retry-button xy-button-reset" bindtap="loadStatus" disabled="{{busy}}" aria-disabled="{{busy}}">重新查询实名状态</button></view>
   </view>
-  <bottom-actions wx:if="{{loaded && completed}}" slot="footer" secondary-text="返回" bindsecondary="primary" />
-  <bottom-actions wx:elif="{{loaded}}" slot="footer" layout="primary-emphasis" primary-text="保存并继续" secondary-text="稍后填写" busy="{{busy}}" disabled="{{busy || loading}}" bindprimary="primary" bindsecondary="onSecondaryNavigationBack" />
+  <bottom-actions wx:if="{{loaded && !completed}}" slot="footer" layout="primary-emphasis" primary-text="保存并继续" secondary-text="稍后填写" busy="{{busy}}" disabled="{{busy || loading}}" bindprimary="primary" bindsecondary="onSecondaryNavigationBack" />
 </page-shell>

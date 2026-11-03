@@ -1,11 +1,7 @@
 <page-meta root-font-size="system" />
-<page-shell surface="page">
-  <page-header title="{{secondaryNavigationTitle || '提现'}}" bindback="onSecondaryNavigationBack" slot="header" />
+<page-shell surface="page" has-footer="{{view === 'apply'}}">
+  <page-header title="提现记录" bindback="onSecondaryNavigationBack" slot="header" />
   <view class="withdrawal-page">
-    <view class="withdrawal-tabs" role="tablist" aria-label="提现页面切换">
-      <button class="withdrawal-tab xy-button-reset {{view === 'apply' ? 'is-active' : ''}}" data-view="apply" bindtap="switchView" role="tab" aria-selected="{{view === 'apply'}}" aria-label="申请提现"><text class="withdrawal-tab-label">申请提现</text></button>
-      <button class="withdrawal-tab xy-button-reset {{view === 'records' ? 'is-active' : ''}}" data-view="records" bindtap="switchView" role="tab" aria-selected="{{view === 'records'}}" aria-label="提现记录"><text class="withdrawal-tab-label">提现记录</text></button>
-    </view>
     <block wx:if="{{view === 'apply'}}">
       <view class="balance-block withdrawal-summary">
         <view class="hero-main">
@@ -57,7 +53,7 @@
     </block>
     <block wx:else>
       <view wx:if="{{withdrawals.length === 0}}" class="record-empty xy-empty-page">
-        <image class="xy-empty-page__illustration" src="/assets/illustrations/empty-ledger.webp" mode="aspectFit" aria-hidden="true" /><text class="xy-empty-page__title">提现记录暂不可用</text><text class="xy-empty-page__copy">请稍后再试。</text>
+        <image class="xy-empty-page__illustration" src="/assets/illustrations/empty-ledger.webp" mode="aspectFit" aria-hidden="true" /><text class="xy-empty-page__title">还没有提现记录</text><text class="xy-empty-page__copy">在钱包里申请提现后，进度会显示在这里</text>
       </view>
       <view wx:if="{{currentWithdrawal}}" class="current-card">
         <view class="current-head">

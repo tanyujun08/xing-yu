@@ -5,7 +5,7 @@
     <view class="avatar-card">
       <image wx:if="{{!avatarReloading}}" class="edit-avatar" src="{{avatarPath || icons.profileAvatar}}" mode="aspectFill" data-src="{{avatarPath}}" data-owner="{{avatarOwner}}" data-epoch="{{avatarEpoch}}" binderror="onAvatarImageError" />
       <view wx:else class="edit-avatar" />
-      <view class="avatar-copy"><text class="avatar-name">{{name || '未设置昵称'}}</text><text class="avatar-hint">{{selectingAvatar ? '正在选择头像…' : '点击右侧按钮更换头像'}}</text></view>
+      <view class="avatar-copy"><text class="avatar-name">{{name || '未设置昵称'}}</text><text class="avatar-hint">{{selectingAvatar ? '正在选择头像…' : '其他用户可以看到'}}</text></view>
       <button class="avatar-change xy-button-reset" bindtap="chooseAvatar" disabled="{{selectingAvatar}}" aria-disabled="{{selectingAvatar}}" aria-busy="{{selectingAvatar}}" aria-label="选择头像"><text>{{selectingAvatar ? '选择中…' : '更换头像'}}</text></button>
     </view>
     <view wx:if="{{avatarFailed || (avatarPending && !selectingAvatar) || avatarPending}}" class="avatar-actions">
@@ -20,10 +20,9 @@
     </view>
     <text class="group-label">身份信息</text>
     <view class="field-card">
-      <button class="identity-row xy-button-reset xy-button-fluid" bindtap="openIdentity" aria-label="进入实名认证"><text class="identity-label">实名认证</text><text class="status status--{{identityTone}}">{{identityText}}</text><image class="arrow" src="{{icons.arrowRight}}" mode="aspectFit" aria-hidden="true" /></button>
+      <button class="identity-row xy-button-reset xy-button-fluid" bindtap="openIdentity" aria-label="进入实名认证"><text class="identity-label">实名认证</text><text class="identity-hint">查看</text><image class="arrow" src="{{icons.arrowRight}}" mode="aspectFit" aria-hidden="true" /></button>
     </view>
     <text wx:if="{{errorText}}" class="form-error" role="alert">{{errorText}}</text>
-    <text class="note">头像与昵称保存到本人账户；头像须通过服务端处理。</text>
   </view>
-  <bottom-actions slot="footer" primary-text="保存资料" busy-text="保存中…" busy="{{saving}}" disabled="{{saving || avatarPending || selectingAvatar}}" bindprimary="save" />
+  <bottom-actions slot="footer" primary-text="保存资料" busy-text="保存中…" busy="{{saving}}" disabled="{{saving || avatarPending || selectingAvatar || !changed}}" bindprimary="save" />
 </page-shell>

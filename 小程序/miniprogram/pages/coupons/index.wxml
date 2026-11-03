@@ -5,7 +5,7 @@ var small = function (a) { var s = a + ""; if (s.indexOf("全额") === 0) return
 module.exports = { big: big, small: small };
 </wxs>
 <page-shell has-footer="{{false}}">
-  <page-header slot="header" title="优惠券管理" bindback="onBack" />
+  <page-header slot="header" title="我的优惠券" bindback="onBack" />
   <view class="coupons-page">
     <view wx:if="{{!loggedIn}}" class="coupons-login">
       <text class="coupons-login__title">登录后查看优惠券</text>
@@ -27,7 +27,7 @@ module.exports = { big: big, small: small };
           <view wx:for="{{items}}" wx:key="id" class="ticket {{item.tone === 'muted' ? 'ticket--used' : ''}}" data-id="{{item.id}}" bindtap="openCoupon" role="button" aria-label="查看{{item.title}}详情">
             <view class="ticket-stub" aria-hidden="true"><text class="ticket-value">{{t.big(item.amount)}}</text><text class="ticket-unit">{{t.small(item.amount)}}</text></view>
             <view class="ticket-body">
-              <view class="ticket-heading"><text class="ticket-title">{{item.title}}</text><text class="coupon-status coupon-status--{{item.tone}}">{{item.status}}</text></view>
+              <view class="ticket-heading"><text class="ticket-title">{{item.title}}</text><text wx:if="{{item.tone === 'muted'}}" class="coupon-status coupon-status--{{item.tone}}">{{item.status}}</text></view>
               <text class="ticket-rights">{{item.amount}}</text>
               <text class="ticket-expiry">{{item.expiry}}</text>
             </view>

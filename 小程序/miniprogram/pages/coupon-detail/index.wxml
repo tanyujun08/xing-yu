@@ -4,7 +4,7 @@ var big = function (a) { var s = a + ""; if (s.indexOf("全额") === 0) return "
 var small = function (a) { var s = a + ""; if (s.indexOf("全额") === 0) return "免押"; if (s.indexOf("兑换 1 次") === 0) return "发布额度"; if (s.indexOf("1 天") === 0) return "租金"; if (s.indexOf("抵扣 ") >= 0) return "保障抵扣"; return ""; };
 module.exports = { big: big, small: small };
 </wxs>
-<page-shell has-footer="{{canRedeem || !!movementId}}"><page-header slot="header" title="优惠券详情" bindback="onBack" />
+<page-shell has-footer="{{canRedeem || !!movementId || coupon.useInOrder}}"><page-header slot="header" title="优惠券详情" bindback="onBack" />
  <view class="coupons-page">
   <view wx:if="{{!loggedIn}}" class="coupons-login"><text class="coupons-login__title">登录后查看本人优惠券</text><button class="coupons-action xy-button-reset" bindtap="openLogin">去登录</button></view>
   <status-view wx:if="{{loading}}" state="loading" title="正在读取券详情" />
@@ -13,7 +13,7 @@ module.exports = { big: big, small: small };
    <view class="ticket ticket--large {{coupon.tone === 'muted' ? 'ticket--used' : ''}}">
     <view class="ticket-stub" aria-hidden="true"><text class="ticket-value">{{t.big(coupon.amount)}}</text><text class="ticket-unit">{{t.small(coupon.amount)}}</text></view>
     <view class="ticket-body ticket-body--center">
-     <view class="ticket-heading"><text class="ticket-title">{{coupon.title}}</text><text class="coupon-status coupon-status--{{coupon.tone}}">{{coupon.status}}</text></view>
+     <view class="ticket-heading"><text class="ticket-title">{{coupon.title}}</text><text wx:if="{{coupon.tone === 'muted'}}" class="coupon-status coupon-status--{{coupon.tone}}">{{coupon.status}}</text></view>
      <text class="ticket-rights">{{coupon.amount}}</text>
     </view>
    </view>
@@ -21,7 +21,8 @@ module.exports = { big: big, small: small };
     <view class="info-row"><text class="info-label">发放时间</text><text class="info-value">{{issuedAt || coupon.expiry}}</text></view>
     <button class="info-row info-row--link xy-button-reset" bindtap="openSource" aria-label="查看来源：{{sourceTitle}}"><text class="info-label">来源</text><text class="info-value info-value--link">{{sourceTitle}}</text><image class="info-arrow" src="/assets/figma-icons/arrow-right.svg" mode="aspectFit" aria-hidden="true" /></button>
    </view>
-   <text class="detail-note">{{coupon.description}}</text>
+   <text class="section-title">使用说明</text>
+   <view class="usage-card"><view wx:for="{{coupon.usage}}" wx:key="id" class="usage-row"><text class="usage-index">{{index + 1}}</text><text class="usage-copy">{{item.text}}</text></view></view>
    <block wx:if="{{events.length}}">
     <text class="section-title">状态记录</text>
     <view class="timeline-card"><view wx:for="{{events}}" wx:key="id" class="timeline-row {{index === 0 ? 'is-latest' : ''}}"><view class="timeline-dot" aria-hidden="true" /><text class="timeline-title">{{item.title}}</text><text class="timeline-time">{{item.time}}</text></view></view>
@@ -42,5 +43,6 @@ module.exports = { big: big, small: small };
  </view>
  <bottom-actions wx:if="{{canRedeem}}" slot="footer" layout="primary-emphasis" primary-text="兑换 1 次发布额度" secondary-text="{{movementId ? '额度明细' : ''}}" bindprimary="redeem" bindsecondary="openQuota" />
  <bottom-actions wx:elif="{{movementId}}" slot="footer" primary-text="查看发布额度明细" bindprimary="openQuota" />
+ <bottom-actions wx:elif="{{coupon.useInOrder}}" slot="footer" primary-text="去租设备" bindprimary="goRent" />
 </page-shell>
 <login-sheet id="login-sheet" bindwechatlogin="onWechatLogin" bindphonelogin="onPhoneLogin" bindlegal="onLoginLegal" />

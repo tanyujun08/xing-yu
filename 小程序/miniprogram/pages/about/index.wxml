@@ -10,5 +10,6 @@
   <view class="about-list">
     <view class="about-row xy-tap" data-id="user-agreement" bindtap="openPolicy" role="button" aria-label="阅读用户协议"><text class="about-label">用户协议</text><image class="about-arrow" src="{{icons.arrowRight}}" mode="aspectFit" aria-hidden="true" /></view>
     <view class="about-row xy-tap" data-id="privacy-policy" bindtap="openPolicy" role="button" aria-label="阅读隐私政策"><text class="about-label">隐私政策</text><image class="about-arrow" src="{{icons.arrowRight}}" mode="aspectFit" aria-hidden="true" /></view>
+    <view class="about-row xy-tap" bindtap="openSupport" role="button" aria-label="联系客服"><text class="about-label">联系客服</text><image class="about-arrow" src="{{icons.arrowRight}}" mode="aspectFit" aria-hidden="true" /></view>
   </view>
 </view>

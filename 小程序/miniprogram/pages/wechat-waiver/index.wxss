@@ -10,7 +10,7 @@
 .step.is-done, .step.is-current { color: var(--xy-color-text-primary); }
 .step.is-current { font-weight: var(--xy-text-weight-semibold); }
 .step.is-done .step-dot { border-color: var(--xy-color-brand); background: var(--xy-color-brand); }
-.step.is-current .step-dot { border-color: var(--xy-color-brand); box-shadow: 0 0 0 var(--xy-space-1) var(--xy-color-brand-light); }
+.step.is-current .step-dot { border-color: var(--xy-color-brand); background: var(--xy-color-brand); box-shadow: 0 0 0 var(--xy-space-1) var(--xy-color-brand-light); }
 .step.is-alert { color: var(--xy-color-warning); }
 .step.is-alert .step-dot { border-color: var(--xy-color-warning); box-shadow: 0 0 0 var(--xy-space-1) var(--xy-color-warning-soft); }
 .waiver-copyblock { display: flex; flex-direction: column; gap: var(--xy-space-1); }

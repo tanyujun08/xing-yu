@@ -24,3 +24,4 @@
 .arrow { flex: none; width: var(--xy-size-icon-base); height: var(--xy-size-icon-base); opacity: .6; }
 .form-error { display: block; margin-top: var(--xy-space-3); color: var(--xy-color-danger); font-size: var(--xy-text-body-small-size); line-height: var(--xy-text-body-small-line-height); }
 .note { display: block; margin-top: var(--xy-space-3); color: var(--xy-color-text-muted); font-size: var(--xy-text-body-small-size); line-height: var(--xy-text-body-small-line-height); }
+.identity-hint { margin-left: auto; color: var(--xy-color-text-muted); font-size: var(--xy-text-body-small-size); line-height: var(--xy-text-body-small-line-height); }

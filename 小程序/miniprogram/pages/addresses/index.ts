@@ -15,7 +15,7 @@ function interaction(page: object) {
   return value;
 }
 function projection(address: OwnAddress) {
-  return { id: address.address_id, name: address.recipient_name, phone: address.phone,
+  return { id: address.address_id, name: address.recipient_name, phone: String(address.phone ?? '').replace(/^(\d{3})\d{4}(\d{4})$/, '$1****$2'),
     region: address.province_name + address.city_name + address.district_name, detail: address.detail_address,
     isDefault: address.is_default, canEdit: address.allowed_actions.some((a) => a.code === 'UPDATE' && a.enabled),
     canDefault: address.allowed_actions.some((a) => a.code === 'DEFAULT' && a.enabled),

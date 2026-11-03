@@ -5,8 +5,8 @@
   <view wx:if="{{!hourly}}" class="summary-cell"><text class="summary-label">粉钻余额</text><text class="summary-value">{{diamondBalance}}</text></view>
   <view class="summary-cell"><text class="summary-label">本期可免押</text><view class="summary-value">{{allowancesLoaded ? (allowances.length ? allowances[0].available : 0) : '—'}}<text class="summary-unit"> 次</text></view></view>
 </view>
-<text wx:if="{{!hourly}}" class="no-deposit-intro">可用押金方案由设备配置决定，以订单确认页为准。</text>
-<block wx:if="{{allowancesLoaded}}">
+<text wx:if="{{!hourly}}" class="no-deposit-intro">不同设备的押金方案不同，下单时以确认页显示为准。</text>
+<block wx:if="{{allowancesLoaded && allowances.length}}">
   <text class="section-title">免押次数</text>
   <view wx:for="{{allowances}}" wx:key="id" class="service-card allowance-card">
     <text class="service-title">{{item.cycle}}</text>
@@ -17,7 +17,6 @@
       <view class="allowance-cell"><text class="allowance-num">{{item.granted}}</text><text class="allowance-label">已发放</text></view>
     </view>
   </view>
-  <text wx:if="{{!allowances.length}}" class="empty-note">当前周期暂无免押次数</text>
 </block>
 <text class="section-title">押金规则</text>
 <view class="service-list"><view wx:for="{{visibleRules}}" wx:key="id" class="service-card"><text class="service-title">{{item.title}}</text><text class="service-detail">{{item.detail}}</text></view></view>

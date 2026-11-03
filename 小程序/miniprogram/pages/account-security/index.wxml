@@ -13,12 +13,15 @@
     <view class="security-row">
       <view class="security-icon"><image src="{{icons.loginWechat}}" mode="aspectFit" aria-hidden="true" /></view>
       <view class="security-copy"><text class="security-label">微信</text><text class="security-value">{{wechatText}}</text></view>
-      <button class="security-pill xy-button-reset" disabled="{{!wechatActionEnabled || actionBusy}}" aria-disabled="{{!wechatActionEnabled || actionBusy}}" bindtap="bindWechat" aria-label="绑定微信"><text>绑定</text></button>
+      <button wx:if="{{wechatActionEnabled && wechatText !== '已绑定'}}" class="security-pill xy-button-reset" disabled="{{actionBusy}}" aria-disabled="{{!wechatActionEnabled || actionBusy}}" bindtap="bindWechat" aria-label="绑定微信"><text>绑定</text></button>
     </view>
   </view>
-  <text class="note">手机号由微信授权获取，换绑只验证新号。</text>
-  <view wx:if="{{unbindPhoneEnabled}}" class="danger-zone">
-    <button class="unbind-button xy-button-reset" disabled="{{actionBusy}}" aria-disabled="{{actionBusy}}" bindtap="unbindPhone" aria-label="解绑手机号">解绑手机号</button>
-    <text class="danger-note">解绑前请确保微信已绑定</text>
-  </view>
+  <text class="note">换绑手机号时只需验证新号码。</text>
+  <block wx:if="{{unbindPhoneEnabled}}">
+    <text class="group-label">其他操作</text>
+    <view class="security-list">
+      <button class="unbind-button xy-button-reset" disabled="{{actionBusy}}" aria-disabled="{{actionBusy}}" bindtap="unbindPhone" aria-label="解绑手机号">解绑手机号</button>
+    </view>
+    <text class="note">解绑后只能用微信登录，请先确认微信已绑定。</text>
+  </block>
 </view>

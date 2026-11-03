@@ -90,7 +90,8 @@
     ]
   },
   "requiredPrivateInfos": [
-    "chooseLocation"
+    "chooseLocation",
+    "chooseAddress"
   ],
   "style": "v2",
   "lazyCodeLoading": "requiredComponents",

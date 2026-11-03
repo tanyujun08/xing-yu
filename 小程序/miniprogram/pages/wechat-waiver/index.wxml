@@ -1,6 +1,6 @@
 <page-meta root-font-size="system" />
 <page-shell surface="page" has-footer="{{!missing}}">
-<page-header title="{{secondaryNavigationTitle || '微信免押校验'}}" background="#ffffff" inverse="{{false}}" bindback="onSecondaryNavigationBack" slot="header" /><view class="waiver-page">
+<page-header title="微信支付分免押" background="#ffffff" inverse="{{false}}" bindback="onSecondaryNavigationBack" slot="header" /><view class="waiver-page">
 <status-view wx:if="{{missing}}" state="empty" title="当前订单无法继续支付" description="请返回订单确认当前支付状态。" illustration-src="/assets/illustrations/empty-orders.webp" action-text="返回订单" bindaction="backOrder" />
 <block wx:else>
   <view class="waiver-card waiver-status" role="status" aria-live="polite">
@@ -17,7 +17,7 @@
   </view>
 </block>
 </view><view slot="footer">
-<bottom-actions wx:if="{{!missing && phase === 'checking'}}" primary-text="查询校验结果" secondary-text="返回订单" busy="{{submitting}}" bindprimary="queryVerification" bindsecondary="backOrder" />
+<bottom-actions wx:if="{{!missing && phase === 'checking'}}" primary-text="查看免押结果" secondary-text="返回订单" busy="{{submitting}}" bindprimary="queryVerification" bindsecondary="backOrder" />
 <bottom-actions wx:elif="{{!missing && phase === 'success'}}" primary-text="去支付" secondary-text="返回订单" busy="{{submitting}}" bindprimary="startPayment" bindsecondary="backOrder" />
 <bottom-actions wx:elif="{{!missing}}" primary-text="返回订单处理" bindprimary="backOrder" />
 </view></page-shell>

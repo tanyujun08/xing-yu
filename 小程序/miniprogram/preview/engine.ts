@@ -19,7 +19,10 @@ function regionChildren(parent?: string): Row[] {
     else if (city) { owner = city; depth = 2; }
     else return [];
     nodes = owner.children ?? [];
+    // 直辖市的「县」并入「市辖区」：城市层只留一项，区县层合并显示
+    if (depth === 2 && city?.name === '市辖区') nodes = [...nodes, ...(province?.children?.find((n) => n.name === '县')?.children ?? [])];
   }
+  if (depth === 1 && nodes.some((n) => n.name === '市辖区')) nodes = nodes.filter((n) => n.name !== '县');
   return nodes.map((n) => ({ region_id: full(n.code), name: n.name === '市辖区' && owner ? owner.name : n.name.replace('省直辖县级行政区划', '省直辖县'), level: levels[depth] }));
 }
 let storageKey = KEY;

@@ -35,3 +35,8 @@
 .region-option.is-active { color: var(--xy-color-brand); font-weight: var(--xy-text-weight-semibold); }
 .touch-overlay { position: absolute; left: 50%; top: 50%; width: 100% !important; height: 100%; min-width: var(--xy-size-touch-min); min-height: var(--xy-size-touch-min); transform: translate(-50%,-50%); box-sizing: border-box; padding: 0; margin: 0; border: 0; border-radius: 0; background: transparent; }
 .touch-overlay::after { border: 0; }
+.picker-value.is-empty { color: var(--xy-color-text-weak); }
+.import-row { display: flex; width: 100%; min-height: var(--xy-size-touch-min); height: calc(var(--xy-space-6) * 2 + var(--xy-space-1)); box-sizing: border-box; align-items: center; gap: var(--xy-space-3); margin-bottom: var(--xy-space-3); padding: 0 var(--xy-space-4); border-radius: var(--xy-radius-lg); background: var(--xy-color-surface); text-align: left; }
+.import-row:active { background: var(--xy-color-surface-subtle); }
+.import-row__icon { flex: none; width: var(--xy-size-icon-base); height: var(--xy-size-icon-base); }
+.import-row__label { min-width: 0; flex: 1; color: var(--xy-color-text-primary); font-size: var(--xy-text-body-size); line-height: var(--xy-text-body-line-height); }
