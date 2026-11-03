@@ -5,7 +5,23 @@ import { rentalRoute, expireOrders, paymentResult, externalEvent, beginRefund, p
 export { DemoProblem } from './rule-core';
 import { routes } from './contract-data';
 import { ACCOUNT, NOW, FUTURE, address, region, position, media, action, capability, clone, schema, seed, type Row, type DemoState } from './seed';
+import { addressRegions, type AddressRegionNode } from '../shared/model/address-regions';
 const KEY = 'xingyu.offline-demo.v1';
+/** 全国省市区（演示）：短编码补齐为 6 位行政区划码，「市辖区」显示为所属直辖市名。 */
+function regionChildren(parent?: string): Row[] {
+  const levels = ['PROVINCE', 'CITY', 'DISTRICT'];
+  const full = (code: string) => code.padEnd(6, '0');
+  let nodes: AddressRegionNode[] = addressRegions, owner: AddressRegionNode | undefined, depth = 0;
+  if (parent) {
+    const province = addressRegions.find((n) => parent.startsWith(n.code));
+    const city = province?.children?.find((n) => full(n.code) === parent);
+    if (province && full(province.code) === parent) { owner = province; depth = 1; }
+    else if (city) { owner = city; depth = 2; }
+    else return [];
+    nodes = owner.children ?? [];
+  }
+  return nodes.map((n) => ({ region_id: full(n.code), name: n.name === '市辖区' && owner ? owner.name : n.name.replace('省直辖县级行政区划', '省直辖县'), level: levels[depth] }));
+}
 let storageKey = KEY;
 let memory: DemoState | undefined;
 export function readDemo(): DemoState { if (!memory) { const value = typeof wx !== 'undefined' ? demoStorage.getStorageSync(storageKey) : null; memory = value?.revision === 1 ? value as DemoState : seed(); } return memory!; }
@@ -74,7 +90,7 @@ function doRoute(method: string, path: string, q: Row, body: Row, ids: Row, temp
  if (path === '/v1/me/identity') return { overall_status: 'FACE_VERIFIED', real_name: { status: 'VERIFIED', verification_id: 'identity-demo', can_create_verification: false, verified_at: NOW(), valid_until: FUTURE }, face: { status: 'VERIFIED', verification_id: 'identity-demo', can_create_verification: false, verified_at: NOW(), valid_until: FUTURE } };
  if (path.includes('/identity/verifications')) return { ...template, verification_id: ids.verification_id ?? 'identity-demo', account_id: ACCOUNT, status: 'SUCCEEDED', result: 'VERIFIED', verified_at: NOW() };
  if (path.startsWith('/v1/materials/')) { const materialId = ids.material_id ?? 'photo-demo'; const existing = s.materials[materialId]; if (existing) return existing; const assetMedia = s.supplies.flatMap(v => v.media).find((m: Row) => m.material_id === materialId); if (assetMedia) return materialValue(materialId, 'RENTAL_ASSET_IMAGE', assetMedia.url); if (materialId === 'avatar-demo') return materialValue(materialId, 'PROFILE_IMAGE', '/assets/demo/avatar.png'); throw new DemoProblem('RESOURCE_NOT_FOUND', '演示素材不存在', 404); }
- if (path === '/v1/regions') { const parent = q.parent_id; const rows = !parent ? [{ region_id: '440000', name: '广东省', level: 'PROVINCE' }] : parent === '440000' ? [{ region_id: '440300', name: '深圳市', level: 'CITY' }, { region_id: '440100', name: '广州市', level: 'CITY' }] : [{ region_id: '440305', name: '南山区', level: 'DISTRICT' }, { region_id: '440304', name: '福田区', level: 'DISTRICT' }]; return { dataset_id: 'demo-regions', parent_id: parent ?? null, items: rows }; }
+ if (path === '/v1/regions') { const parent = q.parent_id; return { dataset_id: 'demo-regions', parent_id: parent ?? null, items: regionChildren(parent) }; }
  if (path.endsWith('/rental-supplies')) { const rows = s.supplies.filter(v => (!q.supply_type || v.supply_type === q.supply_type) && (!q.category_id || v.category.category_id === q.category_id) && (!q.query || v.display_name.includes(q.query))); return page(rows, q, { facets: { categories: ['相机', '镜头', '配件'].map((name, i) => ({ category_id: 'category-' + (i + 1), name })) }, filters: { city_id: q.city_id ?? '', category_id: q.category_id ?? '', supply_type: q.supply_type ?? '', query: q.query ?? '' } }); }
  if (/\/(?:discovery\/)?rental-supplies\//.test(path)) { const found = s.supplies.find(v => v.asset_id === (ids.asset_id ?? ids.id)); if (!found) throw new DemoProblem('RESOURCE_NOT_FOUND', '设备不存在', 404); return found; }
  if (path === '/v1/rental-stores' || path === '/v1/discovery/stores') return page([0, 1, 2].map(getStore), q, { filters: { city_id: q.city_id ?? '' } });

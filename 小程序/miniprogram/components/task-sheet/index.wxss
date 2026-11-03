@@ -4,8 +4,11 @@
 .sheet { position:relative; display:flex; flex-direction:column; width:100%; max-height:75vh; padding-bottom:env(safe-area-inset-bottom); box-sizing:border-box; border-radius:var(--xy-radius-sheet) var(--xy-radius-sheet) 0 0; overflow:hidden; background:var(--xy-color-surface); color:var(--xy-color-text-primary); }
 .sheet__header { position:relative; display:flex; flex:none; align-items:center; padding:var(--xy-space-4) calc(var(--xy-space-4) + var(--xy-size-touch-min)) var(--xy-space-4) var(--xy-space-4); gap:var(--xy-space-3); }
 .sheet__title { flex:1; font-size:var(--xy-text-section-title-size,16px); line-height:var(--xy-text-section-title-line-height,24px); font-weight:var(--xy-text-weight-semibold,600); }
-.sheet__close { position:absolute; right:var(--xy-space-2); top:50%; transform:translateY(-50%); display:flex; align-items:center; justify-content:flex-end; min-width:var(--xy-size-touch-min); width:var(--xy-size-touch-min); height:var(--xy-size-touch-min); padding:0; margin:0; border:0; background:transparent; color:var(--xy-color-text-secondary); font-size:var(--xy-size-icon-nav); line-height:var(--xy-size-icon-nav); }
+.sheet__close { position:absolute; right:var(--xy-space-4); top:50%; transform:translateY(-50%); display:flex; align-items:center; justify-content:flex-end; min-width:var(--xy-size-touch-min); width:var(--xy-size-touch-min); height:var(--xy-size-touch-min); padding:0; margin:0; border:0; background:transparent; color:var(--xy-color-text-secondary); font-size:var(--xy-size-icon-nav); line-height:var(--xy-size-icon-nav); }
 .sheet__close::after { border:0; }
+.sheet__close-icon { position:relative; width:var(--xy-space-4); height:var(--xy-space-4); }
+.sheet__close-icon::before, .sheet__close-icon::after { position:absolute; top:50%; left:calc(var(--xy-space-4) * -.207); width:calc(var(--xy-space-4) * 1.414); height:2px; margin-top:-1px; border-radius:var(--xy-radius-pill); background:var(--xy-color-text-secondary); content:''; transform:rotate(45deg); }
+.sheet__close-icon::after { transform:rotate(-45deg); }
 .sheet__body { flex:none; min-height:0; overflow:hidden; box-sizing:border-box; }
 .sheet__content { padding:0 var(--xy-space-4); }
 .sheet__summary { flex:none; position:relative; background:var(--xy-color-surface); }
