@@ -18,7 +18,7 @@
         </button>
         <view class="wallet-stat">
           <image class="wallet-stat__icon" src="{{icons.walletWechat}}" mode="aspectFit" aria-hidden="true" />
-          <view class="wallet-stat__copy"><text class="wallet-stat__label">微信提现账户</text><text class="wallet-stat__value wallet-stat__value--text">微信零钱</text></view>
+          <view class="wallet-stat__copy"><text class="wallet-stat__label">微信提现账户</text><text class="wallet-stat__value wallet-stat__value--text">{{guest ? '—' : '微信零钱'}}</text></view>
         </view>
       </view>
     </view>
@@ -29,6 +29,7 @@
       <button class="section-link xy-button-reset" bindtap="openWithdrawalRecords" aria-label="查看提现记录"><text>提现记录</text><image class="section-link__arrow" src="/assets/figma-icons/arrow-right.svg" mode="aspectFit" aria-hidden="true" /></button>
     </view>
     <view wx:if="{{guest}}" class="income-card wallet-login">
+      <image class="wallet-login__icon" src="/assets/figma-icons/wallet-records.svg" mode="aspectFit" aria-hidden="true" />
       <text class="wallet-login__title">登录后查看收益</text>
       <text class="wallet-login__copy">出租设备的收益和提现都在这里</text>
       <button class="wallet-login__action xy-button-reset" bindtap="openLogin">登录</button>
@@ -40,9 +41,10 @@
         <text class="income-money"><text class="income-plus">+</text><text class="money-sign money-sign--xs">¥</text>{{money.num(item.amount)}}</text>
         <image class="income-arrow" src="/assets/figma-icons/arrow-right.svg" mode="aspectFit" aria-hidden="true" />
       </button>
-      <view wx:if="{{!loading && !items.length && !errorText}}" class="empty-note xy-empty-section">
-        <text class="xy-empty-section__title">暂无入账收益</text>
-        <text class="xy-empty-section__copy">订单完成后的收益会显示在这里</text>
+      <view wx:if="{{!loading && !items.length && !errorText}}" class="wallet-login">
+        <image class="wallet-login__icon" src="/assets/figma-icons/wallet-records.svg" mode="aspectFit" aria-hidden="true" />
+        <text class="wallet-login__title">还没有收入</text>
+        <text class="wallet-login__copy">设备出租的订单完成后，收益会显示在这里</text>
       </view>
       <button wx:if="{{hasMore}}" class="load-more xy-button-reset" bindtap="loadMore" disabled="{{busy}}" aria-disabled="{{busy}}">加载更多</button>
     </view>

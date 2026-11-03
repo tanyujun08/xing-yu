@@ -53,11 +53,12 @@
 .wallet-stat--button:active { opacity: .7; }
 .wallet-stat__label-row { display: flex; min-width: 0; align-items: center; gap: var(--xy-space-1); }
 .help-icon--sm { flex: none; width: var(--xy-space-3); height: var(--xy-space-3); opacity: .6; }
-.wallet-login { display: flex; align-items: center; flex-direction: column; gap: var(--xy-space-1); padding: var(--xy-space-6) var(--xy-space-4); text-align: center; }
+.wallet-login { display: flex; align-items: center; flex-direction: column; padding: var(--xy-space-6) var(--xy-space-4); text-align: center; }
+.wallet-login__icon { width: calc(var(--xy-space-6) + var(--xy-space-4)); height: calc(var(--xy-space-6) + var(--xy-space-4)); margin-bottom: var(--xy-space-3); opacity: .45; }
 .wallet-login__title { color: var(--xy-color-text-strong); font-size: var(--xy-text-section-title-size); font-weight: var(--xy-text-weight-bold); line-height: var(--xy-text-section-title-line-height); }
-.wallet-login__copy { color: var(--xy-color-text-secondary); font-size: var(--xy-text-body-small-size); line-height: var(--xy-text-body-small-line-height); }
-.wallet-login__action { display: flex; min-height: var(--xy-size-touch-min); align-items: center; justify-content: center; margin-top: var(--xy-space-3); padding: 0 var(--xy-space-6); border-radius: var(--xy-radius-md); background: var(--xy-color-brand); box-shadow: var(--xy-shadow-action-brand); color: var(--xy-color-text-inverse); font-size: var(--xy-text-body-size); font-weight: var(--xy-text-weight-semibold); line-height: var(--xy-text-body-line-height); }
-.alert-row { display: flex; align-items: center; gap: var(--xy-space-2); padding: 0 var(--xy-space-2) 0 var(--xy-space-4); border-radius: var(--xy-radius-md); background: var(--xy-return-danger-soft); }
+.wallet-login__copy { margin-top: var(--xy-space-2); color: var(--xy-color-text-secondary); font-size: var(--xy-text-body-small-size); line-height: var(--xy-text-body-small-line-height); }
+.wallet-login__action { display: flex; width: 100%; min-height: var(--xy-size-touch-min); height: calc(var(--xy-space-6) * 2); align-items: center; justify-content: center; margin-top: var(--xy-space-5); border-radius: var(--xy-radius-md); background: var(--xy-color-brand); box-shadow: var(--xy-shadow-action-brand); color: var(--xy-color-text-inverse); font-size: var(--xy-text-section-title-size); font-weight: var(--xy-text-weight-semibold); line-height: var(--xy-text-section-title-line-height); }
+.alert-row { display: flex; align-items: center; gap: var(--xy-space-2); padding: 0 var(--xy-space-4); border-radius: var(--xy-radius-md); background: var(--xy-return-danger-soft); }
 .alert-copy { min-width: 0; flex: 1; color: var(--xy-color-danger); font-size: var(--xy-text-body-small-size); line-height: var(--xy-text-body-small-line-height); }
 .text-action { display: flex; flex: none; min-height: var(--xy-size-touch-min); align-items: center; color: var(--xy-color-brand); font-size: var(--xy-text-body-small-size); font-weight: var(--xy-text-weight-semibold); line-height: var(--xy-text-body-small-line-height); }
 .income-card { overflow: hidden; border-radius: var(--xy-radius-lg); background: var(--xy-color-surface); }
