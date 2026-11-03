@@ -117,6 +117,7 @@ export const designAssets = {
   loginWechat: '/assets/figma-icons/login-wechat.svg',
   loginWechatWhite: '/assets/figma-icons/login-wechat-white.svg',
   loginHero: '/assets/figma-media/login-hero.jpg',
+  loginSheetDeco: '/assets/illustrations/login-sheet-deco.svg',
   loginPhoneDark: '/assets/figma-icons/login-phone-dark.svg',
   loginGuestArrow: '/assets/figma-icons/login-guest-arrow.svg',
   loginFeatureCabinet: '/assets/figma-icons/login-feature-cabinet.svg',
