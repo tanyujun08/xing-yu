@@ -125,7 +125,7 @@ test('large uint64 minor-unit prices render exactly; malformed amount does not b
   vi.spyOn(ownAssetsApi, 'list').mockReturnValue({ abort: vi.fn(), promise: Promise.resolve(listed('18446744073709551615', '9007199254740993')) });
   const target = page(); (target.onShow as () => void).call(target); await tick();
   expect((target.data.listings as Array<{ price: string; deposit: string }>)[0]).toMatchObject({
-    price: '¥184467440737095516.15/天', deposit: '¥90071992547409.93',
+    price: '¥184,467,440,737,095,516.15/天', deposit: '¥90,071,992,547,409.93',
   });
   vi.spyOn(ownAssetsApi, 'list').mockReturnValue({ abort: vi.fn(), promise: Promise.resolve(listed('18446744073709551616', '-1')) });
   (target.onShow as () => void).call(target); await tick();

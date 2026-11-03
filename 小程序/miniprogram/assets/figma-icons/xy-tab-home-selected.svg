@@ -1,5 +1,1 @@
-<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="Frame">
-<path id="Vector" fill-rule="evenodd" clip-rule="evenodd" d="M11.06 3.25C11.61 2.81 12.39 2.81 12.94 3.25L20.44 9.25C20.8 9.54 21 9.97 21 10.43V19C21 20.38 19.88 21.5 18.5 21.5H5.5C4.12 21.5 3 20.38 3 19V10.43C3 9.97 3.2 9.54 3.56 9.25L11.06 3.25ZM9.5 21.5V14.5C9.5 13.95 9.95 13.5 10.5 13.5H13.5C14.05 13.5 14.5 13.95 14.5 14.5V21.5H9.5Z" fill="#0A7F5E"/>
-</g>
-</svg>
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke="#0A7F5E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path fill="#0A7F5E" d="M4 10.2 12 4l8 6.2V19a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"/><path stroke="#fff" d="M10 20v-4h4v4"/></g></svg>

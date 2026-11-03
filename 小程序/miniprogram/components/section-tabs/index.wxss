@@ -2,7 +2,7 @@
 
 .section-tabs { color: var(--xy-color-text-primary); font-family: var(--xy-font-family-sans); }
 .section-tabs__title { margin-bottom: var(--xy-layout-title-content-gap); font-size: var(--xy-text-section-title-size); font-weight: var(--xy-text-weight-semibold); line-height: var(--xy-text-section-title-line-height); }
-.section-tabs__rail { position: relative; display: flex; gap: calc(var(--xy-space-4) + var(--xy-space-4)); }
+.section-tabs__rail { position: relative; display: flex; gap: var(--xy-space-6); }
 .section-tabs__item { position: relative; flex: none; color: var(--xy-color-text-secondary); font-size: var(--xy-text-body-size); font-weight: var(--xy-text-weight-regular); line-height: var(--xy-text-body-line-height); }
 .section-tabs__label { display: block; }
 .section-tabs__hit { position: absolute; top: calc(-1 * var(--xy-space-3)); right: calc(-1 * var(--xy-space-2)); bottom: calc(-1 * var(--xy-space-3)); left: calc(-1 * var(--xy-space-2)); min-width: var(--xy-size-touch-min); min-height: var(--xy-size-touch-min); }
