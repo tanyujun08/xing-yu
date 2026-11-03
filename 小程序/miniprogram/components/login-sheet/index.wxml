@@ -6,6 +6,11 @@
     <view class="login-brand"><image class="login-logo" src="{{icons.loginLogo}}" mode="aspectFill" aria-hidden="true" /><text class="login-brand-name">星遇</text></view>
     <text class="login-heading">登录星遇</text>
     <text class="login-copy">随时发现、租用和分享数码设备</text>
+    <view class="login-features">
+      <view class="login-feature"><view class="login-feature__icon"><image src="{{icons.loginFeatureCabinet}}" mode="aspectFit" aria-hidden="true" /></view><text class="login-feature__title">租赁柜</text><text class="login-feature__copy">自助取还设备</text></view>
+      <view class="login-feature"><view class="login-feature__icon"><image src="{{icons.loginFeatureStore}}" mode="aspectFit" aria-hidden="true" /></view><text class="login-feature__title">线下门店</text><text class="login-feature__copy">到店看机租借</text></view>
+      <view class="login-feature"><view class="login-feature__icon"><image src="{{icons.loginFeatureDeposit}}" mode="aspectFit" aria-hidden="true" /></view><text class="login-feature__title">微信免押</text><text class="login-feature__copy">符合条件免押</text></view>
+    </view>
     <view class="login-spacer" />
     <view class="login-actions">
       <text wx:if="{{errorText}}" class="login-error" role="alert">{{errorText}}</text>

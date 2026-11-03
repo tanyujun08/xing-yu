@@ -1,14 +1,20 @@
 /* 登录 第 5 稿（细节优化）：导航只留返回；品牌行缩小；去掉绿色短条；三个操作下移到下半屏，协议紧跟按钮；渐变从图片 40% 过渡到白。原第 4 稿（按用户给的设计）：全屏页，顶部相机主视觉铺满宽度、导航透明；品牌行 → 登录星遇 → 一句说明 → 绿色短条 → 微信一键登录 / 手机快捷登录 / 暂不登录；协议固定在底部 */
 .login-overlay { position: fixed; z-index: var(--xy-z-modal, 200); top: 0; right: 0; bottom: 0; left: 0; display: flex; flex-direction: column; overflow-y: auto; background: var(--xy-color-surface); color: var(--xy-color-text-primary, #202937); }
-.login-hero { position: absolute; top: 0; left: 0; display: block; width: 100%; }
-.login-hero-fade { position: absolute; top: 0; left: 0; width: 100%; height: 104vw; background: linear-gradient(180deg, transparent 40%, var(--xy-color-surface) 96%); }
+.login-hero { position: absolute; top: 0; right: 0; display: block; width: 118%; }
+.login-hero-fade { position: absolute; top: 0; left: 0; width: 100%; height: 122vw; background: linear-gradient(180deg, transparent 45%, var(--xy-color-surface) 92%); }
 .login-sheet { position: relative; display: flex; min-height: 0; flex: 1; flex-direction: column; padding: var(--xy-space-6) var(--xy-space-6) calc(var(--xy-space-6) + env(safe-area-inset-bottom)); }
 .login-brand { display: flex; align-items: center; gap: var(--xy-space-2); }
 .login-logo { width: calc(var(--xy-space-6) + var(--xy-space-1)); height: calc(var(--xy-space-6) + var(--xy-space-1)); border-radius: var(--xy-radius-sm); }
 .login-brand-name { color: var(--xy-color-text-strong); font-size: var(--xy-text-body-size); font-weight: var(--xy-text-weight-semibold); line-height: var(--xy-text-body-line-height); }
-.login-heading { margin-top: calc(var(--xy-space-6) * 3 + var(--xy-space-2)); color: var(--xy-color-text-strong); font-size: var(--xy-text-task-amount-size); font-weight: var(--xy-text-weight-bold); line-height: var(--xy-text-task-amount-line-height); }
+.login-heading { margin-top: calc(var(--xy-space-6) * 5); color: var(--xy-color-text-strong); font-size: var(--xy-text-task-amount-size); font-weight: var(--xy-text-weight-bold); line-height: var(--xy-text-task-amount-line-height); }
 .login-copy { margin-top: var(--xy-space-2); color: var(--xy-color-text-secondary); font-size: var(--xy-text-body-size); line-height: var(--xy-text-body-line-height); }
-.login-spacer { flex: 1; min-height: calc(var(--xy-space-6) * 2); }
+.login-features { display: flex; gap: var(--xy-space-3); margin-top: var(--xy-space-6); }
+.login-feature { display: flex; min-width: 0; flex: 1; flex-direction: column; align-items: flex-start; gap: var(--xy-space-1); padding: var(--xy-space-3); border-radius: var(--xy-radius-md); background: var(--xy-color-surface-subtle); }
+.login-feature__icon { display: flex; width: calc(var(--xy-space-6) + var(--xy-space-2)); height: calc(var(--xy-space-6) + var(--xy-space-2)); align-items: center; justify-content: center; margin-bottom: var(--xy-space-1); border-radius: var(--xy-radius-circle); background: var(--xy-color-brand-light); }
+.login-feature__icon image { width: var(--xy-space-5); height: var(--xy-space-5); }
+.login-feature__title { color: var(--xy-color-text-strong); font-size: var(--xy-text-body-size); font-weight: var(--xy-text-weight-semibold); line-height: var(--xy-text-body-line-height); }
+.login-feature__copy { color: var(--xy-color-text-muted); font-size: var(--xy-text-caption-size); line-height: var(--xy-text-caption-line-height); }
+.login-spacer { flex: 1; min-height: var(--xy-space-6); }
 .login-actions { display: flex; flex-direction: column; gap: var(--xy-space-3); }
 .login-error { color: var(--xy-color-danger); font-size: var(--xy-text-caption-size); line-height: var(--xy-text-caption-line-height); }
 .quick-button, .phone-button { display: flex; width: 100% !important; min-height: var(--xy-size-touch-min); height: calc(var(--xy-space-6) * 2); align-items: center; justify-content: center; gap: var(--xy-space-2); box-sizing: border-box; margin: 0 !important; padding: var(--xy-space-1) var(--xy-space-3); border-radius: var(--xy-radius-md); font-family: inherit; font-size: var(--xy-order-body-size); font-weight: var(--xy-text-weight-semibold); line-height: var(--xy-order-body-line-height); }
