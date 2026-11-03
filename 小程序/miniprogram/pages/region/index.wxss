@@ -36,3 +36,4 @@
 .alpha-index { position: absolute; top: 0; right: 0; bottom: calc(var(--xy-space-4) + env(safe-area-inset-bottom)); width: var(--xy-size-touch-min); }
 .alpha-index-track { width: var(--xy-size-touch-min); min-height: var(--xy-size-touch-min); }
 .alpha-index-item { display: flex; align-items: center; justify-content: center; min-height: 20px; color: var(--xy-color-brand); font-size: var(--xy-text-caption-size); font-weight: var(--xy-text-weight-semibold); line-height: var(--xy-text-caption-line-height); }
+.city-content > .xy-action-hit { justify-content: flex-start; margin-top: var(--xy-space-3); color: var(--xy-color-brand); font-size: var(--xy-text-body-size); font-weight: var(--xy-text-weight-semibold); }
