@@ -3,6 +3,7 @@
   "navigationStyle": "custom",
   "navigationBarTextStyle": "black",
   "usingComponents": {
-    "page-header": "../../components/page-header/index"
+    "page-header": "../../components/page-header/index",
+    "login-sheet": "../../components/login-sheet/index"
   }
 }

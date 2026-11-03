@@ -1,3 +1,4 @@
+import { openLoginHere } from './login-open';
 import { createCursorList, type CursorList } from './cursor-list';
 import { createRentalPageState } from './rental-page-state';
 import { navigateBackWithFallback } from './navigate-once';
@@ -196,7 +197,7 @@ export function createRentalOrdersPage<TSource extends {
             return; const route = row.destination === 'contract' ? '/pages/contract/index?orderId=' : '/pages/order-detail/index?id=';
             s.navigation.navigateOnce('order', callbacks => wx.navigateTo({ url: route + encodeURIComponent(id), ...callbacks })); },
         openRental(this: Target, event: WechatMiniprogram.TouchEvent) { const s = state(this), id = String(event.currentTarget.dataset['id'] ?? ''), row = this.data.items.find(item => item.id === id); if (!row || !s.capture(options.currentOwner)())
-            return; this.setData({ sheetOpen: true, sheetTitle: '订单信息', recordGroups: [{ title: '订单记录', items: [row] }], expandedGroup: '订单记录' }); }, openLogin(this: Target) { state(this).navigation.navigateOnce('login', callbacks => wx.navigateTo({ url: '/pages/login/index', ...callbacks })); }, goBack(this: Target) { navigateBackWithFallback(state(this).navigation); },
+            return; this.setData({ sheetOpen: true, sheetTitle: '订单信息', recordGroups: [{ title: '订单记录', items: [row] }], expandedGroup: '订单记录' }); }, openLogin(this: Target) { openLoginHere(this, () => state(this).navigation.navigateOnce('login', callbacks => wx.navigateTo({ url: '/pages/login/index', ...callbacks }))); }, goBack(this: Target) { navigateBackWithFallback(state(this).navigation); },
         retryInitial(this: Target) { void state(this).list?.initial(); }, retryRefresh(this: Target) { void state(this).list?.refresh(); }, retryLoadMore(this: Target) { void state(this).list?.loadMore(); }, onReachBottom(this: Target) { void state(this).list?.loadMore(); }, async onPullDownRefresh(this: Target) { try {
             await state(this).list?.refresh();
         }

@@ -1,3 +1,4 @@
+import { loginHostMethods, openLoginHere } from '../../shared/interaction/login-host';
 import { demoWx } from '../../preview/platform';
 import { accountApi, ApiProblem, runMaterialUpload } from '../../shared/api/account-api';
 import { publicationApi, type AssetDraft, type AssetDraftInput, type CatalogCategory, type CatalogProductPage, type OwnAssetPublicationContext } from '../../shared/api/rental-api';
@@ -151,6 +152,7 @@ function renderDraft(page:{data:Record<string,unknown>;setData(patch:Record<stri
   draftNoticeText:notice,showDraftNotice:true,hasDraftTarget:true,missingFields:[],missingMedia:false,errorText:''});
 }
 Page({
+  ...loginHostMethods,
  data:initial(),
  onLoad(options:Record<string,string|undefined>){
   const id=options.draft_id??(options.mode==='draft'?options.id:'')??'';
@@ -307,7 +309,7 @@ Page({
  confirmSheet(){this.closeSheet();},stopSheetTap(){},
  handleNavigationBack(){const r=states.get(this);if(!r?.visible)return;if(this.data.activeSheet){this.closeSheet();return;}navigateBackWithFallback(r.navigation);},
  onSecondaryNavigationBack(){this.handleNavigationBack();},goBack(){this.handleNavigationBack();},
- openLogin(){const r=states.get(this);if(r?.visible)r.navigation.navigateOnce('login',callbacks=>wx.navigateTo({url:'/pages/login/index?source=publish',...callbacks}));},
+ openLogin(){const r=states.get(this);if(r?.visible)openLoginHere(this,()=>r.navigation.navigateOnce('login',callbacks=>wx.navigateTo({url:'/pages/login/index?source=publish',...callbacks})));},
  unavailable(){const r=states.get(this);if(r?.visible)wx.showToast({title:'该项暂未开放修改',icon:'none'});},
  async loadTypeOptions(){
   const r=states.get(this);if(!r||!current(this,r))return;

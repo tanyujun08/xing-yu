@@ -1,3 +1,4 @@
+import { openLoginHere } from './login-open';
 import { createNavigateOnce, navigateBackWithFallback } from './navigate-once';
 
 export const orderUnavailableText = '订单服务暂不可用，请稍后再试。';
@@ -60,7 +61,7 @@ export function unavailableOrderPage<T extends object>(
     goBack(this: object) { const state = states.get(this); if (state?.visible) navigateBackWithFallback(state.navigation); },
     onSecondaryNavigationBack(this: object) { const state = states.get(this); if (state?.visible) navigateBackWithFallback(state.navigation); },
     goOrders(this: object) { navigate(this, '/pages/orders/index', true); },
-    openLogin(this: object) { navigate(this, '/pages/login/index'); },
+    openLogin(this: object) { openLoginHere(this, () => navigate(this, '/pages/login/index')); },
     openSupport(this: object) { navigate(this, '/pages/chat/index?mode=support'); },
     openWithdrawal(this: object) { navigate(this, '/pages/withdrawal/index'); },
     openWithdrawalRecords(this: object) { navigate(this, '/pages/withdrawal/index?view=records'); },

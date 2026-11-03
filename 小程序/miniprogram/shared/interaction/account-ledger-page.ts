@@ -1,3 +1,4 @@
+import { openLoginHere } from './login-open';
 import { createCursorList, type CursorList, type CursorListPatch } from './cursor-list';
 import { createNavigateOnce, navigateBackWithFallback } from './navigate-once';
 import type { ListState } from '../model/view-state';
@@ -108,7 +109,7 @@ export function createAccountLedgerPage<T extends LedgerResponse, Row, Data exte
       if (visibility.get(this) !== true || !settings.identity() || !settings.filters?.includes(value) || value === selected(this)) return;
       filters.set(this, value); clearPrivate(this); await ensure(this)?.list.initial();
     },
-    openLogin(this: Target) { if (visibility.get(this) === true) nav(this).navigateOnce('login', callbacks => wx.navigateTo({ url: settings.loginURL, ...callbacks })); },
+    openLogin(this: Target) { if (visibility.get(this) === true) openLoginHere(this, () => nav(this).navigateOnce('login', callbacks => wx.navigateTo({ url: settings.loginURL, ...callbacks }))); },
     onSecondaryNavigationBack(this: Target) { if (visibility.get(this) === true) navigateBackWithFallback(nav(this)); },
     navigateLedger(this: Target, url: string) {
       const runtime = runtimes.get(this);

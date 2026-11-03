@@ -43,3 +43,4 @@ module.exports = { big: big, small: small };
  <bottom-actions wx:if="{{canRedeem}}" slot="footer" layout="primary-emphasis" primary-text="兑换 1 次发布额度" secondary-text="{{movementId ? '额度明细' : ''}}" bindprimary="redeem" bindsecondary="openQuota" />
  <bottom-actions wx:elif="{{movementId}}" slot="footer" primary-text="查看发布额度明细" bindprimary="openQuota" />
 </page-shell>
+<login-sheet id="login-sheet" bindwechatlogin="onWechatLogin" bindphonelogin="onPhoneLogin" bindlegal="onLoginLegal" />

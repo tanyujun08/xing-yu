@@ -25,3 +25,4 @@
 </view>
 <bottom-actions slot="footer" wx:if="{{loggedIn}}" primary-text="新增收货地址" bindprimary="newAddress" />
 </page-shell>
+<login-sheet id="login-sheet" bindwechatlogin="onWechatLogin" bindphonelogin="onPhoneLogin" bindlegal="onLoginLegal" />

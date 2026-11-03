@@ -1,3 +1,4 @@
+import { loginHostMethods, openLoginHere } from '../../shared/interaction/login-host';
 import { accountApi, addressApi, ApiProblem, type OwnAddress } from '../../shared/api/account-api';
 import { designAssets } from '../../shared/design/assets';
 import { createNavigateOnce, navigateBackWithFallback } from '../../shared/interaction/navigate-once';
@@ -21,6 +22,7 @@ function projection(address: OwnAddress) {
     canArchive: address.allowed_actions.some((a) => a.code === 'ARCHIVE' && a.enabled) };
 }
 Page({
+  ...loginHostMethods,
   data: { icons: designAssets, loggedIn: false, addresses: [] as ReturnType<typeof projection>[], selectMode: false,
     errorText: '', loading: false, hasMore: false, nextCursor: '', busy: false },
   onSecondaryNavigationBack() { navigateBackWithFallback(interaction(this).navigation); },
@@ -81,7 +83,7 @@ Page({
   openEditor(id: string) {
     const state = interaction(this);
     if (!accountApi.sessionIdentity()) {
-      state.navigation.navigateOnce('login', (callbacks) => wx.navigateTo({ url: '/pages/login/index?source=addresses', ...callbacks })); return;
+      openLoginHere(this, () => state.navigation.navigateOnce('login', (callbacks) => wx.navigateTo({ url: '/pages/login/index?source=addresses', ...callbacks }))); return;
     }
     if (id && !state.rows.get(id)?.allowed_actions.some((a) => a.code === 'UPDATE' && a.enabled)) return;
     state.navigation.navigateOnce('editor', (callbacks) => wx.navigateTo({ url: '/pages/address-edit/index?id=' + encodeURIComponent(id), ...callbacks }));

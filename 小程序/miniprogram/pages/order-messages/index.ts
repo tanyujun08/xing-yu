@@ -1,8 +1,10 @@
+import { loginHostMethods, openLoginHere } from '../../shared/interaction/login-host';
 import { accountApi } from '../../shared/api/account-api';
 import { type OrderMessageView } from '../../shared/presentation/info';
 import { designAssets } from '../../shared/design/assets';
 
 Page({
+  ...loginHostMethods,
   onSecondaryNavigationBack() { wx.navigateBack({ fail: () => wx.switchTab({ url: '/pages/home/index' }) }); },
   data: {
     icons: designAssets,
@@ -21,7 +23,7 @@ Page({
     this.setData({ loggedIn, messages: [] as OrderMessageView[] });
   },
 
-  openLogin() { wx.navigateTo({ url: '/pages/login/index' }); },
+  openLogin() { openLoginHere(this, () => wx.navigateTo({ url: '/pages/login/index' })); },
 
   openOrder(event: WechatMiniprogram.TouchEvent) {
     const id = String(event.currentTarget.dataset['id'] ?? '');

@@ -40,3 +40,4 @@ module.exports = { big: big, small: small };
     </block>
   </view>
 </page-shell>
+<login-sheet id="login-sheet" bindwechatlogin="onWechatLogin" bindphonelogin="onPhoneLogin" bindlegal="onLoginLegal" />

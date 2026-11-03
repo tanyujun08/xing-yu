@@ -24,3 +24,4 @@
     <text class="xy-empty-page__copy">订单状态发生变化后，会显示在这里。</text>
   </view>
 </view>
+<login-sheet id="login-sheet" bindwechatlogin="onWechatLogin" bindphonelogin="onPhoneLogin" bindlegal="onLoginLegal" />

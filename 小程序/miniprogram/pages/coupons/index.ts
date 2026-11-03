@@ -1,3 +1,4 @@
+import { loginHostMethods, openLoginHere } from '../../shared/interaction/login-host';
 import { accountApi, couponApi } from '../../shared/api/account-api';
 import { designAssets } from '../../shared/design/assets';
 import { createCursorList, type CursorList, type CursorListPatch } from '../../shared/interaction/cursor-list';
@@ -42,6 +43,7 @@ function runtimeFor(page: object): CouponRuntime {
 }
 
 Page({
+  ...loginHostMethods,
   data: {
     loggedIn: false,
     filters,
@@ -149,10 +151,10 @@ Page({
 
   openLogin() {
     const runtime = runtimeFor(this);
-    runtime.navigation.navigateOnce('coupons:login', (callbacks) => wx.navigateTo({
+    openLoginHere(this, () => runtime.navigation.navigateOnce('coupons:login', (callbacks) => wx.navigateTo({
       url: '/pages/login/index?source=coupons', ...callbacks,
       fail: runtime.scope.guard((error) => { callbacks.fail(error); wx.showToast({ title: '暂时无法打开登录，请重试', icon: 'none' }); }),
-    }));
+    })));
   },
   onBack() {
     const runtime = runtimeFor(this);

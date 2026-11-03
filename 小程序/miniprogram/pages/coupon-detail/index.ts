@@ -1,3 +1,4 @@
+import { loginHostMethods, openLoginHere } from '../../shared/interaction/login-host';
 import { accountApi, couponApi, redemptionApi, ApiProblem, readLoyaltyIntent, prepareLoyaltyIntent, queryPendingRedemptions, verifyRedemptionResult, loyaltyTraceApi } from '../../shared/api/account-api';
 import type { CouponDetail, CouponRedemptionAttempt, CouponRedemptionInput } from '../../shared/model/api-loyalty';
 import type { LoyaltyIntent } from '../../shared/model/loyalty-intent';
@@ -15,6 +16,7 @@ function current(page:object,value:ReturnType<typeof createState>){return states
 const sourceTitles={CHECK_IN:'签到',PROGRESS:'成长奖励',REDEMPTION:'权益兑换',LOTTERY:'抽奖'};
 
 Page({
+  ...loginHostMethods,
  data:{loggedIn:false,loading:false,busy:false,errorText:'',coupon:null as ReturnType<typeof presentOwnCoupon>|null,canRedeem:false,confirmOpen:false,pendingText:'',restoreAvailable:false,pendingCouponId:'',attemptId:'',redemptionId:'',movementId:'',availableBefore:'—',availableAfter:'—',receiptState:'',reason:'',sourceTitle:'',issuedAt:'',events:[] as {id:string;title:string;time:string}[],currentCoupon:null as CouponDetail|null,lastRequest:null as LoyaltyIntent<CouponRedemptionInput>|null,attempt:null as CouponRedemptionAttempt|null},
  onLoad(options:Record<string,string|undefined>){const value=state(this);value.id=loyaltyIdentifier(options['coupon_id']??'')?options['coupon_id']!:'';value.receiptId=loyaltyIdentifier(options['redemption_id']??'')?options['redemption_id']!:'';},
  onShow(){let value=state(this);if(value.scope.disposed||value.owner!==accountApi.sessionIdentity()){const old=value;old.scope.dispose();old.navigation.dispose();states.delete(this);value=state(this);value.id=old.id;value.receiptId=old.receiptId;}value.visible=true;return this.refresh();},
@@ -22,7 +24,7 @@ Page({
  onHide(){const value=state(this);value.visible=false;value.scope.dispose();this.clearPrivate();},
  onUnload(){const value=state(this);value.scope.dispose();value.navigation.dispose();states.delete(this);},
  onBack(){navigateBackWithFallback(state(this).navigation);},
- openLogin(){state(this).navigation.navigateOnce('login',callbacks=>wx.navigateTo({url:'/pages/login/index?source=coupon-detail&id='+encodeURIComponent(state(this).id),...callbacks}));},
+ openLogin(){openLoginHere(this,()=>state(this).navigation.navigateOnce('login',callbacks=>wx.navigateTo({url:'/pages/login/index?source=coupon-detail&id='+encodeURIComponent(state(this).id),...callbacks})));},
  async refresh(){const value=state(this);this.clearPrivate();this.setData({loggedIn:!!value.owner,loading:!!value.owner,errorText:''});if(!current(this,value))return;
   try{if(value.receiptId){const attempt=await redemptionApi.receipt(value.receiptId).promise;if(!current(this,value))return;assertRedemptionAttempt(attempt,value.owner!);if(attempt.redemption_id!==value.receiptId)throw new Error('兑换回执标识不一致');if(value.id&&value.id!==attempt.coupon_id)throw new Error('兑换回执与券不一致');value.id=attempt.coupon_id;}
    if(!value.id)throw new Error('缺少有效券标识，请从本人券包打开');await this.readCoupon();await this.recover();
