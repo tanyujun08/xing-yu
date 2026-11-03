@@ -45,3 +45,4 @@
 .ticket--used .ticket-title { color: var(--xy-color-text-secondary); }
 .ticket-rights { color: var(--xy-color-text-secondary); font-size: var(--xy-text-body-small-size); line-height: var(--xy-text-body-small-line-height); overflow-wrap: anywhere; }
 .ticket-expiry { color: var(--xy-color-text-weak); font-size: var(--xy-text-body-small-size); font-variant-numeric: tabular-nums; line-height: var(--xy-text-body-small-line-height); }
+.coupon-filters::-webkit-scrollbar { display: none; width: 0; height: 0; color: transparent; }

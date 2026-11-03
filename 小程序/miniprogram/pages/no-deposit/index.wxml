@@ -3,7 +3,7 @@
 <page-header title="{{secondaryNavigationTitle || '押金说明'}}" background="#ffffff" inverse="{{false}}" bindback="onSecondaryNavigationBack" slot="header" /><view class="no-deposit-page">
 <view class="summary-card">
   <view wx:if="{{!hourly}}" class="summary-cell"><text class="summary-label">粉钻余额</text><text class="summary-value">{{diamondBalance}}</text></view>
-  <view class="summary-cell"><text class="summary-label">本期可免押</text><view class="summary-value">{{allowancesLoaded && allowances.length ? allowances[0].available : '—'}}<text class="summary-unit"> 次</text></view></view>
+  <view class="summary-cell"><text class="summary-label">本期可免押</text><view class="summary-value">{{allowancesLoaded ? (allowances.length ? allowances[0].available : 0) : '—'}}<text class="summary-unit"> 次</text></view></view>
 </view>
 <text wx:if="{{!hourly}}" class="no-deposit-intro">可用押金方案由设备配置决定，以订单确认页为准。</text>
 <block wx:if="{{allowancesLoaded}}">
