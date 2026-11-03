@@ -50,6 +50,14 @@ export function linkedMock() {
         })();
         return loading;
       }
+      // 改了小程序演示数据（preview/、shared/）后自动重新加载，不用重启服务
+      let reloadTimer;
+      server.watcher.add([path.join(miniRoot, 'preview'), path.join(miniRoot, 'shared')]);
+      server.watcher.on('change', file => {
+        if (!file.startsWith(miniRoot) || !file.endsWith('.ts')) return;
+        clearTimeout(reloadTimer);
+        reloadTimer = setTimeout(() => { server.moduleGraph.invalidateAll(); loading = undefined; initialized = fs.existsSync(stateFile); console.log('[星遇] 演示数据代码已更新，已自动重新加载'); }, 300);
+      });
       async function jsonBody(req) {
         let size = 0; const chunks = [];
         for await (const chunk of req) { size += chunk.length; if (size > 8 * 1024 * 1024) throw new Error('请求数据超过本机演示限制'); chunks.push(chunk); }

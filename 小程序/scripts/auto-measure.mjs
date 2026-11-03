@@ -58,7 +58,11 @@ function classesOf(name) {
 }
 
 process.on('uncaughtException', (error) => console.log('忽略自动化接口的内部报错：', error.message));
-const mp = await automator.launch({ cliPath, projectPath: root });
+// 先连已经开着的开发者工具（端口 9420），连不上才启动一次；之后每次截图都复用同一个窗口，不再重开、重编译
+const port = Number(process.env.WX_AUTO_PORT || 9420);
+let mp;
+try { mp = await automator.connect({ wsEndpoint: `ws://127.0.0.1:${port}` }); console.log('复用已打开的开发者工具'); }
+catch { mp = await automator.launch({ cliPath, projectPath: root, port }); console.log('首次启动开发者工具（端口', port, '）'); }
 mp.on('exception', (e) => console.log('页面异常：', (e && e.message || '').slice(0, 300)));
 mp.on('console', (e) => { if (e.type === 'error' || e.type === 'warn') console.log('控制台', e.type, JSON.stringify(e.args).slice(0, 300)); });
 const result = {};
