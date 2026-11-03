@@ -91,4 +91,5 @@ Page({ data: { loading: false, busy: false, errorText: '', booked: '—', estima
         wx.stopPullDownRefresh();
     } }, onSecondaryNavigationBack() { navigateBackWithFallback(state(this).navigation); },
 demoSupport() { wx.navigateTo({ url: '/pages/demo-support/index' }); },
+openWithdrawal() { state(this).navigation.navigateOnce('wallet:withdrawal', callbacks => wx.navigateTo({ url: '/pages/withdrawal/index', ...callbacks })); },
 });

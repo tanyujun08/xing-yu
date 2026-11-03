@@ -7,15 +7,16 @@
         <view class="hero-copy">
           <text class="hero-label">已入账收益</text>
           <text class="hero-amount" aria-label="{{booked}}">{{booked}}</text>
+          <button class="hero-action xy-button-reset" bindtap="openWithdrawal" aria-label="去提现"><text class="hero-action__pill">去提现</text></button>
         </view>
         <image class="hero-art" src="/assets/illustrations/withdrawal-available.svg" mode="aspectFit" aria-hidden="true" />
       </view>
       <view class="hero-stats">
         <view class="hero-stat"><text class="hero-stat-label">预计收益 · {{estimatedCount}} 单</text><text class="hero-stat-value">{{estimated}}</text></view>
-        <view class="hero-stat"><text class="hero-stat-label">微信提现</text><text class="hero-stat-value hero-stat-value--muted">暂未开放</text></view>
+        <view class="hero-stat"><text class="hero-stat-label">可提现</text><text class="hero-stat-value">{{booked}}</text></view>
       </view>
     </view>
-    <text class="money-note">预计收益为未结算订单，结算后转为已入账；本期仅记录收益入账，暂不开放微信提现。</text>
+    <text class="money-note">预计收益为未结算订单，结算后转为已入账，可提现到微信。</text>
     <view wx:if="{{errorText}}" class="alert-row" role="alert"><text class="alert-copy">{{errorText}}</text><button class="text-action xy-button-reset" bindtap="refresh" disabled="{{loading}}" aria-disabled="{{loading}}">重新查询</button></view>
     <text class="section-title">收入明细</text>
     <view class="income-card">
