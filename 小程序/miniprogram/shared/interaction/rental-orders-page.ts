@@ -93,7 +93,7 @@ export function createRentalOrdersPage<TSource extends {
             if (role && role !== this.data.role) this.setData({ role, filter: s.roleFilters[role] });
             s.show(owner); this.setData({ loggedIn: !!owner }); this.makeList();
         },
-        onHide(this: Target) { options.unread?.hide(this); releaseFilterTabBar(this); const s = state(this), cached = s.cache.get(s.listKey); if (cached) cached.scrollTop = s.scrollTop; s.hide(); s.list?.dispose(); this.setData({ items: [], recordGroups: [], sheetOpen: false, filterMenuOpen: false }); },
+        onHide(this: Target) { options.unread?.hide(this); releaseFilterTabBar(this); const s = state(this), cached = s.cache.get(s.listKey); if (cached) cached.scrollTop = s.scrollTop; s.hide(); s.list?.dispose(); this.setData({ recordGroups: [], sheetOpen: false, filterMenuOpen: false }); },
         onUnload(this: Target) { options.unread?.hide(this); releaseFilterTabBar(this); const s = state(this); s.list?.dispose(); s.cache.clear(); s.dispose(); },
         onPageScroll(this: Target, event: { scrollTop: number }) { const s = state(this); if (s.visible && !s.restoringScroll && Number.isFinite(event.scrollTop)) { s.scrollTop = Math.max(0, event.scrollTop); const cached = s.cache.get(s.listKey); if (cached) cached.scrollTop = s.scrollTop; } },
         makeList(this: Target) { const available = filterOptions(this.data.role), selected = available.find(item => item.id === this.data.filter);
@@ -116,6 +116,8 @@ export function createRentalOrdersPage<TSource extends {
             s.listKey = key; s.scrollTop = cached?.scrollTop ?? 0; s.restoringScroll = true;
             const active = () => lease() && s.list === controller;
             let restoreCache = !!cached;
+            // 切回 tab 时先保留屏幕上的旧列表，不闪“正在加载”，缓存回填后再后台刷新
+            const holdVisible = !!cached && this.data.items.length > 0;
             const generation = owner + ':' + key;
             const readPage = async (cursor?: string) => {
                 const result = await options.load({ role, display_status_code: selected?.displayStatus ?? filter, ...(selected?.physicalStatus ? { physical_status: selected.physicalStatus } : {}), cursor, ...(options.assetScoped && s.id ? { asset_id: s.id } : {}) });
@@ -150,7 +152,7 @@ export function createRentalOrdersPage<TSource extends {
                     return { ...result, generation };
                 } finally { if (!active()) clearExpiredView(); }
             }, present: options.present, getId: order => order.order_id, onPatch: patch => { if (!active()) {
-                clearExpiredView(); return; } const data: Record<string, unknown> = { listState: patch.state }; if (patch.replace)
+                clearExpiredView(); return; } if (holdVisible && patch.state.phase === 'initial-loading' && !patch.replace && !patch.append?.length) return; const data: Record<string, unknown> = { listState: patch.state }; if (patch.replace)
                 data['items'] = patch.replace; for (const row of patch.append ?? [])
                 data[row.path] = row.value; this.setData(data); } });
             s.list = controller;

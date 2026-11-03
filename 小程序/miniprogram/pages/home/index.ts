@@ -27,10 +27,10 @@ function cabinetCard(cabinet: PublicCabinet, covers: Map<string, string>, width:
     ...(Number.isFinite(latitude) && Number.isFinite(longitude) && cabinet.address.location ? { latitude, longitude } : {}),
     devices: cabinet.supplies.map(supply => supplyCard(supply, width, fontSize, covers.get(supply.asset_id) ?? '')) };
 }
-const states = new WeakMap<object, { epoch: number; owner: string; visible: boolean; active?: { abort: () => void }; entries: (RentalSupply | DiscoverySupply)[]; covers: Map<string, string>; navigation: ReturnType<typeof createNavigateOnce> }>();
+const states = new WeakMap<object, { epoch: number; owner: string; cityKey?: string; visible: boolean; active?: { abort: () => void }; entries: (RentalSupply | DiscoverySupply)[]; covers: Map<string, string>; navigation: ReturnType<typeof createNavigateOnce> }>();
 function state(page: object) { let value = states.get(page); if (!value) { value = { epoch: 0, owner: '', visible: true, entries: [], covers: new Map<string, string>(), navigation: createNavigateOnce() }; states.set(page, value); } return value; }
 Page({
-    data: { icons: designAssets, statusBarHeight: 0, navigationHeight: 44, windowWidth: 430, fontSizeSetting: 16, region: '', regionShort: '全部城市', stores: [] as HomeStore[], storeCount: 0, cabinet: null as HomeCabinet | null, cabinetCount: 0, keyword: '', devices: [] as ReturnType<typeof supplyCard>[], visibleDevices: [] as ReturnType<typeof supplyCard>[], categoryFilterOptions: [{ value: '全部', label: '推荐' }] as { value: string; label: string }[], supplyFilterOptions: sources.map(value => ({ value, label: value })), selectedCategory: '全部', selectedSupply: '全部', loading: false, errorText: '', nextCursor: '', hasMore: false, loggedIn: false },
+    data: { icons: designAssets, statusBarHeight: 0, navigationHeight: 44, windowWidth: 430, fontSizeSetting: 16, region: '', regionShort: '全部城市', stores: [] as HomeStore[], storeCount: 0, cabinet: null as HomeCabinet | null, cabinetCount: 0, cabinetLoaded: false, keyword: '', devices: [] as ReturnType<typeof supplyCard>[], visibleDevices: [] as ReturnType<typeof supplyCard>[], categoryFilterOptions: [{ value: '全部', label: '推荐' }] as { value: string; label: string }[], supplyFilterOptions: sources.map(value => ({ value, label: value })), selectedCategory: '全部', selectedSupply: '全部', loading: false, errorText: '', nextCursor: '', hasMore: false, loggedIn: false },
   onLoad() { const nav = readNavigationMetrics(); this.setData({ ...readDisplayWindowMetrics(), statusBarHeight: nav.statusBarHeight, navigationHeight: nav.totalHeight }); },
   onResize(event: { size: { windowWidth: number } }) { this.setData({ ...readDisplayWindowMetrics(), windowWidth: event.size.windowWidth }); this.refreshDevices(); },
   refreshDevices() { const devices = state(this).entries.map(item => supplyCard(item, this.data.windowWidth, this.data.fontSizeSetting, state(this).covers.get(item.asset_id) ?? '')); this.setData({ devices, visibleDevices: matchKeyword(devices, this.data.keyword) }); void this.loadDeviceCovers(); },
@@ -42,12 +42,15 @@ Page({
     }
     if(s.visible){const devices=s.entries.map(item=>supplyCard(item,this.data.windowWidth,this.data.fontSizeSetting,s.covers.get(item.asset_id)??''));this.setData({devices,visibleDevices:matchKeyword(devices,this.data.keyword)});}
   },
-  onShow() { this.getTabBar()?.setData({ selected: 0 }); state(this).visible = true; orderUnreadLifecycle.show(this); void this.loadSupplies(false); },
-  onHide() { orderUnreadLifecycle.hide(this); const s = state(this); s.visible = false; ++s.epoch; storeEpochs.set(this, (storeEpochs.get(this) ?? 0) + 1); s.active?.abort(); s.entries = []; s.covers.clear(); cabinetEpochs.set(this, (cabinetEpochs.get(this) ?? 0) + 1); this.setData({ stores: [], storeCount: 0, cabinet: null, cabinetCount: 0, devices: [], visibleDevices: [], loading: false, hasMore: false, nextCursor: '' }); },
-  onUnload() { this.onHide(); state(this).navigation.dispose(); states.delete(this); },
-  async loadSupplies(append = false) {
-    const s = state(this), owner = accountApi.sessionIdentity() ?? ''; s.active?.abort(); const epoch = ++s.epoch; s.owner = owner;
-    if (!append) { s.entries = []; s.covers.clear(); this.setData({ devices: [], visibleDevices: [], nextCursor: '', hasMore: false }); }
+  // 切回首页时保留上次内容并在后台刷新；账号或城市变了才清空重读
+  onShow() { this.getTabBar()?.setData({ selected: 0 }); state(this).visible = true; orderUnreadLifecycle.show(this); void this.loadSupplies(false, true); },
+  onHide() { orderUnreadLifecycle.hide(this); const s = state(this); s.visible = false; ++s.epoch; storeEpochs.set(this, (storeEpochs.get(this) ?? 0) + 1); s.active?.abort(); cabinetEpochs.set(this, (cabinetEpochs.get(this) ?? 0) + 1); this.setData({ loading: false }); },
+  onUnload() { this.onHide(); this.clearListing(); state(this).navigation.dispose(); states.delete(this); },
+  clearListing() { const s = state(this); s.entries = []; s.covers.clear(); this.setData({ stores: [], storeCount: 0, cabinet: null, cabinetCount: 0, cabinetLoaded: false, devices: [], visibleDevices: [], hasMore: false, nextCursor: '' }); },
+  async loadSupplies(append = false, keepVisible = false) {
+    const s = state(this), owner = accountApi.sessionIdentity() ?? ''; s.active?.abort(); const epoch = ++s.epoch;
+    const cityKey = readDiscoveryCity()?.cityId ?? '', changed = s.owner !== owner || s.cityKey !== cityKey; s.owner = owner; s.cityKey = cityKey;
+    if (!append && (changed || !keepVisible)) { if (changed) this.clearListing(); else { s.entries = []; s.covers.clear(); this.setData({ devices: [], visibleDevices: [], nextCursor: '', hasMore: false }); } }
     this.setData({ loggedIn: !!owner, errorText: '', loading: true });
     const city = readDiscoveryCity(); this.setData({ region: city?.name ?? '', regionShort: city?.name ?? '全部城市' }); if (!append) { void this.loadStores(); void this.loadCabinets(); } const filter: SupplyFilter & { category_id?: string } = {}; if (city) filter.city_id = city.cityId; const source = sourceCodes[this.data.selectedSupply]; if (source) filter.supply_type = source; if (this.data.selectedCategory !== '全部') filter.category_id = this.data.selectedCategory; if (append && this.data.nextCursor) filter.cursor = this.data.nextCursor;
     const handle = owner ? supplyApi.list(filter) : discoveryApi.listSupplies(filter); s.active = handle;
@@ -74,7 +77,6 @@ Page({
   async loadStores() {
     const s = state(this), owner = accountApi.sessionIdentity() ?? '';
     const epoch = (storeEpochs.get(this) ?? 0) + 1; storeEpochs.set(this, epoch);
-    this.setData({ stores: [] });
     const city = readDiscoveryCity(); const handle = owner ? storeApi.list(city ? { city_id: city.cityId } : {}) : discoveryApi.listStores(city ? { city_id: city.cityId } : {});
     try {
       const page = await handle.promise; if (!s.visible || epoch !== storeEpochs.get(this) || (accountApi.sessionIdentity() ?? '') !== owner) return;
@@ -103,10 +105,10 @@ Page({
     try {
       const page = await cabinetApi.list(city ? { city_id: city.cityId } : {}).promise; if (!s.visible || epoch !== cabinetEpochs.get(this)) return;
       const items = (Array.isArray(page?.items) ? page.items : []).filter(cabinet => !!cabinet && cabinet.status === 'ACTIVE');
-      const first = items[0]; if (!first) { this.setData({ cabinet: null, cabinetCount: 0 }); return; }
+      const first = items[0]; if (!first) { this.setData({ cabinet: null, cabinetCount: 0, cabinetLoaded: true }); return; }
       const covers = new Map<string, string>(); for (const supply of first.supplies) { const url = publicSupplyGallery(supply)[0]?.src; if (url) covers.set(supply.asset_id, url); }
-      this.setData({ cabinet: cabinetCard(first, covers, this.data.windowWidth, this.data.fontSizeSetting), cabinetCount: items.length });
-    } catch { if (s.visible && epoch === cabinetEpochs.get(this)) this.setData({ cabinet: null, cabinetCount: 0 }); }
+      this.setData({ cabinet: cabinetCard(first, covers, this.data.windowWidth, this.data.fontSizeSetting), cabinetCount: items.length, cabinetLoaded: true });
+    } catch { if (s.visible && epoch === cabinetEpochs.get(this)) this.setData({ cabinet: null, cabinetCount: 0, cabinetLoaded: true }); }
   },
   openCabinetList() { state(this).navigation.navigateOnce('cabinets', callbacks => wx.navigateTo({ url: '/pages/cabinets/index', ...callbacks })); },
   openCabinetDetail() { const id = this.data.cabinet?.id; if (id) state(this).navigation.navigateOnce('cabinet:' + id, callbacks => wx.navigateTo({ url: '/pages/cabinet-detail/index?id=' + encodeURIComponent(id), ...callbacks })); },

@@ -57,8 +57,8 @@ Page({
  },
  onPageScroll(event:WechatMiniprogram.Page.IPageScrollOption){const headerScrolled=event.scrollTop>0;if(headerScrolled!==this.data.headerScrolled)this.setData({headerScrolled})},
  clearPrivate(){this.setData({loggedIn:false,showLendSection:false,avatarFailed:false,avatarReloading:false,avatarEpoch:0,localProfile:{name:'',avatarPath:''},assetItems:assets(false),memberLevel:'—',memberLevelCode:'',identityRegistered:false,identityText:'—',currentAccount:{id:''},rentalSummary:null})},
- async onShow(){this.getTabBar()?.setData({selected:3});orderUnreadLifecycle.show(this);const s=state(this);s.visible=true;const epoch=++s.epoch;const owner=accountApi.sessionIdentity();this.clearPrivate();this.setData({errorText:''});if(!owner)return;
- this.setData({loggedIn:true,showLendSection:true,avatarEpoch:epoch,assetItems:assets(true)});
+ async onShow(){this.getTabBar()?.setData({selected:3});orderUnreadLifecycle.show(this);const s=state(this);s.visible=true;const epoch=++s.epoch;const owner=accountApi.sessionIdentity();const sameAccount=!!owner&&owner===this.data.currentAccount.id;if(!sameAccount)this.clearPrivate();this.setData({errorText:''});if(!owner)return;
+ this.setData({loggedIn:true,showLendSection:true,avatarEpoch:epoch,...(sameAccount?{}:{assetItems:assets(true)})});
  try{const result=await s.scope.latest('profile',()=>Promise.allSettled([accountApi.profile().promise,benefitApi.summary().promise,couponApi.list('AVAILABLE',null).promise,accountApi.identity().promise,rentalOrderApi.list({role:'TENANT'}).promise,rentalOrderApi.list({role:'LESSOR'}).promise,ownAssetsApi.list().promise]));
  if(!result.accepted||!s.visible||epoch!==s.epoch)return; if(owner!==accountApi.sessionIdentity()){this.clearPrivate();return;}
  const [profile,benefits,coupons,identity,rented,lent,listings]=result.value;let pink='—';let count='—';
@@ -75,7 +75,7 @@ Page({
  this.setData({identityRegistered:identity.status==='fulfilled'&&identity.value.real_name.status==='VERIFIED',assetItems:assets(true,pink,count),identityText:identityText||'认证状态响应无效',errorText:[profile,benefits,coupons,identity,rented,lent,listings].some(item=>item.status==='rejected')?'部分账户信息读取失败，请重试。':''});
  }catch(error){if(!s.scope.disposed&&s.visible&&owner===accountApi.sessionIdentity())this.setData({errorText:error instanceof Error?error.message:'账户读取失败'})}
  },
- onHide(){orderUnreadLifecycle.hide(this);++state(this).epoch;state(this).visible=false;this.clearPrivate()},
+ onHide(){orderUnreadLifecycle.hide(this);++state(this).epoch;state(this).visible=false},
  onUnload(){orderUnreadLifecycle.hide(this);const s=state(this);s.scope.dispose();s.navigation.dispose();states.delete(this)},
  onAvatarImageError(event:WechatMiniprogram.CustomEvent){
   const s=states.get(this);const owner=accountApi.sessionIdentity();const source=String(event.currentTarget.dataset['src']??'');
