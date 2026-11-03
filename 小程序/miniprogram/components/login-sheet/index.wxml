@@ -1,7 +1,7 @@
 <view wx:if="{{visible}}" class="login-overlay" role="dialog" aria-label="登录星遇">
   <image class="login-hero" src="{{icons.loginHero}}" mode="widthFix" aria-hidden="true" />
   <view class="login-hero-fade" aria-hidden="true" />
-  <page-header class="login-header" variant="profile-hero" title="登录" bindback="onBack" />
+  <page-header class="login-header" background="transparent" title="登录" bindback="onBack" />
   <view class="login-sheet">
     <view class="login-brand"><image class="login-logo" src="{{icons.loginLogo}}" mode="aspectFill" aria-hidden="true" /><text class="login-brand-name">星遇</text></view>
     <text class="login-heading">登录星遇</text>
@@ -16,7 +16,7 @@
     </view>
     <view class="agreement-row" bindtap="toggleAgree" role="checkbox" aria-checked="{{agreed}}" aria-label="同意用户协议和隐私声明">
       <view class="agree-box {{agreed ? 'is-checked' : ''}}"><image wx:if="{{agreed}}" class="agree-icon" src="{{icons.agreementCheck}}" mode="aspectFit" aria-hidden="true" /></view>
-      <view class="agreement-text">已阅读并同意 <view class="agreement-link-label">用户协议<button class="agreement-link-hit" data-legal="user-agreement" catchtap="openLegal" aria-label="阅读用户协议" hover-class="none" /></view> &amp; <view class="agreement-link-label">隐私声明<button class="agreement-link-hit" data-legal="privacy-policy" catchtap="openLegal" aria-label="阅读隐私声明" hover-class="none" /></view></view>
+      <view class="agreement-text">已阅读并同意 <view class="agreement-link-label">用户协议<button class="agreement-link-hit" data-legal="user-agreement" catchtap="openLegal" aria-label="阅读用户协议" hover-class="none" /></view> & <view class="agreement-link-label">隐私声明<button class="agreement-link-hit" data-legal="privacy-policy" catchtap="openLegal" aria-label="阅读隐私声明" hover-class="none" /></view></view>
     </view>
   </view>
   <view wx:if="{{showConsentModal}}" class="consent-mask" catchtap="closeConsentModal" role="button" aria-label="关闭温馨提示">
