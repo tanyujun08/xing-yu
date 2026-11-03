@@ -7,12 +7,4 @@
   <path d="M0 0H170C150 30 108 52 62 62C36 68 14 76 0 88V0Z" fill="url(#wave)"/>
   <path d="M0 108C44 82 104 70 164 74" stroke="#FFFFFF" stroke-opacity=".8" stroke-width="1.5"/>
   <ellipse cx="318" cy="74" rx="90" ry="70" fill="url(#glow)"/>
-  <g opacity=".4" stroke="#9FD3BF" stroke-width="1.6" stroke-linejoin="round">
-    <path d="M262 48C262 43.6 265.6 40 270 40H286L292 30H332L338 40H360C364.4 40 368 43.6 368 48V116C368 120.4 364.4 124 360 124H270C265.6 124 262 120.4 262 116V48Z" fill="#FFFFFF" fill-opacity=".35"/>
-    <circle cx="322" cy="80" r="34"/>
-    <circle cx="322" cy="80" r="26" fill="url(#lens)"/>
-    <circle cx="322" cy="80" r="15"/>
-    <path d="M272 52H284"/>
-  </g>
-  <circle cx="312" cy="70" r="5" fill="#FFFFFF" fill-opacity=".9"/>
 </svg>
