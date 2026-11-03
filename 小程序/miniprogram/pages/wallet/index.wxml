@@ -2,28 +2,37 @@
 <page-shell surface="page">
   <page-header title="我的钱包" bindback="onSecondaryNavigationBack" slot="header" />
   <view class="wallet-page">
-    <view class="wallet-hero">
-      <view class="hero-main">
-        <view class="hero-copy">
-          <text class="hero-label">已入账收益</text>
-          <text class="hero-amount" aria-label="{{booked}}">{{booked}}</text>
-          <button class="hero-action xy-button-reset" bindtap="openWithdrawal" aria-label="去提现"><text class="hero-action__pill">去提现</text></button>
+    <text class="section-title">钱包</text>
+    <view class="wallet-card">
+      <view class="wallet-main">
+        <view class="wallet-copy">
+          <view class="wallet-label-row"><text class="wallet-label">已入账收益</text><button class="help-button xy-button-reset" bindtap="showIncomeHelp" aria-label="已入账收益说明"><image class="help-icon" src="{{icons.withdrawalHelp}}" mode="aspectFit" aria-hidden="true" /></button></view>
+          <text class="wallet-amount" aria-label="{{booked}}">{{booked}}</text>
         </view>
-        <image class="hero-art" src="/assets/illustrations/withdrawal-available.svg" mode="aspectFit" aria-hidden="true" />
+        <image class="wallet-art" src="{{icons.walletHero}}" mode="aspectFit" aria-hidden="true" />
       </view>
-      <view class="hero-stats">
-        <view class="hero-stat"><text class="hero-stat-label">预计收益 · {{estimatedCount}} 单</text><text class="hero-stat-value">{{estimated}}</text></view>
-        <view class="hero-stat"><text class="hero-stat-label">可提现</text><text class="hero-stat-value">{{booked}}</text></view>
+      <view class="wallet-stats">
+        <view class="wallet-stat">
+          <image class="wallet-stat__icon" src="{{icons.walletEstimate}}" mode="aspectFit" aria-hidden="true" />
+          <view class="wallet-stat__copy"><text class="wallet-stat__label">预计收益 · {{estimatedCount}} 单</text><text class="wallet-stat__value">{{estimated}}</text></view>
+        </view>
+        <view class="wallet-stat">
+          <image class="wallet-stat__icon" src="{{icons.walletWechat}}" mode="aspectFit" aria-hidden="true" />
+          <view class="wallet-stat__copy"><text class="wallet-stat__label">微信提现账户</text><text class="wallet-stat__value wallet-stat__value--text">微信零钱</text></view>
+        </view>
       </view>
     </view>
-    <text class="money-note">预计收益为未结算订单，结算后转为已入账，可提现到微信。</text>
+    <button class="withdraw-entry xy-button-reset" bindtap="openWithdrawal" aria-label="立即提现">立即提现</button>
     <view wx:if="{{errorText}}" class="alert-row" role="alert"><text class="alert-copy">{{errorText}}</text><button class="text-action xy-button-reset" bindtap="refresh" disabled="{{loading}}" aria-disabled="{{loading}}">重新查询</button></view>
-    <text class="section-title">收入明细</text>
+    <view class="section-head">
+      <text class="section-title">收入明细</text>
+      <button class="section-link xy-button-reset" bindtap="openWithdrawalRecords" aria-label="查看提现记录"><text>提现记录</text><image class="section-link__arrow" src="/assets/figma-icons/arrow-right.svg" mode="aspectFit" aria-hidden="true" /></button>
+    </view>
     <view class="income-card">
       <view wx:if="{{loading}}" class="income-status" role="status">正在读取收益…</view>
       <button wx:for="{{items}}" wx:key="id" class="income-row xy-button-reset" data-id="{{item.id}}" bindtap="openIncome" disabled="{{busy}}" aria-disabled="{{busy}}" aria-label="查看{{item.title}}收益明细">
-        <view class="income-copy"><text class="income-name">{{item.title}}</text><text class="income-meta">订单 {{item.orderNo}} · {{item.time}}</text></view>
-        <text class="income-money">{{item.amount}}</text>
+        <view class="income-copy"><text class="income-name">{{item.title}}</text><text class="income-meta">订单尾号 {{item.orderTail}} · {{item.time}}</text></view>
+        <text class="income-money">+{{item.amount}}</text>
         <image class="income-arrow" src="/assets/figma-icons/arrow-right.svg" mode="aspectFit" aria-hidden="true" />
       </button>
       <view wx:if="{{!loading && !items.length && !errorText}}" class="empty-note xy-empty-section">
@@ -32,9 +41,38 @@
       </view>
       <button wx:if="{{hasMore}}" class="load-more xy-button-reset" bindtap="loadMore" disabled="{{busy}}" aria-disabled="{{busy}}">加载更多</button>
     </view>
-    <view class="support-row"><text wx:if="{{!hasMore && items.length}}" class="support-copy">已全部加载 · </text><text class="support-copy">收益有疑问？</text><button class="text-action xy-button-reset" bindtap="demoSupport">联系客服</button></view>
+    <view class="support-row"><text class="support-copy">收益有疑问？</text><button class="text-action xy-button-reset" bindtap="demoSupport">联系客服</button></view>
   </view>
 </page-shell>
+<task-sheet open="{{withdrawOpen}}" title="申请提现" show-footer="{{false}}" busy="{{wSubmitting}}" bindclose="closeWithdrawal">
+  <view class="withdraw-sheet">
+    <view class="withdraw-hero">
+      <view class="withdraw-hero__copy">
+        <view class="wallet-label-row"><text class="wallet-label">可提现余额</text><button class="help-button xy-button-reset" bindtap="showBalanceHelp" aria-label="可提现余额说明"><image class="help-icon" src="{{icons.withdrawalHelp}}" mode="aspectFit" aria-hidden="true" /></button></view>
+        <text class="wallet-amount">{{available}}</text>
+      </view>
+      <image class="withdraw-hero__art" src="{{icons.walletWithdraw}}" mode="aspectFit" aria-hidden="true" />
+    </view>
+    <text class="withdraw-label">提现金额</text>
+    <view class="withdraw-field {{wError ? 'is-error' : ''}}">
+      <text class="withdraw-field__symbol">¥</text>
+      <input class="withdraw-field__input" type="digit" value="{{wAmount}}" placeholder="0.00" placeholder-class="withdraw-field__placeholder" bindinput="withdrawInput" disabled="{{wSubmitting}}" aria-disabled="{{wSubmitting}}" />
+      <button class="withdraw-all xy-button-reset" bindtap="withdrawAll" disabled="{{wSubmitting}}" aria-disabled="{{wSubmitting}}" aria-label="全部提现">全部提现</button>
+    </view>
+    <text wx:if="{{wError}}" class="withdraw-error" role="alert">{{wError}}</text>
+    <view class="withdraw-row withdraw-row--boxed">
+      <image class="withdraw-row__icon" src="{{icons.loginWechat}}" mode="aspectFit" aria-hidden="true" />
+      <text class="withdraw-row__label">到账账户</text>
+      <text class="withdraw-row__value">微信零钱</text>
+    </view>
+    <view class="withdraw-row">
+      <image class="withdraw-row__icon withdraw-row__icon--muted" src="/assets/figma-icons/discovery-clock.svg" mode="aspectFit" aria-hidden="true" />
+      <text class="withdraw-row__label withdraw-row__label--muted">预计到账时间</text>
+      <text class="withdraw-row__value">1–3 个工作日</text>
+    </view>
+    <button class="withdraw-submit xy-button-reset {{wSubmitting ? 'is-busy' : ''}}" bindtap="submitWithdrawal" disabled="{{wSubmitting}}" aria-disabled="{{wSubmitting}}">{{wSubmitting ? '提交中…' : '确认提现'}}</button>
+  </view>
+</task-sheet>
 <task-sheet open="{{detailOpen}}" title="收益明细" show-footer="{{false}}" bindclose="closeDetail">
   <view class="detail-sheet">
     <text class="detail-title">{{detailTitle}}</text>

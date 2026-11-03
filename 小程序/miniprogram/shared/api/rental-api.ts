@@ -6,3 +6,4 @@ export * from './rental-return-evidence';
 export * from './rental-contract-signature';
 export * from './order-conversation-api';
 export * from './order-chat-image';
+export { cashApi, type CashBalance, type WithdrawalReceipt } from './cash-api';

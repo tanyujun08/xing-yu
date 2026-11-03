@@ -1,8 +1,9 @@
 import { accountApi } from '../../shared/api/account-api';
-import { rentalOrderApi, type RentalIncome, type RentalRecord } from '../../shared/api/rental-api';
+import { rentalOrderApi, cashApi, type RentalIncome, type RentalRecord } from '../../shared/api/rental-api';
 import { createRentalPageState } from '../../shared/interaction/rental-page-state';
 import { navigateBackWithFallback } from '../../shared/interaction/navigate-once';
 import { rentalMoney, beijingTime } from '../../shared/presentation/rental-order';
+import { designAssets } from '../../shared/design/assets';
 const states = new WeakMap<object, ReturnType<typeof createRentalPageState<RentalRecord<RentalIncome>>> & { detailEpoch: number; readSequence: number; entry: { owner: string; id: string; orderId: string } | null }>();
 function state(page: object) { let s = states.get(page); if (!s) {
     s = { ...createRentalPageState<RentalRecord<RentalIncome>>(), detailEpoch: 0, readSequence: 0, entry: null };
@@ -10,8 +11,8 @@ function state(page: object) { let s = states.get(page); if (!s) {
 } return s; }
 function captureView(s: ReturnType<typeof state>) { const epoch = s.epoch, sequence = s.readSequence; return () => s.visible && !s.scope.disposed && s.epoch === epoch && s.readSequence === sequence; }
 function captureExpiredView(s: ReturnType<typeof state>) { const epoch = s.epoch, owner = s.owner; return () => s.visible && !s.scope.disposed && s.epoch === epoch && s.owner === owner && (accountApi.sessionIdentity() ?? '') !== owner; }
-function incomeRow(v: RentalIncome) { return { id: v.earning_id, orderId: v.order_id, orderNo: v.order_no, title: v.asset_title, amount: rentalMoney(v.beneficiary_fen), time: beijingTime(v.posted_at) }; }
-Page({ data: { loading: false, busy: false, errorText: '', booked: '—', estimated: '—', estimatedCount: 0, items: [] as ReturnType<typeof incomeRow>[], cursor: null as string | null, hasMore: false, detailOpen: false, detailTitle: '', detailOrderId: '', detailOrderNo: '', detailRows: [] as {
+function incomeRow(v: RentalIncome) { return { id: v.earning_id, orderId: v.order_id, orderNo: v.order_no, orderTail: String(v.order_no ?? "").slice(-6), title: v.asset_title, amount: rentalMoney(v.beneficiary_fen), time: beijingTime(v.posted_at).replace(/^\d{4}-/, "") }; }
+Page({ data: { icons: designAssets, availableFen: null as number | null, available: '—', withdrawOpen: false, wAmount: '', wError: '', wSubmitting: false, loading: false, busy: false, errorText: '', booked: '—', estimated: '—', estimatedCount: 0, items: [] as ReturnType<typeof incomeRow>[], cursor: null as string | null, hasMore: false, detailOpen: false, detailTitle: '', detailOrderId: '', detailOrderNo: '', detailRows: [] as {
             label: string;
             value: string;
         }[] },
@@ -26,6 +27,7 @@ Page({ data: { loading: false, busy: false, errorText: '', booked: '—', estima
         const [summary, rows] = await Promise.all([rentalOrderApi.income().promise, rentalOrderApi.earnings().promise]);
         if (!active())
             return;
+        void this.loadCash();
         this.setData({ booked: rentalMoney(summary.value.booked_income_fen), estimated: rentalMoney(summary.value.estimated_income_fen), estimatedCount: summary.value.estimated_order_count, items: rows.value.items.map(incomeRow), cursor: rows.value.next_cursor, hasMore: rows.value.has_more });
     }
     catch (error) {
@@ -91,5 +93,29 @@ Page({ data: { loading: false, busy: false, errorText: '', booked: '—', estima
         wx.stopPullDownRefresh();
     } }, onSecondaryNavigationBack() { navigateBackWithFallback(state(this).navigation); },
 demoSupport() { wx.navigateTo({ url: '/pages/demo-support/index' }); },
-openWithdrawal() { state(this).navigation.navigateOnce('wallet:withdrawal', callbacks => wx.navigateTo({ url: '/pages/withdrawal/index', ...callbacks })); },
+openWithdrawal() { this.setData({ withdrawOpen: true, wAmount: '', wError: '' }); if (this.data.availableFen === null) void this.loadCash(); },
+openWithdrawalRecords() { state(this).navigation.navigateOnce('wallet:withdrawal-records', callbacks => wx.navigateTo({ url: '/pages/withdrawal/index?view=records', ...callbacks })); },
+async loadCash() { try { const cash = await cashApi.balance().promise; const fen = Number(cash.withdrawable_fen ?? cash.available_fen); if (Number.isFinite(fen)) this.setData({ availableFen: fen, available: rentalMoney(String(fen)) }); } catch { this.setData({ availableFen: null, available: '—' }); } },
+closeWithdrawal() { if (!this.data.wSubmitting) this.setData({ withdrawOpen: false }); },
+withdrawInput(event: WechatMiniprogram.CustomEvent<{ value: string }>) { this.setData({ wAmount: String(event.detail.value ?? ''), wError: '' }); },
+withdrawAll() { const fen = this.data.availableFen; if (fen !== null) this.setData({ wAmount: (fen / 100).toFixed(2), wError: '' }); },
+showIncomeHelp() { wx.showModal({ title: '已入账收益', content: '预计收益为未结算订单，结算后转为已入账，可提现到微信零钱。', showCancel: false, confirmText: '知道了' }); },
+showBalanceHelp() { wx.showModal({ title: '可提现余额', content: '满 ¥1 可提现。托管押金、待收款和预期收益不计入可提现余额。', showCancel: false, confirmText: '知道了' }); },
+submitWithdrawal() {
+    if (this.data.wSubmitting) return;
+    const text = this.data.wAmount.trim(), fen = this.data.availableFen;
+    if (fen === null) { this.setData({ wError: '可提现余额暂不可用，请稍后再试' }); return; }
+    if (!/^(0|[1-9]\d*)(\.\d{1,2})?$/.test(text)) { this.setData({ wError: '请输入最多两位小数的金额' }); return; }
+    const amount = Math.round(Number(text) * 100);
+    if (amount < 100 || amount > fen) { this.setData({ wError: '请输入 ¥1 至可提现余额之间的金额' }); return; }
+    wx.showModal({ title: '确认提现', content: '提现 ' + rentalMoney(String(amount)) + ' 到微信零钱，预计 1–3 个工作日到账。', confirmText: '确认提现', success: (result) => {
+        if (!result.confirm) return;
+        this.setData({ wSubmitting: true });
+        void cashApi.withdraw(amount, cashApi.newIntent()).promise.then(async () => {
+            this.setData({ withdrawOpen: false, wAmount: '' });
+            wx.showToast({ title: '提现申请已提交', icon: 'success' });
+            await this.loadCash();
+        }).catch((error: unknown) => { this.setData({ wError: error instanceof Error ? error.message : '提现提交失败，请稍后再试' }); }).finally(() => this.setData({ wSubmitting: false }));
+    } });
+},
 });

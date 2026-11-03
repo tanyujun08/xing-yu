@@ -29,6 +29,8 @@ const routes = {
   coupons: { open: 'navigateTo', url: '/pages/coupons/index' },
   'coupon-detail': { open: 'navigateTo', url: '/pages/coupon-detail/index?coupon_id=coupon-1' },
   wallet: { open: 'navigateTo', url: '/pages/wallet/index' },
+  // call：页面打开后再调用页面方法（如打开弹窗）再截图
+  'wallet-withdraw': { open: 'reLaunch', url: '/pages/wallet/index', dir: 'wallet', call: 'openWithdrawal' },
   withdrawal: { open: 'navigateTo', url: '/pages/withdrawal/index' },
   identity: { open: 'navigateTo', url: '/pages/identity/index' },
   'wechat-waiver': { open: 'navigateTo', url: '/pages/wechat-waiver/index' },
@@ -85,6 +87,7 @@ try {
     await new Promise((resolve) => setTimeout(resolve, 2500));
     console.log('当前页', page && page.path, '跳转结果', await mp.evaluate(() => (globalThis.__nav || '') + ' 页面栈=' + getCurrentPages().map((x) => x.route).join(',') + ' 存储=' + wx.getStorageInfoSync().keys.join(',').slice(0, 300)));
     await page.waitFor(1000);
+    if (route.call) { try { const r = await mp.evaluate((m) => { const ps = getCurrentPages(); const top = ps[ps.length - 1]; if (typeof top[m] !== 'function') return 'no-method:' + Object.keys(top).filter((k) => typeof top[k] === 'function').slice(0, 40).join(','); top[m](); return 'ok'; }, route.call); console.log('调用', route.call, r); } catch (e) { console.log('调用失败', route.call, e && e.message); } await page.waitFor(1500); }
     const classes = shotsOnly ? [] : classesOf(name);
     console.log('class 数', classes.length);
     const rows = {};
