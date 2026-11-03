@@ -1,24 +1,24 @@
-/* 登录 第 4 稿（按用户给的设计）：全屏页，顶部相机主视觉铺满宽度、导航透明；品牌行 → 登录星遇 → 一句说明 → 绿色短条 → 微信一键登录 / 手机快捷登录 / 暂不登录；协议固定在底部 */
+/* 登录 第 5 稿（细节优化）：导航只留返回；品牌行缩小；去掉绿色短条；三个操作下移到下半屏，协议紧跟按钮；渐变从图片 40% 过渡到白。原第 4 稿（按用户给的设计）：全屏页，顶部相机主视觉铺满宽度、导航透明；品牌行 → 登录星遇 → 一句说明 → 绿色短条 → 微信一键登录 / 手机快捷登录 / 暂不登录；协议固定在底部 */
 .login-overlay { position: fixed; z-index: var(--xy-z-modal, 200); top: 0; right: 0; bottom: 0; left: 0; display: flex; flex-direction: column; overflow-y: auto; background: var(--xy-color-surface); color: var(--xy-color-text-primary, #202937); }
 .login-hero { position: absolute; top: 0; left: 0; display: block; width: 100%; }
-.login-hero-fade { position: absolute; top: 0; left: 0; width: 100%; height: 108vw; background: linear-gradient(180deg, transparent 55%, var(--xy-color-surface) 100%); }
-.login-sheet { position: relative; display: flex; min-height: 0; flex: 1; flex-direction: column; padding: calc(var(--xy-space-6) + var(--xy-space-2)) var(--xy-space-6) calc(var(--xy-space-4) + env(safe-area-inset-bottom)); }
-.login-brand { display: flex; align-items: center; gap: var(--xy-space-3); }
-.login-logo { width: calc(var(--xy-space-6) + var(--xy-space-2)); height: calc(var(--xy-space-6) + var(--xy-space-2)); border-radius: var(--xy-radius-md); }
-.login-brand-name { color: var(--xy-color-text-strong); font-size: var(--xy-text-order-navigation-size); font-weight: var(--xy-text-weight-bold); line-height: var(--xy-text-section-title-line-height); }
-.login-heading { margin-top: calc(var(--xy-space-6) * 3); color: var(--xy-color-text-strong); font-size: var(--xy-text-task-amount-size); font-weight: var(--xy-text-weight-bold); line-height: var(--xy-text-task-amount-line-height); }
+.login-hero-fade { position: absolute; top: 0; left: 0; width: 100%; height: 104vw; background: linear-gradient(180deg, transparent 40%, var(--xy-color-surface) 96%); }
+.login-sheet { position: relative; display: flex; min-height: 0; flex: 1; flex-direction: column; padding: var(--xy-space-6) var(--xy-space-6) calc(var(--xy-space-6) + env(safe-area-inset-bottom)); }
+.login-brand { display: flex; align-items: center; gap: var(--xy-space-2); }
+.login-logo { width: calc(var(--xy-space-6) + var(--xy-space-1)); height: calc(var(--xy-space-6) + var(--xy-space-1)); border-radius: var(--xy-radius-sm); }
+.login-brand-name { color: var(--xy-color-text-strong); font-size: var(--xy-text-body-size); font-weight: var(--xy-text-weight-semibold); line-height: var(--xy-text-body-line-height); }
+.login-heading { margin-top: calc(var(--xy-space-6) * 3 + var(--xy-space-2)); color: var(--xy-color-text-strong); font-size: var(--xy-text-task-amount-size); font-weight: var(--xy-text-weight-bold); line-height: var(--xy-text-task-amount-line-height); }
 .login-copy { margin-top: var(--xy-space-2); color: var(--xy-color-text-secondary); font-size: var(--xy-text-body-size); line-height: var(--xy-text-body-line-height); }
-.login-accent { width: calc(var(--xy-space-6) + var(--xy-space-2)); height: calc(var(--xy-space-1) + var(--xy-space-0-5)); margin-top: var(--xy-space-5); border-radius: var(--xy-radius-pill); background: var(--xy-color-brand); }
-.login-actions { display: flex; flex-direction: column; gap: var(--xy-space-4); margin-top: calc(var(--xy-space-6) + var(--xy-space-6)); }
+.login-spacer { flex: 1; min-height: calc(var(--xy-space-6) * 2); }
+.login-actions { display: flex; flex-direction: column; gap: var(--xy-space-3); }
 .login-error { color: var(--xy-color-danger); font-size: var(--xy-text-caption-size); line-height: var(--xy-text-caption-line-height); }
-.quick-button, .phone-button { display: flex; width: 100% !important; min-height: var(--xy-size-touch-min); align-items: center; justify-content: center; gap: var(--xy-space-2); box-sizing: border-box; margin: 0 !important; padding: var(--xy-space-1) var(--xy-space-3); border-radius: var(--xy-radius-md); font-family: inherit; font-size: var(--xy-text-section-title-size); font-weight: var(--xy-text-weight-semibold); line-height: var(--xy-text-section-title-line-height); }
+.quick-button, .phone-button { display: flex; width: 100% !important; min-height: var(--xy-size-touch-min); height: calc(var(--xy-space-6) * 2); align-items: center; justify-content: center; gap: var(--xy-space-2); box-sizing: border-box; margin: 0 !important; padding: var(--xy-space-1) var(--xy-space-3); border-radius: var(--xy-radius-md); font-family: inherit; font-size: var(--xy-order-body-size); font-weight: var(--xy-text-weight-semibold); line-height: var(--xy-order-body-line-height); }
 .quick-button { border: 0; background: var(--xy-color-brand); color: var(--xy-color-text-inverse); }
 .phone-button { border: 1px solid var(--xy-color-border); background: var(--xy-color-surface); color: var(--xy-color-text-strong); }
-.login-action-icon { display: block; width: var(--xy-size-icon-base); height: var(--xy-size-icon-base); }
+.login-action-icon { display: block; width: var(--xy-space-5); height: var(--xy-space-5); }
 .quick-button.is-disabled, .phone-button.is-disabled { opacity: .55; }
-.guest-button { display: flex; width: 100% !important; min-height: var(--xy-size-touch-min); align-items: center; justify-content: center; gap: var(--xy-space-1); margin: 0 !important; padding: 0; border: 0; background: transparent; color: var(--xy-color-text-secondary); font-family: inherit; font-size: var(--xy-text-body-size); font-weight: var(--xy-text-weight-regular); line-height: var(--xy-text-body-line-height); }
-.guest-arrow { width: var(--xy-size-icon-sm); height: var(--xy-size-icon-sm); }
-.agreement-row { display: flex; min-height: var(--xy-size-touch-min); align-items: center; justify-content: center; gap: var(--xy-space-2); margin-top: auto; padding-top: var(--xy-space-6); color: var(--xy-color-text-muted); font-size: var(--xy-text-caption-size); line-height: var(--xy-text-caption-line-height); }
+.guest-button { display: flex; width: 100% !important; min-height: var(--xy-size-touch-min); align-items: center; justify-content: center; gap: var(--xy-space-1); margin: var(--xy-space-4) 0 0 !important; padding: 0; border: 0; background: transparent; color: var(--xy-color-text-secondary); font-family: inherit; font-size: var(--xy-text-body-size); font-weight: var(--xy-text-weight-regular); line-height: var(--xy-text-body-line-height); }
+.guest-arrow { width: var(--xy-space-3); height: var(--xy-space-3); }
+.agreement-row { display: flex; min-height: var(--xy-size-touch-min); align-items: center; justify-content: center; gap: var(--xy-space-2); margin-top: var(--xy-space-1); color: var(--xy-color-text-muted); font-size: var(--xy-text-caption-size); line-height: var(--xy-text-caption-line-height); }
 .agreement-text { min-width: 0; flex: 0 1 auto; overflow-wrap: anywhere; }
 .agreement-link-label { position: relative; display: inline-block; color: var(--xy-color-text-primary); }
 .agreement-link-hit { position: absolute; top: 50%; left: 0; right: 0; min-height: var(--xy-size-touch-min); min-width: var(--xy-size-touch-min); transform: translateY(-50%); margin: 0; padding: 0; border: 0; background: transparent; }
