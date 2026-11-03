@@ -26,6 +26,7 @@ Component({
     setError(errorText: string) { this.setData({ errorText, submitting: false }); },
     complete() { this.setData({ visible: false, agreed: false, submitting: false, errorText: '' }); },
     toggleAgree() { this.setData({ agreed: !this.data.agreed }); },
+    noop() {},
     closeConsentModal() { this.setData({ showConsentModal: false }); },
     confirmConsent() { this.setData({ agreed: true, showConsentModal: false }); },
     openLegal(event: WechatMiniprogram.TouchEvent) {

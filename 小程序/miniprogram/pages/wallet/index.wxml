@@ -2,69 +2,43 @@
 <page-shell surface="page">
   <page-header title="我的钱包" bindback="onSecondaryNavigationBack" slot="header" />
   <view class="wallet-page">
-    <view class="wallet-section wallet-hero-section">
-      <view class="income-summary income-summary--hero">
-        <view class="summary-label-row">
-          <text class="summary-label">已入账收益</text>
+    <view class="wallet-hero">
+      <view class="hero-main">
+        <view class="hero-copy">
+          <text class="hero-label">已入账收益</text>
+          <text class="hero-amount" aria-label="{{booked}}">{{booked}}</text>
         </view>
-        <view class="income-summary-top">
-          <view class="summary-main">
-            <view class="summary-amount" aria-label="{{booked}}">
-              <text class="summary-value">{{booked}}</text>
-            </view>
-          </view>
-        </view>
-        <view class="summary-kpis">
-          <view>
-            <text class="summary-kpi-label">预计收益（{{estimatedCount}} 单）</text>
-            <view class="summary-kpi-value">
-              <text>{{estimated}}</text>
-            </view>
-          </view>
-        </view>
-        <text class="money-detail">本期仅记录收益入账，暂不开放微信提现。预计收益不代表已经结算。</text>
+        <image class="hero-art" src="/assets/illustrations/withdrawal-available.svg" mode="aspectFit" aria-hidden="true" />
+      </view>
+      <view class="hero-stats">
+        <view class="hero-stat"><text class="hero-stat-label">预计收益 · {{estimatedCount}} 单</text><text class="hero-stat-value">{{estimated}}</text></view>
+        <view class="hero-stat"><text class="hero-stat-label">微信提现</text><text class="hero-stat-value hero-stat-value--muted">暂未开放</text></view>
       </view>
     </view>
-    <view wx:if="{{errorText}}" class="wallet-section" role="alert">
-      <text>{{errorText}}</text>
-      <button class="xy-action-hit" bindtap="refresh" disabled="{{loading}}" aria-disabled="{{loading}}">重新查询</button>
-    </view>
-    <view class="wallet-section detail-section">
-      <view class="section-head">
-        <text>已入账收入明细</text>
+    <text class="money-note">预计收益为未结算订单，结算后转为已入账；本期仅记录收益入账，暂不开放微信提现。</text>
+    <view wx:if="{{errorText}}" class="alert-row" role="alert"><text class="alert-copy">{{errorText}}</text><button class="text-action xy-button-reset" bindtap="refresh" disabled="{{loading}}" aria-disabled="{{loading}}">重新查询</button></view>
+    <text class="section-title">收入明细</text>
+    <view class="income-card">
+      <view wx:if="{{loading}}" class="income-status" role="status">正在读取收益…</view>
+      <button wx:for="{{items}}" wx:key="id" class="income-row xy-button-reset" data-id="{{item.id}}" bindtap="openIncome" disabled="{{busy}}" aria-disabled="{{busy}}" aria-label="查看{{item.title}}收益明细">
+        <view class="income-copy"><text class="income-name">{{item.title}}</text><text class="income-meta">订单 {{item.orderNo}} · {{item.time}}</text></view>
+        <text class="income-money">{{item.amount}}</text>
+        <image class="income-arrow" src="/assets/figma-icons/arrow-right.svg" mode="aspectFit" aria-hidden="true" />
+      </button>
+      <view wx:if="{{!loading && !items.length && !errorText}}" class="empty-note xy-empty-section">
+        <text class="xy-empty-section__title">暂无入账收益</text>
+        <text class="xy-empty-section__copy">订单完成后的收益会显示在这里</text>
       </view>
-      <view wx:if="{{loading}}" role="status">正在读取收益…</view>
-      <view class="income-list">
-        <button wx:for="{{items}}" wx:key="id" class="income-row xy-button-reset xy-action-hit {{index === items.length - 1 ? 'is-last' : ''}}" data-id="{{item.id}}" bindtap="openIncome" disabled="{{busy}}" aria-disabled="{{busy}}" aria-label="查看{{item.title}}收益明细">
-          <view class="income-line">
-            <text class="income-name">{{item.title}}</text>
-            <view class="income-money">{{item.amount}}</view>
-          </view>
-          <view class="income-meta">
-            <text>订单 {{item.orderNo}}</text>
-            <text>{{item.time}}</text>
-          </view>
-          <text class="income-state-label is-settled">已入账</text>
-        </button>
-        <view wx:if="{{!loading && !items.length && !errorText}}" class="empty-note xy-empty-section">
-          <text class="xy-empty-section__title">暂无入账收益</text>
-          <text class="xy-empty-section__copy">订单完成后的收益会显示在这里</text>
-        </view>
-        <button wx:if="{{hasMore}}" class="xy-action-hit" bindtap="loadMore" disabled="{{busy}}" aria-disabled="{{busy}}">加载更多</button>
-        <text wx:elif="{{items.length}}" class="money-detail">已全部加载</text>
-      </view>
+      <button wx:if="{{hasMore}}" class="load-more xy-button-reset" bindtap="loadMore" disabled="{{busy}}" aria-disabled="{{busy}}">加载更多</button>
     </view>
-    <button class="xy-action-hit" bindtap="demoSupport">联系客服</button>
+    <view class="support-row"><text wx:if="{{!hasMore && items.length}}" class="support-copy">已全部加载 · </text><text class="support-copy">收益有疑问？</text><button class="text-action xy-button-reset" bindtap="demoSupport">联系客服</button></view>
   </view>
 </page-shell>
 <task-sheet open="{{detailOpen}}" title="收益明细" show-footer="{{false}}" bindclose="closeDetail">
-  <view class="wallet-section">
-    <text class="money-title">{{detailTitle}}</text>
-    <text class="money-detail">订单 {{detailOrderNo}}</text>
-    <view wx:for="{{detailRows}}" wx:key="label" class="money-row">
-      <text class="money-copy">{{item.label}}</text>
-      <text class="money-amount">{{item.value}}</text>
-    </view>
-    <button class="xy-action-hit" bindtap="openOrder">查看关联订单</button>
+  <view class="detail-sheet">
+    <text class="detail-title">{{detailTitle}}</text>
+    <text class="detail-order">订单 {{detailOrderNo}}</text>
+    <view class="detail-rows"><view wx:for="{{detailRows}}" wx:key="label" class="detail-row {{index === detailRows.length - 2 ? 'detail-row--total' : ''}}"><text class="detail-label">{{item.label}}</text><text class="detail-value">{{item.value}}</text></view></view>
+    <button class="detail-link xy-button-reset" bindtap="openOrder">查看关联订单</button>
   </view>
 </task-sheet>

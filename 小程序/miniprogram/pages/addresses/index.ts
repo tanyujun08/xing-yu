@@ -30,7 +30,8 @@ Page({
     this.setData({ selectMode: options.mode === 'select', secondaryNavigationTitle: options.mode === 'select' ? '选择收货地址' : '地址管理' });
   },
   onShow() { interaction(this).visible = true; void this.refresh(); },
-  onHide() { interaction(this).visible = false; this.setData({ addresses: [] }); interaction(this).rows.clear(); },
+  // 打开编辑页时保留列表，避免转场中露出“还没有保存地址”空状态；账号变化时 refresh 会清空
+  onHide() { interaction(this).visible = false; },
   onUnload() { const state = interaction(this); state.scope.dispose(); state.navigation.dispose(); interactions.delete(this); },
   async refresh() {
     const state = interaction(this);

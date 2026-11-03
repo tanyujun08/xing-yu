@@ -14,3 +14,4 @@
 .sheet--full { height:100%; max-height:100%; border-radius:0; background:var(--xy-color-page); }
 .sheet__header--full { display:block; padding:0; }
 .sheet--full .sheet__content { padding-top:var(--xy-space-3); padding-bottom:var(--xy-space-4); }
+.sheet--ratio { max-height: 100vh; }

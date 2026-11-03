@@ -19,7 +19,7 @@
   <button class="save-primary" disabled="{{saving}}" aria-disabled="{{saving}}" bindtap="saveAndUse">{{saving ? '保存中…' : selectMode ? '保存并使用' : '保存地址'}}</button>
 </view></bottom-actions>
 </page-shell>
-<task-sheet class="xy-task-sheet" open="{{regionSheetOpen}}" title="选择地区" show-footer="{{false}}" bindclose="closeRegionSheet">
+<task-sheet class="xy-task-sheet" open="{{regionSheetOpen}}" title="选择地区" show-footer="{{false}}" height-ratio="{{0.67}}" bindclose="closeRegionSheet">
   <view class="region-tabs"><view wx:for="{{regionTabs}}" wx:key="level" class="region-tab {{item.active ? 'is-active' : ''}}"><text>{{item.name}}</text><button class="touch-overlay" hover-class="none" data-level="{{item.level}}" bindtap="changeRegionLevel" aria-label="{{item.name}}" aria-pressed="{{item.active}}"></button></view></view>
   <view class="region-options"><view wx:for="{{regionOptions}}" wx:key="code" class="region-option {{regionDraft[regionLevel].code === item.code ? 'is-active' : ''}}" data-code="{{item.code}}" bindtap="chooseRegion" role="button"><text>{{item.name}}</text><text wx:if="{{regionDraft[regionLevel].code === item.code}}">✓</text></view></view>
 </task-sheet>
