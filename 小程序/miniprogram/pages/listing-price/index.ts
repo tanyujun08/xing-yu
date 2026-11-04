@@ -1,3 +1,4 @@
+import { loginHostMethods, openLoginHere } from '../../shared/interaction/login-host';
 import { accountApi, ApiProblem } from '../../shared/api/account-api';
 import { publicationApi, type AssetDraft, type AssetDraftInput } from '../../shared/api/rental-api';
 import { createNavigateOnce, navigateBackWithFallback } from '../../shared/interaction/navigate-once';
@@ -110,6 +111,7 @@ function formMatchesDraft(page: { data: ReturnType<typeof initial> }, draft: Ass
 }
 
 Page({
+  ...loginHostMethods,
   data: initial(),
   onLoad(options: Record<string, string | undefined>) {
     const id = options.draft_id ?? (options.mode === 'draft' ? options.id : '') ?? '';
@@ -263,7 +265,7 @@ Page({
     const runtime = states.get(this); if (!runtime || !runtime.visible || !opaque(runtime.id) || this.data.submitting || runtime.updateIntent || runtime.submitIntent) return;
     runtime.navigation.navigateOnce('edit-draft', callbacks => wx.navigateTo({ url: `/pages/publish/index?draft_id=${encodeURIComponent(runtime.id)}&mode=draft`, ...callbacks }));
   },
-  openLogin() { const runtime = states.get(this); if (runtime?.visible) runtime.navigation.navigateOnce('login', callbacks => wx.navigateTo({ url: '/pages/login/index?source=listing-price', ...callbacks })); },
+  openLogin() { const runtime = states.get(this); if (runtime?.visible) openLoginHere(this, () => runtime.navigation.navigateOnce('login', callbacks => wx.navigateTo({ url: '/pages/login/index?source=listing-price', ...callbacks }))); },
   onSecondaryNavigationBack() { const runtime = states.get(this); if (runtime?.visible) navigateBackWithFallback(runtime.navigation); },
   goBack() { this.onSecondaryNavigationBack(); },
 });

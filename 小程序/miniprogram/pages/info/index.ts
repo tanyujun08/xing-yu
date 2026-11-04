@@ -1,3 +1,4 @@
+import { loginHostMethods, openLoginHere } from '../../shared/interaction/login-host';
 import { designAssets } from '../../shared/design/assets';
 import { accountApi } from '../../shared/api/account-api';
 import { orderConversationApi, type OrderConversation, type OrderConversationPage } from '../../shared/api/rental-api';
@@ -13,6 +14,7 @@ async function read<T>(state: State, handle: RequestHandle<T>) { const release =
 const empty = { loggedIn: false, conversations: [] as ReturnType<typeof orderConversationView>[], loaded: false, loading: false, loadingMore: false, hasMore: false, errorText: '' };
 
 Page({
+  ...loginHostMethods,
   data: { icons: designAssets, ...empty, supportError: '' },
   onLoad() { states.set(this, { owner: null, visible: false, scope: createOperationScope(), navigation: createNavigateOnce(), items: [], cursor: null, pages: 1, invalidate: () => undefined }); },
   onShow() {
@@ -77,7 +79,7 @@ Page({
       fail: error => { callbacks.fail(error); if (active(state)) this.setData({ errorText: '暂时无法打开，请重试' }); },
     }));
   },
-  openLogin() { this.navigate('/pages/login/index'); },
+  openLogin() { openLoginHere(this, () => this.navigate('/pages/login/index')); },
   openOrders() {
     const state = states.get(this); if (!state || !active(state)) return;
     state.navigation.navigateOnce('info-navigation', callbacks => wx.switchTab({ url: '/pages/orders/index', ...callbacks,

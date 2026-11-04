@@ -49,7 +49,7 @@ Page({
   onSecondaryNavigationBack() { navigateBackWithFallback(withdrawalInteraction(this).navigation); },
   data: {
     referencePreview: false,
-    view: 'apply' as 'apply' | 'records',
+    view: 'records' as 'apply' | 'records',
     availableText: '—',
     availableValueText: '—',
     availableFen: null as number | null,
@@ -83,10 +83,11 @@ Page({
     submissionKey: '',
   },
 
-  onLoad(options: Record<string, string | undefined>) {
-    const view = options.view === 'records' ? 'records' : 'apply';
+  onLoad(_options: Record<string, string | undefined>) {
+    // 申请提现已改到钱包页弹窗，这里只看提现记录
+    const view = 'records' as const;
     this.setData({ view });
-    this.setData({ secondaryNavigationTitle: '提现' });
+    this.setData({ secondaryNavigationTitle: '提现记录' });
   },
   onShow() { this.loadWallet(); },
   onHide() { withdrawalInteractionByPage.get(this)?.scope.onHide(); },
@@ -133,7 +134,7 @@ Page({
     const view = String(event.currentTarget.dataset['view'] ?? 'apply') === 'records' ? 'records' : 'apply';
     if (view === this.data.view) return;
     this.setData({ view });
-    this.setData({ secondaryNavigationTitle: '提现' });
+    this.setData({ secondaryNavigationTitle: '提现记录' });
     this.loadWallet();
   },
 
@@ -153,7 +154,7 @@ Page({
   openRecords() {
     if (this.data.view === 'records') return;
     this.setData({ view: 'records' });
-    this.setData({ secondaryNavigationTitle: '提现' });
+    this.setData({ secondaryNavigationTitle: '提现记录' });
     this.loadWallet();
   },
 

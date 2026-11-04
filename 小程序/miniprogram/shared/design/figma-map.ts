@@ -59,7 +59,7 @@ const derivedRoutes: Array<[string, string]> = [
   ['/pages/listings/index', '我的发布'],
   ['/pages/listing-price/index', '发布定价'],
   ['/pages/wallet/index', '钱包'],
-  ['/pages/withdrawal/index', '提现'],
+  ['/pages/withdrawal/index', '提现记录'],
   ['/pages/level-rights/index', '等级权益'],
   ['/pages/growth-tasks/index', '成长任务'],
   ['/pages/powder-ledger/index', '粉钻流水'],

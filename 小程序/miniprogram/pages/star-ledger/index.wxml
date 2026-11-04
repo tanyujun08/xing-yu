@@ -29,3 +29,4 @@
     <text class="member-subpage__footnote">统计按北京时间自然日和周一开始的本周计算，包含奖励与冲正净变动。</text>
   </view>
 </view>
+<login-sheet id="login-sheet" bindwechatlogin="onWechatLogin" bindphonelogin="onPhoneLogin" bindlegal="onLoginLegal" />

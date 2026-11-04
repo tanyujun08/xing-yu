@@ -1,5 +1,11 @@
 {
- "navigationBarTitleText":"优惠券详情",
- "navigationStyle":"custom",
- "usingComponents":{"page-shell":"../../components/page-shell/index","page-header":"../../components/page-header/index","status-view":"../../components/status-view/index"}
+  "navigationBarTitleText": "优惠券详情",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "page-shell": "../../components/page-shell/index",
+    "page-header": "../../components/page-header/index",
+    "status-view": "../../components/status-view/index",
+    "login-sheet": "../../components/login-sheet/index",
+    "bottom-actions": "../../components/bottom-actions/index"
+  }
 }

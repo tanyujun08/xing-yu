@@ -40,3 +40,4 @@
   .login-actions { margin-top: var(--xy-space-5); }
   .agreement-row { position: static; margin-top: var(--xy-space-6); }
 }
+.login-page-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; }

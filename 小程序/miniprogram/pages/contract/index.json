@@ -4,7 +4,8 @@
     "page-shell": "../../components/page-shell/index",
     "bottom-actions": "../../components/bottom-actions/index",
     "page-header": "../../components/page-header/index",
-    "order-product-summary": "../../components/order-product-summary/index"
+    "order-product-summary": "../../components/order-product-summary/index",
+    "status-hero": "../../components/status-hero/index"
   },
   "navigationStyle": "custom",
   "navigationBarTextStyle": "black"

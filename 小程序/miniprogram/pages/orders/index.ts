@@ -1,9 +1,10 @@
+import { loginHostMethods } from '../../shared/interaction/login-host';
 import { accountApi } from '../../shared/api/account-api';
 import { rentalOrderApi, orderUnreadLifecycle } from '../../shared/api/rental-api';
 import { designAssets } from '../../shared/design/assets';
 import { createRentalOrdersPage } from '../../shared/interaction/rental-orders-page';
 import { rentalOrderCard } from '../../shared/presentation/rental-order';
-Page(createRentalOrdersPage({ currentOwner: accountApi.sessionIdentity, icons: designAssets, present: rentalOrderCard,
+Page({ ...loginHostMethods, ...createRentalOrdersPage({ currentOwner: accountApi.sessionIdentity, icons: designAssets, present: rentalOrderCard,
     unread: orderUnreadLifecycle,
     load: async (filter) => { const result = await rentalOrderApi.list(filter).promise; return { items: result.value.items, hasMore: result.value.has_more, nextCursor: result.value.next_cursor }; },
-}));
+}) });

@@ -1,3 +1,4 @@
+import { loginHostMethods, openLoginHere } from '../../shared/interaction/login-host';
 import { accountApi, addressApi, ApiProblem, type OwnAddress } from '../../shared/api/account-api';
 import { designAssets } from '../../shared/design/assets';
 import { createNavigateOnce, navigateBackWithFallback } from '../../shared/interaction/navigate-once';
@@ -14,13 +15,14 @@ function interaction(page: object) {
   return value;
 }
 function projection(address: OwnAddress) {
-  return { id: address.address_id, name: address.recipient_name, phone: address.phone,
+  return { id: address.address_id, name: address.recipient_name, phone: String(address.phone ?? '').replace(/^(\d{3})\d{4}(\d{4})$/, '$1****$2'),
     region: address.province_name + address.city_name + address.district_name, detail: address.detail_address,
     isDefault: address.is_default, canEdit: address.allowed_actions.some((a) => a.code === 'UPDATE' && a.enabled),
     canDefault: address.allowed_actions.some((a) => a.code === 'DEFAULT' && a.enabled),
     canArchive: address.allowed_actions.some((a) => a.code === 'ARCHIVE' && a.enabled) };
 }
 Page({
+  ...loginHostMethods,
   data: { icons: designAssets, loggedIn: false, addresses: [] as ReturnType<typeof projection>[], selectMode: false,
     errorText: '', loading: false, hasMore: false, nextCursor: '', busy: false },
   onSecondaryNavigationBack() { navigateBackWithFallback(interaction(this).navigation); },
@@ -30,7 +32,8 @@ Page({
     this.setData({ selectMode: options.mode === 'select', secondaryNavigationTitle: options.mode === 'select' ? '选择收货地址' : '地址管理' });
   },
   onShow() { interaction(this).visible = true; void this.refresh(); },
-  onHide() { interaction(this).visible = false; this.setData({ addresses: [] }); interaction(this).rows.clear(); },
+  // 打开编辑页时保留列表，避免转场中露出“还没有保存地址”空状态；账号变化时 refresh 会清空
+  onHide() { interaction(this).visible = false; },
   onUnload() { const state = interaction(this); state.scope.dispose(); state.navigation.dispose(); interactions.delete(this); },
   async refresh() {
     const state = interaction(this);
@@ -80,7 +83,7 @@ Page({
   openEditor(id: string) {
     const state = interaction(this);
     if (!accountApi.sessionIdentity()) {
-      state.navigation.navigateOnce('login', (callbacks) => wx.navigateTo({ url: '/pages/login/index?source=addresses', ...callbacks })); return;
+      openLoginHere(this, () => state.navigation.navigateOnce('login', (callbacks) => wx.navigateTo({ url: '/pages/login/index?source=addresses', ...callbacks }))); return;
     }
     if (id && !state.rows.get(id)?.allowed_actions.some((a) => a.code === 'UPDATE' && a.enabled)) return;
     state.navigation.navigateOnce('editor', (callbacks) => wx.navigateTo({ url: '/pages/address-edit/index?id=' + encodeURIComponent(id), ...callbacks }));

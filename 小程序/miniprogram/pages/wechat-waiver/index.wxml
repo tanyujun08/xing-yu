@@ -1,13 +1,23 @@
 <page-meta root-font-size="system" />
 <page-shell surface="page" has-footer="{{!missing}}">
-<page-header title="{{secondaryNavigationTitle || '微信免押校验'}}" background="#ffffff" inverse="{{false}}" bindback="onSecondaryNavigationBack" slot="header" /><view class="waiver-page">
+<page-header title="微信支付分免押" background="#ffffff" inverse="{{false}}" bindback="onSecondaryNavigationBack" slot="header" /><view class="waiver-page">
 <status-view wx:if="{{missing}}" state="empty" title="当前订单无法继续支付" description="请返回订单确认当前支付状态。" illustration-src="/assets/illustrations/empty-orders.webp" action-text="返回订单" bindaction="backOrder" />
 <block wx:else>
-  <view class="waiver-card" role="status" aria-live="polite"><text class="phase-label phase-{{phase}}">{{phase === 'checking' ? '资格确认' : phase === 'success' ? '资格已通过' : '需要处理'}}</text><text class="waiver-title">{{title}}</text><text class="waiver-copy">{{copy}}</text></view>
-  <view class="waiver-card"><payable-amount label="本次应付" amount="{{paymentAmount}}" /><view class="order-line order-identifier"><text>订单编号</text><text>{{order.id}}</text></view></view>
+  <view class="waiver-card waiver-status" role="status" aria-live="polite">
+    <view class="steps steps--{{phase}}" aria-label="当前阶段：{{phase === 'checking' ? '资格确认' : phase === 'success' ? '资格已通过，待支付' : '需要处理'}}">
+      <view class="step {{phase === 'success' ? 'is-done' : 'is-current'}} {{phase !== 'checking' && phase !== 'success' ? 'is-alert' : ''}}"><view class="step-dot" /><text>资格确认</text></view>
+      <view class="step {{phase === 'success' ? 'is-current' : ''}}"><view class="step-dot" /><text>微信支付</text></view>
+      <view class="step"><view class="step-dot" /><text>完成</text></view>
+    </view>
+    <view class="waiver-copyblock"><text class="waiver-title">{{title}}</text><text class="waiver-copy">{{copy}}</text></view>
+  </view>
+  <view class="waiver-card waiver-lines">
+    <view class="order-line order-amount"><text>本次应付</text><text class="amount-value">¥{{paymentAmount}}</text></view>
+    <view class="order-line order-identifier"><text>订单编号</text><text>{{order.id}}</text></view>
+  </view>
 </block>
 </view><view slot="footer">
-<bottom-actions wx:if="{{!missing && phase === 'checking'}}" primary-text="查询校验结果" secondary-text="返回订单" busy="{{submitting}}" bindprimary="queryVerification" bindsecondary="backOrder" />
+<bottom-actions wx:if="{{!missing && phase === 'checking'}}" primary-text="查看免押结果" secondary-text="返回订单" busy="{{submitting}}" bindprimary="queryVerification" bindsecondary="backOrder" />
 <bottom-actions wx:elif="{{!missing && phase === 'success'}}" primary-text="去支付" secondary-text="返回订单" busy="{{submitting}}" bindprimary="startPayment" bindsecondary="backOrder" />
 <bottom-actions wx:elif="{{!missing}}" primary-text="返回订单处理" bindprimary="backOrder" />
 </view></page-shell>

@@ -6,10 +6,19 @@
     <scroll-view class="region-scroll" scroll-y="true" show-scrollbar="false" scroll-into-view="{{scrollIntoView}}" enable-back-to-top="true">
       <view id="city-content-top" class="city-content {{searching ? 'is-searching' : 'has-alpha-index'}}">
         <view wx:if="{{!searching}}" class="city-default-sections">
-          <view class="current-city xy-tap" data-id="{{currentCityId}}" data-city="{{currentCity}}" bindtap="selectCity" role="button" aria-label="当前城市{{currentCity}}"><text class="current-city-label">当前城市</text><text class="current-city-value">{{currentCity}}</text><image src="{{icons.arrowRight}}" mode="aspectFit" /></view>
-          <view class="city-section"><text class="city-section-title">热门城市</text><view class="city-grid"><view wx:for="{{hotCities}}" wx:for-item="city" wx:key="id" class="city-option xy-tap" data-id="{{city.id}}" data-city="{{city.name}}" bindtap="selectCity" role="button"><view class="city-option-label">{{city.name}}</view></view></view></view>
+          <text class="city-section-title">当前定位</text>
+          <view class="locate-row">
+            <view wx:if="{{locateState === 'done'}}" class="locate-city xy-tap" bindtap="selectLocated" role="button" aria-label="选择定位城市{{locatedCity.name}}"><image class="locate-icon" src="{{icons.discoveryLocation}}" mode="aspectFit" aria-hidden="true" /><text>{{locatedCity.name}}</text></view>
+            <view wx:else class="locate-status"><image class="locate-icon locate-icon--muted" src="{{icons.discoveryLocation}}" mode="aspectFit" aria-hidden="true" /><text>{{locateState === 'locating' ? '正在定位…' : locateState === 'denied' ? '未开启定位权限' : '暂时无法定位'}}</text></view>
+            <button wx:if="{{locateState !== 'locating'}}" class="locate-retry xy-button-reset" bindtap="retryLocate" aria-label="{{locateState === 'denied' ? '去开启定位权限' : '重新定位'}}">{{locateState === 'denied' ? '去开启' : '重新定位'}}</button>
+          </view>
+          <text class="city-section-title">快速选择</text>
+          <view class="city-grid">
+            <view class="city-option xy-tap {{currentCityId ? '' : 'is-current'}}" bindtap="selectAllCities" role="button" aria-label="全部城市{{currentCityId ? '' : '，当前选择'}}"><view class="city-option-label">全部城市</view></view>
+            <view wx:for="{{hotCities}}" wx:for-item="city" wx:key="id" class="city-option xy-tap {{city.id === currentCityId ? 'is-current' : ''}}" data-id="{{city.id}}" data-city="{{city.name}}" bindtap="selectCity" role="button" aria-label="{{city.name}}{{city.id === currentCityId ? '，当前选择' : ''}}"><view class="city-option-label">{{city.name}}</view></view>
+          </view>
         </view>
-        <view wx:if="{{loading}}" role="status">正在读取城市…</view><view wx:if="{{errorText}}"><text>{{errorText}}</text><button class="xy-action-hit" bindtap="loadCities">重新读取</button></view><button class="xy-action-hit" bindtap="selectAllCities">全部城市</button><view class="city-directory"><text wx:if="{{searching}}" class="city-section-title search-title">搜索结果</text>
+        <view wx:if="{{loading}}" class="city-status" role="status">正在读取城市…</view><view wx:if="{{errorText}}" class="city-error"><text>{{errorText}}</text><button class="city-retry xy-button-reset" bindtap="loadCities">重新读取</button></view><view class="city-directory"><text wx:if="{{searching}}" class="city-section-title search-title">搜索结果</text>
           <view wx:if="{{cityGroups.length}}" class="city-list"><view wx:for="{{cityGroups}}" wx:for-item="group" wx:key="letter" id="city-{{group.letter}}" class="city-group"><text wx:if="{{!searching}}" class="city-letter">{{group.letter}}</text><view wx:for="{{group.cities}}" wx:for-item="city" wx:key="id" class="city-row xy-tap" data-id="{{city.id}}" data-city="{{city.name}}" bindtap="selectCity" role="button"><text class="city-row-name">{{city.name}}</text><text wx:if="{{city.name === currentCity}}" class="city-current-mark">当前</text></view></view></view>
           <view wx:elif="{{!loading && !errorText}}" class="city-empty"><image class="xy-empty-illustration" src="{{icons.emptySearch}}" mode="aspectFit" /><text class="city-empty-title">没有找到相关城市</text><text class="city-empty-help">试试其他城市名称</text></view>
         </view>

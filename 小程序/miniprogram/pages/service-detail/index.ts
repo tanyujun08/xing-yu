@@ -1,3 +1,4 @@
+import { designAssets } from '../../shared/design/assets';
 import { demoExtras } from '../../preview/extras';
 
 export {};
@@ -68,6 +69,7 @@ Page({
     unavailable: false,
     service: 'guard' as ServiceKind,
     detail: emptyDetail,
+    checkIcon: designAssets.flowCheck,
   },
 
   onLoad(options: Record<string, string | undefined>) {

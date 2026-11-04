@@ -35,7 +35,7 @@
       </view>
     </view>
   </view>
-  <view wx:else class="cabinet-banner xy-card-key xy-tap {{windowWidth < 360 || fontSizeSetting > 20 ? 'cabinet-banner--stacked' : ''}}" bindtap="openCabinets" role="button" aria-label="查看柜机">
+  <view wx:elif="{{cabinetLoaded}}" class="cabinet-banner xy-card-key xy-tap {{windowWidth < 360 || fontSizeSetting > 20 ? 'cabinet-banner--stacked' : ''}}" bindtap="openCabinets" role="button" aria-label="查看柜机">
     <view class="banner-content"><view class="banner-head"><text class="xy-tag xy-tag--cabinet">柜</text><text class="banner-title">CCD租赁柜</text></view><text class="banner-copy">发现身边的相机</text><text class="banner-meta">24 小时 · 就近取还</text></view><text class="banner-more">查看柜机 ›</text>
     <image class="banner-media" src="{{icons.homeBanner}}" mode="aspectFill" />
   </view>

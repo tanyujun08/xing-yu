@@ -1,3 +1,4 @@
+import { designAssets } from '../../shared/design/assets';
 import { demoExtras } from '../../preview/extras';
 import {unavailableOrderPage,blockOrderAction} from '../../shared/interaction/order-unavailable';
 
@@ -11,6 +12,7 @@ Page({
     axes: null,
     mode: '',
     modeTitle: '售后处理',
+    supportIcon: designAssets.flowSupport,
     modeCopy: '',
     orderStatusTitle: '',
     orderStatusGroup: '',

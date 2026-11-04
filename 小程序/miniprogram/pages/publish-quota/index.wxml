@@ -16,3 +16,4 @@
  <status-view wx:if="{{redemptionListState.incremental === 'load-more-error'}}" state="error" density="compact-footer" title="加载失败" action-text="重试" bindaction="retryMore" /><status-view wx:elif="{{redemptionListState.incremental === 'done'}}" state="end" density="compact-footer" title="已显示全部记录" /></view>
  </block>
 </view></page-shell>
+<login-sheet id="login-sheet" bindwechatlogin="onWechatLogin" bindphonelogin="onPhoneLogin" bindlegal="onLoginLegal" />

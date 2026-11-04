@@ -12,7 +12,7 @@ const states=new WeakMap<object,ReturnType<typeof createState>>();
 function state(page:object){let s=states.get(page);if(!s){s=createState();states.set(page,s)}return s}
 function current(page:object,s:ReturnType<typeof createState>,epoch=s.epoch){return s.visible&&epoch===s.epoch&&!s.scope.disposed&&states.get(page)===s&&!!s.owner&&s.owner===accountApi.sessionIdentity()}
 Page({
- data:{icons:designAssets,name:'',avatarPath:'',avatarFailed:false,avatarReloading:false,avatarOwner:'',avatarEpoch:0,identityText:'身份状态暂未接入',identityTone:'pending',saving:false,selectingAvatar:false,avatarPending:false,avatarStatus:'',errorText:'',loading:false},
+ data:{icons:designAssets,name:'',avatarPath:'',avatarFailed:false,avatarReloading:false,avatarOwner:'',avatarEpoch:0,changed:false,saving:false,selectingAvatar:false,avatarPending:false,avatarStatus:'',errorText:'',loading:false},
  onSecondaryNavigationBack(){navigateBackWithFallback(state(this).navigation)},
  async onShow(){let s=state(this);if(s.owner!==accountApi.sessionIdentity()){s.scope.dispose();s.navigation.dispose();states.delete(this);s=state(this);this.setData({name:'',avatarPath:'',avatarFailed:false,avatarReloading:false,avatarOwner:'',avatarEpoch:0,saving:false,selectingAvatar:false,avatarPending:false,avatarStatus:'',errorText:''})}
   if(s.picker?.hidden){s.picker.hidden=false;if(s.picker.completed)s.picker=undefined;return}
@@ -37,7 +37,7 @@ Page({
   const epoch=s.epoch;this.setData({avatarReloading:true});
   wx.nextTick(()=>{if(current(this,s,epoch)&&this.data.avatarPath===source)this.setData({avatarFailed:false,avatarReloading:false})});
  },
- inputName(event:WechatMiniprogram.Input){const s=state(this);if(s.pending){this.setData({errorText:'上次保存结果待确认，请重试原请求。'});return}s.dirty=true;this.setData({name:event.detail.value})},
+ inputName(event:WechatMiniprogram.Input){const s=state(this);if(s.pending){this.setData({errorText:'上次保存结果待确认，请重试原请求。'});return}s.dirty=true;this.setData({changed:true,name:event.detail.value})},
  chooseAvatar(){const s=state(this);if(!current(this,s)||s.pending)return Promise.resolve();if(s.upload){this.setData({errorText:'头像处理尚未完成，请显式恢复原请求，或取消后重新选择。'});return Promise.resolve()}
   const epoch=s.epoch;return s.scope.singleFlight('avatar-select',async()=>{this.setData({selectingAvatar:true,errorText:''});try{
    s.picker={hidden:false};const selected=await new Promise<WechatMiniprogram.ChooseMediaSuccessCallbackResult>((resolve,reject)=>demoWx.chooseMedia({count:1,mediaType:['image'],sourceType:['album','camera'],success:resolve,fail:reject}));if(s.picker){s.picker.completed=true;if(!s.picker.hidden)s.picker=undefined;}
@@ -49,7 +49,7 @@ Page({
  recoverAvatar(){return this.processAvatar(true)},
  async processAvatar(explicitRecovery:boolean){const s=state(this);const intent=s.upload;const epoch=s.epoch;if(!intent||!current(this,s,epoch))return;
   const handle=runMaterialUpload(intent,{scope:s.scope,explicitRecovery,isCurrent:()=>current(this,s,epoch)&&s.upload===intent,onState:(value)=>this.setData({avatarPending:materialUploadBlocksSave(value),avatarStatus:value.phase==='UPLOADING'?`正在上传 ${value.progress}%`:value.phase==='PROCESSING'?'头像处理中…':value.error}),transport:{upload:(file,_class,key,options)=>accountApi.uploadAvatar(file,key,options),get:accountApi.material}});s.uploadRun=handle;
-  this.setData({selectingAvatar:true,avatarPending:true,errorText:''});try{const media=await handle.promise;if(!current(this,s,epoch)||s.upload!==intent)return;s.avatarId=media.material_id;s.upload=undefined;s.dirty=true;this.setData({avatarPath:media.src,avatarPending:false,avatarStatus:'',avatarFailed:false,avatarReloading:false})}
+  this.setData({selectingAvatar:true,avatarPending:true,errorText:''});try{const media=await handle.promise;if(!current(this,s,epoch)||s.upload!==intent)return;s.avatarId=media.material_id;s.upload=undefined;s.dirty=true;this.setData({changed:true,avatarPath:media.src,avatarPending:false,avatarStatus:'',avatarFailed:false,avatarReloading:false})}
   catch(error){if(current(this,s,epoch)&&s.upload===intent)this.setData({avatarPending:true,errorText:error instanceof Error?error.message:'头像结果待确认'})}
   finally{if(s.uploadRun===handle)s.uploadRun=undefined;if(current(this,s,epoch))this.setData({selectingAvatar:false})}
  },

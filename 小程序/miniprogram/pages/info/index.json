@@ -2,5 +2,8 @@
   "navigationBarTitleText": "沟通",
   "navigationStyle": "custom",
   "enablePullDownRefresh": true,
-  "usingComponents": { "page-header": "../../components/page-header/index" }
+  "usingComponents": {
+    "page-header": "../../components/page-header/index",
+    "login-sheet": "../../components/login-sheet/index"
+  }
 }

@@ -29,3 +29,4 @@ module.exports = {
     <view class="profile-section"><view class="section-head"><text>我的服务</text></view><view class="service-list"><view wx:for="{{services}}" wx:key="title" class="service-row xy-tap" data-route="{{item.route}}" bindtap="openItem" role="button" aria-label="打开{{item.title}}"><image class="service-icon" src="{{item.icon}}" mode="aspectFit" aria-hidden="true" /><text class="service-title">{{item.title}}</text><text wx:if="{{item.title === '实名认证' && identityRegistered}}" class="row-value row-value--green">已填写</text><image class="row-arrow" src="{{icons.arrowRight}}" mode="aspectFit" /></view></view><text wx:if="{{loggedIn}}" class="logout-button xy-tap" bindtap="logout" role="button">退出登录</text></view>
   </view>
 </view>
+<login-sheet id="login-sheet" bindwechatlogin="onWechatLogin" bindphonelogin="onPhoneLogin" bindlegal="onLoginLegal" />

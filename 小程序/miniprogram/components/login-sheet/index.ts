@@ -2,7 +2,7 @@ import { designAssets } from '../../shared/design/assets';
 
 Component({
   options: { styleIsolation: 'isolated' },
-  properties: { visible: { type: Boolean, value: false } },
+  properties: { visible: { type: Boolean, value: false }, standalone: { type: Boolean, value: false } },
   data: { icons: designAssets, agreed: false, submitting: false, errorText: '', showConsentModal: false, windowWidth: 0 },
   lifetimes: {
     attached() { this.updateWindowWidth(wx.getWindowInfo().windowWidth); },
@@ -26,6 +26,12 @@ Component({
     setError(errorText: string) { this.setData({ errorText, submitting: false }); },
     complete() { this.setData({ visible: false, agreed: false, submitting: false, errorText: '' }); },
     toggleAgree() { this.setData({ agreed: !this.data.agreed }); },
+    noop() {},
+    onBack() {
+      if (this.data.submitting) return;
+      if (this.data.standalone) { this.triggerEvent('back'); return; }
+      this.close();
+    },
     closeConsentModal() { this.setData({ showConsentModal: false }); },
     confirmConsent() { this.setData({ agreed: true, showConsentModal: false }); },
     openLegal(event: WechatMiniprogram.TouchEvent) {
