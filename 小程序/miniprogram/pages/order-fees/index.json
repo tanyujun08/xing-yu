@@ -5,7 +5,6 @@
     "page-shell": "../../components/page-shell/index",
     "page-header": "../../components/page-header/index",
     "media-state": "../../components/media-state/index",
-    "status-hero": "../../components/status-hero/index",
-    "bottom-actions": "../../components/bottom-actions/index"
+    "status-hero": "../../components/status-hero/index"
   }
 }

@@ -3,7 +3,6 @@
   "usingComponents": {
     "page-shell": "../../components/page-shell/index",
     "page-header": "../../components/page-header/index",
-    "bottom-actions": "../../components/bottom-actions/index",
     "status-hero": "../../components/status-hero/index"
   },
   "navigationStyle": "custom",

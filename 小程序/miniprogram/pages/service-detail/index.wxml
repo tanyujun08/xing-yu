@@ -1,50 +1,83 @@
 <page-meta root-font-size="system" />
-<page-shell surface="page" has-footer="{{preview}}">
-<page-header title="{{secondaryNavigationTitle || '服务详情'}}" background="#ffffff" inverse="{{false}}" bindback="onSecondaryNavigationBack" slot="header" /><view class="xy-h-page service-detail-page {{missing ? 'is-missing' : ''}}">
+<page-shell surface="page" has-footer="{{!missing}}">
+<page-header title="{{secondaryNavigationTitle || '服务详情'}}" background="#ffffff" inverse="{{false}}" bindback="onSecondaryNavigationBack" slot="header" />
+<view class="xy-h-page sd-page">
+
+  <!-- 下单前预览 -->
   <block wx:if="{{preview}}">
- <status-hero tone="green" art="{{service === 'guard' ? 'shield-green' : 'shield'}}" title="{{previewTitle}}" description="{{service === 'guard' ? '租赁期间遇到问题，优先处理、进度主动通知。' : '租赁期间意外损坏，可按本单保障规则申请审核。'}}" />
- <view wx:if="{{service === 'guard'}}" class="xy-h-blk xy-h-blk--pad">
-   <view class="sd-head"><text class="xy-h-title">服务内容</text><text class="sd-price">{{previewPrice === '—' ? '下单页显示价格' : '¥' + previewPrice}}<text wx:if="{{previewPrice !== '—'}}" class="sd-unit"> / 单</text></text></view>
-   <view class="sd-check"><image src="{{checkIcon}}" mode="aspectFit" aria-hidden="true" /><text>售后问题优先排队处理</text></view>
-   <view class="sd-check"><image src="{{checkIcon}}" mode="aspectFit" aria-hidden="true" /><text>关键处理进度消息提醒</text></view>
-   <view class="sd-check"><image src="{{checkIcon}}" mode="aspectFit" aria-hidden="true" /><text>一次人工主动跟进</text></view>
- </view>
- <view wx:else class="xy-h-blk">
-   <view class="xy-h-row"><view class="xy-h-row__k"><text>适用范围</text><text class="xy-h-row__sub">租赁期间意外碰撞、跌落、进液等意外损坏。</text></view></view>
-   <view class="xy-h-row"><view class="xy-h-row__k"><text>不包含</text><text class="xy-h-row__sub">故意损坏、遗失、盗抢、正常磨损、耗材损耗、未经允许拆修。</text></view></view>
-   <view class="xy-h-row"><view class="xy-h-row__k"><text>生效及申请</text><text class="xy-h-row__sub">实际交接至有效归还期间；需提供订单、设备与事故证据。保障上限与期限以本单快照为准。</text></view></view>
-   <view class="xy-h-row"><view class="xy-h-row__k"><text>取消与退款</text><text class="xy-h-row__sub">履约开始前取消按订单退款规则处理；开始后按已生效保障条款处理。</text></view></view>
- </view>
- <text class="xy-h-note">{{service === 'guard' ? '不改变押金、租金或赔偿金额；下单时选择，费用计入订单。' : '下单时选择，费用计入订单。'}}</text>
-</block><block wx:elif="{{missing}}"><view class="missing-card xy-empty-page xy-empty-page--surface"><image class="xy-empty-page__illustration" src="/assets/illustrations/empty-generic.png" mode="aspectFit" aria-hidden="true" /><text class="xy-empty-page__title">服务详情暂不可查询</text><text class="xy-empty-page__copy">请稍后再试或返回订单。</text><view class="xy-empty-page__action xy-action-primary xy-action-text xy-tap" bindtap="goBack" role="button" aria-label="返回订单">返回订单</view></view></block>
-  <block wx:elif="{{unavailable}}">
-    <view class="unavailable-overview"><view><text class="service-eyebrow">{{service === 'guard' ? '订单服务' : '保障服务'}}</text><text class="service-title">{{detail.title}}</text></view><text class="unavailable-status">未购买</text></view>
-    <view class="unavailable-card"><text class="unavailable-title">当前订单未购买此服务</text><text class="unavailable-copy">可返回订单查看已购买的服务。</text><view class="unavailable-order"><text>关联订单</text><text>{{detail.deviceName}}</text><text>{{detail.productModel}} · {{detail.orderId}}</text></view><view class="back-action xy-tap"><text>返回订单查看服务</text><button class="touch-overlay" hover-class="none" bindtap="goBack" aria-label="返回订单查看服务"></button></view></view>
+    <status-hero tone="green" art="{{service === 'guard' ? 'shield-green' : 'shield'}}" title="{{previewTitle}}" description="{{service === 'guard' ? '租赁期间遇到问题，优先处理、进度主动通知。' : '租赁期间意外损坏，可按本单保障规则申请审核。'}}" />
+    <view class="xy-h-blk">
+      <view class="xy-h-key"><text class="xy-h-key__label">服务费用</text><text class="xy-h-key__amount">{{previewPrice === '—' ? '下单页显示价格' : '¥' + previewPrice}}<text wx:if="{{previewPrice !== '—'}}" class="sd-unit"> / 单</text></text><text class="xy-h-row__sub">下单时选择，费用计入订单</text></view>
+    </view>
+    <text class="xy-h-cap">{{service === 'guard' ? '服务内容' : '保障说明'}}</text>
+    <view wx:if="{{service === 'guard'}}" class="xy-h-blk">
+      <view class="xy-h-row sd-check"><image src="{{checkIcon}}" mode="aspectFit" aria-hidden="true" /><text class="xy-h-row__k">售后问题优先排队处理</text></view>
+      <view class="xy-h-row sd-check"><image src="{{checkIcon}}" mode="aspectFit" aria-hidden="true" /><text class="xy-h-row__k">关键处理进度消息提醒</text></view>
+      <view class="xy-h-row sd-check"><image src="{{checkIcon}}" mode="aspectFit" aria-hidden="true" /><text class="xy-h-row__k">一次人工主动跟进</text></view>
+    </view>
+    <view wx:else class="xy-h-blk">
+      <view class="xy-h-row"><view class="xy-h-row__k"><text>适用范围</text><text class="xy-h-row__sub">租赁期间意外碰撞、跌落、进液等意外损坏。</text></view></view>
+      <view class="xy-h-row"><view class="xy-h-row__k"><text>不包含</text><text class="xy-h-row__sub">故意损坏、遗失、盗抢、正常磨损、耗材损耗、未经允许拆修。</text></view></view>
+      <view class="xy-h-row"><view class="xy-h-row__k"><text>生效及申请</text><text class="xy-h-row__sub">实际交接至有效归还期间；需提供订单、设备与事故证据。保障上限与期限以本单快照为准。</text></view></view>
+      <view class="xy-h-row"><view class="xy-h-row__k"><text>取消与退款</text><text class="xy-h-row__sub">履约开始前取消按订单退款规则处理；开始后按已生效保障条款处理。</text></view></view>
+    </view>
+    <text wx:if="{{service === 'guard'}}" class="xy-h-note">不改变押金、租金或赔偿金额。</text>
   </block>
+
+  <!-- 读取失败 -->
+  <block wx:elif="{{missing}}">
+    <view class="xy-empty-page xy-empty-page--surface"><image class="xy-empty-page__illustration" src="/assets/illustrations/empty-generic.png" mode="aspectFit" aria-hidden="true" /><text class="xy-empty-page__title">服务详情暂不可查询</text><text class="xy-empty-page__copy">请稍后再试或返回订单。</text><view class="xy-empty-page__action xy-action-primary xy-action-text xy-tap" bindtap="goBack" role="button" aria-label="返回订单">返回订单</view></view>
+  </block>
+
+  <!-- 本单未购买 -->
+  <block wx:elif="{{unavailable}}">
+    <status-hero tone="neutral" art="shield" title="本单未购买此服务" description="可返回订单查看已购买的服务。" />
+    <view class="xy-h-blk">
+      <view class="xy-h-row"><text class="xy-h-row__k">服务</text><text class="xy-h-row__v">{{detail.title}}</text></view>
+      <view class="xy-h-row"><text class="xy-h-row__k">关联订单</text><view class="xy-h-row__v sd-order"><text>{{detail.deviceName}}</text><text class="xy-h-row__sub">{{detail.productModel}} · {{detail.orderId}}</text></view></view>
+    </view>
+  </block>
+
+  <!-- 已购买 -->
   <block wx:else>
+    <status-hero tone="green" art="{{service === 'guard' ? 'shield-green' : 'shield'}}" title="{{detail.title}}" description="{{service === 'guard' ? detail.summary : detail.statusText}}" />
+    <view class="xy-h-blk">
+      <view class="xy-h-key"><text class="xy-h-key__label">{{service === 'guard' ? '服务费用' : '保障费用'}}</text><text class="xy-h-key__amount">{{detail.priceText}}</text><text wx:if="{{service === 'guard'}}" class="xy-h-row__sub sd-ok">{{detail.statusText}}</text></view>
+      <block wx:if="{{service === 'insurance'}}">
+        <view class="xy-h-row"><text class="xy-h-row__k">保障期间</text><text class="xy-h-row__v">{{detail.periodText}}</text></view>
+        <view class="xy-h-row"><text class="xy-h-row__k">保障上限</text><text class="xy-h-row__v">{{detail.maximumText}}</text></view>
+      </block>
+    </view>
+
     <block wx:if="{{service === 'guard'}}">
-      <status-hero tone="green" art="shield-green" title="{{detail.title}}" description="{{detail.summary}}" />
-      <view class="xy-h-blk xy-h-blk--pad">
-        <view class="sd-head"><text class="xy-h-title">本单权益</text><text class="sd-price">{{detail.priceText}}</text></view>
-        <view wx:for="{{detail.benefits}}" wx:key="id" class="sd-check"><image src="{{checkIcon}}" mode="aspectFit" aria-hidden="true" /><view><text>{{item.title}}</text><text class="xy-h-row__sub sd-sub">{{item.copy}}</text></view></view>
-        <text class="sd-status">{{detail.statusText}}</text>
+      <text class="xy-h-cap">本单权益</text>
+      <view class="xy-h-blk">
+        <view wx:for="{{detail.benefits}}" wx:key="id" class="xy-h-row sd-check"><image src="{{checkIcon}}" mode="aspectFit" aria-hidden="true" /><view class="xy-h-row__k"><text>{{item.title}}</text><text class="xy-h-row__sub">{{item.copy}}</text></view></view>
       </view>
-      <text class="xy-h-note">{{detail.cancellationText}}</text>
-      <text class="xy-h-note">{{detail.providerText}} {{detail.contactText}}</text>
     </block>
-    <block wx:elif="{{service === 'insurance'}}">
-      <view class="insurance-hero"><view><text class="service-eyebrow">保障服务</text><text class="service-title">{{detail.title}}</text><text class="service-price">{{detail.priceText}}</text></view><text class="insurance-status">{{detail.statusText}}</text></view>
-      <view class="insurance-meta"><view><text>保障期间</text><text>{{detail.periodText}}</text></view><view><text>{{detail.maximumText}}</text><text>以本单保障规则为准</text></view></view>
-      <view class="section-title">保障范围</view><view class="rule-panel rule-covered"><text class="rule-label">可申请审核</text><text>{{detail.scopeText}}</text></view>
-      <view class="section-title">不保障</view><view class="rule-panel rule-excluded"><text class="rule-label">除外责任</text><text>{{detail.exclusionsText}}</text></view>
-      <view class="section-title">申请条件</view><view class="rule-line"><text>需要提供</text><text>{{detail.claimConditionsText}}</text></view>
-      <view class="section-title">证据要求</view><view class="rule-line"><text>凭证要求</text><text>{{detail.evidenceText}}</text></view>
-      <view class="section-title">处理流程</view><view class="insurance-process"><view wx:for="{{detail.processSteps}}" wx:key="id" class="process-step"><view class="process-index">{{item.index}}</view><view><text class="process-title">{{item.title}}</text><text class="process-copy">{{item.copy}}</text></view></view></view>
-      <view class="insurance-note"><text class="rule-label">取消规则</text><text>{{detail.cancellationText}}</text></view>
-      <view class="provider-line"><text>{{detail.providerText}}</text><text>{{detail.contactText}}</text></view>
+    <block wx:else>
+      <text class="xy-h-cap">保障范围</text>
+      <view class="xy-h-blk">
+        <view class="xy-h-row"><view class="xy-h-row__k"><text>可申请审核</text><text class="xy-h-row__sub">{{detail.scopeText}}</text></view></view>
+        <view class="xy-h-row"><view class="xy-h-row__k"><text>不保障</text><text class="xy-h-row__sub">{{detail.exclusionsText}}</text></view></view>
+        <view class="xy-h-row"><view class="xy-h-row__k"><text>申请条件</text><text class="xy-h-row__sub">{{detail.claimConditionsText}}</text></view></view>
+        <view class="xy-h-row"><view class="xy-h-row__k"><text>证据要求</text><text class="xy-h-row__sub">{{detail.evidenceText}}</text></view></view>
+      </view>
+      <text class="xy-h-cap">处理流程</text>
+      <view class="xy-h-blk">
+        <view wx:for="{{detail.processSteps}}" wx:key="id" class="xy-h-row sd-step"><text class="sd-num">{{item.index}}</text><view class="xy-h-row__k"><text>{{item.title}}</text><text class="xy-h-row__sub">{{item.copy}}</text></view></view>
+      </view>
     </block>
-    <view class="xy-h-blk order-link" bindtap="goBack" role="button"><view><text class="order-link-label">关联订单</text><text class="order-link-device">{{detail.deviceName}}</text><text class="order-link-number">{{detail.productModel}} · {{detail.orderId}}</text></view><text class="order-link-arrow">返回订单</text></view>
+
+    <text class="xy-h-cap">更多记录</text>
+    <view class="xy-h-blk">
+      <button class="xy-h-link" bindtap="goBack" aria-label="返回关联订单"><text class="xy-h-link__k">关联订单</text><text class="xy-h-link__v">{{detail.deviceName}}</text><text class="xy-h-link__more" aria-hidden="true">›</text></button>
+    </view>
+    <text class="xy-h-note">{{detail.cancellationText}}</text>
+    <text class="xy-h-note">{{detail.providerText}} {{detail.contactText}}</text>
   </block>
 </view>
-<bottom-actions wx:if="{{preview}}" slot="footer" primary-text="返回确认订单" bindprimary="goBack" />
+<view wx:if="{{!missing}}" slot="footer" class="xy-h-foot"><view class="xy-h-actions"><view class="xy-h-actions__main">
+  <button class="xy-h-btn xy-h-btn--primary xy-action-hit" bindtap="goBack">{{preview ? '返回确认订单' : '返回订单'}}</button>
+</view></view></view>
 </page-shell>

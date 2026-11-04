@@ -4,10 +4,8 @@
   "navigationBarTextStyle": "black",
   "usingComponents": {
     "return-evidence-grid": "../../components/return-evidence-grid/index",
-    "task-sheet": "../../components/task-sheet/index",
     "page-header": "../../components/page-header/index",
     "page-shell": "../../components/page-shell/index",
-    "bottom-actions": "../../components/bottom-actions/index",
-    "return-progress": "../../components/return-progress/index"
+    "status-hero": "../../components/status-hero/index"
   }
 }

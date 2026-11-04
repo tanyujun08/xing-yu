@@ -1,68 +1,133 @@
 <page-meta root-font-size="system" />
+<wxs module="cr">
+module.exports.kind = function (s) {
+  if (s === 'SUCCEEDED' || s === 'ANOMALY' || s === 'FAILED_CONFIRMED' || s === 'UNKNOWN') return 'result';
+  if (s === 'EXECUTING' || s === 'VERIFYING') return 'progress';
+  if (s === 'AWAITING_CONFIRMATION') return 'confirm';
+  return 'idle';
+};
+</wxs>
+<template name="kf">
+  <button class="xy-action-hit xy-h-kf" bindtap="demoSupport" aria-label="联系客服"><image src="{{icons.flowSupport}}" mode="aspectFit" aria-hidden="true" /><text>客服</text></button>
+</template>
 <view class="return-theme">
-<page-shell surface="page" has-footer footer-surface="page">
+<page-shell surface="page" has-footer>
   <page-header variant="return" title="{{taskStatus === 'SUCCEEDED' || taskStatus === 'ANOMALY' || taskStatus === 'FAILED_CONFIRMED' ? '归还结果' : taskStatus === 'UNKNOWN' ? '归还进度' : taskStatus === 'VERIFYING' ? '设备核验' : taskStatus === 'EXECUTING' ? '正在开柜' : taskStatus === 'AWAITING_CONFIRMATION' ? (door === '未关闭' ? '放入设备' : '确认归还') : '入柜归还'}}" bindback="onSecondaryNavigationBack" slot="header" />
-  <view class="flow-page">
-    <return-progress wx:if="{{taskStatus !== 'SUCCEEDED' && taskStatus !== 'ANOMALY' && taskStatus !== 'FAILED_CONFIRMED' && taskStatus !== 'UNKNOWN'}}" step="{{taskStatus === 'VERIFYING' ? 3 : 2}}" />
-    <view wx:if="{{errorText}}" class="return-note return-note--danger" role="alert">{{errorText}}</view>
-    <view wx:if="{{loading && !loaded}}" role="status" class="return-copy">正在查询…</view>
+  <view class="xy-h-page cr-page">
+    <view wx:if="{{loaded && cr.kind(taskStatus) !== 'result'}}" class="xy-h-steps" aria-label="归还进度"><view class="xy-h-step {{cr.kind(taskStatus) === 'idle' && !taskId && !preTotalCount ? 'is-current' : 'is-done'}}"><view class="xy-h-step__dot"></view><text>拍照留证</text></view><view class="xy-h-step {{taskStatus === 'VERIFYING' ? 'is-done' : cr.kind(taskStatus) === 'idle' && !taskId && !preTotalCount ? '' : 'is-current'}}"><view class="xy-h-step__dot"></view><text>入柜归还</text></view><view class="xy-h-step {{taskStatus === 'VERIFYING' ? 'is-current' : ''}}"><view class="xy-h-step__dot"></view><text>核验结果</text></view></view>
+    <status-hero wx:if="{{errorText && !loaded}}" tone="neutral" art="shield" title="暂时不能入柜归还" description="{{errorText}}" />
+    <view wx:elif="{{errorText}}" class="xy-h-blk"><text class="xy-h-inote xy-h-alert" role="alert">{{errorText}}</text></view>
+    <view wx:if="{{loading && !loaded}}" class="xy-h-blk xy-h-blk--pad xy-h-note" role="status">正在查询…</view>
     <block wx:if="{{loaded}}">
-      <block wx:if="{{taskStatus === 'SUCCEEDED' || taskStatus === 'ANOMALY' || taskStatus === 'FAILED_CONFIRMED' || taskStatus === 'UNKNOWN'}}">
-        <view class="result-hero {{taskStatus === 'SUCCEEDED' && !photoComplete ? 'is-compact' : ''}}" role="status">
-          <view class="result-symbol {{taskStatus === 'ANOMALY' || taskStatus === 'FAILED_CONFIRMED' ? 'is-danger' : taskStatus === 'UNKNOWN' ? 'is-warning' : ''}}"><view wx:if="{{taskStatus === 'UNKNOWN'}}" class="result-waiting-disc"><image src="{{icons.returnWaiting}}" mode="aspectFit" /></view><image wx:else class="result-status-image" src="{{taskStatus === 'SUCCEEDED' ? icons.returnSuccess : icons.returnFailure}}" mode="aspectFit" /></view>
-          <text class="result-title">{{taskStatus === 'SUCCEEDED' ? '归还成功' : taskStatus === 'ANOMALY' || taskStatus === 'FAILED_CONFIRMED' ? '归还失败' : '归还结果待确认'}}</text>
-          <view class="result-copy"><block wx:if="{{taskStatus === 'UNKNOWN'}}"><text>暂未收到完整检测结果</text><text>请查询当前进度或联系客服</text></block><text wx:else>{{taskStatus === 'SUCCEEDED' ? '设备标签匹配，柜门已关闭' : taskCopy}}</text></view>
+
+      <!-- 归还结果 -->
+      <block wx:if="{{cr.kind(taskStatus) === 'result'}}">
+        <status-hero tone="{{taskStatus === 'SUCCEEDED' ? 'green' : taskStatus === 'UNKNOWN' ? 'orange' : 'red'}}" art="{{taskStatus === 'SUCCEEDED' ? 'check' : taskStatus === 'UNKNOWN' ? 'clock' : 'shield'}}" title="{{taskStatus === 'SUCCEEDED' ? '归还成功' : taskStatus === 'UNKNOWN' ? '归还结果待确认' : '归还失败'}}" description="{{taskStatus === 'SUCCEEDED' ? '设备标签匹配，柜门已关闭' : taskStatus === 'UNKNOWN' ? '暂未收到完整检测结果，请查询当前进度或联系客服' : taskStatus === 'ANOMALY' ? (rfid === '标签不一致' ? '未能与本单设备匹配，请联系客服协助处理' : '设备核验异常，请联系客服协助处理') : taskCopy}}" />
+        <view class="xy-h-blk">
+          <view wx:if="{{taskStatus !== 'UNKNOWN'}}" class="xy-h-row"><text class="xy-h-row__k">{{taskStatus === 'SUCCEEDED' ? '归还设备' : '本单设备'}}</text><text class="xy-h-row__v xy-h-row__v--strong cr-wide">{{assetTitle}}</text></view>
+          <view wx:else class="xy-h-row"><text class="xy-h-row__k">归还前凭证</text><text class="xy-h-row__v">{{preReadyCount}}/{{preTotalCount}} 已提交</text></view>
+          <view class="xy-h-row"><text class="xy-h-row__k">{{taskStatus === 'SUCCEEDED' ? '归还柜格' : '当前柜格'}}</text><text class="xy-h-row__v">{{cabinetName}} · {{compartmentNo}} 号</text></view>
+          <view wx:if="{{taskStatus === 'SUCCEEDED'}}" class="xy-h-row"><text class="xy-h-row__k">确认时间</text><text class="xy-h-row__v">{{confirmed}}</text></view>
+          <view wx:if="{{taskStatus !== 'ANOMALY' && taskStatus !== 'FAILED_CONFIRMED'}}" class="xy-h-row"><text class="xy-h-row__k">{{taskStatus === 'SUCCEEDED' ? '归还材料' : '设备核验'}}</text><text class="xy-h-row__v {{!photoComplete || preReadyCount !== preTotalCount || taskStatus === 'UNKNOWN' ? 'cr-warn' : 'cr-ok'}}">{{taskStatus === 'UNKNOWN' ? '等待结果' : photoComplete && preReadyCount === preTotalCount ? '已提交' : '待补充'}}</text></view>
         </view>
-        <view wx:if="{{taskStatus === 'ANOMALY'}}" class="return-note return-note--danger return-center"><image class="return-status-icon" src="{{icons.returnFailure}}" mode="aspectFit" />{{rfid === '标签不一致' ? '未能与本单设备匹配' : '设备核验异常，请联系客服协助处理'}}</view>
-        <view class="return-card receipt-card">
-          <view wx:if="{{taskStatus !== 'UNKNOWN'}}" class="return-fact"><image src="{{icons.returnCamera}}" mode="aspectFit" /><text class="return-fact__label">{{taskStatus === 'SUCCEEDED' ? '归还设备' : '本单设备'}}</text><text class="return-fact__value">{{assetTitle}}</text></view>
-          <view wx:else class="return-fact"><image src="{{icons.returnDocument}}" mode="aspectFit" /><text class="return-fact__label">归还前凭证</text><text class="return-fact__value">{{preReadyCount}}/{{preTotalCount}} 已提交</text></view>
-          <view class="return-fact"><image class="return-cabinet-icon" src="{{icons.returnCabinet}}" mode="aspectFit" /><text class="return-fact__label">{{taskStatus === 'SUCCEEDED' ? '归还柜格' : '当前柜格'}}</text><text class="return-fact__value">{{cabinetName}} · {{compartmentNo}}号</text></view>
-          <view wx:if="{{taskStatus === 'SUCCEEDED'}}" class="return-fact"><image src="{{icons.returnClock}}" mode="aspectFit" /><text class="return-fact__label">确认时间</text><text class="return-fact__value">{{confirmed}}</text></view>
-          <view wx:if="{{taskStatus !== 'ANOMALY' && taskStatus !== 'FAILED_CONFIRMED'}}" class="return-fact"><image src="{{icons.returnDocument}}" mode="aspectFit" /><text class="return-fact__label">{{taskStatus === 'SUCCEEDED' ? '归还材料' : '设备核验'}}</text><text class="return-fact__value {{!photoComplete || preReadyCount !== preTotalCount || taskStatus === 'UNKNOWN' ? 'warning-copy' : ''}}">{{taskStatus === 'UNKNOWN' ? '等待结果' : photoComplete && preReadyCount === preTotalCount ? '已提交' : '待补充'}}</text></view>
+        <text class="xy-h-cap">接下来</text>
+        <view class="xy-h-blk xy-h-blk--pad">
+          <text wx:if="{{taskStatus === 'SUCCEEDED'}}" class="cr-body">{{photoComplete ? '平台将继续验机并核算费用，押金处理进度可在订单中查看。' : '入柜照片待补充：已拍摄的照片可继续上传，未拍摄请联系客服协助处理。'}}</text>
+          <text wx:elif="{{taskStatus === 'UNKNOWN'}}" class="cr-body">请勿重复开柜或更换格口。离开页面后，可从本订单继续查看。</text>
+          <text wx:elif="{{taskStatus === 'ANOMALY'}}" class="cr-body">请留在柜机旁，等待客服协助。已提交的凭证会保留，无需重复上传。</text>
+          <text wx:else class="cr-body">本次归还未完成。{{canSelect ? '可重新选择归还租赁柜，已提交的凭证会保留。' : '请查看订单中的后续安排，或联系客服协助。'}}</text>
         </view>
-        <view wx:if="{{taskStatus === 'SUCCEEDED'}}" class="return-note {{photoComplete ? 'return-note--success' : 'return-note--warning'}} result-next"><image class="return-status-icon" src="{{photoComplete ? icons.returnInfo : icons.returnWarning}}" mode="aspectFit" /><view><text class="return-subtitle">{{photoComplete ? '接下来' : '入柜照片待补充'}}</text><text class="return-copy">{{photoComplete ? '平台将继续验机并核算费用 押金处理进度可在订单中查看' : '已拍摄的照片可继续上传 未拍摄请联系客服协助处理'}}</text></view></view>
-        <text wx:if="{{taskStatus === 'SUCCEEDED' && !photoComplete}}" class="return-copy return-center">平台将继续验机并核算费用，押金进度可在订单中查看</text>
-        <block wx:if="{{taskStatus === 'UNKNOWN'}}"><view class="return-note return-note--warning"><image class="return-status-icon" src="{{icons.returnWarning}}" mode="aspectFit" />请勿重复开柜或更换格口</view><view class="return-note"><image class="return-status-icon" src="{{icons.returnInfo}}" mode="aspectFit" />离开页面后，可从本订单继续查看</view></block>
-        <block wx:elif="{{taskStatus === 'ANOMALY'}}"><view class="return-note return-note--success result-next"><image class="return-status-icon" src="{{icons.profileSupport}}" mode="aspectFit" /><view><text class="return-subtitle">请留在柜机旁，等待客服协助</text><text class="return-copy">已提交的凭证会保留，无需重复上传</text></view></view><text class="return-copy return-center">订单尾号{{orderTail}}</text></block>
-        <view wx:elif="{{taskStatus === 'FAILED_CONFIRMED'}}" class="return-note return-note--warning result-next"><image class="return-status-icon" src="{{icons.returnInfo}}" mode="aspectFit" /><view><text class="return-subtitle">本次归还未完成</text><text class="return-copy">{{canSelect ? '可重新选择归还租赁柜，已提交的凭证会保留' : '请查看订单中的后续安排，或联系客服协助'}}</text></view></view>
       </block>
-      <block wx:elif="{{taskStatus === 'EXECUTING' || taskStatus === 'VERIFYING'}}">
-        <view class="result-hero processing-hero" role="status"><text wx:if="{{taskStatus === 'EXECUTING'}}" class="result-title processing-slot">{{compartmentNo}}号格口</text><text wx:if="{{taskStatus === 'EXECUTING'}}" class="return-copy">{{cabinetName}}</text><view class="processing-art {{taskStatus === 'EXECUTING' ? 'is-opening' : 'is-scanning'}}"><image src="{{taskStatus === 'EXECUTING' ? icons.returnOpeningCabinet : icons.returnScanningDevice}}" mode="aspectFit" /></view><text class="result-title">{{taskStatus === 'EXECUTING' ? '正在打开柜门' : '正在核对设备'}}</text><text class="result-copy">{{taskStatus === 'EXECUTING' ? '请留意柜门，暂不要切换格口' : '检测结果将自动更新，请稍候'}}</text></view>
-        <view class="return-card"><view wx:if="{{taskStatus === 'EXECUTING'}}" class="return-fact"><image src="{{icons.returnSend}}" mode="aspectFit" /><text class="return-fact__label">开柜请求</text><text class="return-good">已发送</text></view><view class="return-fact"><image class="return-cabinet-icon" src="{{icons.returnCabinet}}" mode="aspectFit" /><text class="return-fact__label">柜门</text><text>{{door}}</text></view><view wx:if="{{taskStatus === 'VERIFYING'}}" class="return-fact"><image src="{{icons.returnScan}}" mode="aspectFit" /><text class="return-fact__label">设备标签</text><text>{{rfid === '标签一致' ? '核验中' : rfid}}</text></view></view>
-        <text wx:if="{{taskStatus === 'VERIFYING'}}" class="return-copy">{{cabinetName}} / {{compartmentNo}}号格口</text><view class="return-note"><image class="return-status-icon" src="{{icons.returnInfo}}" mode="aspectFit" />{{taskStatus === 'EXECUTING' ? '请求已发出不代表柜门已打开' : '请勿重复开柜'}}</view>
-      </block>
-      <block wx:elif="{{taskStatus === 'AWAITING_CONFIRMATION'}}">
-        <view wx:if="{{door !== '未关闭'}}" class="confirm-heading"><text class="return-title">{{door === '已关闭' ? (photoComplete ? '柜门已关闭，请确认归还' : '柜门已关闭') : '柜门状态待确认'}}</text><text class="return-copy">确认后将核对设备标签，请等待检测结果</text></view>
-        <view class="cabinet-context {{door === '未关闭' ? 'is-open' : ''}}"><image class="return-cabinet-icon" src="{{icons.returnCabinet}}" mode="aspectFit" /><view><text class="return-title">{{compartmentNo}}号格口{{door === '未关闭' ? ' · 柜门已打开' : ''}}</text><text class="return-copy">{{cabinetName}}</text></view></view>
-        <view wx:if="{{door === '未关闭'}}" class="return-card placement-guide">
-          <view wx:if="{{placementExample}}" class="placement-example" bindtap="previewPlacementExample" role="button" aria-label="查看入柜摆放示例大图"><image src="{{placementExample}}" mode="aspectFill" /><text class="placement-example-label">摆放示例</text><text class="placement-example-action">查看大图</text></view>
-          <view class="placement-step"><text class="placement-number">1</text><view><text class="return-subtitle">放入设备与全部配件</text><text class="return-copy">包括相机、充电器、电池、收纳包等</text></view></view>
-          <view class="placement-step"><text class="placement-number">2</text><view><text class="return-subtitle">识别标签对准柜内指定位置</text><text class="return-copy">按柜内指引摆放设备与标签</text></view></view>
-          <view class="placement-step"><text class="placement-number">3</text><view><text class="return-subtitle">拍摄入柜照片，再关好柜门</text><text class="return-copy">确保所有物品已放入，照片清晰可见</text></view></view>
-          <view class="return-note"><image class="return-status-icon" src="{{icons.returnInfo}}" mode="aspectFit" />充电器按柜内指引摆放</view><view class="placement-upload"><return-evidence-grid tiles="{{tiles}}" busy="{{busy}}" single bindselect="selectEvidence" bindpreview="previewEvidence" bindexample="showExample" bindrecover="recoverEvidence" /></view><view class="return-note return-note--warning"><image class="return-status-icon" src="{{icons.returnWarning}}" mode="aspectFit" /><view><text class="return-subtitle">柜门尚未关闭</text><text>完成物品摆放并关闭柜门后，再确认归还</text></view></view>
+
+      <!-- 开柜中 / 核验中 -->
+      <block wx:elif="{{cr.kind(taskStatus) === 'progress'}}">
+        <status-hero tone="blue" art="clock" title="{{taskStatus === 'EXECUTING' ? '正在打开柜门' : '正在核对设备'}}" description="{{taskStatus === 'EXECUTING' ? compartmentNo + ' 号格口 · 请留意柜门，暂不要切换格口' : '检测结果将自动更新，请稍候'}}" />
+        <view class="xy-h-blk">
+          <view class="xy-h-row"><text class="xy-h-row__k">柜格</text><text class="xy-h-row__v">{{cabinetName}} · {{compartmentNo}} 号</text></view>
+          <view wx:if="{{taskStatus === 'EXECUTING'}}" class="xy-h-row"><text class="xy-h-row__k">开柜请求</text><text class="xy-h-row__v cr-ok">已发送</text></view>
+          <view class="xy-h-row"><text class="xy-h-row__k">柜门</text><text class="xy-h-row__v">{{door}}</text></view>
+          <view wx:if="{{taskStatus === 'VERIFYING'}}" class="xy-h-row"><text class="xy-h-row__k">设备标签</text><text class="xy-h-row__v">{{rfid === '标签一致' ? '核验中' : rfid}}</text></view>
+          <text class="xy-h-inote">{{taskStatus === 'EXECUTING' ? '请求已发出不代表柜门已打开。' : '请勿重复开柜。'}}</text>
         </view>
-        <view wx:else class="return-card"><view class="return-fact"><image class="return-status-icon" src="{{icons.returnSuccess}}" mode="aspectFit" /><view class="return-fact__label"><text class="return-subtitle">归还前凭证</text><text class="return-copy">{{preReadyCount}}/{{preTotalCount}} 已提交</text></view><text class="return-good">已提交</text></view><view wx:if="{{photoComplete}}" class="return-fact"><image class="return-status-icon" src="{{icons.returnSuccess}}" mode="aspectFit" /><text class="return-fact__label">入柜摆放照片</text><text class="return-good">已提交</text></view><view class="return-fact"><image class="return-status-icon" src="{{door === '已关闭' ? icons.returnSuccess : icons.returnWaiting}}" mode="aspectFit" /><text class="return-fact__label">柜门状态</text><text>{{door}}</text></view></view>
-        <view wx:if="{{door === '已关闭' && !photoComplete}}" class="return-note return-note--warning"><view><text class="return-subtitle">入柜照片尚未提交</text><text class="return-copy">如果已经拍摄，可继续上传
-未拍摄请联系客服协助补充</text></view></view>
-        <view wx:if="{{door !== '未关闭'}}" class="return-card"><return-evidence-grid tiles="{{tiles}}" busy="{{busy}}" single album-only="{{door === '已关闭'}}" bindselect="selectEvidence" bindpreview="previewEvidence" bindexample="showExample" bindrecover="recoverEvidence" /><view wx:if="{{!photoComplete}}" class="return-note">可先核验柜内设备，照片需后续补充。请勿为补拍重复开柜。</view></view>
       </block>
-      <status-hero wx:else tone="green" art="clock" title="{{taskId ? taskStatusLabel : '选择归还租赁柜'}}" description="{{taskId ? taskCopy : '请从本单可用的租赁柜中选择归还格口，选好后为你预留格口 30 分钟。'}}" />
+
+      <!-- 放入设备 / 确认归还 -->
+      <block wx:elif="{{cr.kind(taskStatus) === 'confirm'}}">
+        <status-hero tone="{{door === '已关闭' ? 'green' : 'orange'}}" art="{{door === '已关闭' ? 'check' : 'clock'}}" title="{{door === '未关闭' ? compartmentNo + ' 号格口已打开' : door === '已关闭' ? (photoComplete ? '柜门已关闭，请确认归还' : '柜门已关闭') : '柜门状态待确认'}}" description="{{door === '未关闭' ? '放入设备与全部配件，拍照后关好柜门' : '确认后将核对设备标签，请等待检测结果'}}" />
+        <view class="xy-h-blk">
+          <view class="xy-h-row"><text class="xy-h-row__k">柜格</text><text class="xy-h-row__v">{{cabinetName}} · {{compartmentNo}} 号</text></view>
+          <view class="xy-h-row"><text class="xy-h-row__k">归还前凭证</text><text class="xy-h-row__v {{preReadyCount === preTotalCount ? 'cr-ok' : 'cr-warn'}}">{{preReadyCount}}/{{preTotalCount}} 已提交</text></view>
+          <view wx:if="{{door !== '未关闭'}}" class="xy-h-row"><text class="xy-h-row__k">入柜摆放照片</text><text class="xy-h-row__v {{photoComplete ? 'cr-ok' : 'cr-warn'}}">{{photoComplete ? '已提交' : '待补充'}}</text></view>
+          <view class="xy-h-row"><text class="xy-h-row__k">柜门状态</text><text class="xy-h-row__v {{door === '未关闭' ? 'cr-warn' : ''}}">{{door}}</text></view>
+        </view>
+        <block wx:if="{{door === '未关闭'}}">
+          <text class="xy-h-cap">入柜三步</text>
+          <view class="xy-h-blk">
+            <view wx:if="{{placementExample}}" class="cr-example" bindtap="previewPlacementExample" role="button" aria-label="查看入柜摆放示例大图"><image src="{{placementExample}}" mode="aspectFill" /><text class="cr-example__tag">摆放示例 · 点击看大图</text></view>
+            <view class="xy-h-row"><text class="cr-num">1</text><view class="xy-h-row__k"><text>放入设备与全部配件</text><text class="xy-h-row__sub">包括相机、充电器、电池、收纳包等</text></view></view>
+            <view class="xy-h-row"><text class="cr-num">2</text><view class="xy-h-row__k"><text>识别标签对准柜内指定位置</text><text class="xy-h-row__sub">按柜内指引摆放设备与标签，充电器按指引放置</text></view></view>
+            <view class="xy-h-row"><text class="cr-num">3</text><view class="xy-h-row__k"><text>拍摄入柜照片，再关好柜门</text><text class="xy-h-row__sub">确保所有物品已放入，照片清晰可见</text></view></view>
+          </view>
+        </block>
+        <block wx:if="{{door === '未关闭' || !photoComplete}}">
+          <text class="xy-h-cap">入柜照片</text>
+          <view class="xy-h-blk xy-h-blk--pad"><return-evidence-grid tiles="{{tiles}}" busy="{{busy}}" single album-only="{{door === '已关闭'}}" bindselect="selectEvidence" bindpreview="previewEvidence" bindexample="showExample" bindrecover="recoverEvidence" /></view>
+          <text class="xy-h-note">{{door === '未关闭' ? '完成摆放并关闭柜门后，再确认归还。' : '可先核验柜内设备，照片需后续补充。请勿为补拍重复开柜。'}}</text>
+        </block>
+      </block>
+
+      <!-- 选择柜机前 -->
+      <block wx:else>
+        <status-hero tone="{{taskId || preTotalCount ? 'green' : 'orange'}}" art="{{taskId || preTotalCount ? 'calendar' : 'clock'}}" title="{{taskId ? taskStatusLabel : preTotalCount ? '选择归还租赁柜' : '先拍照留证'}}" description="{{taskId ? taskCopy : preTotalCount ? '从本单可用的租赁柜中选择归还格口，选好后为你预留格口 30 分钟。' : '归还前需拍清设备与全部配件，完成后即可选择租赁柜。'}}" />
+        <view class="xy-h-blk">
+          <view class="xy-h-row"><text class="xy-h-row__k">本单设备</text><text class="xy-h-row__v xy-h-row__v--strong cr-wide">{{assetTitle || '待核实'}}</text></view>
+          <view class="xy-h-row"><text class="xy-h-row__k">归还前凭证</text><text class="xy-h-row__v {{preTotalCount && preReadyCount === preTotalCount ? 'cr-ok' : 'cr-warn'}}">{{preTotalCount ? preReadyCount + '/' + preTotalCount + ' 已提交' : '待拍摄'}}</text></view>
+          <view wx:if="{{cabinetName}}" class="xy-h-row"><text class="xy-h-row__k">已预留柜格</text><text class="xy-h-row__v">{{cabinetName}} · {{compartmentNo}} 号</text></view>
+        </view>
+        <text class="xy-h-cap">入柜归还三步</text>
+        <view class="xy-h-blk">
+          <view class="xy-h-row"><text class="cr-num">1</text><view class="xy-h-row__k"><text>选择可用租赁柜</text><text class="xy-h-row__sub">按距离和空闲格口挑选</text></view></view>
+          <view class="xy-h-row"><text class="cr-num">2</text><view class="xy-h-row__k"><text>为你预留格口 30 分钟</text><text class="xy-h-row__sub">请在预留时间内到柜</text></view></view>
+          <view class="xy-h-row"><text class="cr-num">3</text><view class="xy-h-row__k"><text>到柜开柜，放入设备并关门</text><text class="xy-h-row__sub">关门后自动核对设备标签</text></view></view>
+        </view>
+      </block>
     </block>
   </view>
-  <view slot="footer" class="return-actions">
-    <block wx:if="{{taskStatus === 'SUCCEEDED'}}"><button wx:if="{{!photoComplete}}" class="return-primary" bindtap="goPlacement">补充入柜照片</button><button wx:else class="return-primary" bindtap="goOrder">查看订单</button><button wx:if="{{photoComplete}}" class="return-secondary" bindtap="goMaterials">查看归还凭证</button><button wx:else class="return-secondary" bindtap="demoSupport">联系客服</button><button wx:if="{{!photoComplete}}" class="return-link" bindtap="goOrder">查看订单</button></block>
-    <block wx:elif="{{taskStatus === 'ANOMALY'}}"><button class="return-primary" bindtap="demoSupport">联系客服</button><button class="return-secondary" bindtap="goOrder">查看订单</button></block>
-    <block wx:elif="{{taskStatus === 'FAILED_CONFIRMED'}}"><button wx:if="{{canSelect}}" class="return-primary" bindtap="goSelection" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">重新选择归还租赁柜</button><button class="{{canSelect ? 'return-secondary' : 'return-primary'}}" bindtap="goOrder">查看订单</button><button class="return-link" bindtap="demoSupport">联系客服</button></block>
-    <block wx:else>
-      <button wx:if="{{canConfirm}}" class="return-primary" bindtap="confirmReturn" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">{{photoComplete ? '确认归还' : '确认归还并核验'}}</button>
-      <button wx:elif="{{taskStatus === 'AWAITING_CONFIRMATION' || taskStatus === 'EXECUTING' || taskStatus === 'VERIFYING'}}" class="return-primary" disabled aria-disabled="true">{{taskStatus === 'EXECUTING' ? '等待柜门反馈…' : taskStatus === 'VERIFYING' ? '检测中…' : '确认归还'}}</button>
-      <button wx:if="{{canResumeReservation}}" class="return-primary" bindtap="resumeReservation" disabled="{{busy}}" aria-disabled="{{busy}}">返回原格口，确认开柜</button>
-      <button wx:if="{{canSelect}}" class="return-primary" bindtap="goSelection" disabled="{{busy}}" aria-disabled="{{busy}}">选择归还租赁柜</button>
-      <button wx:if="{{canQuery && taskStatus === 'UNKNOWN'}}" class="return-primary" bindtap="query" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">查询归还进度</button>
-      <button wx:elif="{{canQuery && taskStatus !== 'AWAITING_CONFIRMATION' && taskStatus !== 'EXECUTING' && taskStatus !== 'VERIFYING'}}" class="return-link" bindtap="query" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">查询归还进度</button>
-      <view wx:if="{{taskStatus === 'EXECUTING'}}" class="return-support-row"><button wx:if="{{canQuery}}" class="return-link" bindtap="query" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">未开门？查询进度</button><button class="return-link" bindtap="demoSupport"><image class="return-status-icon" src="{{icons.profileSupport}}" mode="aspectFit" />联系客服</button></view><button wx:else class="return-secondary" bindtap="demoSupport"><image wx:if="{{taskStatus === 'VERIFYING'}}" class="return-status-icon" src="{{icons.profileSupport}}" mode="aspectFit" />联系客服</button><button wx:if="{{taskStatus === 'UNKNOWN'}}" class="return-link" bindtap="goOrder">返回订单</button>
-    </block>
-  </view>
+  <view slot="footer" class="xy-h-foot"><view class="xy-h-actions">
+    <block wx:if="{{taskStatus !== 'ANOMALY'}}"><template is="kf" data="{{icons}}" /></block>
+    <view class="xy-h-actions__main">
+      <block wx:if="{{taskStatus === 'SUCCEEDED'}}">
+        <button wx:if="{{photoComplete}}" class="xy-h-btn xy-h-btn--secondary xy-action-hit" bindtap="goMaterials">查看归还凭证</button>
+        <button wx:else class="xy-h-btn xy-h-btn--secondary xy-action-hit" bindtap="goOrder">查看订单</button>
+        <button wx:if="{{photoComplete}}" class="xy-h-btn xy-h-btn--primary xy-action-hit" bindtap="goOrder">查看订单</button>
+        <button wx:else class="xy-h-btn xy-h-btn--primary xy-action-hit" bindtap="goPlacement">补充入柜照片</button>
+      </block>
+      <block wx:elif="{{taskStatus === 'ANOMALY'}}">
+        <button class="xy-h-btn xy-h-btn--secondary xy-action-hit" bindtap="goOrder">查看订单</button>
+        <button class="xy-h-btn xy-h-btn--primary xy-action-hit" bindtap="demoSupport">联系客服</button>
+      </block>
+      <block wx:elif="{{taskStatus === 'FAILED_CONFIRMED'}}">
+        <button class="xy-h-btn {{canSelect ? 'xy-h-btn--secondary' : 'xy-h-btn--primary'}} xy-action-hit" bindtap="goOrder">查看订单</button>
+        <button wx:if="{{canSelect}}" class="xy-h-btn xy-h-btn--primary xy-action-hit" bindtap="goSelection" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">重新选择归还租赁柜</button>
+      </block>
+      <block wx:elif="{{taskStatus === 'UNKNOWN'}}">
+        <button class="xy-h-btn xy-h-btn--secondary xy-action-hit" bindtap="goOrder">返回订单</button>
+        <button wx:if="{{canQuery}}" class="xy-h-btn xy-h-btn--primary xy-action-hit" bindtap="query" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">查询归还进度</button>
+      </block>
+      <block wx:elif="{{taskStatus === 'EXECUTING' || taskStatus === 'VERIFYING' || taskStatus === 'AWAITING_CONFIRMATION'}}">
+        <button wx:if="{{taskStatus === 'EXECUTING' && canQuery}}" class="xy-h-btn xy-h-btn--secondary xy-action-hit" bindtap="query" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">未开门？查询</button>
+        <button wx:if="{{canConfirm}}" class="xy-h-btn xy-h-btn--primary xy-action-hit" bindtap="confirmReturn" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">{{photoComplete ? '确认归还' : '确认归还并核验'}}</button>
+        <button wx:else class="xy-h-btn xy-h-btn--primary xy-action-hit" disabled aria-disabled="true">{{taskStatus === 'EXECUTING' ? '等待柜门反馈…' : taskStatus === 'VERIFYING' ? '检测中…' : '确认归还'}}</button>
+      </block>
+      <block wx:else>
+        <button wx:if="{{canQuery && (canSelect || canResumeReservation)}}" class="xy-h-btn xy-h-btn--secondary xy-action-hit" bindtap="query" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">查询进度</button>
+        <button wx:if="{{canResumeReservation}}" class="xy-h-btn xy-h-btn--primary xy-action-hit" bindtap="resumeReservation" disabled="{{busy}}" aria-disabled="{{busy}}">返回原格口，确认开柜</button>
+        <button wx:elif="{{canSelect}}" class="xy-h-btn xy-h-btn--primary xy-action-hit" bindtap="goSelection" disabled="{{busy}}" aria-disabled="{{busy}}">选择归还租赁柜</button>
+        <button wx:elif="{{canQuery}}" class="xy-h-btn xy-h-btn--primary xy-action-hit" bindtap="query" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">查询归还进度</button>
+        <block wx:elif="{{loaded && !preTotalCount}}"><button class="xy-h-btn xy-h-btn--secondary xy-action-hit" bindtap="goOrder">返回订单</button><button class="xy-h-btn xy-h-btn--primary xy-action-hit" bindtap="goMaterials">去拍照留证</button></block>
+        <button wx:else class="xy-h-btn xy-h-btn--primary xy-action-hit" bindtap="goOrder">返回订单</button>
+      </block>
+    </view>
+  </view></view>
 </page-shell>
 </view>

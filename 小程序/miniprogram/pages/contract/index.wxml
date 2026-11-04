@@ -1,92 +1,104 @@
 <page-meta root-font-size="system" />
 <page-shell surface="page" has-footer>
   <page-header variant="order" title="{{heading}}" bindback="onSecondaryNavigationBack" slot="header" />
-  <view class="xy-h-page contract-page">
-    <view wx:if="{{loading}}" class="xy-h-note" role="status">正在读取合同…</view>
-    <view wx:if="{{!loaded && !loading && errorText}}" class="xy-h-blk xy-h-blk--pad contract-load-error" role="alert">
-      <text class="contract-load-error-symbol" aria-hidden="true">!</text>
-      <text class="xy-h-title">暂时无法查看合同</text>
-      <text class="xy-h-note contract-load-error-copy">{{errorText}}</text>
-      <button class="xy-action-hit xy-h-hit" bindtap="demoSupport">联系官方客服</button>
-    </view>
-    <view wx:if="{{loaded && errorText}}" class="contract-error" role="alert"><text>{{errorText}}</text><button class="xy-action-hit xy-h-hit" bindtap="refresh" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">重新查询</button></view>
-    <block wx:if="{{loaded}}">
-      <status-hero tone="{{heroTone}}" art="{{heroArt}}" title="{{statusTitle}}" description="{{statusHint}}{{deadline && !resultPending && !renderFailed ? '请于 ' + deadline + ' 前完成。' : ''}}">
-        <view wx:if="{{resultPending}}" class="contract-last-query"><text>最近查询 {{lastChecked}}</text></view>
-        <button wx:if="{{recoverRender}}" class="xy-action-hit xy-h-hit" bindtap="refresh" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">查询原生成结果</button>
-      </status-hero>
+  <view class="xy-h-page">
+    <view wx:if="{{loading && !loaded}}" class="xy-h-blk xy-h-blk--pad xy-h-note" role="status">正在读取合同…</view>
 
-      <!-- 合同对象：设备 + 钱放在一张卡里 -->
+    <!-- 读取失败 -->
+    <block wx:if="{{!loaded && !loading && errorText}}">
+      <status-hero tone="neutral" art="contract" title="暂时无法查看合同" description="{{errorText}}" />
+      <view class="xy-h-blk"><button class="xy-h-link" bindtap="demoSupport"><text class="xy-h-link__k">联系官方客服</text><text class="xy-h-link__more" aria-hidden="true">›</text></button></view>
+    </block>
+
+    <block wx:if="{{loaded}}">
+      <!-- 状态头 -->
+      <status-hero tone="{{heroTone}}" art="{{heroArt}}" title="{{statusTitle}}" description="{{statusHint}}{{deadline && !resultPending && !renderFailed ? '请于 ' + deadline + ' 前完成。' : ''}}" />
+      <view wx:if="{{errorText || resultPending || recoverRender}}" class="xy-h-blk">
+        <text wx:if="{{errorText}}" class="xy-h-inote xy-h-alert" role="alert">{{errorText}}</text>
+        <view wx:if="{{resultPending}}" class="xy-h-row"><text class="xy-h-row__k">最近查询</text><text class="xy-h-row__v">{{lastChecked}}</text></view>
+        <button wx:if="{{errorText}}" class="xy-h-link" bindtap="refresh" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}"><text class="xy-h-link__k">重新查询</text><text class="xy-h-link__more" aria-hidden="true">›</text></button>
+        <button wx:if="{{recoverRender}}" class="xy-h-link" bindtap="refresh" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}"><text class="xy-h-link__k">查询原生成结果</text><text class="xy-h-link__more" aria-hidden="true">›</text></button>
+      </view>
+
+      <!-- 结论 + 对象：本单设备与金额 -->
       <view wx:if="{{!renderFailed}}" class="xy-h-blk">
-        <view class="contract-device"><order-product-summary variant="order-list" title="{{title}}" secondary="{{resultPending ? '租赁合同' : term}}" media-src="{{image}}" media-state="{{image ? 'ready' : 'idle'}}" /></view>
+        <view class="xy-h-dev"><order-product-summary variant="order-list" title="{{title}}" secondary="{{resultPending ? '租赁合同' : term}}" media-src="{{image}}" media-state="{{image ? 'ready' : 'idle'}}" /></view>
         <block wx:if="{{!resultPending}}">
           <block wx:if="{{!artifactId}}">
-            <view class="xy-h-row"><text class="xy-h-row__k">租金</text><text class="xy-h-row__v xy-h-row__v--strong">{{rent}}</text></view>
-            <view class="xy-h-row"><text class="xy-h-row__k">租赁押金</text><text class="xy-h-row__v xy-h-row__v--strong">{{deposit}}</text></view>
+            <view class="xy-h-row"><text class="xy-h-row__k">租金</text><text class="xy-h-row__v">{{rent}}</text></view>
+            <view class="xy-h-row"><text class="xy-h-row__k">租赁押金</text><text class="xy-h-row__v">{{deposit}}</text></view>
           </block>
-          <view wx:else class="xy-h-row"><text class="xy-h-row__k">本单应付</text><text class="xy-h-row__v contract-total-value">{{total}}</text></view>
+          <view wx:else class="xy-h-row"><text class="xy-h-row__k">本单应付</text><text class="xy-h-row__v xy-h-row__v--strong">{{total}}</text></view>
         </block>
       </view>
 
-      <view wx:if="{{renderFailed}}" class="xy-h-blk xy-h-blk--pad">
-        <text class="xy-h-title">签名预览</text>
-        <button wx:if="{{!signatureImageFailed}}" class="xy-action-hit contract-preview-button" bindtap="previewSignature" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}" aria-label="放大查看本次保存的本人签名"><image class="contract-signature-image" src="{{signatureImageURL}}" mode="aspectFit" data-signature="{{signatureImageID}}" binderror="signatureImageFailed" aria-label="本次保存的本人签名" /></button>
-        <view wx:else class="contract-signature-image contract-signature-image--error" role="alert"><text>签名图片加载失败</text><button class="xy-action-hit xy-h-hit" bindtap="refresh" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">重新加载原签名</button></view>
-        <text class="xy-h-note contract-gap">无需重新签名，可重试生成本次合同；生成成功后仍需核对完整合同并确认签署。</text>
-        <text wx:if="{{deadline}}" class="xy-h-note">确认截止 {{deadline}}</text>
-      </view>
-
-      <!-- 签名页预览：生成后核对 -->
-      <view wx:elif="{{artifactId && !resultPending}}" class="xy-h-blk xy-h-blk--pad">
-        <view class="contract-doc-head"><image class="contract-doc-icon" src="{{docIcon}}" mode="aspectFit" aria-hidden="true" /><text class="xy-h-title contract-doc-title">合同签名页</text><text class="xy-h-row__v">第 {{signaturePage}} / {{pageCount}} 页</text></view>
-        <button class="xy-action-hit contract-preview-button" bindtap="previewAll" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}" aria-label="放大查看完整合同"><image class="contract-preview" src="{{previewURL}}" mode="widthFix" data-artifact="{{artifactId}}" bindload="previewLoaded" binderror="previewFailed" aria-label="含承租人签名的合同页面" /></button>
-        <text wx:if="{{tenantStatus !== '已签署'}}" class="xy-h-note contract-gap">预览不代表已完成签署，点图片可放大查看全文。</text>
-        <text wx:else class="xy-h-note contract-gap">本页为已保存合同，仅供查看。</text>
-        <view class="contract-doc-actions">
-          <button class="xy-action-hit xy-button-reset contract-outline" bindtap="previewAll" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">查看完整合同</button>
-          <button class="xy-action-hit xy-button-reset contract-outline" bindtap="download" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">{{tenantStatus === '已签署' ? '下载合同' : '预览 PDF'}}</button>
+      <!-- 合同生成失败：签名预览 -->
+      <block wx:if="{{renderFailed}}">
+        <text class="xy-h-cap">本次签名</text>
+        <view class="xy-h-blk xy-h-blk--pad">
+          <button wx:if="{{!signatureImageFailed}}" class="xy-action-hit ct-media-btn" bindtap="previewSignature" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}" aria-label="放大查看本次保存的本人签名"><image class="ct-signature" src="{{signatureImageURL}}" mode="aspectFit" data-signature="{{signatureImageID}}" binderror="signatureImageFailed" aria-label="本次保存的本人签名" /></button>
+          <view wx:else class="ct-signature ct-signature--error" role="alert"><text class="xy-h-row__sub">签名图片加载失败</text><button class="xy-action-hit xy-h-hit" bindtap="refresh" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">重新加载原签名</button></view>
         </view>
-      </view>
+        <text class="xy-h-note">无需重新签名，可重试生成本次合同；生成成功后仍需核对完整合同并确认签署。<block wx:if="{{deadline}}">确认截止 {{deadline}}。</block></text>
+      </block>
 
-      <!-- 协议摘要：标题 + 摘要 + 查看完整合同 -->
-      <view wx:elif="{{!resultPending}}" class="xy-h-blk xy-h-blk--pad">
-        <view class="contract-doc-head"><image class="contract-doc-icon" src="{{docIcon}}" mode="aspectFit" aria-hidden="true" /><text class="xy-h-title contract-doc-title">{{docTitle || '设备租赁协议'}}</text></view>
-        <view class="contract-paper {{fullText ? 'contract-paper--full' : ''}}"><text class="contract-copy" user-select="{{true}}">{{fullText ? agreementText : docBody}}</text></view>
-        <button class="xy-action-hit xy-button-reset contract-outline contract-fulltext-toggle" bindtap="toggleText" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">{{fullText ? '收起全文' : '查看完整合同'}}<text wx:if="{{!fullText}}" class="contract-chevron" aria-hidden="true">›</text></button>
-      </view>
+      <!-- 合同签名页：生成后核对 -->
+      <block wx:elif="{{artifactId && !resultPending}}">
+        <text class="xy-h-cap">合同签名页 · 第 {{signaturePage}} / {{pageCount}} 页</text>
+        <view class="xy-h-blk xy-h-blk--pad">
+          <button class="xy-action-hit ct-media-btn" bindtap="previewAll" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}" aria-label="放大查看完整合同"><image class="ct-preview" src="{{previewURL}}" mode="widthFix" data-artifact="{{artifactId}}" bindload="previewLoaded" binderror="previewFailed" aria-label="含承租人签名的合同页面" /></button>
+          <view class="ct-doc-links">
+            <button class="xy-h-link" bindtap="previewAll" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}"><text class="xy-h-link__k">查看完整合同</text><text class="xy-h-link__more" aria-hidden="true">›</text></button>
+            <button class="xy-h-link" bindtap="download" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}"><text class="xy-h-link__k">{{tenantStatus === '已签署' ? '下载合同' : '预览 PDF'}}</text><text class="xy-h-link__more" aria-hidden="true">›</text></button>
+          </view>
+        </view>
+        <text class="xy-h-note">{{tenantStatus !== '已签署' ? '预览不代表已完成签署，点图片可放大查看全文。' : '本页为已保存合同，仅供查看。'}}</text>
+      </block>
 
-      <view wx:if="{{!resultPending && !renderFailed}}" class="xy-h-blk">
-        <view class="xy-h-row"><text class="xy-h-row__k">出租方</text><text class="xy-h-row__v">{{lessorName}}</text><text class="xy-h-tag--brand contract-party-state">已签署</text></view>
-        <view class="xy-h-row"><text class="xy-h-row__k">承租人</text><text class="xy-h-row__v">{{tenantName}}</text><text class="contract-party-state {{tenantStatus === '已签署' ? 'xy-h-tag--brand' : 'xy-h-tag--warn'}}">{{tenantStatus}}</text></view>
-        <view wx:if="{{signedAt}}" class="xy-h-row"><text class="xy-h-row__k">签署时间</text><text class="xy-h-row__v">{{signedAt}}</text></view>
-      </view>
+      <!-- 协议正文 -->
+      <block wx:elif="{{!resultPending}}">
+        <text class="xy-h-cap">{{docTitle || '设备租赁协议'}}</text>
+        <view class="xy-h-blk xy-h-blk--pad">
+          <view class="ct-paper {{fullText ? 'ct-paper--full' : ''}}"><text class="ct-copy" user-select="{{true}}">{{fullText ? agreementText : docBody}}</text></view>
+          <button class="xy-h-link ct-toggle" bindtap="toggleText" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}"><text class="xy-h-link__k">{{fullText ? '收起全文' : '查看完整合同'}}</text><text class="xy-h-link__more" aria-hidden="true">{{fullText ? '⌃' : '›'}}</text></button>
+        </view>
+      </block>
+
+      <!-- 签署方 -->
+      <block wx:if="{{!resultPending && !renderFailed}}">
+        <text class="xy-h-cap">签署方</text>
+        <view class="xy-h-blk">
+          <view class="xy-h-row"><text class="xy-h-row__k">出租方</text><text class="xy-h-row__v">{{lessorName}}</text><text class="xy-h-tag xy-h-tag--brand">已签署</text></view>
+          <view class="xy-h-row"><text class="xy-h-row__k">承租人</text><text class="xy-h-row__v">{{tenantName}}</text><text class="xy-h-tag {{tenantStatus === '已签署' ? 'xy-h-tag--brand' : 'xy-h-tag--warn'}}">{{tenantStatus}}</text></view>
+          <view wx:if="{{signedAt}}" class="xy-h-row"><text class="xy-h-row__k">签署时间</text><text class="xy-h-row__v">{{signedAt}}</text></view>
+        </view>
+      </block>
       <text wx:if="{{blockers}}" class="xy-h-note">{{blockers}}</text>
       <text class="xy-h-note">订单编号 {{orderNo}}</text>
     </block>
   </view>
-  <bottom-actions slot="footer" layout="custom">
-    <view slot="hint" wx:if="{{canSign || canConfirm}}">
-      <button wx:if="{{canSign}}" class="xy-h-agree" role="checkbox" aria-checked="{{agreed}}" bindtap="toggleAgree" disabled="{{busy || loading || !fullText}}" aria-disabled="{{busy || loading || !fullText}}"><view class="xy-h-check {{agreed ? 'is-checked' : ''}}"><image wx:if="{{agreed}}" src="{{checkIcon}}" mode="aspectFit" /></view><text>{{fullText ? '我已阅读并同意本合同内容' : '请先查看完整合同，再勾选同意'}}</text></button>
-      <button wx:if="{{canConfirm}}" class="xy-h-agree" role="checkbox" aria-checked="{{checkedPreview}}" bindtap="togglePreview" disabled="{{busy || loading || !previewLoaded}}" aria-disabled="{{busy || loading || !previewLoaded}}"><view class="xy-h-check {{checkedPreview ? 'is-checked' : ''}}"><image wx:if="{{checkedPreview}}" src="{{checkIcon}}" mode="aspectFit" /></view><text>我已核对完整合同与本人签名，确认签署</text></button>
-    </view>
-    <view slot="actions" class="xy-h-actions">
+
+  <view slot="footer" class="xy-h-foot">
+    <button wx:if="{{canSign}}" class="xy-h-agree" role="checkbox" aria-checked="{{agreed}}" bindtap="toggleAgree" disabled="{{busy || loading || !fullText}}" aria-disabled="{{busy || loading || !fullText}}"><view class="xy-h-check {{agreed ? 'is-checked' : ''}}"><image wx:if="{{agreed}}" src="{{checkIcon}}" mode="aspectFit" /></view><text>{{fullText ? '我已阅读并同意本合同内容' : '请先查看完整合同，再勾选同意'}}</text></button>
+    <button wx:if="{{canConfirm}}" class="xy-h-agree" role="checkbox" aria-checked="{{checkedPreview}}" bindtap="togglePreview" disabled="{{busy || loading || !previewLoaded}}" aria-disabled="{{busy || loading || !previewLoaded}}"><view class="xy-h-check {{checkedPreview ? 'is-checked' : ''}}"><image wx:if="{{checkedPreview}}" src="{{checkIcon}}" mode="aspectFit" /></view><text>我已核对完整合同与本人签名，确认签署</text></button>
+    <view class="xy-h-actions">
       <button class="xy-action-hit xy-h-kf" bindtap="demoSupport" aria-label="联系客服"><image src="{{supportIcon}}" mode="aspectFit" aria-hidden="true" /><text>客服</text></button>
-      <view class="xy-h-actions__main contract-actions">
-    <block wx:if="{{!loaded && !loading && errorText}}">
-      <button class="xy-action-hit xy-button-reset xy-button-fluid contract-button contract-button--secondary" bindtap="backToOrders" disabled="{{busy}}" aria-disabled="{{busy}}"><view class="xy-action-secondary xy-action-shell contract-button-shell">返回订单列表</view></button>
-      <button class="xy-action-hit xy-button-reset xy-button-fluid contract-button" bindtap="refresh" disabled="{{busy}}" aria-disabled="{{busy}}"><view class="xy-action-primary xy-action-shell contract-button-shell">重新查询</view></button>
-    </block>
-    <button wx:if="{{canSign}}" class="xy-action-hit xy-button-reset xy-button-fluid contract-button {{busy || loading || !fullText || !agreed ? 'is-disabled' : ''}}" bindtap="sign" disabled="{{busy || loading || !fullText || !agreed}}" aria-disabled="{{busy || loading || !fullText || !agreed}}"><view class="xy-action-primary xy-action-shell contract-button-shell">去手写签名</view></button>
-    <button wx:if="{{canRewrite}}" class="xy-action-hit xy-button-reset xy-button-fluid contract-button contract-button--secondary {{busy || loading ? 'is-disabled' : ''}}" bindtap="sign" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}"><view class="xy-action-secondary xy-action-shell contract-button-shell">重新签名</view></button>
-    <button wx:if="{{canConfirm}}" class="xy-action-hit xy-button-reset xy-button-fluid contract-button {{busy || loading || !checkedPreview || !previewLoaded ? 'is-disabled' : ''}}" bindtap="confirmSignature" disabled="{{busy || loading || !checkedPreview || !previewLoaded}}" aria-disabled="{{busy || loading || !checkedPreview || !previewLoaded}}"><view class="xy-action-primary xy-action-shell contract-button-shell">{{busy ? '正在核实签署…' : recoverConfirm ? '重试确认' : '确认签署'}}</view></button>
-    <button wx:if="{{canRetry}}" class="xy-action-hit xy-button-reset xy-button-fluid contract-button {{busy || loading ? 'is-disabled' : ''}}" bindtap="retryRender" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}"><view class="xy-action-primary xy-action-shell contract-button-shell">{{recoverRender ? '恢复原生成请求' : '重试生成合同'}}</view></button>
-    <button wx:if="{{recoverCreate}}" class="xy-action-hit xy-button-reset xy-button-fluid contract-button {{busy || loading ? 'is-disabled' : ''}}" bindtap="recover" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}"><view class="xy-action-primary xy-action-shell contract-button-shell">恢复原签名请求</view></button>
-    <button wx:if="{{hasUpload && !recoverCreate}}" class="xy-action-hit xy-button-reset xy-button-fluid contract-button {{busy || loading ? 'is-disabled' : ''}}" bindtap="sign" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}"><view class="xy-action-primary xy-action-shell contract-button-shell">继续原签名上传</view></button>
-    <button wx:if="{{requiresIdentity}}" class="xy-action-hit xy-button-reset xy-button-fluid contract-button {{busy || loading ? 'is-disabled' : ''}}" bindtap="goIdentity" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}"><view class="xy-action-primary xy-action-shell contract-button-shell">填写实名信息</view></button>
-    <button wx:if="{{loaded && !canSign && !requiresIdentity && !canConfirm && tenantStatus !== '已签署'}}" class="xy-action-hit xy-button-reset xy-button-fluid contract-button contract-button--secondary {{busy ? 'is-disabled' : ''}}" bindtap="continueOrder" disabled="{{busy}}" aria-disabled="{{busy}}"><view class="xy-action-secondary xy-action-shell contract-button-shell">返回订单</view></button>
-    <button wx:if="{{loaded && !canSign && !canRetry && !requiresIdentity && !hasUpload && (unknown || !canConfirm) && tenantStatus !== '已签署'}}" class="xy-action-hit xy-button-reset xy-button-fluid contract-button {{busy || loading ? 'is-disabled' : ''}}" bindtap="refresh" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}"><view class="{{resultPending && !recoverCreate ? 'xy-action-primary' : 'xy-action-secondary'}} xy-action-shell contract-button-shell">查询签署结果</view></button>
-    <button wx:if="{{tenantStatus === '已签署' && loaded}}" class="xy-action-hit xy-button-reset xy-button-fluid contract-button {{busy ? 'is-disabled' : ''}}" bindtap="continueOrder" disabled="{{busy}}" aria-disabled="{{busy}}"><view class="xy-action-primary xy-action-shell contract-button-shell">返回订单</view></button>
+      <view class="xy-h-actions__main">
+        <block wx:if="{{!loaded && !loading && errorText}}">
+          <button class="xy-h-btn xy-h-btn--secondary xy-action-hit" bindtap="backToOrders" disabled="{{busy}}" aria-disabled="{{busy}}">返回订单列表</button>
+          <button class="xy-h-btn xy-h-btn--primary xy-action-hit" bindtap="refresh" disabled="{{busy}}" aria-disabled="{{busy}}">重新查询</button>
+        </block>
+        <button wx:if="{{canSign}}" class="xy-h-btn xy-h-btn--primary xy-action-hit" bindtap="sign" disabled="{{busy || loading || !fullText || !agreed}}" aria-disabled="{{busy || loading || !fullText || !agreed}}">去手写签名</button>
+        <button wx:if="{{canRewrite}}" class="xy-h-btn xy-h-btn--secondary xy-action-hit" bindtap="sign" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">重新签名</button>
+        <button wx:if="{{canConfirm}}" class="xy-h-btn xy-h-btn--primary xy-action-hit" bindtap="confirmSignature" disabled="{{busy || loading || !checkedPreview || !previewLoaded}}" aria-disabled="{{busy || loading || !checkedPreview || !previewLoaded}}">{{busy ? '正在核实签署…' : recoverConfirm ? '重试确认' : '确认签署'}}</button>
+        <button wx:if="{{canRetry}}" class="xy-h-btn xy-h-btn--primary xy-action-hit" bindtap="retryRender" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">{{recoverRender ? '恢复原生成请求' : '重试生成合同'}}</button>
+        <button wx:if="{{recoverCreate}}" class="xy-h-btn xy-h-btn--primary xy-action-hit" bindtap="recover" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">恢复原签名请求</button>
+        <button wx:if="{{hasUpload && !recoverCreate}}" class="xy-h-btn xy-h-btn--primary xy-action-hit" bindtap="sign" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">继续原签名上传</button>
+        <button wx:if="{{requiresIdentity}}" class="xy-h-btn xy-h-btn--primary xy-action-hit" bindtap="goIdentity" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">填写实名信息</button>
+        <button wx:if="{{loaded && !canSign && !requiresIdentity && !canConfirm && tenantStatus !== '已签署'}}" class="xy-h-btn xy-h-btn--secondary xy-action-hit" bindtap="continueOrder" disabled="{{busy}}" aria-disabled="{{busy}}">返回订单</button>
+        <button wx:if="{{loaded && !canSign && !canRetry && !requiresIdentity && !hasUpload && (unknown || !canConfirm) && tenantStatus !== '已签署'}}" class="xy-h-btn {{resultPending && !recoverCreate ? 'xy-h-btn--primary' : 'xy-h-btn--secondary'}} xy-action-hit" bindtap="refresh" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">查询签署结果</button>
+        <button wx:if="{{tenantStatus === '已签署' && loaded}}" class="xy-h-btn xy-h-btn--primary xy-action-hit" bindtap="continueOrder" disabled="{{busy}}" aria-disabled="{{busy}}">返回订单</button>
       </view>
     </view>
-  </bottom-actions>
+  </view>
 </page-shell>
