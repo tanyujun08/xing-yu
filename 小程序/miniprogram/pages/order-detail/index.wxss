@@ -1461,4 +1461,23 @@ picker .dispatch-input { display: flex; align-items: center; }
 .h-flow .return-card { border-radius: var(--xy-radius-lg); }
 .h-flow .completion-record { padding: var(--xy-space-2) 0; border-top: 1rpx solid var(--xy-color-hairline); }
 /* 页面底部的通用资金记录与取还地点 */
-.order-detail-page > .pickup-order-card, .order-detail-page > .support-panel { margin-left: var(--xy-space-4); margin-right: var(--xy-space-4); }
+.order-detail-page--r4 > .pickup-order-card, .order-detail-page--r4 > .support-panel { margin-left: var(--xy-space-4); margin-right: var(--xy-space-4); }
+/* 方向 H 第二轮：归还到行左对齐、底部资金历史改为行、底栏按钮次左主右 */
+.h-plain { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; }
+.h-cabinet .h-plain { padding: var(--xy-space-2) 0; }
+.support-panel.h-funding { padding: 0 var(--xy-space-4); border-radius: var(--xy-radius-lg); }
+.h-funding > .review-evidence { margin: 0; padding: 0; border-top: 0; }
+.h-funding .funding-history-links { flex-direction: column; gap: 0; }
+.h-funding .funding-history-links > button { flex: none; width: 100% !important; display: flex; align-items: center; min-height: var(--xy-row-height); padding: 0; margin: 0; background: transparent; color: var(--xy-color-text-primary); font-size: var(--xy-row-text-size); text-align: left; }
+.h-funding .funding-history-links > button + button { border-top: 1rpx solid var(--xy-color-hairline); }
+.h-order-actions .order-action-item { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: var(--xy-space-1); }
+.h-order-actions .order-action-item.is-primary { order: 1; }
+.h-order-actions .order-action-item > button { width: 100% !important; }
+.h-finance { margin-top: 0; padding: var(--xy-space-2) var(--xy-space-4); border-radius: var(--xy-radius-lg); }
+.order-detail-page > .pickup-order-card { padding: 0 var(--xy-space-4); border-radius: var(--xy-radius-lg); margin-top: var(--xy-space-3); }
+.order-detail-page > .pickup-order-card .order-cabinet-location { border-bottom: 0; padding: var(--xy-space-3) 0; }
+.order-recovery-actions.h-footer { flex-direction: row; align-items: center; gap: var(--xy-space-3); padding: var(--xy-space-2) var(--xy-space-4); }
+.h-footer .order-recovery-button { flex: 1; min-width: 0; width: auto !important; }
+.h-footer .order-recovery-button.xy-action-secondary { order: 0; }
+.h-footer .order-recovery-button.xy-action-primary { order: 1; }
+.h-funding .funding-history-links > button { justify-content: flex-start !important; text-align: left !important; }

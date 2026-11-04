@@ -384,7 +384,7 @@
         <text class="xy-h-cap">更多记录</text>
         <view class="xy-h-blk h-more">
           <button class="h-link xy-action-hit" bindtap="copyOrderNumber"><text class="h-link__k">订单编号</text><text class="xy-h-row__v">{{orderNo}}</text><text class="h-link__more">复制</text></button>
-          <button class="h-link xy-action-hit" bindtap="toggleOrderInfo" aria-expanded="{{orderInfoExpanded}}"><text class="h-link__k">订单信息</text><text class="h-link__more" aria-hidden="true">{{orderInfoExpanded ? '收起' : '›'}}</text></button>
+          <button class="h-link xy-action-hit" bindtap="toggleOrderInfo" aria-expanded="{{orderInfoExpanded}}"><text class="h-link__k">订单信息与支付记录</text><text class="h-link__more" aria-hidden="true">{{orderInfoExpanded ? '收起' : '›'}}</text></button>
           <view wx:if="{{orderInfoExpanded}}" class="order-info-details">
             <view wx:for="{{assetFacts}}" wx:key="label" class="detail-line">
               <text>{{item.label}}</text>
@@ -448,10 +448,12 @@
           <text wx:if="{{addressNotice && !returnSheet}}" class="status-copy" role="status">{{addressNotice}}</text>
           <text class="status-copy">{{pickupText === '快递往返' ? '运输时间不顺延租期。' : ''}}归还需提交照片与视频，官方核费后办理退押或补缴。</text>
           </view>
+          <button wx:if="{{viewContract}}" class="h-link xy-action-hit" data-code="VIEW_CONTRACT" bindtap="handleAction" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}"><text class="h-link__k">租赁合同</text><text class="h-link__more" aria-hidden="true">›</text></button>
+          <button wx:if="{{peerContact}}" class="h-link xy-action-hit" bindtap="openPeerConversation"><text class="h-link__k">{{peerContact}}</text><text class="h-link__more" aria-hidden="true">›</text></button>
           <button class="h-link xy-action-hit" bindtap="refreshStatus" disabled="{{busy}}" aria-disabled="{{busy}}"><text class="h-link__k">刷新订单状态</text><text class="h-link__more" aria-hidden="true">›</text></button>
         </view>
       </view>
-      <view wx:if="{{paymentRows.length || depositSettlementVisible || refundRecordVisible || assessmentVisible}}" class="support-panel">
+      <view wx:if="{{orderInfoExpanded && (paymentRows.length || depositSettlementVisible || refundRecordVisible || assessmentVisible)}}" class="support-panel h-finance">
         <view class="detail-block finance-card">
           <view wx:if="{{paymentRows.length}}" class="review-evidence">
             <text class="block-title">原支付记录</text>
@@ -536,7 +538,7 @@
             <button class="order-cabinet-line xy-action-hit" bindtap="openOrderCabinet"><text class="order-cabinet-line__label">租赁柜</text><text class="order-cabinet-line__value">{{orderCabinetName || '位置待核实'}}</text><text aria-hidden="true">›</text></button>
             <button class="order-cabinet-line xy-action-hit" bindtap="navigateOrderCabinet" aria-label="{{'导航到' + orderCabinetAddress}}"><image class="delivery-row-icon" src="{{icons.discoveryLocation}}" mode="aspectFit" /><text class="order-cabinet-line__value">{{orderCabinetAddress || '地址待核实，请联系客服'}}</text><text class="order-cabinet-line__label">导航</text></button>
           </view></view>
-  <view wx:if="{{loaded && role === '我的租赁订单'}}" class="support-panel">
+  <view wx:if="{{loaded && role === '我的租赁订单'}}" class="support-panel h-funding">
     <view class="review-evidence">
       <view class="funding-history-links">
       <button class="xy-action-hit xy-button-fluid" data-kind="payment" bindtap="showFundingHistory" disabled="{{fundingHistoryBusy}}" aria-disabled="{{fundingHistoryBusy}}">支付历史</button>
@@ -592,7 +594,8 @@
     <button wx:if="{{settlementPage.failed}}" class="order-recovery-button xy-button-fluid xy-action-secondary" bindtap="settlementPrimary" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">查询处理进度</button>
     <button wx:else class="order-recovery-button xy-button-fluid xy-action-secondary" bindtap="returnToPaymentOrder" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">返回订单</button>
   </view>
-  <view wx:if="{{loaded && completionPage && (!resultPage || !resultPage.kind)}}" slot="footer" class="order-recovery-actions">
+  <view wx:if="{{loaded && completionPage && (!resultPage || !resultPage.kind)}}" slot="footer" class="order-recovery-actions h-footer">
+    <button class="xy-action-hit xy-h-kf" bindtap="demoSupport" aria-label="联系客服"><image src="{{icons.flowSupport}}" mode="aspectFit" aria-hidden="true" /><text>客服</text></button>
     <button wx:if="{{completionPage.closed}}" class="order-recovery-button xy-button-fluid xy-action-primary" bindtap="browseOtherDevices" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">选择其他设备</button>
     <button wx:elif="{{completionPage.code !== 'G3' && feeBasisVisible}}" class="order-recovery-button xy-button-fluid xy-action-primary" bindtap="openFeeBasis" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">查看费用依据</button>
     <button class="order-recovery-button xy-button-fluid {{completionPage.closed || completionPage.code !== 'G3' && feeBasisVisible ? 'xy-action-secondary' : 'xy-action-primary'}}" bindtap="backToOrders" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">返回订单列表</button>
@@ -605,9 +608,9 @@
     <button wx:if="{{returnReviewPage.code === 'F5'}}" class="order-recovery-button xy-button-fluid xy-action-secondary" bindtap="refreshStatus" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">刷新处理进度</button>
     <button wx:elif="{{returnReviewPage.code !== 'F3'}}" class="order-recovery-button xy-button-fluid xy-action-secondary" bindtap="backToOrders" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">返回订单列表</button>
   </view>
-  <view wx:if="{{loaded && returnDispatchPage && (!resultPage || !resultPage.kind)}}" slot="footer" class="order-recovery-actions">
+  <view wx:if="{{loaded && returnDispatchPage && (!resultPage || !resultPage.kind)}}" slot="footer" class="order-recovery-actions h-footer">
+    <button class="xy-action-hit xy-h-kf" bindtap="demoSupport" aria-label="联系客服"><image src="{{icons.flowSupport}}" mode="aspectFit" aria-hidden="true" /><text>客服</text></button>
     <button class="order-recovery-button xy-button-fluid xy-action-primary" bindtap="returnDispatchPrimary" disabled="{{busy || loading || (returnDispatchPage.code === 'F1b' && (!returnAddressChecked || !returnDispatchPage.canReturn)) || (returnDispatchPage.code === 'F1e' && !returnDispatchPage.canReturn) || (returnDispatchPage.code === 'E6' && !returnDispatchPage.canReceive)}}" aria-disabled="{{busy || loading || (returnDispatchPage.code === 'F1b' && (!returnAddressChecked || !returnDispatchPage.canReturn)) || (returnDispatchPage.code === 'F1e' && !returnDispatchPage.canReturn) || (returnDispatchPage.code === 'E6' && !returnDispatchPage.canReceive)}}">{{returnDispatchPage.primaryLabel}}</button>
-    <button wx:if="{{returnDispatchPage.code === 'F1c' || returnDispatchPage.official}}" class="order-recovery-button xy-button-fluid xy-action-secondary" bindtap="demoSupport">联系客服</button>
   </view>
   <view wx:if="{{loaded && nonfulfillmentPage}}" slot="footer" class="order-recovery-actions">
     <button class="order-recovery-button xy-button-fluid xy-action-primary" bindtap="demoSupport">联系客服</button>
@@ -618,13 +621,15 @@
     <button wx:else class="xy-button-fluid xy-action-primary" bindtap="refreshStatus" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">刷新订单状态</button>
   </view>
   <bottom-actions wx:if="{{loaded && !preparationPage && !nonfulfillmentPage && !returnDispatchPage && !returnReviewPage && !completionPage && !settlementPage && !pickupPage && !deliveryPage && !paymentPage && !returnLanding && (!resultPage || !resultPage.kind)}}" slot="footer" layout="custom">
-    <view slot="actions" class="order-actions">
-      <view wx:for="{{actions}}" wx:key="action_code" class="order-action-item">
-        <button class="order-task-action xy-action-hit {{item.primary ? 'xy-action-primary' : 'xy-action-secondary'}}" data-code="{{item.action_code}}" bindtap="handleAction" disabled="{{busy || !item.allowed}}" aria-disabled="{{busy || !item.allowed}}">{{item.label}}</button>
-        <text wx:if="{{!item.allowed}}" class="status-copy">{{item.display_reason}}</text>
+    <view slot="actions" class="xy-h-actions">
+      <button class="xy-action-hit xy-h-kf" bindtap="demoSupport" aria-label="联系官方客服"><image src="{{icons.flowSupport}}" mode="aspectFit" aria-hidden="true" /><text>客服</text></button>
+      <view class="xy-h-actions__main h-order-actions">
+        <view wx:for="{{actions}}" wx:key="action_code" wx:if="{{item.action_code !== 'VIEW_CONTRACT'}}" class="order-action-item {{item.primary ? 'is-primary' : ''}}">
+          <button class="xy-action-hit xy-button-reset xy-button-fluid" data-code="{{item.action_code}}" bindtap="handleAction" disabled="{{busy || !item.allowed}}" aria-disabled="{{busy || !item.allowed}}"><view class="{{item.primary ? 'xy-action-primary' : 'xy-action-secondary'}} xy-action-shell">{{item.label}}</view></button>
+          <text wx:if="{{!item.allowed}}" class="status-copy">{{item.display_reason}}</text>
+        </view>
+        <button wx:if="{{!actions.length || actions.length === 1 && actions[0].action_code === 'VIEW_CONTRACT'}}" class="xy-action-hit xy-button-reset xy-button-fluid" bindtap="backToOrders"><view class="xy-action-secondary xy-action-shell">返回订单列表</view></button>
       </view>
-      <button class="order-task-action order-contact xy-action-secondary" bindtap="demoSupport" aria-label="联系官方客服">联系客服</button>
-      <button wx:if="{{peerContact}}" class="order-task-action order-contact xy-action-secondary" bindtap="openPeerConversation">{{peerContact}}</button>
     </view>
   </bottom-actions>
 

@@ -86,8 +86,15 @@ let mp;
 try { mp = await automator.connect({ wsEndpoint: `ws://127.0.0.1:${port}` }); console.log('复用已打开的开发者工具'); }
 catch { mp = await automator.launch({ cliPath, projectPath: root, port }); console.log('首次启动开发者工具（端口', port, '）'); }
 // 连上了但不响应（比如重新打开过项目），就重新开启自动化端口再连
-const alive = await Promise.race([mp.currentPage().then(() => true, () => false), new Promise((r) => setTimeout(() => r(false), 8000))]);
-if (!alive) { console.log('开发者工具不响应，重新开启自动化'); try { mp.disconnect(); } catch {} mp = await automator.launch({ cliPath, projectPath: root, port }); console.log('已重新连接'); }
+const ping = (ms) => Promise.race([mp.currentPage().then(() => true, () => false), new Promise((r) => setTimeout(() => r(false), ms))]);
+let alive = await ping(30000);
+// 不响应时先重连同一端口（避免“端口被占用”），仍不行再换端口重新开启自动化
+for (let i = 0; !alive && i < 3; i++) {
+  console.log('开发者工具不响应，第', i + 1, '次重连');
+  try { mp.disconnect(); } catch {}
+  try { mp = await automator.connect({ wsEndpoint: `ws://127.0.0.1:${port}` }); alive = await ping(30000); } catch {}
+}
+if (!alive) { console.log('改用端口', port + 1, '重新开启自动化'); try { mp.disconnect(); } catch {} mp = await automator.launch({ cliPath, projectPath: root, port: port + 1 }); alive = await ping(60000); console.log(alive ? '已重新连接' : '仍未响应'); }
 mp.on('exception', (e) => console.log('页面异常：', (e && e.message || '').slice(0, 300)));
 mp.on('console', (e) => { if (e.type === 'error' || e.type === 'warn') console.log('控制台', e.type, JSON.stringify(e.args).slice(0, 300)); });
 const result = {};
