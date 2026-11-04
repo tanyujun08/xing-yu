@@ -54,3 +54,14 @@
 .back-action { position:relative; }
 .touch-overlay { position:absolute; left:50%; top:50%; width:100% !important; height:100%; min-width:var(--xy-size-touch-min); min-height:var(--xy-size-touch-min); transform:translate(-50%,-50%); box-sizing:border-box; padding:0; margin:0; border:0; border-radius:0; background:transparent; }
 .touch-overlay::after { border:0; }
+/* 方向 H */
+.service-detail-page.xy-h-page { padding: var(--xy-space-3) var(--xy-space-4) var(--xy-space-4); }
+.sd-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--xy-space-3); margin-bottom: var(--xy-space-2); }
+.sd-price { flex: none; font-size: var(--xy-text-section-title-size); line-height: var(--xy-text-section-title-line-height); font-weight: var(--xy-text-weight-semibold); font-variant-numeric: tabular-nums; }
+.sd-unit { color: var(--xy-color-text-secondary); font-size: var(--xy-row-caption-size); font-weight: var(--xy-text-weight-regular); }
+.sd-check { display: flex; align-items: flex-start; gap: var(--xy-space-2); padding: var(--xy-space-1) 0; font-size: var(--xy-row-text-size); line-height: var(--xy-row-text-line-height); }
+.sd-check > image { flex: none; width: var(--xy-space-5); height: var(--xy-row-text-line-height); }
+.sd-check > view { display: flex; flex-direction: column; min-width: 0; }
+.sd-sub { display: block; }
+.sd-status { display: block; margin-top: var(--xy-space-2); color: var(--xy-color-brand); font-size: var(--xy-row-caption-size); }
+.xy-h-page .order-link { margin-top: 0; padding: var(--xy-space-3) var(--xy-space-4); border-radius: var(--xy-radius-lg); }

@@ -1,5 +1,6 @@
 @import "./shared/design/components.wxss";
 @import "./shared/design/page-action-states.wxss";
+@import "./shared/design/order-flow-h.wxss";
 
 page {
   --xy-order-body-size: calc(7px + .5rem);
@@ -60,6 +61,29 @@ page {
   --xy-color-text-disabled: #c7c7cc;
   --xy-color-text-inverse: #fff;
   --xy-color-page: #f5f5f7;
+  /* 订单流程状态头（方向 H）：很浅的同色渐变 + 插画后柔光 */
+  --xy-hero-bg-green: radial-gradient(60% 90% at 86% 55%, rgba(52, 199, 140, .2), transparent 70%), linear-gradient(120deg, #f7fbf9 0%, #eef8f3 100%);
+  --xy-hero-bg-orange: radial-gradient(60% 90% at 86% 55%, rgba(255, 159, 64, .2), transparent 70%), linear-gradient(120deg, #fffaf6 0%, #fff2e8 100%);
+  --xy-hero-bg-red: radial-gradient(60% 90% at 86% 55%, rgba(255, 99, 88, .18), transparent 70%), linear-gradient(120deg, #fff9f9 0%, #ffefee 100%);
+  --xy-hero-bg-blue: radial-gradient(60% 90% at 86% 55%, rgba(64, 144, 255, .18), transparent 70%), linear-gradient(120deg, #f8fbff 0%, #edf4ff 100%);
+  --xy-hero-bg-purple: radial-gradient(60% 90% at 86% 55%, rgba(130, 110, 255, .18), transparent 70%), linear-gradient(120deg, #faf9ff 0%, #f1effd 100%);
+  --xy-hero-bg-neutral: radial-gradient(60% 90% at 86% 55%, rgba(120, 120, 128, .12), transparent 70%), linear-gradient(120deg, #fafafb 0%, #f1f2f5 100%);
+  --xy-hero-highlight: radial-gradient(closest-side, rgba(255, 255, 255, .9), transparent);
+  --xy-shadow-hero: inset 0 0 0 3rpx rgba(255, 255, 255, .95), 0 0 0 1rpx rgba(0, 0, 0, .04), 0 6px 16px rgba(0, 0, 0, .04);
+  --xy-hero-art-size: 72px;
+  --xy-hero-min-height: 112px;
+  --xy-hero-title-size: calc(12px + .5rem);
+  --xy-hero-title-line-height: calc(20px + .5rem);
+  --xy-key-amount-size: calc(24px + .5rem);
+  --xy-key-amount-line-height: calc(32px + .5rem);
+  --xy-color-key-warning: #e8590c;
+  --xy-color-key-warning-soft: #fff1e6;
+  --xy-color-hairline: rgba(60, 60, 67, .18);
+  --xy-row-height: 44px;
+  --xy-row-text-size: calc(7px + .5rem);
+  --xy-row-text-line-height: calc(14px + .5rem);
+  --xy-row-caption-size: calc(5px + .5rem);
+  --xy-row-caption-line-height: calc(10px + .5rem);
   --xy-color-canvas-muted: #eaebef;
   --xy-color-surface: #fff;
   --xy-color-surface-subtle: #fafafc;

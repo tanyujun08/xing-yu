@@ -179,3 +179,9 @@
 .case-result .proposal-summary > .field-hint { display: block; margin: 0; padding: 0; border: 0; }
 .submitted-party-card .submission-record + .submission-record .proposal-note { margin-top: var(--xy-space-2); padding-top: 0; border-top: 0; }
 .case-result .xy-price-group { margin-top: var(--xy-space-2); }
+/* 方向 H：紫色状态头，白块表单，底栏客服图标 */
+.dispute-intro { margin: var(--xy-space-3) var(--xy-layout-page-padding-x); }
+.dispute-intro .resolution-inline { margin-top: var(--xy-space-3); }
+.dispute-card { border-radius: var(--xy-radius-lg); padding: var(--xy-space-4); }
+.dispute-actions .dispute-kf { flex: none; width: var(--xy-size-touch-min); min-height: var(--xy-size-touch-min); border: 0; background: transparent; }
+.description-input { border-radius: var(--xy-radius-md); }

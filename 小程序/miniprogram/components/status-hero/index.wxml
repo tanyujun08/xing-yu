@@ -1,0 +1,8 @@
+<view class="status-hero status-hero--{{toneClass}}" role="status">
+  <view class="status-hero__copy">
+    <text class="status-hero__title">{{title}}</text>
+    <text wx:if="{{description}}" class="status-hero__description">{{description}}</text>
+    <slot></slot>
+  </view>
+  <image wx:if="{{artSrc}}" class="status-hero__art" src="{{artSrc}}" mode="aspectFit" aria-hidden="true" />
+</view>
