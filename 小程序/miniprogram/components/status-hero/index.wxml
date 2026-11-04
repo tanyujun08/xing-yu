@@ -1,7 +1,8 @@
-<wxs module="hero">
-var ART = { contract: 1, clock: 1, check: 1, calendar: 1, wallet: 1, shield: 1, 'shield-green': 1 };
-var TONE = { green: 1, orange: 1, red: 1, blue: 1, purple: 1, neutral: 1 };
-module.exports.tone = function (value) { return TONE[value] ? value : 'green'; };
-module.exports.art = function (value) { return ART[value] ? '/assets/status-3d/' + value + '.png' : ''; };
-</wxs>
-<view class="status-hero status-hero--{{hero.tone(tone)}}" role="status"><view class="status-hero__copy"><text class="status-hero__title">{{title}}</text><text wx:if="{{description}}" class="status-hero__description">{{description}}</text><slot></slot></view><image wx:if="{{hero.art(art)}}" class="status-hero__art" src="{{hero.art(art)}}" mode="aspectFit" aria-hidden="true" /></view>
+<view class="status-hero status-hero--{{toneClass}}" role="status">
+  <view class="status-hero__copy">
+    <text class="status-hero__title">{{title}}</text>
+    <text wx:if="{{description}}" class="status-hero__description">{{description}}</text>
+    <slot></slot>
+  </view>
+  <image wx:if="{{artSrc}}" class="status-hero__art" src="{{artSrc}}" mode="aspectFit" aria-hidden="true" />
+</view>

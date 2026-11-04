@@ -4,7 +4,6 @@
   "navigationBarTextStyle": "black",
   "usingComponents": {
     "page-header": "../../components/page-header/index",
-    "status-hero": "../../components/status-hero/index",
-    "page-shell": "../../components/page-shell/index"
+    "status-hero": "../../components/status-hero/index"
   }
 }

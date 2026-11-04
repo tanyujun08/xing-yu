@@ -1,10 +1,10 @@
 <page-meta root-font-size="system" />
 <page-shell fixed-header has-footer>
   <page-header slot="header" variant="order" title="费用依据" bindback="returnToOrder" />
-  <view class="xy-h-page">
-    <view wx:if="{{loading}}" class="xy-h-blk xy-h-blk--pad xy-h-note" role="status">正在读取本单核定结果…</view>
-    <block wx:elif="{{errorText}}"><status-hero tone="neutral" art="wallet" title="暂时读不到核定结果" description="{{errorText}}" /></block>
-    <block wx:elif="{{unavailable}}"><status-hero tone="neutral" art="wallet" title="尚无最终核定" description="请返回订单查看当前进度。" /></block>
+  <view class="xy-h-page fees-page">
+    <view wx:if="{{loading}}" class="fees-state" role="status">正在读取本单核定结果…</view>
+    <view wx:elif="{{errorText}}" class="fees-state" role="alert"><text>{{errorText}}</text><button class="xy-button-reset fees-link" bindtap="refresh">重新读取</button></view>
+    <view wx:elif="{{unavailable}}" class="fees-state"><text class="fees-title">当前尚无可展示的最终核定</text><text>请返回订单查看当前进度。</text><button class="xy-button-reset fees-link" bindtap="refresh">刷新核定结果</button></view>
     <block wx:elif="{{loaded && fees}}">
       <status-hero tone="blue" art="wallet" title="费用已核定" description="本次归还费用已核定，押金按下面的结果处理。" />
       <view class="xy-h-blk">
@@ -26,7 +26,7 @@
           </view>
           <text wx:if="{{!item.evidence.length}}" class="xy-h-note">本项暂无可查看的凭证，请联系官方客服核实。</text>
         </view>
-        <view class="xy-h-total fees-total"><text>合计</text><text>{{fees.total}}</text></view>
+        <view class="xy-h-total"><text>合计</text><text>{{fees.total}}</text></view>
       </view>
       <text class="xy-h-note">计费规则：每{{fees.unit}}计费，归还宽限 {{fees.grace}}。{{fees.rounding}}</text>
       <block wx:if="{{fees.evidence.length}}">
@@ -49,9 +49,5 @@
       <text wx:if="{{previewError}}" class="fees-error" role="alert">{{previewError}}</text>
     </block>
   </view>
-  <view slot="footer" class="xy-h-foot"><view class="xy-h-actions"><button class="xy-action-hit xy-h-kf" bindtap="demoSupport" aria-label="联系客服"><image src="{{supportIcon}}" mode="aspectFit" aria-hidden="true" /><text>客服</text></button><view class="xy-h-actions__main">
-    <button wx:if="{{errorText || unavailable}}" class="xy-h-btn xy-h-btn--secondary xy-action-hit" bindtap="returnToOrder">返回订单</button>
-    <button wx:if="{{errorText || unavailable}}" class="xy-h-btn xy-h-btn--primary xy-action-hit" bindtap="refresh">{{errorText ? '重新读取' : '刷新核定结果'}}</button>
-    <button wx:else class="xy-h-btn xy-h-btn--primary xy-action-hit" bindtap="returnToOrder">返回订单</button>
-  </view></view></view>
+  <bottom-actions slot="footer" layout="custom"><view slot="actions" class="xy-h-actions"><button class="xy-action-hit xy-h-kf" bindtap="demoSupport" aria-label="联系客服"><image src="{{supportIcon}}" mode="aspectFit" aria-hidden="true" /><text>客服</text></button><view class="xy-h-actions__main"><button class="xy-action-hit xy-button-reset xy-button-fluid" bindtap="returnToOrder"><view class="xy-action-secondary xy-action-shell">返回订单</view></button></view></view></bottom-actions>
 </page-shell>

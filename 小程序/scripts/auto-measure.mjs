@@ -50,16 +50,6 @@ const routes = {
   'order-detail-return': { open: 'navigateTo', url: '/pages/order-detail/index?orderId=order-5', dir: 'order-detail' },
   'order-detail-supplement': { open: 'navigateTo', url: '/pages/order-detail/index?orderId=order-7', dir: 'order-detail' },
   'order-detail-done': { open: 'navigateTo', url: '/pages/order-detail/index?orderId=order-9', dir: 'order-detail' },
-  'od-1': { open: 'navigateTo', url: '/pages/order-detail/index?orderId=order-1', dir: 'order-detail' },
-  'od-2': { open: 'navigateTo', url: '/pages/order-detail/index?orderId=order-2', dir: 'order-detail' },
-  'od-3': { open: 'navigateTo', url: '/pages/order-detail/index?orderId=order-3', dir: 'order-detail' },
-  'od-4': { open: 'navigateTo', url: '/pages/order-detail/index?orderId=order-4', dir: 'order-detail' },
-  'od-5': { open: 'navigateTo', url: '/pages/order-detail/index?orderId=order-5', dir: 'order-detail' },
-  'od-6': { open: 'navigateTo', url: '/pages/order-detail/index?orderId=order-6', dir: 'order-detail' },
-  'od-7': { open: 'navigateTo', url: '/pages/order-detail/index?orderId=order-7', dir: 'order-detail' },
-  'od-8': { open: 'navigateTo', url: '/pages/order-detail/index?orderId=order-8', dir: 'order-detail' },
-  'od-9': { open: 'navigateTo', url: '/pages/order-detail/index?orderId=order-9', dir: 'order-detail' },
-  'od-10': { open: 'navigateTo', url: '/pages/order-detail/index?orderId=order-10', dir: 'order-detail' },
   'order-fees': { open: 'navigateTo', url: '/pages/order-fees/index?orderId=order-7' },
   'service-detail': { open: 'navigateTo', url: '/pages/service-detail/index?mode=preview&service=guard' },
   'device-orders': { open: 'navigateTo', url: '/pages/device-orders/index?mode=rent' },
@@ -67,9 +57,6 @@ const routes = {
   'return-submit': { open: 'navigateTo', url: '/pages/return-submit/index?orderId=order-5' },
   'cabinet-return': { open: 'navigateTo', url: '/pages/cabinet-return/index?orderId=order-4' },
   dispute: { open: 'navigateTo', url: '/pages/dispute/index?orderId=order-6' },
-  'rs-4': { open: 'navigateTo', url: '/pages/return-submit/index?orderId=order-4', dir: 'return-submit' },
-  'rs-record': { open: 'navigateTo', url: '/pages/return-submit/index?mode=record&orderId=order-6', dir: 'return-submit' },
-  'cr-5': { open: 'navigateTo', url: '/pages/cabinet-return/index?orderId=order-5', dir: 'cabinet-return' },
 };
 
 // 参数里可带 --shots（只截图不量尺寸，快）和 --prefix=before（截图文件名前缀，用于改前/改后对照）
@@ -110,13 +97,6 @@ for (let i = 0; !alive && i < 3; i++) {
 if (!alive) { console.log('改用端口', port + 1, '重新开启自动化'); try { mp.disconnect(); } catch {} mp = await automator.launch({ cliPath, projectPath: root, port: port + 1 }); alive = await ping(60000); console.log(alive ? '已重新连接' : '仍未响应'); }
 mp.on('exception', (e) => console.log('页面异常：', (e && e.message || '').slice(0, 300)));
 mp.on('console', (e) => { if (e.type === 'error' || e.type === 'warn') console.log('控制台', e.type, JSON.stringify(e.args).slice(0, 300)); });
-// --clean：截图前清掉演示数据里残留的手写签名草稿等中间态，避免页面停在“待上传”
-if (args.includes('--clean')) {
-  try {
-    const info = await mp.callWxMethod('getStorageInfoSync');
-    for (const key of info.keys || []) if (/signature-upload|evidence-draft|return-draft/.test(key)) { await mp.callWxMethod('removeStorageSync', key); console.log('已清理', key); }
-  } catch (error) { console.log('清理演示草稿失败', error.message); }
-}
 const result = {};
 try {
   for (const name of names) {

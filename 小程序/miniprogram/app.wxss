@@ -79,7 +79,6 @@ page {
   --xy-color-key-warning: #e8590c;
   --xy-color-key-warning-soft: #fff1e6;
   --xy-color-hairline: rgba(60, 60, 67, .18);
-  --xy-color-scrim-badge: rgba(0, 0, 0, .55);
   --xy-row-height: 44px;
   --xy-row-text-size: calc(7px + .5rem);
   --xy-row-text-line-height: calc(14px + .5rem);

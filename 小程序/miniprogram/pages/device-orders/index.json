@@ -10,8 +10,7 @@
     "page-shell": "../../components/page-shell/index",
     "status-view": "../../components/status-view/index",
     "task-sheet": "../../components/task-sheet/index",
-    "login-sheet": "../../components/login-sheet/index",
-    "status-hero": "../../components/status-hero/index"
+    "login-sheet": "../../components/login-sheet/index"
   },
   "navigationBarTextStyle": "black"
 }
