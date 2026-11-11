@@ -6,13 +6,14 @@ import json, sys, glob, os
 from PIL import Image, ImageChops
 
 def same_rows(a, b, from_top):
-    """两张图从顶部（或底部）起完全相同的行数。"""
+    """两张图从顶部（或底部）起相同的行数。只比中间 80% 宽度并容忍轻微色差，避开模拟器边缘的杂线。"""
     w, h = a.size
-    diff = ImageChops.difference(a.convert('RGB'), b.convert('RGB'))
+    x0, x1 = int(w * .1), int(w * .9)
+    diff = ImageChops.difference(a.convert('L'), b.convert('L')).crop((x0, 0, x1, h)).point(lambda v: 255 if v > 12 else 0)
     rows = range(h) if from_top else range(h - 1, -1, -1)
     n = 0
     for y in rows:
-        if diff.crop((0, y, w, y + 1)).getbbox():
+        if diff.crop((0, y, x1 - x0, y + 1)).getbbox():
             break
         n += 1
     return n

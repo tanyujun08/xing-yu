@@ -59,6 +59,7 @@ const routes = {
   dispute: { open: 'navigateTo', url: '/pages/dispute/index?orderId=order-6' },
   // 手写签名：旧上传卡住后可重新签写的状态
   'contract-sign-restart': { open: 'navigateTo', url: '/pages/contract-sign/index?orderId=order-1', dir: 'contract-sign', set: { loading: false, ready: false, hasDraft: true, rejected: false, canRestart: true, name: '林沐 · 演示', progressText: '', errorText: '签名图片上传没有成功，请重新签写' } },
+  'contract-sign-ready': { open: 'navigateTo', url: '/pages/contract-sign/index?orderId=order-1', dir: 'contract-sign', set: { loading: false, ready: true, hasDraft: false, name: '林沐 · 演示', progressText: '', errorText: '' } },
   'contract-sign-draft': { open: 'navigateTo', url: '/pages/contract-sign/index?orderId=order-1', dir: 'contract-sign', set: { loading: false, ready: false, hasDraft: true, rejected: false, canRestart: false, name: '林沐 · 演示', progressText: '', errorText: '' } },
 };
 // 订单详情的 10 个演示状态：od-1（准备签约）… od-10（已关闭）
@@ -144,20 +145,25 @@ try {
     let bottom = 0;
     for (const list of Object.values(rows)) for (const row of list) { const p = row.split('|'); bottom = Math.max(bottom, Number(p[1]) + Number(p[3])); }
     if (shotsOnly) { try { const s = await page.size(); bottom = s.height; } catch { bottom = 1400; } }
-    // 完整长图：每次下滚 300px 截一张并记下实际滚动位置，滚不动了就停；之后按位置拼成一张长图
+    // 完整长图：先读页面总高，每次下滚 300px 截一张并记下实际滚动位置；之后按位置拼成一张长图
     const shots = []; let win = {};
     try { win = await mp.evaluate(() => { const w = wx.getWindowInfo(); return { width: w.windowWidth, height: w.windowHeight }; }); } catch { /* 取不到就不写 */ }
+    const offset = () => Promise.race([
+      mp.evaluate(() => new Promise((resolve) => { wx.createSelectorQuery().selectViewport().scrollOffset((r) => resolve(r ? { top: r.scrollTop, height: r.scrollHeight } : null)).exec(); })),
+      new Promise((resolve) => setTimeout(() => resolve(null), 4000)),
+    ]).catch(() => null);
     for (let i = 0, last = -1; i < 30; i += 1) {
       await mp.pageScrollTo(i * 300);
       await page.waitFor(450);
-      let top = i * 300; try { top = Math.round(await page.scrollTop()); } catch { /* 读不到就按请求值 */ }
+      const at = await offset();
+      const top = at ? Math.round(at.top) : Math.max(last, 0);
       if (top === last) break;
       const file = `${prefix}${name}-s${i}.png`;
       await mp.screenshot({ path: path.join(outDir, file) });
-      shots.push({ file, top }); last = top;
+      shots.push({ file, top, pageHeight: at ? Math.round(at.height) : null }); last = top;
     }
     fs.writeFileSync(path.join(outDir, `${prefix}${name}.shots.json`), JSON.stringify({ name, window: win, shots }));
-    console.log('截图', name, shots.length, '张，滚动到', shots.length ? shots[shots.length - 1].top : 0);
+    console.log('截图', name, shots.length, '张，滚动到', shots.length ? shots[shots.length - 1].top : 0, '页面总高', shots.length ? shots[0].pageHeight : '?');
     await mp.pageScrollTo(0);
     console.log('完成', name, Object.keys(rows).length, '个 class');
   }
