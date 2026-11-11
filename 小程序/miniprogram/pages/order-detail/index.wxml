@@ -133,7 +133,15 @@
           <view class="xy-h-row"><image class="h-row-icon" src="{{icons.discoveryLocation}}" mode="aspectFit" aria-hidden="true" /><button class="xy-h-row__k h-plain xy-action-hit" bindtap="openOrderCabinet"><text>{{orderCabinetName || '位置待核实'}}</text><text class="xy-h-row__sub">{{orderCabinetAddress || '地址待核实，请联系客服'}}</text></button><button class="xy-h-hit h-nav xy-action-hit" bindtap="navigateOrderCabinet" aria-label="{{'导航到' + orderCabinetAddress}}">导航</button></view>
           <view wx:if="{{returnDispatchPage.overdue && !returnDispatchPage.transit && overtime && overtime !== '¥0.00'}}" class="xy-h-row"><text class="xy-h-row__k">已产生超期费</text><text class="xy-h-tag--warn">{{overtime}}</text></view>
         </view>
-        <view class="delivery-card">
+        <block wx:if="{{returnDispatchPage.code === 'F1e'}}">
+          <view class="xy-h-blk">
+            <view class="h-device"><order-product-summary variant="order-list" clickable bindopen="openProduct" title="{{title}}" secondary="{{returnDispatchPage.supply}}" media-src="{{media}}" media-state="{{media ? 'ready' : 'idle'}}" /></view>
+            <view class="xy-h-row"><text class="xy-h-row__k h-row-key">租赁日期</text><text class="xy-h-row__v">{{returnDispatchPage.term}}</text></view>
+            <view class="xy-h-row"><text class="xy-h-row__k h-row-key">随附配件</text><text class="xy-h-row__v">{{returnDispatchPage.accessories || '本单未列出，请核对设备及随附物品'}}</text></view>
+          </view>
+          <text class="xy-h-note">设备实际收回后停止计算逾期费用，最终费用以官方核定为准。</text>
+        </block>
+        <view wx:else class="delivery-card">
           <order-product-summary variant="order-list" clickable bindopen="openProduct" title="{{title}}" secondary="{{returnDispatchPage.supply}}" media-src="{{media}}" media-state="{{media ? 'ready' : 'idle'}}"><text wx:if="{{returnDispatchPage.code === 'F1b' || returnDispatchPage.official}}" slot="meta" class="dispatch-product-term">{{returnDispatchPage.term}}</text></order-product-summary>
           <view wx:if="{{returnDispatchPage.transit}}" class="delivery-row"><image class="delivery-row-icon" src="{{icons.orderCalendar}}" mode="aspectFit" aria-hidden="true" /><text class="delivery-label">租赁日期</text><text class="delivery-value">{{returnDispatchPage.term}}</text></view>
           <view wx:if="{{returnDispatchPage.code === 'F1c'}}" class="delivery-row delivery-row--last"><image class="delivery-row-icon" src="{{icons.returnClock}}" mode="aspectFit" aria-hidden="true" /><text class="delivery-label">归还截止</text><text class="delivery-value {{returnDispatchPage.overdue ? 'delivery-deadline' : ''}}">{{returnDispatchPage.deadline}}</text></view>
@@ -541,8 +549,8 @@
   <view wx:if="{{loaded && role === '我的租赁订单'}}" class="support-panel h-funding">
     <view class="review-evidence">
       <view class="funding-history-links">
-      <button class="xy-action-hit xy-button-fluid" data-kind="payment" bindtap="showFundingHistory" disabled="{{fundingHistoryBusy}}" aria-disabled="{{fundingHistoryBusy}}">支付历史</button>
-      <button class="xy-action-hit xy-button-fluid" data-kind="refund" bindtap="showFundingHistory" disabled="{{fundingHistoryBusy}}" aria-disabled="{{fundingHistoryBusy}}">退款历史</button>
+      <button class="xy-action-hit xy-button-fluid" data-kind="payment" bindtap="showFundingHistory" disabled="{{fundingHistoryBusy}}" aria-disabled="{{fundingHistoryBusy}}"><text class="h-link__k">支付历史</text><text class="h-link__more" aria-hidden="true">›</text></button>
+      <button class="xy-action-hit xy-button-fluid" data-kind="refund" bindtap="showFundingHistory" disabled="{{fundingHistoryBusy}}" aria-disabled="{{fundingHistoryBusy}}"><text class="h-link__k">退款历史</text><text class="h-link__more" aria-hidden="true">›</text></button>
       </view>
       <block wx:if="{{fundingHistoryOpen}}">
         <text wx:if="{{fundingHistoryBusy}}" role="status">加载中</text>

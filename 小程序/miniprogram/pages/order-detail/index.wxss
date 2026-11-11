@@ -1481,3 +1481,10 @@ picker .dispatch-input { display: flex; align-items: center; }
 .h-footer .order-recovery-button.xy-action-secondary { order: 0; }
 .h-footer .order-recovery-button.xy-action-primary { order: 1; }
 .h-funding .funding-history-links > button { justify-content: flex-start !important; text-align: left !important; }
+/* 逾期归还（F1e）与记录行：行标签常规字重，键不被长内容挤压 */
+.h-row-key { flex: none; }
+.h-row-key + .xy-h-row__v { flex: 1; min-width: 0; }
+.h-cabinet .h-plain { font-weight: var(--xy-text-weight-semibold); }
+.h-cabinet .h-plain .xy-h-row__sub { font-weight: var(--xy-text-weight-regular); }
+.h-link, .h-funding .funding-history-links > button { font-weight: var(--xy-text-weight-regular); }
+.h-funding .funding-history-links > button { gap: var(--xy-space-3); }
