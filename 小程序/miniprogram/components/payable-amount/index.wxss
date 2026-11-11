@@ -1,5 +1,5 @@
 :host { display:block; min-width:0; }
 .payable__label { display:block; color:var(--xy-color-text-muted); font-size:var(--xy-text-caption-size); line-height:var(--xy-text-caption-line-height); }
 .payable__row { display:flex; align-items:baseline; flex-wrap:wrap; gap:var(--xy-space-1) var(--xy-space-2); margin-top:var(--xy-space-1); }
-.payable__value { flex:none; color:var(--xy-color-payable); font-family:var(--xy-font-family-numeric); font-size:var(--xy-payable-value-size); line-height:var(--xy-payable-value-line-height); font-weight:var(--xy-text-weight-semibold); }
+.payable__value { flex:none; color:var(--xy-color-text-strong); font-family:var(--xy-font-family-numeric); font-size:var(--xy-payable-value-size); line-height:var(--xy-payable-value-line-height); font-weight:var(--xy-text-weight-semibold); }
 .payable__detail { min-width:0; color:var(--xy-color-text-secondary); font-size:var(--xy-text-body-small-size); line-height:var(--xy-text-body-small-line-height); overflow-wrap:anywhere; }

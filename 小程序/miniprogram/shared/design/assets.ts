@@ -67,6 +67,7 @@ export const designAssets = {
   homePublish: '/assets/figma-icons/xy-home-publish.svg',
   homeSonyA7C: '/assets/figma-media/official-sony-a7c.jpg',
   homeCanonEOSR8: '/assets/figma-media/official-canon-eos-r8.jpg',
+  profileHeaderBg: '/assets/figma-media/profile-header-bg.jpg',
   profileAvatar: '/assets/figma-media/profile-avatar.jpg',
   profileAvatarDefault: '/assets/figma-media/profile-avatar-default.png',
   profileAvatarDefaultVector: '/assets/figma-icons/profile-avatar-default.svg',
