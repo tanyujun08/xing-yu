@@ -80,10 +80,10 @@ page {
   --xy-color-key-warning-soft: #fff1e6;
   --xy-color-hairline: rgba(60, 60, 67, .18);
   --xy-row-height: 44px;
-  --xy-row-text-size: calc(7px + .5rem);
-  --xy-row-text-line-height: calc(14px + .5rem);
-  --xy-row-caption-size: calc(5px + .5rem);
-  --xy-row-caption-line-height: calc(10px + .5rem);
+  --xy-row-text-size: var(--xy-text-body-size);
+  --xy-row-text-line-height: var(--xy-text-body-line-height);
+  --xy-row-caption-size: var(--xy-text-body-small-size);
+  --xy-row-caption-line-height: var(--xy-text-body-small-line-height);
   --xy-color-canvas-muted: #eaebef;
   --xy-color-surface: #fff;
   --xy-color-surface-subtle: #fafafc;
