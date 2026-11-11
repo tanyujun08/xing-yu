@@ -251,6 +251,26 @@
         </view>
         <view class="h-services"><button wx:if="{{!completionPage.known}}" class="xy-action-hit xy-h-hit" bindtap="refreshStatus" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">刷新原订单</button><button wx:if="{{peerContact}}" class="xy-action-hit xy-h-hit" bindtap="openPeerConversation">{{peerContact}}</button></view>
       </view>
+      <view wx:elif="{{settlementPage && settlementPage.isRefund && !settlementPage.compact}}" class="settlement-page h-flow">
+        <status-hero tone="green" art="wallet" title="{{settlementPage.title}}" description="{{settlementPage.note}}" />
+        <view class="xy-h-blk">
+          <view class="xy-h-key xy-h-key--brand"><text class="xy-h-key__label">应退押金</text><text class="xy-h-key__amount">{{settlementPage.amount}}</text><text class="xy-h-key__note">官方费用已核定</text></view>
+          <view wx:for="{{settlementPage.rows}}" wx:key="label" class="xy-h-row"><text class="xy-h-row__k">{{item.label}}</text><text class="xy-h-row__v">{{item.value}}</text></view>
+        </view>
+        <view class="xy-h-blk">
+          <view class="h-device"><order-product-summary variant="order-list" clickable bindopen="openProduct" title="{{title}}" secondary="{{settlementPage.supply}}" media-src="{{media}}" media-state="{{media ? 'ready' : 'idle'}}" /></view>
+          <view class="xy-h-row"><text class="xy-h-row__k">租期</text><text class="xy-h-row__v">{{term}}</text></view>
+          <view class="xy-h-row"><text class="xy-h-row__k">实际收回</text><text class="xy-h-row__v">{{returned || '待核实'}}</text></view>
+        </view>
+        <text wx:if="{{paymentNotice}}" class="xy-h-note" role="status">{{paymentNotice}}</text>
+        <text class="xy-h-cap">更多记录</text>
+        <view class="xy-h-blk completion-links">
+          <button class="h-link xy-action-hit" bindtap="copyOrderNumber"><text class="h-link__k">订单编号</text><text class="xy-h-row__v">{{orderNo}}</text><text class="h-link__more">复制</text></button>
+          <button wx:if="{{viewContract}}" class="h-link xy-action-hit" data-code="VIEW_CONTRACT" bindtap="handleAction" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}"><text class="h-link__k">已签合同</text><text class="h-link__more" aria-hidden="true">›</text></button>
+          <button wx:if="{{feeBasisVisible}}" class="h-link xy-action-hit" bindtap="openFeeBasis" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}"><text class="h-link__k">费用依据</text><text class="h-link__more" aria-hidden="true">›</text></button>
+          <button wx:if="{{peerContact}}" class="h-link xy-action-hit" bindtap="openPeerConversation"><text class="h-link__k">{{peerContact}}</text><text class="h-link__more" aria-hidden="true">›</text></button>
+        </view>
+      </view>
       <view wx:elif="{{settlementPage}}" class="settlement-page">
         <view wx:if="{{settlementPage.compact}}" class="settlement-card settlement-progress" role="{{settlementPage.failed ? 'alert' : 'status'}}">
           <view class="order-state-symbol order-state-symbol--large order-state-symbol--soft {{settlementPage.failed && settlementPage.isRefund ? 'order-state-symbol--danger' : ''}}" aria-hidden="true"><t-icon name="{{settlementPage.failed ? settlementPage.isRefund ? 'close' : 'file' : 'time'}}" size="40" /></view>
@@ -596,7 +616,11 @@
     <button class="order-recovery-button xy-button-fluid {{pickupPage.ready ? 'xy-action-secondary' : 'xy-action-primary'}}" bindtap="showPickupGuide" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">{{pickupPage.ready ? '取件指引' : '查看取件指引'}}</button>
     <button wx:if="{{pickupPage.taskAction}}" class="delivery-link xy-action-hit" data-code="{{pickupPage.taskAction}}" bindtap="handleAction" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">继续原取件任务</button>
   </view>
-  <view wx:if="{{loaded && settlementPage && (!resultPage || !resultPage.kind)}}" slot="footer" class="order-recovery-actions">
+  <view wx:if="{{loaded && settlementPage && settlementPage.isRefund && !settlementPage.compact && (!resultPage || !resultPage.kind)}}" slot="footer" class="order-recovery-actions h-footer">
+    <button class="xy-action-hit xy-h-kf" bindtap="demoSupport" aria-label="联系客服"><image src="{{icons.flowSupport}}" mode="aspectFit" aria-hidden="true" /><text>客服</text></button>
+    <button class="order-recovery-button xy-button-fluid xy-action-primary" bindtap="settlementPrimary" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">{{settlementPage.primaryLabel}}</button>
+  </view>
+  <view wx:if="{{loaded && settlementPage && !(settlementPage.isRefund && !settlementPage.compact) && (!resultPage || !resultPage.kind)}}" slot="footer" class="order-recovery-actions">
     <button wx:if="{{settlementPage.failed}}" class="order-recovery-button xy-button-fluid xy-action-primary" bindtap="demoSupport">联系客服</button>
     <button wx:else class="order-recovery-button xy-button-fluid xy-action-primary" bindtap="settlementPrimary" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">{{settlementPage.primaryLabel}}</button>
     <button wx:if="{{settlementPage.failed}}" class="order-recovery-button xy-button-fluid xy-action-secondary" bindtap="settlementPrimary" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">查询处理进度</button>
