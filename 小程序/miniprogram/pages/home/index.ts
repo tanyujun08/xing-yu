@@ -75,11 +75,13 @@ Page({
     try {
       const page = await handle.promise; if (!s.visible || epoch !== storeEpochs.get(this) || (accountApi.sessionIdentity() ?? '') !== owner) return;
       const stores: HomeStore[] = (Array.isArray(page?.items) ? page.items : []).filter(store => !!store && !!store.store_id && store.status === 'ACTIVE').map(store => {
-        const deviceCount = (Array.isArray(store.supplies) ? store.supplies : []).length;
-        const hours = businessHoursText(store.business_hours), open = isOpenNow(store.business_hours);
+        // 公开门店列表的类型里没有这几项，接口带了就用，没带就留空
+        const extra = store as { supplies?: unknown[]; business_hours?: Parameters<typeof businessHoursText>[0]; public_address?: string; public_phone?: string };
+        const deviceCount = (Array.isArray(extra.supplies) ? extra.supplies : []).length;
+        const hours = businessHoursText(extra.business_hours), open = isOpenNow(extra.business_hours);
         const district = 'region' in store ? store.region.district_name : store.address?.district_name;
         const base = { id: store.store_id, name: store.name, media: publicPhoto(store.cover ?? undefined), hours, open, district: district ?? '', deviceCount, deviceCountText: deviceCount ? `${deviceCount} 台` : '查看门店', meta: [hours, deviceCount ? `${deviceCount} 台` : ''].filter(Boolean).join(' · ') };
-        if ('region' in store) return { ...base, location: [store.region.city_name, store.region.district_name].filter(Boolean).join(''), address: [store.region.district_name, store.public_address].filter(Boolean).join(' '), phone: store.public_phone ?? '' };
+        if ('region' in store) return { ...base, location: [store.region.city_name, store.region.district_name].filter(Boolean).join(''), address: [store.region.district_name, extra.public_address].filter(Boolean).join(' '), phone: extra.public_phone ?? '' };
         return { ...base, location: [store.address?.city_name, store.address?.district_name].filter(Boolean).join(''), address: [store.address?.district_name, store.address?.detail_address].filter(Boolean).join(' '), phone: store.address?.phone_dial ?? '', ...(navigableLocation(store.address?.location) ?? {}) };
       });
       this.setData({ stores, storeCount: stores.length });
