@@ -10,3 +10,4 @@
 .signature-warn { color: var(--xy-color-key-warning); }
 .signature-actions .signature-button, .signature-actions .signature-button .signature-button-shell { min-height: var(--xy-control-height-large); font-size: var(--xy-text-section-title-size); line-height: var(--xy-text-section-title-line-height); }
 .signature-error { color: var(--xy-color-danger); overflow-wrap: anywhere; }
+.signature-draft { display: flex; flex-direction: column; gap: var(--xy-space-1); }

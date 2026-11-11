@@ -5,7 +5,11 @@
     <view class="xy-h-steps" aria-label="签约步骤"><view class="xy-h-step is-done"><view class="xy-h-step__dot"></view><text>阅读合同</text></view><view class="xy-h-step is-current"><view class="xy-h-step__dot"></view><text>手写签名</text></view><view class="xy-h-step"><view class="xy-h-step__dot"></view><text>确认签署</text></view></view>
     <view wx:if="{{loading}}" class="xy-h-note" role="status">正在读取合同…</view>
     <text wx:if="{{errorText}}" class="signature-error" role="alert">{{errorText}}</text>
-    <view wx:if="{{ready || name}}" class="xy-h-blk signature-card">
+    <view wx:if="{{hasDraft}}" class="xy-h-blk xy-h-blk--pad signature-draft" role="status">
+      <text class="xy-h-title">{{rejected || canRestart ? '上次的签名没有传成功' : '上次的签名还没传完'}}</text>
+      <text class="xy-h-note">{{rejected || canRestart ? '可以重新签写一次，原来那次签名不会用在合同上。' : '签名已经保存，继续上传后回到合同核对并确认签署。'}}</text>
+    </view>
+    <view wx:elif="{{ready || name}}" class="xy-h-blk signature-card">
       <view class="signature-head"><text class="signature-ask">请签写本人姓名<text wx:if="{{name}}" class="signature-name"> · {{name}}</text></text>
         <block wx:if="{{ready}}"><button class="xy-action-hit xy-h-hit signature-tool {{busy || !hasInk ? 'is-disabled' : ''}}" bindtap="undo" disabled="{{busy || !hasInk}}" aria-disabled="{{busy || !hasInk}}">撤销</button><button class="xy-action-hit xy-h-hit signature-tool {{busy || !hasInk ? 'is-disabled' : ''}}" bindtap="clear" disabled="{{busy || !hasInk}}" aria-disabled="{{busy || !hasInk}}">清空</button></block>
       </view>
@@ -20,8 +24,8 @@
     <bottom-actions slot="footer" layout="custom"><view slot="actions" class="xy-h-actions"><view class="xy-h-actions__main signature-actions">
     <button class="signature-back xy-action-hit xy-button-reset xy-button-fluid signature-button {{busy ? 'is-disabled' : ''}}" bindtap="back" disabled="{{busy}}" aria-disabled="{{busy}}"><view class="xy-action-secondary xy-action-shell signature-button-shell signature-back-shell">返回合同</view></button>
     <button wx:if="{{ready}}" class="xy-action-hit xy-button-reset xy-button-fluid signature-button {{busy || !validInk ? 'is-disabled' : ''}}" bindtap="save" disabled="{{busy || !validInk}}" aria-disabled="{{busy || !validInk}}"><view class="xy-action-primary xy-action-shell signature-button-shell">{{busy ? '正在保存…' : '保存并预览'}}</view></button>
-    <button wx:if="{{hasDraft && !rejected}}" class="xy-action-hit xy-button-reset xy-button-fluid signature-button {{busy || loading ? 'is-disabled' : ''}}" bindtap="resume" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}"><view class="xy-action-primary xy-action-shell signature-button-shell">{{busy ? '正在查询…' : '继续原签名上传'}}</view></button>
-    <button wx:if="{{hasDraft && rejected}}" class="xy-action-hit xy-button-reset xy-button-fluid signature-button {{busy ? 'is-disabled' : ''}}" bindtap="discardRejected" disabled="{{busy}}" aria-disabled="{{busy}}"><view class="xy-action-primary xy-action-shell signature-button-shell">重新签写</view></button>
+    <button wx:if="{{hasDraft && !rejected && !canRestart}}" class="xy-action-hit xy-button-reset xy-button-fluid signature-button {{busy || loading ? 'is-disabled' : ''}}" bindtap="resume" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}"><view class="xy-action-primary xy-action-shell signature-button-shell">{{busy ? '正在上传…' : '继续上传'}}</view></button>
+    <button wx:if="{{hasDraft && (rejected || canRestart)}}" class="xy-action-hit xy-button-reset xy-button-fluid signature-button {{busy ? 'is-disabled' : ''}}" bindtap="discardRejected" disabled="{{busy}}" aria-disabled="{{busy}}"><view class="xy-action-primary xy-action-shell signature-button-shell">重新签写</view></button>
   </view></view></bottom-actions>
 </page-shell>
 <confirmation-dialog visible="{{leaveDialog}}" order-style="{{true}}" stacked="{{true}}" busy="{{busy}}" title="离开手写签名？" content="未保存的笔画将丢失，合同尚未签署。" confirm-text="继续签名" cancel-text="放弃并离开" bindconfirm="continueSigning" bindcancel="discardAndLeave" />

@@ -18,13 +18,13 @@ function redraw(s: ReturnType<typeof newState>) {
 }
 
 Page({
-    data: { loading: true, ready: false, busy: false, leaveDialog: false, name: '', hasInk: false, validInk: false, hasDraft: false, rejected: false, errorText: '', progressText: '', signatureIcon: designAssets.orderSignature, undoIcon: designAssets.signatureUndo, clearIcon: designAssets.signatureClear },
+    data: { loading: true, ready: false, busy: false, leaveDialog: false, name: '', hasInk: false, validInk: false, hasDraft: false, rejected: false, canRestart: false, errorText: '', progressText: '', signatureIcon: designAssets.orderSignature, undoIcon: designAssets.signatureUndo, clearIcon: designAssets.signatureClear },
     onLoad(options: Record<string, string | undefined>) { state(this).id = options['orderId'] ?? ''; },
     onShow() { const s = state(this), account = accountApi.sessionIdentity() ?? ''; if (account !== s.owner) { s.strokes = []; s.draft = null; } s.show(account); void this.load(); },
     onHide() { const s = state(this); s.drawing = false; s.hide(); this.setData({ ready: false, busy: false, leaveDialog: false, name: '' }); },
     onUnload() { const s = state(this); s.strokes = []; s.context = null; s.canvas = null; s.dispose(); },
     onResize() { if (this.data.ready) this.initializeCanvas(); },
-    clearSession() { const s = state(this); s.strokes = []; s.drawing = false; s.draft = null; s.current = null; redraw(s); wx.disableAlertBeforeUnload(); this.setData({ loading: false, busy: false, ready: false, name: '', hasInk: false, validInk: false, hasDraft: false, progressText: '', errorText: '登录状态已变化，请重新登录后打开本人合同' }); },
+    clearSession() { const s = state(this); s.strokes = []; s.drawing = false; s.draft = null; s.current = null; redraw(s); wx.disableAlertBeforeUnload(); this.setData({ loading: false, busy: false, ready: false, name: '', hasInk: false, validInk: false, hasDraft: false, canRestart: false, progressText: '', errorText: '登录状态已变化，请重新登录后打开本人合同' }); },
     async load() {
         const s = state(this), active = s.capture(accountApi.sessionIdentity); this.setData({ loading: true, errorText: '', ready: false });
         try {
@@ -35,7 +35,7 @@ Page({
             const attempt = record.value.current_attempt, allowed = attempt ? rentalActionAllowed(attempt.allowed_actions, 'REWRITE_SIGNATURE') : rentalActionAllowed(record.value.allowed_actions, 'SIGN_CONTRACT');
             if (!s.draft && rentalOrderApi.pendingSignature(s.id)) throw new Error('原签名结果待核实，请返回合同查询');
             if (!s.draft && (!allowed || !rentalSignatureDrafts.hasAgreement(s.id, record.value))) throw new Error('请返回合同，阅读并同意当前内容后签名');
-            this.setData({ ready: !s.draft, name: record.value.tenant_signature.name, hasDraft: !!s.draft, rejected: s.draft?.upload.phase === 'FAILED' || !!s.draft?.failure, hasInk: s.strokes.length > 0, progressText: s.draft ? '原签名上传已保留，请继续查询或恢复。' : '' }, () => { if (active() && !s.draft) this.initializeCanvas(); });
+            this.setData({ ready: !s.draft, name: record.value.tenant_signature.name, hasDraft: !!s.draft, rejected: s.draft?.upload.phase === 'FAILED' || !!s.draft?.failure, canRestart: false, hasInk: s.strokes.length > 0, progressText: '' }, () => { if (active() && !s.draft) this.initializeCanvas(); });
         } catch (error) { if (active()) this.setData({ errorText: error instanceof Error ? error.message : '合同读取失败，请返回合同重试' }); }
         finally { if (active()) this.setData({ loading: false }); else if (s.visible && accountApi.sessionIdentity() !== s.owner) this.clearSession(); }
     },
@@ -89,10 +89,15 @@ Page({
         const s = state(this), active = s.capture(accountApi.sessionIdentity); if (!active() || !s.draft) return;
         this.setData({ busy: true, errorText: '' });
         try { const result = await submitRentalSignature(s.draft, { scope: s.scope, active, recovery, changed: (phase, progress) => { if (active()) this.setData({ progressText: phase === 'UPLOADING' ? '正在上传签名 ' + progress + '%' : phase === 'PROCESSING' ? '正在核验签名图片…' : '正在提交签名…' }); } }); if (active() && result) { s.strokes = []; s.draft = null; wx.disableAlertBeforeUnload(); this.returnContract(); } }
-        catch (error) { if (active()) this.setData({ errorText: error instanceof Error ? error.message : '签名结果待核实，请恢复原请求', hasDraft: true, rejected: s.draft?.upload.phase === 'FAILED' || !!s.draft?.failure }); }
+        catch (error) { if (active()) this.setData({ errorText: error instanceof Error ? error.message : '签名结果待核实，请恢复原请求', hasDraft: true, rejected: s.draft?.upload.phase === 'FAILED' || !!s.draft?.failure, canRestart: !!s.draft && rentalSignatureDrafts.canRestart(s.draft), progressText: '' }); }
         finally { if (active()) this.setData({ busy: false }); else if (s.visible && accountApi.sessionIdentity() !== s.owner) this.clearSession(); }
     },
-    discardRejected() { const s = state(this); if (!s.draft || this.data.busy) return; rentalSignatureDrafts.discardRejected(s.draft); s.draft = null; s.strokes = []; void this.load(); },
+    discardRejected() {
+        const s = state(this); if (!s.draft || this.data.busy) return;
+        try { if (this.data.rejected) rentalSignatureDrafts.discardRejected(s.draft); else rentalSignatureDrafts.discardUnsubmitted(s.draft); }
+        catch (error) { this.setData({ errorText: error instanceof Error ? error.message : '暂时不能重新签写，请联系客服' }); return; }
+        s.draft = null; s.strokes = []; void this.load();
+    },
     back() {
         const s = state(this), active = s.capture(accountApi.sessionIdentity); if (!s.visible || s.scope.disposed || this.data.busy) return;
         if (!active()) { this.clearSession(); this.returnContract(); return; }
