@@ -14,3 +14,6 @@
 .bottom-actions--checkout .bottom-actions__row { display:flex; flex-wrap:nowrap; align-items:center; gap:var(--xy-space-3); }
 .bottom-actions--checkout .bottom-actions__summary { flex:1; min-width:0; }
 .bottom-actions--checkout .bottom-actions__button { flex:0 0 128px; width:128px; }
+/* 视觉规范 v1：次要文字按钮不折行 */
+.bottom-actions--primary-emphasis .bottom-actions__button:first-child { flex: none; min-width: calc(var(--xy-size-touch-min) * 2); }
+.bottom-actions--primary-emphasis .xy-action-secondary { white-space: nowrap; }

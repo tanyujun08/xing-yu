@@ -1,3 +1,4 @@
+import { loginHostMethods, openLoginHere } from '../../shared/interaction/login-host';
 import { accountApi, benefitApi, couponApi } from '../../shared/api/account-api';
 import { orderUnreadLifecycle, ownAssetsApi, rentalOrderApi } from '../../shared/api/rental-api';
 import { designAssets } from '../../shared/design/assets';
@@ -10,9 +11,9 @@ type ProfileServiceView={title:string;icon:string;route:string};
 const states=new WeakMap<object,{scope:ReturnType<typeof createOperationScope>;navigation:ReturnType<typeof createNavigateOnce>;visible:boolean;epoch:number;logoutIntent:string}>();
 function state(page:object){let s=states.get(page);if(!s){s={scope:createOperationScope(),navigation:createNavigateOnce(),visible:true,epoch:0,logoutIntent:''};states.set(page,s)}return s}
 function assets(loggedIn:boolean,pink='—',count='—'){return[
- {label:'粉钻',value:loggedIn?pink:'请登录',route:'/pages/powder-ledger/index',valueTone:'pink'},
- {label:'钱包',value:loggedIn?'查看收益':'请登录',route:'/pages/wallet/index'},
- {label:'免押服务',value:loggedIn?'查看说明':'请登录',route:'/pages/no-deposit/index?from=profile'},
+ {label:'粉钻',value:loggedIn?pink:'—',route:'/pages/powder-ledger/index',valueTone:'pink'},
+ {label:'钱包',value:loggedIn?'查看收益':'—',route:'/pages/wallet/index'},
+ {label:'免押服务',value:loggedIn?'查看说明':'—',route:'/pages/no-deposit/index?from=profile'},
  {label:'优惠券',value:loggedIn?count:'请登录',route:'/pages/coupons/index'},
 ]}
 const connectedRoutes=new Set(['/pages/wallet/index','/pages/device-orders/index','/pages/order-detail/index','/pages/lottery/index','/pages/account-security/index','/pages/identity/index','/pages/coupons/index','/pages/membership/index','/pages/powder-ledger/index','/pages/rental-service/index','/pages/addresses/index','/pages/publish-quota/index','/pages/publish-eligibility/index','/pages/listings/index','/pages/no-deposit/index','/pages/about/index','/pages/info-guide/index','/pages/demo-support/index']);
@@ -48,6 +49,7 @@ const services: ProfileServiceView[] = [
 ];
 
 Page({
+  ...loginHostMethods,
  data:{headerScrolled:false,icons:designAssets,currentAccount:{id:''},localProfile:{name:'',avatarPath:''},avatarFailed:false,avatarReloading:false,avatarEpoch:0,loggedIn:false,showLendSection:false,showAccountSwitcher:false,
  identityRegistered:false,identityText:'身份信息暂未接入',memberLevel:'—',memberLevelCode:'',stats:[] as {label:string;value:string}[],assetItems:assets(false),
  rentalSummary:null as {route:string;deviceName:string;statusText:string;rentText:string;timeText:string}|null,rentalEmptyTitle:'暂无租用订单',rentalEmptyCopy:'浏览设备，开启你的租赁体验。',
@@ -57,8 +59,8 @@ Page({
  },
  onPageScroll(event:WechatMiniprogram.Page.IPageScrollOption){const headerScrolled=event.scrollTop>0;if(headerScrolled!==this.data.headerScrolled)this.setData({headerScrolled})},
  clearPrivate(){this.setData({loggedIn:false,showLendSection:false,avatarFailed:false,avatarReloading:false,avatarEpoch:0,localProfile:{name:'',avatarPath:''},assetItems:assets(false),memberLevel:'—',memberLevelCode:'',identityRegistered:false,identityText:'—',currentAccount:{id:''},rentalSummary:null})},
- async onShow(){this.getTabBar()?.setData({selected:3});orderUnreadLifecycle.show(this);const s=state(this);s.visible=true;const epoch=++s.epoch;const owner=accountApi.sessionIdentity();this.clearPrivate();this.setData({errorText:''});if(!owner)return;
- this.setData({loggedIn:true,showLendSection:true,avatarEpoch:epoch,assetItems:assets(true)});
+ async onShow(){this.getTabBar()?.setData({selected:3});orderUnreadLifecycle.show(this);const s=state(this);s.visible=true;const epoch=++s.epoch;const owner=accountApi.sessionIdentity();const sameAccount=!!owner&&owner===this.data.currentAccount.id;if(!sameAccount)this.clearPrivate();this.setData({errorText:''});if(!owner)return;
+ this.setData({loggedIn:true,showLendSection:true,avatarEpoch:epoch,...(sameAccount?{}:{assetItems:assets(true)})});
  try{const result=await s.scope.latest('profile',()=>Promise.allSettled([accountApi.profile().promise,benefitApi.summary().promise,couponApi.list('AVAILABLE',null).promise,accountApi.identity().promise,rentalOrderApi.list({role:'TENANT'}).promise,rentalOrderApi.list({role:'LESSOR'}).promise,ownAssetsApi.list().promise]));
  if(!result.accepted||!s.visible||epoch!==s.epoch)return; if(owner!==accountApi.sessionIdentity()){this.clearPrivate();return;}
  const [profile,benefits,coupons,identity,rented,lent,listings]=result.value;let pink='—';let count='—';
@@ -75,7 +77,7 @@ Page({
  this.setData({identityRegistered:identity.status==='fulfilled'&&identity.value.real_name.status==='VERIFIED',assetItems:assets(true,pink,count),identityText:identityText||'认证状态响应无效',errorText:[profile,benefits,coupons,identity,rented,lent,listings].some(item=>item.status==='rejected')?'部分账户信息读取失败，请重试。':''});
  }catch(error){if(!s.scope.disposed&&s.visible&&owner===accountApi.sessionIdentity())this.setData({errorText:error instanceof Error?error.message:'账户读取失败'})}
  },
- onHide(){orderUnreadLifecycle.hide(this);++state(this).epoch;state(this).visible=false;this.clearPrivate()},
+ onHide(){orderUnreadLifecycle.hide(this);++state(this).epoch;state(this).visible=false},
  onUnload(){orderUnreadLifecycle.hide(this);const s=state(this);s.scope.dispose();s.navigation.dispose();states.delete(this)},
  onAvatarImageError(event:WechatMiniprogram.CustomEvent){
   const s=states.get(this);const owner=accountApi.sessionIdentity();const source=String(event.currentTarget.dataset['src']??'');
@@ -91,7 +93,7 @@ Page({
    this.setData({avatarFailed:false,avatarReloading:false});
   });
  },
- openLogin(){state(this).navigation.navigateOnce('login',callbacks=>wx.navigateTo({url:'/pages/login/index',...callbacks}))},
+ openLogin(){openLoginHere(this,()=>state(this).navigation.navigateOnce('login',callbacks=>wx.navigateTo({url:'/pages/login/index',...callbacks})))},
  requireLogin(){if(accountApi.sessionIdentity())return true;wx.showModal({title:'请先登录',content:'登录后查看本人账户信息。',confirmText:'去登录',success:state(this).scope.guard(result=>{if(result.confirm)this.openLogin()})});return false},
  openProfileEdit(){if(this.requireLogin())state(this).navigation.navigateOnce('edit',callbacks=>wx.navigateTo({url:'/pages/profile-edit/index',...callbacks}))},
  openMember(){if(this.requireLogin())state(this).navigation.navigateOnce('member',callbacks=>wx.navigateTo({url:'/pages/membership/index',...callbacks}))},

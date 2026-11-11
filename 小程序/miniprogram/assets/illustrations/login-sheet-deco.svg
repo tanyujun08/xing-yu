@@ -1,0 +1,10 @@
+<svg width="375" height="180" viewBox="0 0 375 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="wave" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFFFFF" stop-opacity=".9"/><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(318 74) rotate(90) scale(70 90)"><stop stop-color="#CDEDE1" stop-opacity=".9"/><stop offset="1" stop-color="#CDEDE1" stop-opacity="0"/></radialGradient>
+    <radialGradient id="lens" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(322 80) rotate(90) scale(26)"><stop stop-color="#FFFFFF"/><stop offset=".7" stop-color="#E3F3EC"/><stop offset="1" stop-color="#C9E8DB"/></radialGradient>
+  </defs>
+  <path d="M0 0H170C150 30 108 52 62 62C36 68 14 76 0 88V0Z" fill="url(#wave)"/>
+  <path d="M0 108C44 82 104 70 164 74" stroke="#FFFFFF" stroke-opacity=".8" stroke-width="1.5"/>
+  <ellipse cx="318" cy="74" rx="90" ry="70" fill="url(#glow)"/>
+</svg>

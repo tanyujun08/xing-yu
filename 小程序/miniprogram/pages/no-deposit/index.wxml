@@ -1,7 +1,24 @@
 <page-meta root-font-size="system" />
 <page-shell surface="page" has-footer="{{false}}">
 <page-header title="{{secondaryNavigationTitle || '押金说明'}}" background="#ffffff" inverse="{{false}}" bindback="onSecondaryNavigationBack" slot="header" /><view class="no-deposit-page">
-<text wx:if="{{!hourly}}" class="no-deposit-intro">当前粉钻余额 {{diamondBalance}}。可用押金方案由设备配置决定，以订单确认页为准。</text>
-<view class="service-list" wx:if="{{allowancesLoaded}}"><view wx:for="{{allowances}}" wx:key="id" class="service-card"><text class="service-title">{{item.cycle}} 免押次数</text><text class="service-detail">可用 {{item.available}} 次 · 已用 {{item.consumed}} 次 · 占用 {{item.reserved}} 次 · 已发放 {{item.granted}} 次</text></view><text wx:if="{{!allowances.length}}">当前周期暂无免押次数</text></view>
+<view class="summary-card">
+  <view wx:if="{{!hourly}}" class="summary-cell"><text class="summary-label">粉钻余额</text><text class="summary-value">{{diamondBalance}}</text></view>
+  <view class="summary-cell"><text class="summary-label">本期可免押</text><view class="summary-value">{{allowancesLoaded ? (allowances.length ? allowances[0].available : 0) : '—'}}<text class="summary-unit"> 次</text></view></view>
+</view>
+<text wx:if="{{!hourly}}" class="no-deposit-intro">不同设备的押金方案不同，下单时以确认页显示为准。</text>
+<block wx:if="{{allowancesLoaded && allowances.length}}">
+  <text class="section-title">免押次数</text>
+  <view wx:for="{{allowances}}" wx:key="id" class="service-card allowance-card">
+    <text class="service-title">{{item.cycle}}</text>
+    <view class="allowance-grid">
+      <view class="allowance-cell"><text class="allowance-num allowance-num--brand">{{item.available}}</text><text class="allowance-label">可用</text></view>
+      <view class="allowance-cell"><text class="allowance-num">{{item.consumed}}</text><text class="allowance-label">已用</text></view>
+      <view class="allowance-cell"><text class="allowance-num">{{item.reserved}}</text><text class="allowance-label">占用</text></view>
+      <view class="allowance-cell"><text class="allowance-num">{{item.granted}}</text><text class="allowance-label">已发放</text></view>
+    </view>
+  </view>
+</block>
+<text class="section-title">押金规则</text>
 <view class="service-list"><view wx:for="{{visibleRules}}" wx:key="id" class="service-card"><text class="service-title">{{item.title}}</text><text class="service-detail">{{item.detail}}</text></view></view>
-</view><view wx:if="{{errorText}}" role="alert">{{errorText}}</view></page-shell>
+<text wx:if="{{errorText}}" class="form-error" role="alert">{{errorText}}</text>
+</view></page-shell>

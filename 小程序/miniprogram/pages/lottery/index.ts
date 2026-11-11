@@ -1,3 +1,4 @@
+import { loginHostMethods, openLoginHere } from '../../shared/interaction/login-host';
 import { accountApi, lotteryApi, ApiProblem, readLoyaltyIntent, prepareLoyaltyIntent, queryPendingLottery, verifyLotteryResult } from '../../shared/api/account-api';
 import { designAssets } from '../../shared/design/assets';
 import { createOperationScope } from '../../shared/interaction/operation-scope';
@@ -19,6 +20,7 @@ const stateFilters:{id:LotteryAttempt['state']|'';label:string}[]=[{id:'',label:
 const resultFilters:{id:NonNullable<LotteryAttempt['result_kind']>|'';label:string}[]=[{id:'',label:'全部结果'},{id:'WIN',label:'中奖'},{id:'NO_WIN',label:'未中奖'}];
 
 Page({
+  ...loginHostMethods,
  data:{icons:designAssets,loggedIn:false,loading:false,drawing:false,canDraw:false,balance:'—',cost:'—',errorText:'',pendingText:'',restoreAvailable:false,prizes:[] as {id:string;title:string;description:string;status:string}[],records:[] as ResultView[],listState:{phase:'empty'} as ListState,stateFilters,resultFilters,stateFilter:'' as LotteryAttempt['state']|'',resultFilter:'' as NonNullable<LotteryAttempt['result_kind']>|'',resultOpen:false,result:null as ResultView|null,confirmOpen:false,confirmedCost:'—',predictedBalance:'—',currentConfig:null as LotteryState|null,lastRequest:null as LoyaltyIntent<LotteryDrawInput>|null,attempt:null as LotteryAttempt|null},
  onLoad(options:Record<string,string|undefined>){const value=state(this);value.entryAttempt=loyaltyIdentifier(options['attempt_id']??'')?options['attempt_id']!:'';value.entryDraw=loyaltyIdentifier(options['draw_id']??'')?options['draw_id']!:'';},
  onShow(){let value=state(this);if(value.scope.disposed||value.owner!==accountApi.sessionIdentity()){const old=value;old.scope.dispose();old.navigation.dispose();states.delete(this);value=state(this);value.entryAttempt=old.entryAttempt;value.entryDraw=old.entryDraw;}value.visible=true;return this.refresh();},
@@ -26,7 +28,7 @@ Page({
  onHide(){const value=state(this);value.visible=false;value.list?.dispose();value.list=null;value.scope.dispose();this.clearPrivate();},
  onUnload(){const value=state(this);value.list?.dispose();value.scope.dispose();value.navigation.dispose();states.delete(this);},
  onSecondaryNavigationBack(){navigateBackWithFallback(state(this).navigation);},
- openLogin(){state(this).navigation.navigateOnce('login',callbacks=>wx.navigateTo({url:'/pages/login/index?source=lottery',...callbacks}));},
+ openLogin(){openLoginHere(this,()=>state(this).navigation.navigateOnce('login',callbacks=>wx.navigateTo({url:'/pages/login/index?source=lottery',...callbacks})));},
  async refresh(){const value=state(this);this.clearPrivate();this.setData({loggedIn:!!value.owner,loading:!!value.owner,errorText:''});if(!current(this,value))return;
   const results=await Promise.allSettled([this.loadState(),this.loadRecords(),this.recover()]);
   if(!current(this,value))return;

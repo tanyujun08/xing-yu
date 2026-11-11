@@ -1,3 +1,4 @@
+import { loginHostMethods, openLoginHere } from '../../shared/interaction/login-host';
 import { accountApi, couponApi, redemptionApi, ApiProblem, readLoyaltyIntent, prepareLoyaltyIntent, queryPendingRedemptions, verifyRedemptionResult, loyaltyTraceApi } from '../../shared/api/account-api';
 import type { CouponDetail, CouponRedemptionAttempt, CouponRedemptionInput } from '../../shared/model/api-loyalty';
 import type { LoyaltyIntent } from '../../shared/model/loyalty-intent';
@@ -15,6 +16,7 @@ function current(page:object,value:ReturnType<typeof createState>){return states
 const sourceTitles={CHECK_IN:'签到',PROGRESS:'成长奖励',REDEMPTION:'权益兑换',LOTTERY:'抽奖'};
 
 Page({
+  ...loginHostMethods,
  data:{loggedIn:false,loading:false,busy:false,errorText:'',coupon:null as ReturnType<typeof presentOwnCoupon>|null,canRedeem:false,confirmOpen:false,pendingText:'',restoreAvailable:false,pendingCouponId:'',attemptId:'',redemptionId:'',movementId:'',availableBefore:'—',availableAfter:'—',receiptState:'',reason:'',sourceTitle:'',issuedAt:'',events:[] as {id:string;title:string;time:string}[],currentCoupon:null as CouponDetail|null,lastRequest:null as LoyaltyIntent<CouponRedemptionInput>|null,attempt:null as CouponRedemptionAttempt|null},
  onLoad(options:Record<string,string|undefined>){const value=state(this);value.id=loyaltyIdentifier(options['coupon_id']??'')?options['coupon_id']!:'';value.receiptId=loyaltyIdentifier(options['redemption_id']??'')?options['redemption_id']!:'';},
  onShow(){let value=state(this);if(value.scope.disposed||value.owner!==accountApi.sessionIdentity()){const old=value;old.scope.dispose();old.navigation.dispose();states.delete(this);value=state(this);value.id=old.id;value.receiptId=old.receiptId;}value.visible=true;return this.refresh();},
@@ -22,7 +24,7 @@ Page({
  onHide(){const value=state(this);value.visible=false;value.scope.dispose();this.clearPrivate();},
  onUnload(){const value=state(this);value.scope.dispose();value.navigation.dispose();states.delete(this);},
  onBack(){navigateBackWithFallback(state(this).navigation);},
- openLogin(){state(this).navigation.navigateOnce('login',callbacks=>wx.navigateTo({url:'/pages/login/index?source=coupon-detail&id='+encodeURIComponent(state(this).id),...callbacks}));},
+ openLogin(){openLoginHere(this,()=>state(this).navigation.navigateOnce('login',callbacks=>wx.navigateTo({url:'/pages/login/index?source=coupon-detail&id='+encodeURIComponent(state(this).id),...callbacks})));},
  async refresh(){const value=state(this);this.clearPrivate();this.setData({loggedIn:!!value.owner,loading:!!value.owner,errorText:''});if(!current(this,value))return;
   try{if(value.receiptId){const attempt=await redemptionApi.receipt(value.receiptId).promise;if(!current(this,value))return;assertRedemptionAttempt(attempt,value.owner!);if(attempt.redemption_id!==value.receiptId)throw new Error('兑换回执标识不一致');if(value.id&&value.id!==attempt.coupon_id)throw new Error('兑换回执与券不一致');value.id=attempt.coupon_id;}
    if(!value.id)throw new Error('缺少有效券标识，请从本人券包打开');await this.readCoupon();await this.recover();
@@ -52,6 +54,7 @@ Page({
  async submitOriginal(){const value=state(this),intent=value.intent;if(!current(this,value)||!intent?.resourceId)return;this.setData({lastRequest:intent});const attempt=await redemptionApi.submit(intent.resourceId,intent.body,intent.key).promise;if(!current(this,value))return;await this.acceptAttempt(attempt,intent);value.pending=await queryPendingRedemptions(value.owner!);},
  navigate(url:string){const value=state(this);if(current(this,value))value.navigation.navigateOnce(url,callbacks=>wx.navigateTo({url,...callbacks}));},
  openPendingCoupon(){if(this.data.pendingCouponId)this.navigate('/pages/coupon-detail/index?coupon_id='+encodeURIComponent(this.data.pendingCouponId));},
+ goRent(){const value=state(this);value.navigation.navigateOnce('coupon:rent',callbacks=>wx.switchTab({url:'/pages/home/index',...callbacks}));},
  openQuota(){this.navigate('/pages/publish-quota/index'+(this.data.movementId?'?movement_id='+encodeURIComponent(this.data.movementId):''));},
  openSource(){const value=state(this),coupon=value.coupon;if(!coupon)return;if(coupon.source_kind==='LOTTERY'&&coupon.source_draw_id)this.navigate('/pages/lottery/index?draw_id='+encodeURIComponent(coupon.source_draw_id));else if(coupon.source_kind==='CHECK_IN')this.navigate('/pages/check-in/index?check_in_id='+encodeURIComponent(coupon.source_id));else void this.readGrant();},
  async readGrant(){const value=state(this);if(!current(this,value)||!value.coupon)return;try{const grant=await loyaltyTraceApi.grant(value.coupon.source_grant_id).promise;if(!current(this,value))return;assertOwner(grant,value.owner!);if(grant.grant_id!==value.coupon.source_grant_id||!grant.coupon_ids.includes(value.id))throw new Error('发放来源不一致');wx.showModal({title:'券发放来源',content:sourceTitles[grant.source_kind]+' · '+formatDateTime(grant.created_at)+'；'+grant.reward_units+' 张',showCancel:false});}catch(error){if(current(this,value))this.setData({errorText:error instanceof Error?error.message:'来源读取失败'});}},

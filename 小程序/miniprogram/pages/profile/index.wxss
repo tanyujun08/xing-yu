@@ -69,7 +69,7 @@
 .service-list .service-row .row-arrow { display:none; }
 .service-list .service-row .row-value { position:absolute; top:var(--xy-space-2); right:var(--xy-space-2); font-size:var(--xy-text-micro-size); line-height:var(--xy-text-micro-line-height); }
 .service-list .service-row .service-icon { flex:none; margin-right:0; }
-.service-list .service-row .row-value--green { top:var(--xy-space-3); right:calc(50% - var(--xy-space-4)); width:var(--xy-space-2); height:var(--xy-space-2); overflow:hidden; border-radius:50%; background:var(--xy-color-brand); font-size:0; line-height:0; }
+.service-list .service-row .row-value--green { top:var(--xy-space-3); right:calc(50% - var(--xy-space-4)); width:var(--xy-space-2); height:var(--xy-space-2); overflow:hidden; border-radius:50%; background:var(--xy-color-brand); color:transparent; white-space:nowrap; text-indent:100%; }
 
 /* 尺寸逐项对齐画布：姓名 20、资产数字 16 黑、出租行 44 高、服务宫格 72 高 + 12 字、退出登录白卡 */
 .profile-name { font-size:var(--xy-text-page-title-size); line-height:var(--xy-text-page-title-line-height); font-weight:var(--xy-text-weight-bold); }

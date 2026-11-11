@@ -7,8 +7,9 @@ let linked = false;
 let initial: Promise<void> | undefined;
 let lastVersion = -1;
 let lastNotice = 0;
-type Reply = { state: DemoState; stateVersion: number; result?: any; status?: number; data?: any; headers?: Record<string,string> };
+type Reply = { state?: DemoState; stateVersion: number; result?: any; status?: number; data?: any; headers?: Record<string,string> };
 function update(reply: Reply): void {
+ // 服务端只在版本变化时回传整份状态；没回传说明本地已是最新，不再重复解析和写缓存
  if (reply.state && (reply.stateVersion ?? 0) >= lastVersion) { lastVersion=reply.stateVersion ?? 0; replaceLinkedState(reply.state); }
 }
 function post(path: string, data: Record<string, unknown>): Promise<Reply> {
@@ -23,7 +24,7 @@ async function ready(): Promise<void> {
  return initial;
 }
 export async function linkedAction(action: string, values: Record<string, unknown> = {}): Promise<any> {
- await ready(); const reply=await post('/action',{action,...values});update(reply);return reply.result;
+ await ready(); const reply=await post('/action',{...values,action,knownVersion:lastVersion});update(reply);return reply.result;
 }
 export async function refreshLinked(): Promise<void> { await ready(); const reply=await post('/init',{});update(reply); }
 export function linkedRequest(options: Record<string, any>): WechatMiniprogram.RequestTask {
@@ -31,7 +32,7 @@ export function linkedRequest(options: Record<string, any>): WechatMiniprogram.R
  void ready().then(async()=>{
   if(cancelled)return;
   const path=String(options.url || '').replace(/^https?:\/\/[^/]+/,'');
-  const reply=await post('/request',{method:options.method ?? 'GET',path,body:options.data ?? {},headers:options.header ?? {}});
+  const reply=await post('/request',{method:options.method ?? 'GET',path,body:options.data ?? {},headers:options.header ?? {},knownVersion:lastVersion});
   if(cancelled)return;update(reply);
   const value={data:reply.data,statusCode:reply.status ?? 500,header:reply.headers ?? {},cookies:[],errMsg:'request:ok'};
   options.success?.(value);options.complete?.(value);

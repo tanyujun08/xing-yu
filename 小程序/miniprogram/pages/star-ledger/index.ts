@@ -1,3 +1,4 @@
+import { loginHostMethods } from '../../shared/interaction/login-host';
 import { accountApi, pointApi } from '../../shared/api/account-api';
 import { designAssets } from '../../shared/design/assets';
 import { createAccountLedgerPage } from '../../shared/interaction/account-ledger-page';
@@ -6,6 +7,7 @@ import { growthLedgerSummary, pointLedgerEntry } from '../../shared/presentation
 const initial = { icons: designAssets, starBalance: '—', today: '—', week: '—' };
 type PointResponse = Awaited<ReturnType<typeof pointApi.list>['promise']>;
 Page({
+  ...loginHostMethods,
   ...createAccountLedgerPage<PointResponse, ReturnType<typeof pointLedgerEntry>, typeof initial>({
     initial,
     identity: accountApi.sessionIdentity,

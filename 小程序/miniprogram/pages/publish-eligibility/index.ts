@@ -1,3 +1,4 @@
+import { loginHostMethods, openLoginHere } from '../../shared/interaction/login-host';
 import { accountApi, benefitApi } from '../../shared/api/account-api';
 import { publicationApi, type PublicationEligibility } from '../../shared/api/supply-api';
 import { designAssets } from '../../shared/design/assets';
@@ -46,6 +47,7 @@ function present(projection: PublicationEligibility, service = unknownServices):
 }
 
 Page({
+  ...loginHostMethods,
   data: {
     icons: designAssets, secondaryNavigationTitle: '我要出租', loggedIn: false, loading: false, errorText: '',
     checks: [] as CheckView[], section: '', publishEnabled: false, primaryLabel: '正在读取资格', primaryRoute: '',
@@ -54,7 +56,7 @@ Page({
   onLoad(options: Record<string, string | undefined>) {
     const section = options.section ?? '';
     this.setData({ section, secondaryNavigationTitle: section === 'quota' ? '发布额度' : section === 'service' ? '出租服务' : '我要出租' });
-    if (!accountApi.sessionIdentity()) wx.showModal({ title: '请先登录', content: '登录后才能查看发布资格。', confirmText: '去登录', success: (result) => { if (result.confirm) wx.navigateTo({ url: '/pages/login/index' }); else wx.navigateBack(); } });
+    if (!accountApi.sessionIdentity()) openLoginHere(this, () => wx.showModal({ title: '请先登录', content: '登录后才能查看发布资格。', confirmText: '去登录', success: (result) => { if (result.confirm) wx.navigateTo({ url: '/pages/login/index' }); else wx.navigateBack(); } }));
   },
   onShow() {
     const s = state(this);

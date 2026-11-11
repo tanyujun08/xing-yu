@@ -1,3 +1,4 @@
+import { openLoginHere } from './login-open';
 import { createCursorList, type CursorList } from './cursor-list';
 import { createRentalPageState } from './rental-page-state';
 import { navigateBackWithFallback } from './navigate-once';
@@ -93,7 +94,7 @@ export function createRentalOrdersPage<TSource extends {
             if (role && role !== this.data.role) this.setData({ role, filter: s.roleFilters[role] });
             s.show(owner); this.setData({ loggedIn: !!owner }); this.makeList();
         },
-        onHide(this: Target) { options.unread?.hide(this); releaseFilterTabBar(this); const s = state(this), cached = s.cache.get(s.listKey); if (cached) cached.scrollTop = s.scrollTop; s.hide(); s.list?.dispose(); this.setData({ items: [], recordGroups: [], sheetOpen: false, filterMenuOpen: false }); },
+        onHide(this: Target) { options.unread?.hide(this); releaseFilterTabBar(this); const s = state(this), cached = s.cache.get(s.listKey); if (cached) cached.scrollTop = s.scrollTop; s.hide(); s.list?.dispose(); this.setData({ recordGroups: [], sheetOpen: false, filterMenuOpen: false }); },
         onUnload(this: Target) { options.unread?.hide(this); releaseFilterTabBar(this); const s = state(this); s.list?.dispose(); s.cache.clear(); s.dispose(); },
         onPageScroll(this: Target, event: { scrollTop: number }) { const s = state(this); if (s.visible && !s.restoringScroll && Number.isFinite(event.scrollTop)) { s.scrollTop = Math.max(0, event.scrollTop); const cached = s.cache.get(s.listKey); if (cached) cached.scrollTop = s.scrollTop; } },
         makeList(this: Target) { const available = filterOptions(this.data.role), selected = available.find(item => item.id === this.data.filter);
@@ -116,6 +117,8 @@ export function createRentalOrdersPage<TSource extends {
             s.listKey = key; s.scrollTop = cached?.scrollTop ?? 0; s.restoringScroll = true;
             const active = () => lease() && s.list === controller;
             let restoreCache = !!cached;
+            // 切回 tab 时先保留屏幕上的旧列表，不闪“正在加载”，缓存回填后再后台刷新
+            const holdVisible = !!cached && this.data.items.length > 0;
             const generation = owner + ':' + key;
             const readPage = async (cursor?: string) => {
                 const result = await options.load({ role, display_status_code: selected?.displayStatus ?? filter, ...(selected?.physicalStatus ? { physical_status: selected.physicalStatus } : {}), cursor, ...(options.assetScoped && s.id ? { asset_id: s.id } : {}) });
@@ -150,7 +153,7 @@ export function createRentalOrdersPage<TSource extends {
                     return { ...result, generation };
                 } finally { if (!active()) clearExpiredView(); }
             }, present: options.present, getId: order => order.order_id, onPatch: patch => { if (!active()) {
-                clearExpiredView(); return; } const data: Record<string, unknown> = { listState: patch.state }; if (patch.replace)
+                clearExpiredView(); return; } if (holdVisible && patch.state.phase === 'initial-loading' && !patch.replace && !patch.append?.length) return; const data: Record<string, unknown> = { listState: patch.state }; if (patch.replace)
                 data['items'] = patch.replace; for (const row of patch.append ?? [])
                 data[row.path] = row.value; this.setData(data); } });
             s.list = controller;
@@ -194,7 +197,7 @@ export function createRentalOrdersPage<TSource extends {
             return; const route = row.destination === 'contract' ? '/pages/contract/index?orderId=' : '/pages/order-detail/index?id=';
             s.navigation.navigateOnce('order', callbacks => wx.navigateTo({ url: route + encodeURIComponent(id), ...callbacks })); },
         openRental(this: Target, event: WechatMiniprogram.TouchEvent) { const s = state(this), id = String(event.currentTarget.dataset['id'] ?? ''), row = this.data.items.find(item => item.id === id); if (!row || !s.capture(options.currentOwner)())
-            return; this.setData({ sheetOpen: true, sheetTitle: '订单信息', recordGroups: [{ title: '订单记录', items: [row] }], expandedGroup: '订单记录' }); }, openLogin(this: Target) { state(this).navigation.navigateOnce('login', callbacks => wx.navigateTo({ url: '/pages/login/index', ...callbacks })); }, goBack(this: Target) { navigateBackWithFallback(state(this).navigation); },
+            return; this.setData({ sheetOpen: true, sheetTitle: '订单信息', recordGroups: [{ title: '订单记录', items: [row] }], expandedGroup: '订单记录' }); }, openLogin(this: Target) { openLoginHere(this, () => state(this).navigation.navigateOnce('login', callbacks => wx.navigateTo({ url: '/pages/login/index', ...callbacks }))); }, goBack(this: Target) { navigateBackWithFallback(state(this).navigation); },
         retryInitial(this: Target) { void state(this).list?.initial(); }, retryRefresh(this: Target) { void state(this).list?.refresh(); }, retryLoadMore(this: Target) { void state(this).list?.loadMore(); }, onReachBottom(this: Target) { void state(this).list?.loadMore(); }, async onPullDownRefresh(this: Target) { try {
             await state(this).list?.refresh();
         }

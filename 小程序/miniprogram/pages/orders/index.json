@@ -10,6 +10,7 @@
     "page-shell": "../../components/page-shell/index",
     "page-header": "../../components/page-header/index",
     "order-product-summary": "../../components/order-product-summary/index",
-    "task-sheet": "../../components/task-sheet/index"
+    "task-sheet": "../../components/task-sheet/index",
+    "login-sheet": "../../components/login-sheet/index"
   }
 }

@@ -28,3 +28,4 @@
     <view class="publish-button xy-action-primary" bindtap="publish" role="button" aria-label="{{primaryLabel}}">{{primaryLabel}}</view>
   </view>
 </view>
+<login-sheet id="login-sheet" bindwechatlogin="onWechatLogin" bindphonelogin="onPhoneLogin" bindlegal="onLoginLegal" />

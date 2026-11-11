@@ -9,7 +9,8 @@
     "page-header": "../../components/page-header/index",
     "page-shell": "../../components/page-shell/index",
     "status-view": "../../components/status-view/index",
-    "task-sheet": "../../components/task-sheet/index"
+    "task-sheet": "../../components/task-sheet/index",
+    "login-sheet": "../../components/login-sheet/index"
   },
   "navigationBarTextStyle": "black"
 }

@@ -9,7 +9,8 @@
   "usingComponents": {
     "section-tabs": "../../components/section-tabs/index",
     "status-view": "../../components/status-view/index",
-    "page-header": "../../components/page-header/index"
+    "page-header": "../../components/page-header/index",
+    "login-sheet": "../../components/login-sheet/index"
   },
   "navigationStyle": "custom"
 }

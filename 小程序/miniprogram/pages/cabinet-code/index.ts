@@ -1,3 +1,4 @@
+import { loginHostMethods, openLoginHere } from '../../shared/interaction/login-host';
 import { accountApi, ApiProblem } from '../../shared/api/account-api';
 import { rentalOrderApi, type RentalTask, type RentalRecord } from '../../shared/api/rental-api';
 import { createRentalPageState } from '../../shared/interaction/rental-page-state';
@@ -27,6 +28,7 @@ function captureCabinetSessionLoss(s: ReturnType<typeof state>) {
 }
 function rememberTask(s: ReturnType<typeof state>, id: string) { s.taskOwner = s.owner; s.originalTaskId = id; rentalOrderApi.rememberPickupTask(s.scene, id); }
 Page({
+  ...loginHostMethods,
     data: { ...cabinetFeedback(), feedbackVisible: false, monitoring: false, monitorPaused: false, credentialErrorOpen: false, loaded: false, loading: false, busy: false, errorText: '', credentialInput: '', cabinetName: '', cabinetAddress: '', loggedIn: false, pickupEnabled: false, taskId: '', canResume: false, canCancel: false, taskStatus: '', taskCopy: '' },
     onLoad(options: Record<string, string | undefined>) { try {
         const scene = decodeURIComponent(options['scene'] ?? '');
@@ -247,6 +249,6 @@ Page({
         this.closeProgress();
         if (this.data.feedbackPhase === 'done' && this.data.feedbackOrderId) s.navigation.navigateOnce('order', callbacks => wx.navigateTo({ url: '/pages/order-detail/index?id=' + encodeURIComponent(this.data.feedbackOrderId), ...callbacks }));
     },
-    openLogin() { state(this).navigation.navigateOnce('login', callbacks => wx.navigateTo({ url: '/pages/login/index', ...callbacks })); }, goOrders() { state(this).navigation.navigateOnce('orders', callbacks => wx.switchTab({ url: '/pages/orders/index', ...callbacks })); }, onSecondaryNavigationBack() { navigateBackWithFallback(state(this).navigation); },
+    openLogin() { openLoginHere(this, () => state(this).navigation.navigateOnce('login', callbacks => wx.navigateTo({ url: '/pages/login/index', ...callbacks }))); }, goOrders() { state(this).navigation.navigateOnce('orders', callbacks => wx.switchTab({ url: '/pages/orders/index', ...callbacks })); }, onSecondaryNavigationBack() { navigateBackWithFallback(state(this).navigation); },
 demoSupport() { wx.navigateTo({ url: '/pages/demo-support/index' }); },
 });

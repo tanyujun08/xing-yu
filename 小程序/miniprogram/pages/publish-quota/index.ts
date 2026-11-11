@@ -1,3 +1,4 @@
+import { loginHostMethods, openLoginHere } from '../../shared/interaction/login-host';
 import { accountApi, benefitApi, entitlementApi, redemptionApi, readLoyaltyIntent, queryPendingRedemptions } from '../../shared/api/account-api';
 import { createOperationScope } from '../../shared/interaction/operation-scope';
 import { createNavigateOnce, navigateBackWithFallback } from '../../shared/interaction/navigate-once';
@@ -16,6 +17,7 @@ function state(page:object){let value=states.get(page);if(!value){value=stateVal
 function current(page:object,value:ReturnType<typeof state>){return states.get(page)===value&&!value.scope.disposed&&value.visible&&!!value.owner&&value.owner===accountApi.sessionIdentity();}
 const actionTitles:Record<string,string>={GRANT:'发放额度',RESERVE:'预占额度',CONSUME:'使用额度',RELEASE:'释放额度',RESTORE:'返还额度',REVERSE:'冲正额度',REVOKE:'撤销额度',EXPIRE:'额度到期'};
 Page({
+  ...loginHostMethods,
  data:{loggedIn:false,available:'—',used:'—',total:'—',diamondBalance:'—',errorText:'',loading:false,items:[] as MovementView[],redemptions:[] as RedemptionView[],listState:{phase:'empty'} as ListState,redemptionListState:{phase:'empty'} as ListState,pendingText:'',pendingCouponId:'',currentBenefits:null as Awaited<ReturnType<typeof benefitApi.summary>['promise']>|null,currentMovement:null as EntitlementMovementDetail|null,detail:null as null|{id:string;title:string;quantity:string;before:string;after:string;time:string;redemptionId:string}},
  onLoad(options:Record<string,string|undefined>={}){const value=state(this);value.movementId=loyaltyIdentifier(options['movement_id']??'')?options['movement_id']!:'';},
  onShow(){let value=state(this);if(value.scope.disposed||value.owner!==accountApi.sessionIdentity()){const old=value;old.scope.dispose();old.navigation.dispose();states.delete(this);value=state(this);value.movementId=old.movementId;}value.visible=true;return this.refresh();},
@@ -23,7 +25,7 @@ Page({
  onHide(){const value=state(this);value.visible=false;value.list?.dispose();value.redemptions?.dispose();value.scope.dispose();this.clearPrivate();},
  onUnload(){const value=state(this);value.list?.dispose();value.redemptions?.dispose();value.scope.dispose();value.navigation.dispose();states.delete(this);},
  onSecondaryNavigationBack(){navigateBackWithFallback(state(this).navigation);},
- openLogin(){state(this).navigation.navigateOnce('login',callbacks=>wx.navigateTo({url:'/pages/login/index?source=publish-quota',...callbacks}));},
+ openLogin(){openLoginHere(this,()=>state(this).navigation.navigateOnce('login',callbacks=>wx.navigateTo({url:'/pages/login/index?source=publish-quota',...callbacks})));},
  async refresh(){const value=state(this);this.clearPrivate();this.setData({loggedIn:!!value.owner,loading:!!value.owner,errorText:''});if(!current(this,value))return;const results=await Promise.allSettled([this.renderQuota(),this.loadMovements(),this.loadRedemptions(),this.readPending()]);if(!current(this,value))return;this.setData({loading:false,errorText:results.filter((item):item is PromiseRejectedResult=>item.status==='rejected').map(item=>item.reason instanceof Error?item.reason.message:'读取失败').join('；')});if(value.movementId)await this.readMovement(value.movementId);},
  async renderQuota(){const value=state(this);const result=await value.scope.latest('quota',()=>benefitApi.summary().promise);if(!result.accepted||!current(this,value))return;assertOwner(result.value.profile,value.owner!);const quota=result.value.entitlements.find(item=>item.kind==='PUBLISH_QUOTA');this.setData({currentBenefits:result.value,available:quota?.expiry_pending?'待刷新':displayQuantity(quota?.available_qty),used:displayQuantity(quota?.consumed_qty),total:displayQuantity(quota?.granted_qty),diamondBalance:displayQuantity(result.value.profile.available_pink_units)});},
  async readPending(){const value=state(this);const intent=readLoyaltyIntent(value.owner!,'coupon-redemption');const pending=await queryPendingRedemptions(value.owner!);if(!current(this,value))return;this.setData({pendingText:intent||pending.length?'存在本人待核实兑换，请打开原券查询。':'',pendingCouponId:intent?.resourceId??pending[0]?.coupon_id??''});},

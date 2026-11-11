@@ -1,9 +1,11 @@
+import { loginHostMethods, openLoginHere } from '../../shared/interaction/login-host';
 import { demoExtras } from '../../preview/extras';
 import { accountApi } from '../../shared/api/account-api';
 import { type PrivateConversationView } from '../../shared/presentation/info';
 import { designAssets } from '../../shared/design/assets';
 
 Page({
+  ...loginHostMethods,
   onSecondaryNavigationBack() { wx.navigateBack({ fail: () => wx.switchTab({ url: '/pages/home/index' }) }); },
   data: {
     icons: designAssets,
@@ -23,7 +25,7 @@ Page({
     this.setData({ loggedIn, conversations: [] as PrivateConversationView[] });
   },
 
-  openLogin() { wx.navigateTo({ url: '/pages/login/index' }); },
+  openLogin() { openLoginHere(this, () => wx.navigateTo({ url: '/pages/login/index' })); },
 
   openConversation(event: WechatMiniprogram.TouchEvent) {
     const orderId = String(event.currentTarget.dataset['orderId'] ?? '');

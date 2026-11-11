@@ -1,4 +1,39 @@
 @import "../coupons/index.wxss";
-.coupon-confirm-layer { position: fixed; inset: 0; z-index: var(--xy-z-modal); display: flex; align-items: center; justify-content: center; padding: var(--xy-space-6); background: var(--xy-color-scrim); }
-.coupon-confirm-dialog { width: 100%; }
-.coupons-page { display: flex; flex-direction: column; gap: var(--xy-gap-group); padding: var(--xy-layout-card-stack-start-gap) var(--xy-layout-page-padding-x) var(--xy-space-6); }
+/* 重设计 第 1 批：大票券 → 信息卡（发放时间、来源）→ 说明 → 状态记录时间线 → 回执卡；兑换放底栏，确认改底部弹层 */
+.coupons-page { display: flex; flex-direction: column; gap: var(--xy-space-3); padding: var(--xy-space-3) var(--xy-layout-page-padding-x) var(--xy-space-6); }
+.ticket--large { min-height: calc(var(--xy-space-6) * 4 + var(--xy-space-2)); }
+.ticket-body--center { justify-content: center; }
+.info-card, .timeline-card, .receipt-card { overflow: hidden; border-radius: var(--xy-radius-lg); background: var(--xy-color-surface); }
+.info-row { position: relative; display: flex; width: 100%; min-height: 52px; box-sizing: border-box; align-items: center; gap: var(--xy-space-2); padding: 0 var(--xy-space-4); background: var(--xy-color-surface); text-align: left; }
+.info-row + .info-row::before { position: absolute; top: 0; right: 0; left: var(--xy-space-4); height: 1px; background: var(--xy-color-divider); content: ''; }
+.info-row--link:active { background: var(--xy-color-surface-subtle); }
+.info-label { min-width: 0; flex: 1; color: var(--xy-color-text-secondary); font-size: var(--xy-text-body-size); line-height: var(--xy-text-body-line-height); }
+.info-value { color: var(--xy-color-text-primary); font-size: var(--xy-text-body-size); font-variant-numeric: tabular-nums; line-height: var(--xy-text-body-line-height); text-align: right; }
+.info-value--link { color: var(--xy-color-brand); }
+.info-arrow { flex: none; width: var(--xy-size-icon-base); height: var(--xy-size-icon-base); opacity: .6; }
+.detail-note { color: var(--xy-color-text-muted); font-size: var(--xy-text-body-small-size); line-height: var(--xy-text-body-small-line-height); }
+.section-title { display: flex; align-items: center; margin-top: var(--xy-space-1); color: var(--xy-color-text-strong); font-size: var(--xy-text-section-title-size); font-weight: var(--xy-text-weight-bold); line-height: var(--xy-text-section-title-line-height); }
+.section-title::before { display: inline-block; width: var(--xy-space-1); height: var(--xy-space-4); margin-right: var(--xy-space-2); border-radius: var(--xy-radius-pill); background: var(--xy-color-brand); content: ''; }
+.timeline-card { padding: var(--xy-space-2) var(--xy-space-4); }
+.timeline-row { position: relative; display: flex; min-height: calc(var(--xy-space-6) + var(--xy-space-3)); align-items: center; gap: var(--xy-space-2); }
+.timeline-row + .timeline-row::after { position: absolute; top: calc(var(--xy-space-3) * -1); left: calc(var(--xy-space-1) - 0.5px); height: var(--xy-space-5); border-left: 1px solid var(--xy-color-divider); content: ''; }
+.timeline-dot { flex: none; width: var(--xy-space-2); height: var(--xy-space-2); border-radius: var(--xy-radius-circle); background: var(--xy-color-text-weak); }
+.timeline-row.is-latest .timeline-dot { background: var(--xy-color-brand); }
+.timeline-title { min-width: 0; flex: 1; font-size: var(--xy-text-body-size); line-height: var(--xy-text-body-line-height); }
+.timeline-time { color: var(--xy-color-text-secondary); font-size: var(--xy-text-body-small-size); font-variant-numeric: tabular-nums; line-height: var(--xy-text-body-small-line-height); }
+.receipt-card { display: flex; flex-direction: column; gap: var(--xy-space-1); padding: var(--xy-space-4); box-shadow: inset var(--xy-space-1) 0 0 var(--xy-color-warning); }
+.receipt-title { color: var(--xy-color-warning); font-size: var(--xy-text-section-title-size); font-weight: var(--xy-text-weight-bold); line-height: var(--xy-text-section-title-line-height); }
+.receipt-copy { color: var(--xy-color-text-secondary); font-size: var(--xy-text-body-small-size); line-height: var(--xy-text-body-small-line-height); overflow-wrap: anywhere; }
+.receipt-actions { display: flex; flex-wrap: wrap; gap: var(--xy-space-4); }
+.receipt-action { display: flex; min-height: var(--xy-size-touch-min); align-items: center; color: var(--xy-color-brand); font-size: var(--xy-text-body-size); font-weight: var(--xy-text-weight-semibold); line-height: var(--xy-text-body-line-height); }
+.coupon-confirm-layer { position: fixed; inset: 0; z-index: var(--xy-z-modal); display: flex; flex-direction: column; justify-content: flex-end; background: var(--xy-color-scrim); }
+.coupon-confirm-sheet { display: flex; flex-direction: column; gap: var(--xy-space-3); padding: var(--xy-space-4) var(--xy-space-4) calc(var(--xy-space-4) + env(safe-area-inset-bottom)); border-radius: var(--xy-radius-lg) var(--xy-radius-lg) 0 0; background: var(--xy-color-surface); }
+.confirm-title { color: var(--xy-color-text-strong); font-size: var(--xy-text-section-title-size); font-weight: var(--xy-text-weight-bold); line-height: var(--xy-text-section-title-line-height); }
+.confirm-copy { color: var(--xy-color-text-secondary); font-size: var(--xy-text-body-size); line-height: var(--xy-text-body-line-height); }
+.confirm-actions { display: flex; gap: var(--xy-space-3); margin-top: var(--xy-space-1); }
+.confirm-button { display: flex; flex: 1; min-height: var(--xy-size-touch-min); align-items: center; justify-content: center; border-radius: var(--xy-radius-md); background: var(--xy-color-brand); color: var(--xy-color-text-inverse); font-size: var(--xy-text-section-title-size); font-weight: var(--xy-text-weight-semibold); line-height: var(--xy-text-section-title-line-height); }
+.confirm-button--ghost { flex: 0 0 calc(var(--xy-space-6) * 4 + var(--xy-space-4)); box-shadow: inset 0 0 0 1px var(--xy-color-border); background: var(--xy-color-surface); color: var(--xy-color-text-primary); font-weight: var(--xy-text-weight-medium); }
+.usage-card { display: flex; flex-direction: column; gap: var(--xy-space-3); padding: var(--xy-space-4); border-radius: var(--xy-radius-lg); background: var(--xy-color-surface); }
+.usage-row { display: flex; align-items: flex-start; gap: var(--xy-space-3); }
+.usage-index { display: flex; flex: none; width: var(--xy-space-5); height: var(--xy-space-5); align-items: center; justify-content: center; margin-top: calc((var(--xy-text-body-line-height) - var(--xy-space-5)) / 2); border-radius: var(--xy-radius-pill); background: var(--xy-color-brand-light); color: var(--xy-color-brand); font-size: var(--xy-text-caption-size); font-weight: var(--xy-text-weight-bold); line-height: var(--xy-text-caption-line-height); }
+.usage-copy { min-width: 0; flex: 1; color: var(--xy-color-text-primary); font-size: var(--xy-text-body-size); line-height: var(--xy-text-body-line-height); }

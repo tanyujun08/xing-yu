@@ -1,4 +1,6 @@
 import { accountApi } from '../../shared/api/account-api';
+import { formatDateTime } from '../../shared/format/date-time';
+import { designAssets } from '../../shared/design/assets';
 import { createRentalPageState } from '../../shared/interaction/rental-page-state';
 import { navigateBackWithFallback } from '../../shared/interaction/navigate-once';
 import { identityInput, IdentityInputError } from '../../shared/presentation/identity-input';
@@ -14,7 +16,7 @@ function captureIdentitySessionLoss(s: ReturnType<typeof state>) {
   return () => s.visible && !s.scope.disposed && s.epoch === epoch && s.owner === owner && (accountApi.sessionIdentity() ?? '') !== owner;
 }
 Page({
-  data: { loading: false, busy: false, loaded: false, errorText: '', errorField: '', completed: false, realName: '', identityNumber: '', overallText: '—' },
+  data: { icons: designAssets, verifiedText: '', faceText: '—', loading: false, busy: false, loaded: false, errorText: '', errorField: '', completed: false, realName: '', identityNumber: '', overallText: '—' },
   onShow() { const s = state(this), owner = accountApi.sessionIdentity() ?? '';
     if (owner && (s.intentOwner && owner !== s.intentOwner || s.owner && owner !== s.owner)) { s.intent = ''; s.intentOwner = ''; s.payload = ''; this.clearUnavailableSession(); }
     s.show(owner); void this.loadStatus(); },
@@ -33,7 +35,7 @@ Page({
       const value = await accountApi.identity().promise;
       if (!active()) return;
       const completed = value.real_name.status === 'VERIFIED';
-      this.setData({ loaded: true, completed, overallText: completed ? '实名信息已填写' : '请填写实名信息', ...(completed ? { realName: '', identityNumber: '' } : {}) });
+      this.setData({ verifiedText: value.real_name.verified_at ? formatDateTime(value.real_name.verified_at) : '', faceText: value.face.status === 'VERIFIED' ? '已核验' : '未核验', loaded: true, completed, overallText: completed ? '实名信息已填写' : '请填写实名信息', ...(completed ? { realName: '', identityNumber: '' } : {}) });
     } catch (error) {
       if (active()) this.setData({ errorText: error instanceof Error ? error.message : '实名信息读取失败' });
     } finally { if (sessionLost()) this.clearUnavailableSession(); else if (viewCurrent() && lease()) this.setData({ loading: false }); }

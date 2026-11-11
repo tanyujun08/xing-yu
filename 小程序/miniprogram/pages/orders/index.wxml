@@ -49,3 +49,4 @@
 <task-sheet open="{{filterMenuOpen}}" title="{{filterMenuTitle}}" show-footer="{{false}}" bindclose="closeFilterMenu">
   <view class="filter-menu"><button wx:for="{{filterMenuOptions}}" wx:key="id" class="xy-button-reset filter-option {{filter === item.id ? 'is-active' : ''}}" data-filter="{{item.id}}" bindtap="chooseFilter" aria-label="筛选{{item.label}}订单">{{item.label}}<text wx:if="{{filter === item.id}}"> ✓</text></button></view>
 </task-sheet>
+<login-sheet id="login-sheet" bindwechatlogin="onWechatLogin" bindphonelogin="onPhoneLogin" bindlegal="onLoginLegal" />

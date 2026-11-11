@@ -38,6 +38,25 @@ Page({
     const field = String(event.currentTarget.dataset['field'] ?? '');
     if (['name', 'phone', 'detail'].includes(field)) this.setData({ [field]: event.detail.value, dirty: true, errorText: '', errorField: '' });
   },
+  /** 从微信收货地址导入：姓名、电话、详细地址直接回填，省市区按名称逐级匹配 */
+  importWechat() {
+    wx.chooseAddress({ success: (res) => { void this.applyWechatAddress(res); } });
+  },
+  async applyWechatAddress(res: WechatMiniprogram.ChooseAddressSuccessCallbackResult) {
+    this.setData({ name: res.userName, phone: String(res.telNumber ?? '').replace(/\D/g, '').slice(-11), detail: res.detailInfo, dirty: true });
+    try {
+      const names = [res.provinceName, res.cityName, res.countyName];
+      const draft: Region[] = []; let dataset = '';
+      for (let level = 0; level < 3; level += 1) {
+        const result = await regionApi.children(level === 0 ? undefined : dataset || undefined, level ? draft[level - 1]!.code : undefined).promise;
+        dataset = result.dataset_id;
+        const hit = result.items.find((item) => item.name === names[level]);
+        if (!hit) throw new Error('region');
+        draft.push({ code: hit.region_id, name: hit.name, level: hit.level });
+      }
+      this.setData({ datasetId: dataset, regionDraft: draft, region: draft.map((item) => item.name).join('') });
+    } catch { wx.showToast({ title: '请手动选择所在地区', icon: 'none' }); }
+  },
   openRegionSheet() { const state = interaction(this); if (!state.pending) { state.regionBefore = [...this.data.regionDraft]; state.datasetBefore = this.data.datasetId; this.setData({ regionSheetOpen: true }); return this.loadRegion(0); } },
   closeRegionSheet() { const state = interaction(this); this.setData({ regionSheetOpen: false, datasetId: state.datasetBefore, regionDraft: [...state.regionBefore] }); },
   changeRegionLevel(event: WechatMiniprogram.TouchEvent) { const level = Number(event.currentTarget.dataset['level']); if (Number.isInteger(level) && level >= 0 && level <= 2) return this.loadRegion(level); },

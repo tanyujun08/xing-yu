@@ -1,3 +1,4 @@
+import { loginHostMethods } from '../../shared/interaction/login-host';
 import { accountApi, pointApi, loyaltyTraceApi } from '../../shared/api/account-api';
 import { designAssets } from '../../shared/design/assets';
 import { createAccountLedgerPage } from '../../shared/interaction/account-ledger-page';
@@ -29,6 +30,7 @@ const details=new WeakMap<object,{scope:ReturnType<typeof createOperationScope>;
 function state(page:object){let value=details.get(page);if(!value){value={scope:createOperationScope(),owner:accountApi.sessionIdentity(),visible:false,id:'',entry:null};details.set(page,value);}return value;}
 function current(page:object,value:ReturnType<typeof state>){return details.get(page)===value&&!value.scope.disposed&&value.visible&&!!value.owner&&value.owner===accountApi.sessionIdentity();}
 Page({
+  ...loginHostMethods,
   ...ledger,
   onLoad(options:Record<string,string|undefined>={}){ledger.onLoad.call(this);const value=state(this);value.id=loyaltyIdentifier(options['entry_id']??'')?options['entry_id']!:'';},
   async onShow(){const value=state(this);value.visible=true;value.owner=accountApi.sessionIdentity();await ledger.onShow.call(this);if(value.id&&current(this,value))await this.readEntry(value.id);},

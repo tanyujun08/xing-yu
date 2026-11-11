@@ -51,3 +51,4 @@
     </block>
   </view>
 </task-sheet>
+<login-sheet id="login-sheet" bindwechatlogin="onWechatLogin" bindphonelogin="onPhoneLogin" bindlegal="onLoginLegal" />

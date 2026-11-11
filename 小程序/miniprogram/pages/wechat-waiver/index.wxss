@@ -1,14 +1,24 @@
-.waiver-page { padding:var(--xy-space-3) var(--xy-space-4) var(--xy-space-4); color:var(--xy-color-text-primary); }
-.waiver-card { padding:var(--xy-space-3); border-radius:var(--xy-radius-md); background:var(--xy-color-surface); }
-.waiver-card + .waiver-card { margin-top:var(--xy-space-3); }
-.phase-success { color:var(--xy-color-brand); }
-.phase-failure { color:var(--xy-color-warning); }
-.waiver-title { display:block; font-size:var(--xy-text-page-title-size); line-height:var(--xy-text-page-title-line-height); font-weight:var(--xy-text-weight-semibold); }
-.waiver-copy { display:block; margin-top:var(--xy-space-1); font-size:var(--xy-text-body-size); line-height:var(--xy-text-body-line-height); color:var(--xy-color-text-secondary); }
-.order-line { display:flex; align-items:baseline; justify-content:space-between; gap:var(--xy-space-3); font-size:var(--xy-text-body-size); line-height:var(--xy-text-body-line-height); }
-.order-line > text:first-child { flex:0 0 72px; color:var(--xy-color-text-secondary); }
-.order-line > text:last-child { min-width:0; overflow-wrap:anywhere; text-align:right; }
-.order-amount { font-size:var(--xy-price-value-size); line-height:var(--xy-text-section-title-line-height); font-weight:var(--xy-text-weight-semibold); }
-.phase-label { display:inline-flex; margin-bottom:var(--xy-space-3); padding:var(--xy-space-1) var(--xy-space-2); border-radius:var(--xy-radius-sm); font-size:var(--xy-text-body-small-size); line-height:var(--xy-text-body-small-line-height); background:var(--xy-color-page); }
-.order-identifier { align-items:flex-start; margin-top:var(--xy-space-3); color:var(--xy-color-text-secondary); font-size:var(--xy-text-body-small-size); line-height:var(--xy-text-body-line-height); }
-.order-identifier > text:last-child { flex:1; text-align:left; word-break:break-all; }
+/* 重设计 第 1 批：状态卡（步骤条 资格确认 → 微信支付 → 完成，标题 18 + 说明）→ 金额卡（本次应付 / 订单编号） */
+.waiver-page { display: flex; flex-direction: column; gap: var(--xy-space-3); padding: var(--xy-space-3) var(--xy-layout-page-padding-x) var(--xy-space-6); color: var(--xy-color-text-primary); }
+.waiver-card { overflow: hidden; border-radius: var(--xy-radius-lg); background: var(--xy-color-surface); }
+.waiver-status { display: flex; flex-direction: column; gap: var(--xy-space-5); padding: var(--xy-space-5) var(--xy-space-4) var(--xy-space-4); }
+.steps { position: relative; display: flex; }
+.steps::before { position: absolute; top: calc(var(--xy-space-2) - 1px); right: 16.6%; left: 16.6%; height: 2px; background: var(--xy-color-border); content: ''; }
+.steps--success::after { position: absolute; top: calc(var(--xy-space-2) - 1px); left: 16.6%; width: 33.4%; height: 2px; background: var(--xy-color-brand); content: ''; }
+.step { position: relative; z-index: var(--xy-z-local); display: flex; flex: 1; flex-direction: column; align-items: center; gap: var(--xy-space-1-5); color: var(--xy-color-text-weak); font-size: var(--xy-text-body-small-size); line-height: var(--xy-text-body-small-line-height); }
+.step-dot { width: var(--xy-space-4); height: var(--xy-space-4); box-sizing: border-box; border: 2px solid var(--xy-color-border); border-radius: var(--xy-radius-circle); background: var(--xy-color-surface); }
+.step.is-done, .step.is-current { color: var(--xy-color-text-primary); }
+.step.is-current { font-weight: var(--xy-text-weight-semibold); }
+.step.is-done .step-dot { border-color: var(--xy-color-brand); background: var(--xy-color-brand); }
+.step.is-current .step-dot { border-color: var(--xy-color-brand); background: var(--xy-color-brand); box-shadow: 0 0 0 var(--xy-space-1) var(--xy-color-brand-light); }
+.step.is-alert { color: var(--xy-color-warning); }
+.step.is-alert .step-dot { border-color: var(--xy-color-warning); box-shadow: 0 0 0 var(--xy-space-1) var(--xy-color-warning-soft); }
+.waiver-copyblock { display: flex; flex-direction: column; gap: var(--xy-space-1); }
+.waiver-title { color: var(--xy-color-text-strong); font-size: var(--xy-text-order-navigation-size); font-weight: var(--xy-text-weight-bold); line-height: var(--xy-text-order-navigation-line-height); }
+.waiver-copy { color: var(--xy-color-text-secondary); font-size: var(--xy-text-body-size); line-height: var(--xy-text-body-line-height); }
+.order-line { position: relative; display: flex; min-height: 52px; box-sizing: border-box; align-items: center; justify-content: space-between; gap: var(--xy-space-3); padding: 0 var(--xy-space-4); font-size: var(--xy-text-body-size); line-height: var(--xy-text-body-line-height); }
+.order-line + .order-line::before { position: absolute; top: 0; right: 0; left: var(--xy-space-4); height: 1px; background: var(--xy-color-divider); content: ''; }
+.order-amount { min-height: calc(var(--xy-space-4) * 4); }
+.amount-value { color: var(--xy-color-text-strong); font-family: var(--xy-font-family-numeric); font-size: var(--xy-text-order-navigation-size); font-variant-numeric: tabular-nums; font-weight: var(--xy-text-weight-bold); line-height: var(--xy-text-order-navigation-line-height); }
+.order-identifier { color: var(--xy-color-text-secondary); }
+.order-identifier > text:last-child { min-width: 0; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; text-align: right; }
