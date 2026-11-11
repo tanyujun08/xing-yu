@@ -24,7 +24,8 @@ for (const entry of entries.filter(v => !v.key.startsWith('order-state-'))) test
  const query = Object.fromEntries((entry.url.split('?')[1] ?? '').split('&').filter(Boolean).map(part => { const [k = '', v = ''] = part.split('='); return [k, decodeURIComponent(v)]; })); page.options = query;
  if (entry.key === 'contract-sign') { const signature = await import('../miniprogram/shared/api/rental-contract-signature'); const engine = await import('../miniprogram/preview/engine'); signature.rentalSignatureDrafts.agree('order-1', engine.handleDemo('GET', '/v1/me/rental-orders/order-1/contract').data as never); }
  const load = page.onLoad?.(query); await vi.advanceTimersByTimeAsync(500); await load;
- const show = page.onShow?.(); await vi.advanceTimersByTimeAsync(1000); await show;
+ // 切换城市页接入全国省市数据后要分批读 30 多个省，给够模拟时间
+ const show = page.onShow?.(); await vi.advanceTimersByTimeAsync(entry.key === 'region' ? 3000 : 1000); await show;
  expect(page.data.error ?? '').toBe('');
  expect(page.data.errorText ?? '', entry.key + ': ' + page.data.errorText).toBe('');
  if (entry.key === 'home') expect(page.data.visibleDevices.length).toBeGreaterThan(0);

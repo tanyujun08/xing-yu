@@ -49,8 +49,8 @@ Page({
       const draft: Region[] = []; let dataset = '';
       for (let level = 0; level < 3; level += 1) {
         const result = await regionApi.children(level === 0 ? undefined : dataset || undefined, level ? draft[level - 1]!.code : undefined).promise;
-        dataset = result.value.dataset_id;
-        const hit = result.value.items.find((item) => item.name === names[level]);
+        dataset = result.dataset_id;
+        const hit = result.items.find((item) => item.name === names[level]);
         if (!hit) throw new Error('region');
         draft.push({ code: hit.region_id, name: hit.name, level: hit.level });
       }
