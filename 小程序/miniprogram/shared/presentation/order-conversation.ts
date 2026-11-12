@@ -11,14 +11,21 @@ export function conversationTime(value: string | null | undefined, now = Date.no
   if (full.slice(0, 10) === yesterday) return '昨天';
   return full.slice(0, 4) === today.slice(0, 4) ? full.slice(5, 10).replace('-', '.') : full.slice(0, 10);
 }
+const toneByStatus: Record<string, 'ok' | 'warn' | 'wait' | 'end'> = {
+  ACTIVE: 'ok', PREPARING: 'ok', AWAITING_PAYMENT: 'warn', AWAITING_SUPPLEMENT: 'warn', AWAITING_CONFIRMATION: 'warn',
+  COMPLETED: 'end', CLOSED: 'end',
+};
+export function conversationTone(code: string): 'ok' | 'warn' | 'wait' | 'end' { return toneByStatus[code] ?? 'wait'; }
 export function orderConversationView(value: OrderConversation) {
   return {
     id: value.conversation_id, orderId: value.order_id, role: value.viewer_role,
+    tone: conversationTone(value.order_summary.display_status_code),
     counterpartName: value.peer.display_name, counterpartRoleText: value.peer.role === 'LESSOR' ? '出租方' : '承租方',
     avatarText: [...value.peer.display_name][0] ?? '人', avatarURL: value.peer.avatar_url ?? '',
     deviceName: value.order_summary.asset_title, deviceImage: value.order_summary.cover_url ?? '',
     statusText: rentalStateLabel(value.order_summary.display_status_code),
     rentalPeriod: rentalDateRange(value.order_summary.rental_start_at, value.order_summary.rental_end_at),
+    periodShort: rentalDateRange(value.order_summary.rental_start_at, value.order_summary.rental_end_at).replace(/[0-9]{4}-/g, ''),
     lastMessage: value.last_message?.kind === 'IMAGE' ? '[图片]' : value.last_message?.preview ?? '暂无消息',
     timeText: value.last_message_at ? beijingTime(value.last_message_at) : '', shortTimeText: conversationTime(value.last_message_at), unreadText: unreadLabel(value.unread_count),
   };
