@@ -11,3 +11,4 @@
 .fees-loss { padding: 0 0 var(--xy-space-3); }
 .fees-loss-head { display: flex; justify-content: space-between; gap: var(--xy-space-3); color: var(--xy-color-text-secondary); font-size: var(--xy-row-caption-size); line-height: var(--xy-row-caption-line-height); }
 .fees-page .xy-h-total { margin-top: var(--xy-space-1); }
+.fees-page.fees-page--a { padding: 0; gap: 0; }

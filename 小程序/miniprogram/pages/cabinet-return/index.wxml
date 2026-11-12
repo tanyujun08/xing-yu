@@ -3,7 +3,7 @@
 <page-shell surface="page" has-footer footer-surface="page">
   <page-header variant="return" title="{{taskStatus === 'SUCCEEDED' || taskStatus === 'ANOMALY' || taskStatus === 'FAILED_CONFIRMED' ? '归还结果' : taskStatus === 'UNKNOWN' ? '归还进度' : taskStatus === 'VERIFYING' ? '设备核验' : taskStatus === 'EXECUTING' ? '正在开柜' : taskStatus === 'AWAITING_CONFIRMATION' ? (door === '未关闭' ? '放入设备' : '确认归还') : '入柜归还'}}" bindback="onSecondaryNavigationBack" slot="header" />
   <view class="flow-page">
-    <return-progress wx:if="{{taskStatus !== 'SUCCEEDED' && taskStatus !== 'ANOMALY' && taskStatus !== 'FAILED_CONFIRMED' && taskStatus !== 'UNKNOWN'}}" step="{{taskStatus === 'VERIFYING' ? 3 : 2}}" />
+    <return-progress wx:if="{{taskStatus === 'AWAITING_CONFIRMATION' || taskStatus === 'EXECUTING' || taskStatus === 'VERIFYING'}}" step="{{taskStatus === 'VERIFYING' ? 3 : 2}}" />
     <view wx:if="{{errorText}}" class="return-note return-note--danger" role="alert">{{errorText}}</view>
     <view wx:if="{{loading && !loaded}}" role="status" class="return-copy">正在查询…</view>
     <block wx:if="{{loaded}}">
@@ -47,7 +47,15 @@
 未拍摄请联系客服协助补充</text></view></view>
         <view wx:if="{{door !== '未关闭'}}" class="return-card"><return-evidence-grid tiles="{{tiles}}" busy="{{busy}}" single album-only="{{door === '已关闭'}}" bindselect="selectEvidence" bindpreview="previewEvidence" bindexample="showExample" bindrecover="recoverEvidence" /><view wx:if="{{!photoComplete}}" class="return-note">可先核验柜内设备，照片需后续补充。请勿为补拍重复开柜。</view></view>
       </block>
-      <status-hero wx:else tone="green" art="clock" title="{{taskId ? taskStatusLabel : '选择归还租赁柜'}}" description="{{taskId ? taskCopy : '请从本单可用的租赁柜中选择归还格口，选好后为你预留格口 30 分钟。'}}" />
+      <view wx:else class="xa-page xa-page--inset">
+        <status-hero class="xa-hero" variant="band" step="{{3}}" step-note="{{taskId ? '处理中' : '选柜'}}" tone="green" art="clock" title="{{taskId ? taskStatusLabel : '选择归还租赁柜'}}" description="{{taskId ? taskCopy : '从本单可用的租赁柜中选择归还格口，选好后为你预留格口 30 分钟。'}}" />
+        <view class="xa-list">
+          <view class="xa-row"><text class="xa-row__k">本单设备</text><text class="xa-row__v">{{assetTitle || '待核实'}}</text></view>
+          <view class="xa-row"><text class="xa-row__k">归还前凭证</text><text class="xa-row__v">{{preReadyCount}}/{{preTotalCount}} 已提交</text></view>
+          <view wx:if="{{cabinetName}}" class="xa-row"><text class="xa-row__k">当前柜格</text><text class="xa-row__v">{{cabinetName}}{{compartmentNo ? ' · ' + compartmentNo + '号' : ''}}</text></view>
+        </view>
+        <text class="xa-note">到柜后扫描柜机上的小程序码，放入设备与全部配件并关好柜门，系统会自动核验。</text>
+      </view>
     </block>
   </view>
   <view slot="footer" class="return-actions">

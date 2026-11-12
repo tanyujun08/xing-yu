@@ -185,3 +185,4 @@
 .dispute-card { border-radius: var(--xy-radius-lg); padding: var(--xy-space-4); }
 .dispute-actions .dispute-kf { flex: none; width: var(--xy-size-touch-min); min-height: var(--xy-size-touch-min); border: 0; background: transparent; }
 .description-input { border-radius: var(--xy-radius-md); }
+.dispute-intro > .dispute-hero { display: block; margin: calc(var(--xy-space-3) * -1 - var(--xy-layout-card-stack-start-gap)) calc(var(--xy-layout-page-padding-x) * -1) var(--xy-space-3); }

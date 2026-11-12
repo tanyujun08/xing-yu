@@ -69,3 +69,9 @@
 .h-pill { display: flex; align-items: center; height: calc(var(--xy-space-6) + var(--xy-space-2)); padding: 0 var(--xy-space-3); border-radius: var(--xy-radius-pill); background: var(--xy-color-brand); color: var(--xy-color-text-inverse); font-size: var(--xy-row-caption-size); font-weight: var(--xy-text-weight-semibold); }
 .h-item__action::after, .h-item__more::after { border: 0; }
 .h-item__more { flex: none; display: flex; align-items: center; justify-content: flex-end; min-width: var(--xy-size-touch-min); min-height: var(--xy-size-touch-min); padding: 0; margin: 0; background: transparent; color: var(--xy-color-text-muted); font-size: var(--xy-text-section-title-size); }
+/* 全部：按需要你处理、进行中、已结束分组（2026-11-12 设计稿第二版） */
+.h-list--grouped { gap: 0; }
+.h-group { display: block; margin: var(--xy-space-6) 0 var(--xy-space-3); color: var(--xy-color-text-secondary); font-size: var(--xy-row-caption-size); line-height: var(--xy-row-caption-line-height); }
+.h-list--grouped > .h-group:first-child { margin-top: var(--xy-space-2); }
+.h-group__list { display: flex; flex-direction: column; gap: var(--xy-space-3); }
+.h-state--ended { color: var(--xy-color-text-muted); font-weight: var(--xy-text-weight-regular); }

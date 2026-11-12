@@ -85,3 +85,8 @@
 .xa-records + .xa-row, .xa-list .order-info-details + .xa-row { border-top: 1rpx solid var(--xy-color-hairline); }
 .xa-list .order-info-details { margin-top: 0; padding: 0 0 var(--xy-space-3); border-top: 0; }
 .xa-page .xa-well__body { align-items: flex-start; justify-content: center; font-weight: var(--xy-text-weight-regular); }
+/* 嵌在已有左右留白页面里的 A 段：状态带通栏，其余不再重复留白 */
+.xa-page--inset { padding-bottom: 0; }
+.xa-page--inset .xa-hero { margin: calc(var(--xy-space-3) * -1) calc(var(--xy-space-4) * -1) calc(var(--xy-space-2) * -1); }
+.xa-page--inset .xa-list, .xa-page--inset .xa-card, .xa-page--inset .xa-cap { margin-left: 0; margin-right: 0; }
+.xa-page--inset .xa-note { margin-left: 0; margin-right: 0; }

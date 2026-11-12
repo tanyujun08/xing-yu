@@ -1,21 +1,28 @@
 <page-meta root-font-size="system" />
 <page-shell surface="page" has-footer>
   <page-header title="{{title}}" bindback="onSecondaryNavigationBack" slot="header" />
-  <view class="xy-h-page cabinet-open-page">
-    <view wx:if="{{pickup}}" class="xy-h-steps" aria-label="取件步骤"><view class="xy-h-step {{step > 1 ? 'is-done' : 'is-current'}}"><view class="xy-h-step__dot"></view><text>开柜</text></view><view class="xy-h-step {{step > 2 ? 'is-done' : step === 2 ? 'is-current' : ''}}"><view class="xy-h-step__dot"></view><text>取物</text></view><view class="xy-h-step {{step === 3 ? 'is-current' : ''}}"><view class="xy-h-step__dot"></view><text>完成</text></view></view>
+  <view class="xy-h-page cabinet-open-page {{loaded ? 'cabinet-open-page--a' : ''}}">
     <view wx:if="{{loading}}" class="xy-h-note" role="status">正在查询原任务…</view>
-    <block wx:if="{{loaded}}">
-      <status-hero tone="{{heroTone}}" art="{{heroArt}}" title="{{status}}" description="{{copy}}" />
-      <view class="xy-h-blk">
-        <view class="xy-h-row"><text class="xy-h-row__k">柜门状态</text><text class="xy-h-row__v xy-h-row__v--strong">{{door}}</text></view>
-        <view class="xy-h-row"><text class="xy-h-row__k">设备识别</text><text class="xy-h-row__v">{{rfid}}</text></view>
-        <view class="xy-h-row"><text class="xy-h-row__k">格口状态</text><text class="xy-h-row__v">{{occupancy}}</text></view>
-        <view class="xy-h-row"><text class="xy-h-row__k">检查时间</text><text class="xy-h-row__v">{{observed}}</text></view>
-        <view class="xy-h-row"><text class="xy-h-row__k">完成时间</text><text class="xy-h-row__v">{{confirmed}}</text></view>
-        <button class="xy-h-row xy-h-row--link h-plain xy-action-hit" bindtap="showResultFeedback" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}"><text class="xy-h-row__k">查看结果提示</text><text aria-hidden="true">›</text></button>
+    <view wx:if="{{loaded}}" class="xa-page">
+      <status-hero class="xa-hero" variant="band" step="{{pickup ? 1 : 3}}" step-note="{{pickup ? (step > 2 ? '已取出' : '开柜') : '归还'}}" tone="{{heroTone}}" art="{{heroArt}}" title="{{status}}" description="{{copy}}" />
+      <view wx:if="{{pickup}}" class="xa-card">
+        <view class="xa-tl" aria-label="取件步骤">
+          <view class="xa-tl__item {{step > 1 ? 'is-done' : 'is-current'}}"><view class="xa-tl__dot" aria-hidden="true" /><view class="xa-tl__body"><text class="xa-tl__title">开柜</text><text class="xa-tl__sub">柜门状态：{{door}}</text></view></view>
+          <view class="xa-tl__item {{step > 2 ? 'is-done' : step === 2 ? 'is-current' : ''}}"><view class="xa-tl__dot" aria-hidden="true" /><view class="xa-tl__body"><text class="xa-tl__title">取出设备</text><text class="xa-tl__sub">核对设备与配件后关好柜门</text></view></view>
+          <view class="xa-tl__item {{step === 3 ? 'is-current' : ''}}"><view class="xa-tl__dot" aria-hidden="true" /><view class="xa-tl__body"><text class="xa-tl__title">完成取件</text><text class="xa-tl__sub">完成时间：{{confirmed}}</text></view></view>
+        </view>
       </view>
-      <text wx:if="{{monitoring}}" class="xy-h-note" role="status">正在自动同步取件结果，无需刷新。请勿重复开柜。</text>
-    </block>
+      <text wx:if="{{monitoring}}" class="xa-note" role="status">正在自动同步取件结果，无需刷新。请勿重复开柜。</text>
+      <text class="xa-cap">柜机记录</text>
+      <view class="xa-list">
+        <view wx:if="{{!pickup}}" class="xa-row"><text class="xa-row__k">柜门状态</text><text class="xa-row__v xa-row__v--strong">{{door}}</text></view>
+        <view class="xa-row"><text class="xa-row__k">设备识别</text><text class="xa-row__v">{{rfid}}</text></view>
+        <view class="xa-row"><text class="xa-row__k">格口状态</text><text class="xa-row__v">{{occupancy}}</text></view>
+        <view class="xa-row"><text class="xa-row__k">检查时间</text><text class="xa-row__v">{{observed}}</text></view>
+        <view wx:if="{{!pickup}}" class="xa-row"><text class="xa-row__k">完成时间</text><text class="xa-row__v">{{confirmed}}</text></view>
+        <button class="xa-row xy-action-hit" bindtap="showResultFeedback" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}"><text class="xa-row__k">查看结果提示</text><text class="xa-row__v"></text><text class="xa-row__more" aria-hidden="true">›</text></button>
+      </view>
+    </view>
   </view>
   <bottom-actions slot="footer" layout="custom">
     <view slot="actions" class="xy-h-actions">

@@ -41,7 +41,7 @@
     <button wx:if="{{recordOnly || supplementing}}" class="return-primary" bindtap="returnToOrder">{{supplementing ? '返回订单查看进度' : '返回订单'}}</button>
     <button wx:elif="{{method === 'CABINET'}}" class="return-primary" bindtap="openCabinet" disabled="{{busy || !canProceed}}" aria-disabled="{{busy || !canProceed}}">{{isAfterOpen ? '返回归还核验' : '提交凭证并选柜'}}</button>
     <button wx:elif="{{canStart}}" class="return-primary" bindtap="start" disabled="{{busy}}" aria-disabled="{{busy}}">开始上传凭证</button>
-    <button wx:if="{{!recordOnly && !supplementing}}" class="return-link" bindtap="onSecondaryNavigationBack">暂存返回</button>
+    <button wx:if="{{!recordOnly && !supplementing}}" class="return-secondary" bindtap="onSecondaryNavigationBack">暂存并返回</button>
   </view>
 </page-shell>
 <view wx:if="{{example}}" class="example-page">

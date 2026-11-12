@@ -1,4 +1,26 @@
 <page-meta root-font-size="system" />
+<template name="xg-item">
+  <view class="xy-h-blk h-item">
+    <view class="h-item__main" data-id="{{item.id}}" bindtap="openRental" role="button" aria-label="查看{{item.deviceName}}订单信息">
+      <media-state class="thumb" state="{{item.mediaState}}" src="{{item.image}}" empty-label="暂无图片" mode="aspectFill" />
+      <view class="copy"><text class="name">{{item.deviceName}}</text><text class="summary">{{item.rentalText}} · {{item.pickupText}}</text><text class="h-state h-state--{{tone}}">{{item.mainStatusText}}<text wx:if="{{item.amountLabel === '待补缴金额' || item.actionLabel === '去支付'}}"> {{item.amountText}}</text></text></view>
+    </view>
+    <button wx:if="{{item.actionPrimary}}" class="h-item__action xy-action-hit" data-id="{{item.id}}" bindtap="openOrder" aria-label="{{item.actionLabel}}"><text class="h-pill">{{item.actionLabel}}</text></button>
+    <button wx:else class="h-item__more xy-action-hit" data-id="{{item.id}}" bindtap="openOrder" aria-label="查看订单详情">›</button>
+  </view>
+</template>
+<wxs module="xg">
+function kind(it) {
+  var s = it.mainStatusText;
+  if (it.actionPrimary || it.statusTone === 'warning') return 'todo';
+  if (s === '已完成' || s === '已关闭' || s === '已取消') return 'done';
+  return 'doing';
+}
+function pick(items, k) { var out = []; for (var i = 0; i < (items || []).length; i++) if (kind(items[i]) === k) out.push(items[i]); return out; }
+function tone(it) { var k = kind(it); return k === 'todo' ? (it.statusTone === 'warning' ? 'warning' : 'success') : k === 'done' ? 'ended' : 'muted'; }
+var groups = [{ k: 'todo', t: '需要你处理' }, { k: 'doing', t: '进行中' }, { k: 'done', t: '已结束' }];
+module.exports = { pick: pick, tone: tone, groups: groups };
+</wxs>
 <page-shell surface="page" fixed-header>
 <page-header slot="header" title="{{title}}" bindback="goBack" />
 <view class="equipment-page">
@@ -16,15 +38,19 @@
     <status-view wx:elif="{{listState.phase === 'initial-error'}}" state="error" title="设备订单加载失败" description="{{listState.error.message}}" action-text="重试" bindaction="retryInitial" illustration-src="{{icons.emptyGeneric}}" />
     <status-view wx:elif="{{listState.phase === 'empty'}}" state="empty" title="暂无相关设备订单" description="{{mode === 'lend' ? '设备产生出租订单后，会显示在这里' : '浏览设备，开启你的租赁体验'}}" illustration-src="{{icons.emptyOrders}}" />
 
+    <view wx:elif="{{filter === ''}}" class="h-list h-list--grouped">
+      <block wx:for="{{xg.groups}}" wx:for-item="g" wx:key="k">
+        <block wx:if="{{xg.pick(items, g.k).length}}">
+          <text class="h-group">{{g.t}}</text>
+          <view class="h-group__list">
+            <block wx:for="{{xg.pick(items, g.k)}}" wx:key="id"><template is="xg-item" data="{{item, tone: xg.tone(item)}}" /></block>
+          </view>
+        </block>
+      </block>
+    </view>
     <view wx:else class="h-list">
-      <view wx:for="{{items}}" wx:key="id" class="xy-h-blk h-item">
-        <view class="h-item__main" data-id="{{item.id}}" bindtap="openRental" role="button" aria-label="查看{{item.deviceName}}订单信息">
-          <media-state class="thumb" state="{{item.mediaState}}" src="{{item.image}}" empty-label="暂无图片" mode="aspectFill" />
-          <view class="copy"><text class="name">{{item.deviceName}}</text><text class="summary">{{item.rentalText}} · {{item.pickupText}}</text><text class="h-state h-state--{{item.statusTone}}">{{item.mainStatusText}}<text wx:if="{{item.amountLabel === '待补缴金额' || item.actionLabel === '去支付'}}"> {{item.amountText}}</text></text></view>
-        </view>
-        <button wx:if="{{item.actionPrimary}}" class="h-item__action xy-action-hit" data-id="{{item.id}}" bindtap="openOrder" aria-label="{{item.actionLabel}}"><text class="h-pill">{{item.actionLabel}}</text></button>
-        <button wx:else class="h-item__more xy-action-hit" data-id="{{item.id}}" bindtap="openOrder" aria-label="查看订单详情">›</button>
-      </view>
+      <block wx:for="{{items}}" wx:key="id"><template is="xg-item" data="{{item, tone: xg.tone(item)}}" /></block>
+    </view>
     </view>
 
     <status-view wx:if="{{listState.phase === 'ready' && listState.incremental === 'refreshing'}}" state="loading" density="compact-footer" title="正在刷新设备订单" />

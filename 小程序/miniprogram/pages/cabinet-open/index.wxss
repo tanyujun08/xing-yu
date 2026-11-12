@@ -1,2 +1,3 @@
 @import "../../shared/design/cabinet-flow.wxss";
 .cabinet-open-page { min-height: 100%; box-sizing: border-box; background: var(--xy-color-page); }
+.cabinet-open-page.cabinet-open-page--a { padding: 0; gap: 0; }
