@@ -38,6 +38,19 @@ export function orderMessageView(value: OrderMessage, account: string) {
     imageHeight: value.media ? Math.max(44, Math.round(value.media.height * scale)) : 0,
   };
 }
+/** Groups consecutive messages from one sender and shows a time label only after a 5-minute gap. */
+export function decorateMessages<T extends { mine: boolean; timeText: string }>(rows: T[]) {
+  const stamp = (row: T) => Date.parse(row.timeText.replace(' ', 'T'));
+  return rows.map((row, index) => {
+    const before = rows[index - 1], after = rows[index + 1];
+    const showTime = !before || !(stamp(row) - stamp(before) < 300000);
+    const nextShowsTime = !!after && !(stamp(after) - stamp(row) < 300000);
+    const [date = '', clock = ''] = row.timeText.split(' ');
+    const [, month = '', day = ''] = date.split('-');
+    return { ...row, showTime, timeLabel: month ? Number(month) + '月' + Number(day) + '日 ' + clock.slice(0, 5) : row.timeText,
+      first: showTime || !before || before.mine !== row.mine, last: !after || after.mine !== row.mine || nextShowsTime };
+  });
+}
 export function mergeOrderMessages(current: readonly OrderMessage[], incoming: readonly OrderMessage[]) {
   const values = new Map<string, OrderMessage>();
   const clients = new Map<string, string>();
