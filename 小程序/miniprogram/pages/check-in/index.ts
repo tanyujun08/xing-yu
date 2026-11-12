@@ -26,10 +26,11 @@ function calendar(month: Month) {
   const first = new Date(Date.UTC(year!, value! - 1, 1)).getUTCDay();
   const days = new Date(Date.UTC(year!, value!, 0)).getUTCDate();
   const signed = new Set(month.items.map((item) => item.check_in.business_date));
+  const ids = new Map(month.items.map((item) => [item.check_in.business_date, item.check_in.check_in_id]));
   return Array.from({ length: first + days }, (_, index) => {
-    if (index < first) return { key: 'empty-' + index, day: '', state: 'empty', stateText: '' };
+    if (index < first) return { key: 'empty-' + index, day: '', state: 'empty', stateText: '', id: '' };
     const day = index - first + 1, date = month.month + '-' + String(day).padStart(2, '0');
-    return { key: date, day: String(day), state: signed.has(date) ? 'signed' : date === month.today ? 'today' : 'normal', stateText: signed.has(date) ? '已签' : '' };
+    return { key: date, day: String(day), state: signed.has(date) ? 'signed' : date === month.today ? 'today' : date > month.today ? 'future' : 'normal', stateText: signed.has(date) ? '已签' : '', id: ids.get(date) ?? '' };
   });
 }
 function week(month: Month) {
@@ -39,7 +40,7 @@ function week(month: Month) {
   return Array.from({ length: 7 }, (_, index) => {
     const day = dayOf(new Date(monday.getTime() + index * 86400000).toISOString());
     const inMonth = monthOf(day) === month.month;
-    return { key: day, label: ['一', '二', '三', '四', '五', '六', '日'][index], status: !inMonth ? '跨月' : signed.has(day) ? '已签' : day > month.today ? '待签' : '未签', state: !inMonth ? 'outside' : signed.has(day) ? 'done' : 'normal' };
+    return { key: day, today: day === month.today, label: ['一', '二', '三', '四', '五', '六', '日'][index], status: !inMonth ? '跨月' : signed.has(day) ? '已签' : day > month.today ? '待签' : '未签', state: !inMonth ? 'outside' : signed.has(day) ? 'done' : 'normal' };
   });
 }
 function createState() { return { owner: accountApi.sessionIdentity(), scope: createOperationScope(), navigation: createNavigateOnce(), visible: true, intent: '', receiptId:'', timer: undefined as ReturnType<typeof setTimeout> | undefined }; }
@@ -55,6 +56,7 @@ Page({
     ruleAvailable: false, dailyReward: '—', firstReward: '—', milestones: [] as Array<{ key: string; day: string; reward: string }>,
     history: [] as Array<{ key: string; date: string; streak: string; reward: string }>,
     receiptCoupons:[] as {id:string;title:string}[],
+    nextMilestone: null as { streak: number; days: number; reward: string; percent: number } | null, ruleNote: '', recent: [] as Array<{ key: string; date: string; streak: string; reward: string }>,
   },
   onLoad(options:Record<string,string|undefined> = {}){state(this).receiptId=loyaltyIdentifier(options['check_in_id']??'')?options['check_in_id']!:'';},
   onSecondaryNavigationBack() { navigateBackWithFallback(state(this).navigation); },
@@ -95,6 +97,13 @@ Page({
       }
     } catch (error) { if (current(this, value)) this.setData({ errorText: error instanceof Error ? error.message : '权益读取失败' }); }
   },
+  updateProgress() {
+    const streak = Number(this.data.streak) || 0;
+    const tiers = this.data.milestones.map((item) => ({ days: Number(item.key), reward: item.reward })).filter((item) => item.days > 0).sort((x, y) => x.days - y.days);
+    const next = tiers.find((item) => item.days > streak);
+    const note = this.data.ruleAvailable ? ['每日签到 ' + this.data.dailyReward, '首次签到额外 ' + this.data.firstReward, ...tiers.map((item) => '连续 ' + item.days + ' 天额外 ' + item.reward)].join('；') + '。' : '';
+    this.setData({ nextMilestone: next ? { streak, days: next.days, reward: next.reward, percent: Math.min(100, Math.round(streak / next.days * 100)) } : null, ruleNote: note });
+  },
   applyMonth(month: Month) {
     const todayEntry = month.items.find((item) => item.check_in.business_date === month.today);
     this.setData({
@@ -105,6 +114,8 @@ Page({
         reward: entry.grants.map(grantLabel).join('、') || '无额外奖励',
       })),
     });
+    this.setData({ recent: this.data.history.filter((_, index) => index < 3) });
+    this.updateProgress();
   },
   applyRule(rule: Rule) {
     if (rule.policy.schema_version !== 2 || rule.policy.timezone !== 'Asia/Shanghai') throw new Error('签到规则版本无效');
@@ -112,8 +123,9 @@ Page({
       ruleAvailable: true, dailyReward: rewardsLabel(rule.policy.daily_rewards), firstReward: rewardsLabel(rule.policy.first_rewards),
       milestones: rule.policy.milestones.map((item) => ({ key: String(item.days), day: '连续 ' + item.days + ' 天', reward: rewardsLabel(item.rewards) })),
     });
+    this.updateProgress();
   },
-  onHide() { const value = state(this); value.visible = false; if (value.timer !== undefined) value.scope.clearTimer(value.timer); this.setData({ balance: '—', starPoints: '—', receiptText: '',receiptCoupons:[],history:[],calendarDays:[],weekDays:[],signedToday:false }); },
+  onHide() { const value = state(this); value.visible = false; if (value.timer !== undefined) value.scope.clearTimer(value.timer); this.setData({ balance: '—', starPoints: '—', receiptText: '',receiptCoupons:[],history:[],recent:[],calendarDays:[],weekDays:[],signedToday:false }); },
   onUnload() { const value = state(this); value.scope.dispose(); value.navigation.dispose(); states.delete(this); },
   checkIn() {
     const value = state(this);

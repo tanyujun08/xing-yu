@@ -64,6 +64,7 @@ const routes = {
   // 第 3 批 发现与消息
   info: { open: 'switchTab', url: '/pages/info/index' },
   'order-messages': { open: 'navigateTo', url: '/pages/order-messages/index' },
+  'order-messages-filled': { open: 'navigateTo', url: '/pages/order-messages/index', dir: 'order-messages', set: { loggedIn: true, messages: [{ id: 'm1', orderId: 'order-1', title: '订单已支付', deviceName: '大疆 Pocket 3', statusText: '待取件', content: '取件码 123456，请在 10-27 前到柜取件。', timeText: '10-26 19:58' }, { id: 'm2', orderId: 'order-2', title: '归还审核通过', deviceName: '索尼 A7M4', statusText: '退押处理中', content: '押金将在 1 个工作日内原路退回。', timeText: '10-25 14:20' }] } },
   'private-messages': { open: 'navigateTo', url: '/pages/private-messages/index' },
   'info-guide': { open: 'navigateTo', url: '/pages/info-guide/index' },
   'info-guide-flow': { open: 'navigateTo', url: '/pages/info-guide/index?id=rental-flow', dir: 'info-guide' },
