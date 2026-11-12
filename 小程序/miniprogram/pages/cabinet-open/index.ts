@@ -44,7 +44,7 @@ Page({ data: { ...emptyTaskView(), errorText: '' },
                 taskId: s.id, read: rentalOrderApi.task, active,
                 update: (record, elapsed) => this.applyObservedTask(record, elapsed),
                 waiting: (elapsed, disconnected) => this.setData(cabinetFeedback(s.current?.value, elapsed, disconnected)),
-                expired: () => this.setData({ monitoring: false, monitorPaused: true, feedbackTitle: '取件结果仍待确认', feedbackContent: '等待时间较长，请继续核实或联系客服。请勿重复开柜。', feedbackHint: '原取件任务已保留', feedbackPrimary: '继续核实', feedbackContact: true }),
+                expired: () => this.setData({ monitoring: false, monitorPaused: true, feedbackTitle: '取件结果仍待确认', feedbackContent: '等待时间较长，请继续核实或联系客服。请勿重复开柜。', feedbackHint: '原取件任务已保留', feedbackPrimary: '继续核实', feedbackContact: true, feedbackVisible: true }),
                 unavailable: error => this.setData({ monitoring: false, feedbackVisible: false, errorText: error instanceof Error ? error.message : '无法读取取件结果' }),
                 invalidated: () => { if (sessionLost()) this.clearUnavailableSession(); },
             });
@@ -66,7 +66,7 @@ Page({ data: { ...emptyTaskView(), errorText: '' },
         this.setData({ loaded: true, pickup: t.purpose === 'PICKUP', monitoring: t.purpose === 'PICKUP' && !cabinetTaskTerminal(t.status) && t.status !== 'RESERVED', title: t.purpose === 'PICKUP' ? '取件结果' : '归还进度', status: rentalCabinetTaskLabel(t.status), step: t.status === 'SUCCEEDED' ? 3 : ['EXECUTING', 'AWAITING_CONFIRMATION', 'VERIFYING'].includes(t.status) ? 2 : 1, heroTone: t.status === 'SUCCEEDED' ? 'green' : ['FAILED_CONFIRMED', 'ANOMALY'].includes(t.status) ? 'red' : 'orange', heroArt: t.status === 'SUCCEEDED' ? 'check' : ['FAILED_CONFIRMED', 'ANOMALY'].includes(t.status) ? 'shield' : 'clock', copy: rentalCabinetTaskCopy(t), door: fact(t.door_status), rfid: t.purpose === 'PICKUP' && t.status === 'SUCCEEDED' && t.occupancy_result === 'TARGET_ABSENT' ? '设备已取出' : fact(t.rfid_result), occupancy: fact(t.occupancy_result), observed: beijingTime(t.observed_at), confirmed: beijingTime(t.confirmed_at), canResumePickup: !!s.scene && t.purpose === 'PICKUP' && t.status === 'RESERVED' && rentalActionAllowed(t.allowed_actions, 'OPEN_CABINET'), canQuery: rentalActionAllowed(t.allowed_actions, 'QUERY_CABINET'), orderId: t.order_id });
         const feedback = cabinetFeedback(t, elapsed), key = t.purpose === 'PICKUP' ? feedback.feedbackPhase : t.status;
         if (t.purpose === 'PICKUP') this.setData(feedback);
-        if (s.notifiedStatus !== key) { s.notifiedStatus = key; this.showResultFeedback(); }
+        if (s.notifiedStatus !== key) { const first = !s.notifiedStatus; s.notifiedStatus = key; if (!(first && t.purpose === 'PICKUP')) this.showResultFeedback(); }
     },
     async query() { const s = state(this); await s.run('query-original-task', async () => { const lease = s.capture(accountApi.sessionIdentity), viewCurrent = captureTaskView(s), sessionLost = captureTaskSessionLoss(s), active = () => lease() && viewCurrent(); if (!s.current || !active() || !this.data.canQuery)
         return; this.setData({ busy: true }); try {
