@@ -51,7 +51,6 @@ module.exports = { pick: pick, tone: tone, groups: groups };
     <view wx:else class="h-list">
       <block wx:for="{{items}}" wx:key="id"><template is="xg-item" data="{{item: item}}" /></block>
     </view>
-    </view>
 
     <status-view wx:if="{{listState.phase === 'ready' && listState.incremental === 'refreshing'}}" state="loading" density="compact-footer" title="正在刷新设备订单" />
     <status-view wx:elif="{{listState.phase === 'ready' && listState.incremental === 'refresh-error'}}" state="error" density="compact-footer" title="刷新失败" action-text="重试刷新" bindaction="retryRefresh" />
