@@ -12,6 +12,8 @@ const ART: Record<string, string> = {
   parcel: '/assets/status-3d/parcel.png',
   magnifier: '/assets/status-3d/magnifier.png',
   bill: '/assets/status-3d/bill.png',
+  'cabinet-wait': '/assets/status-3d/cabinet-wait.png',
+  archive: '/assets/status-3d/archive.png',
 };
 
 const TONES = ['green', 'orange', 'red', 'blue', 'purple', 'neutral'];
