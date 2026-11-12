@@ -7,6 +7,10 @@ import { accountApi } from '../../shared/api/account-api';
 import { rentalOrderApi, type RentalOrder, type RentalTask } from '../../shared/api/rental-api';
 import { createReturnCabinetState, readReturnCabinetContext } from '../../shared/interaction/return-cabinet-context';
 import { rentalBlockers } from '../../shared/presentation/rental-order';
+import { openSupplyLocation } from '../../shared/presentation/supply-location';
+import { distanceFrom, pointOf, readAuthorizedPoint, type Point } from '../../shared/presentation/nearby';
+
+type SlotView = { id: string; name: string; image: string; priceValue: string; priceUnit: string; priceFen: number; cheapest: boolean };
 
 type CabinetListView = {
   available?: boolean;
@@ -14,14 +18,19 @@ type CabinetListView = {
   name: string;
   address: string;
   media: string;
-  devices: never[];
+  devices: SlotView[];
   deviceAvailabilityLabel: string;
+  countLabel: string;
+  fromPrice: string;
+  distance: string;
+  meters: number;
+  canNavigate: boolean;
   availabilityLabel: string;
   statusLabel: string;
   metaLabel: string;
 };
 
-const cabinetStates = new WeakMap<object, { epoch: number; visible: boolean; covers: Map<string, string> }>();
+const cabinetStates = new WeakMap<object, { epoch: number; visible: boolean; covers: Map<string, string>; origin: Point | null; items: PublicCabinet[] }>();
 const returnStates = new WeakMap<object, ReturnType<typeof createReturnCabinetState<RentalOrder, RentalTask>>>();
 function returnState(page: object) { let value = returnStates.get(page); if (!value) { value = createReturnCabinetState<RentalOrder, RentalTask>(); returnStates.set(page, value); } return value; }
 function captureReturnView(state: ReturnType<typeof returnState>) {
@@ -36,7 +45,7 @@ function captureReturnSessionLoss(state: ReturnType<typeof returnState>) {
 function cabinetState(page: object) {
   const current = cabinetStates.get(page);
   if (current) return current;
-  const created = { epoch: 0, visible: true, covers: new Map<string, string>() };
+  const created = { epoch: 0, visible: true, covers: new Map<string, string>(), origin: null as Point | null, items: [] as PublicCabinet[] };
   cabinetStates.set(page, created);
   return created;
 }
@@ -63,28 +72,39 @@ function deviceView(supply: RentalSupply, coverUrl: string) {
   };
 }
 
-function cabinetView(cabinet: PublicCabinet, coverMap: Map<string, string>): CabinetListView {
+function cabinetView(cabinet: PublicCabinet, coverMap: Map<string, string>, origin: Point | null): CabinetListView {
   const supplies = Array.isArray(cabinet.supplies) ? cabinet.supplies : [];
+  const slots: SlotView[] = supplies.map((supply) => {
+    const view = deviceView(supply, coverMap.get(supply.asset_id) ?? '');
+    return { id: view.id, name: view.name, image: view.displayImage, priceValue: view.priceValue.replace(/\.00$/, ''), priceUnit: view.priceUnit, priceFen: Number(supply.unit_price_fen) || 0, cheapest: false };
+  }).sort((x, y) => x.priceFen - y.priceFen);
+  if (slots[0]) slots[0].cheapest = true;
+  const distance = distanceFrom(origin, cabinet.address?.location);
   return {
     id: cabinet.cabinet_id,
     name: cabinet.name,
-    address: [cabinet.address?.city_name, cabinet.address?.district_name, cabinet.address?.detail_address].filter(Boolean).join(' '),
+    address: [cabinet.address?.district_name, cabinet.address?.detail_address].filter(Boolean).join(' '),
     media: designAssets.cabinetList,
-    devices: supplies.map((supply) => deviceView(supply, coverMap.get(supply.asset_id) ?? '')) as never[],
+    devices: slots,
     deviceAvailabilityLabel: `${supplies.length}台设备可租`,
+    countLabel: supplies.length ? `${supplies.length} 台可租` : '',
+    fromPrice: slots[0] ? slots[0].priceValue : '',
+    distance: distance?.label ?? '',
+    meters: distance?.meters ?? Number.POSITIVE_INFINITY,
+    canNavigate: !!pointOf(cabinet.address?.location),
     availabilityLabel: `${supplies.length}台设备`,
     statusLabel: '',
     metaLabel: cabinet.deployment_site_name ?? '',
   };
 }
 
+function sortByDistance(rows: CabinetListView[], origin: Point | null): CabinetListView[] {
+  return origin ? [...rows].sort((x, y) => x.meters - y.meters) : rows;
+}
+
 function cityName(value: string): string {
   const cityEnd = value.indexOf('市');
   return cityEnd >= 0 ? value.slice(0, cityEnd + 1) : value;
-}
-
-function selectedCabinetFor(cabinets: CabinetListView[], selectedId: string): CabinetListView | null {
-  return cabinets.find((cabinet) => cabinet.id === selectedId) ?? cabinets[0] ?? null;
 }
 
 Page({
@@ -99,6 +119,7 @@ Page({
     region: '',
     regionCity: '',
     cabinets: [] as CabinetListView[],
+    sortedByDistance: false,
     selectedCabinetId: '',
     activeCabinet: null as CabinetListView | null,
     loading: false,
@@ -127,7 +148,7 @@ Page({
       if (!context.canSelect) return;
       const options = await rentalOrderApi.cabinets(state.id, more ? this.data.cursor ?? undefined : undefined).promise;
       if (!active()) return;
-      const rows: CabinetListView[] = options.value.items.map(item => ({ available: item.compartments.some(slot => slot.available), id: item.cabinet_id, name: item.name, address: item.address?.trim() || '地址未提供', media: '', devices: [], deviceAvailabilityLabel: item.compartments.some(slot => slot.available) ? `${item.compartments.filter(slot => slot.available).length}个可用格口` : '暂无可用格口', availabilityLabel: '', statusLabel: item.connectivity_status, metaLabel: '' }));
+      const rows: CabinetListView[] = options.value.items.map(item => ({ available: item.compartments.some(slot => slot.available), id: item.cabinet_id, name: item.name, address: item.address?.trim() || '地址未提供', media: '', devices: [], countLabel: '', fromPrice: '', distance: '', meters: 0, canNavigate: false, deviceAvailabilityLabel: item.compartments.some(slot => slot.available) ? `${item.compartments.filter(slot => slot.available).length}个可用格口` : '暂无可用格口', availabilityLabel: '', statusLabel: item.connectivity_status, metaLabel: '' }));
       const cabinets = more ? [...this.data.cabinets, ...rows.filter(item => !this.data.cabinets.some(existing => existing.id === item.id))] : rows;
       this.setData({ cabinets, visibleCabinets: cabinets.filter(item => !this.data.returnLocation || item.address === this.data.returnLocation), activeCabinet: null, selectedCabinetId: '', canSelect: true, optionsLoaded: true, cursor: options.value.next_cursor, returnCopy: rentalBlockers(options.value.blockers) });
     } catch (error) { if (active()) this.setData({ errorText: error instanceof Error ? error.message : '归还柜机读取失败', cabinets: [], visibleCabinets: [], returnLocation: '', activeCabinet: null }); }
@@ -147,20 +168,34 @@ Page({
     const state = cabinetState(this);
     const epoch = ++state.epoch;
     const city = readDiscoveryCity();
-    this.setData({ region: city?.name ?? '', regionCity: city?.name ? cityName(city.name) : '', loading: true, errorText: '' });
+    this.setData({ region: city?.name ?? '', regionCity: city?.name ? cityName(city.name) : '全部城市', loading: true, errorText: '' });
     try {
       const page = await cabinetApi.list(city ? { city_id: city.cityId } : {}).promise;
       if (!state.visible || epoch !== state.epoch) return;
       const items = (Array.isArray(page?.items) ? page.items : []).filter((cabinet) => !!cabinet && !!cabinet.cabinet_id && cabinet.status === 'ACTIVE');
-      const cabinets = items.map((cabinet) => cabinetView(cabinet, state.covers));
-      const activeCabinet = selectedCabinetFor(cabinets, String(this.data.selectedCabinetId ?? ''));
-      this.setData({ cabinets, selectedCabinetId: activeCabinet?.id ?? '', activeCabinet });
+      state.items = items;
+      this.showCabinets();
+      void this.refreshOrigin(epoch);
       void this.loadSupplyCovers(items.flatMap((cabinet) => (Array.isArray(cabinet.supplies) ? cabinet.supplies : [])), items, epoch);
     } catch (error) {
-      if (state.visible && epoch === state.epoch) this.setData({ cabinets: [], selectedCabinetId: '', activeCabinet: null, errorText: error instanceof Error ? error.message : '柜机读取失败，请重试。' });
+      if (state.visible && epoch === state.epoch) this.setData({ cabinets: [], errorText: error instanceof Error ? error.message : '柜机读取失败，请重试。' });
     } finally {
       if (state.visible && epoch === state.epoch) this.setData({ loading: false });
     }
+  },
+
+  showCabinets() {
+    const state = cabinetState(this);
+    const cabinets = sortByDistance(state.items.map((cabinet) => cabinetView(cabinet, state.covers, state.origin)), state.origin);
+    this.setData({ cabinets, sortedByDistance: !!state.origin && cabinets.some((cabinet) => !!cabinet.distance) });
+  },
+
+  async refreshOrigin(epoch: number) {
+    const state = cabinetState(this);
+    const origin = await readAuthorizedPoint();
+    if (!origin || !state.visible || epoch !== state.epoch) return;
+    state.origin = origin;
+    this.showCabinets();
   },
 
   async loadSupplyCovers(supplies: RentalSupply[], items: PublicCabinet[], epoch: number) {
@@ -170,8 +205,9 @@ Page({
       if (!state.visible || epoch !== state.epoch) return;
       const url=publicSupplyGallery(supply)[0]?.src;if(url)state.covers.set(supply.asset_id,url);
     }
-    this.setData({cabinets:items.map(cabinet=>cabinetView(cabinet,state.covers))});
-    this.setData({activeCabinet:selectedCabinetFor(this.data.cabinets as CabinetListView[],String(this.data.selectedCabinetId??''))});
+    if (!state.visible || epoch !== state.epoch) return;
+    void items;
+    this.showCabinets();
   },
 
   onShow() { const state = cabinetState(this); state.visible = true; this.refreshType(); if (this.data.returnMode) { const returning = returnState(this), owner = accountApi.sessionIdentity() ?? ''; if (returning.owner !== owner) this.clearUnavailableReturn(); returning.show(owner); void this.refreshReturn(); } else void this.loadCabinets(); },
@@ -184,10 +220,12 @@ Page({
 
   openStores() { if (!this.data.returnMode) wx.redirectTo({ url: '/pages/stores/index' }); },
 
-  selectCabinet(event: WechatMiniprogram.TouchEvent) {
+  navigateToCabinet(event: WechatMiniprogram.TouchEvent) {
     const id = String(event.currentTarget.dataset['id'] ?? '');
-    const cabinet = (this.data.cabinets as CabinetListView[]).find((candidate) => candidate.id === id);
-    if (cabinet) this.setData({ selectedCabinetId: id, activeCabinet: cabinet });
+    const item = cabinetState(this).items.find((cabinet) => cabinet.cabinet_id === id);
+    const point = pointOf(item?.address?.location);
+    if (!item || !point) return;
+    openSupplyLocation({ name: item.name, address: [item.address.city_name, item.address.district_name, item.address.detail_address].filter(Boolean).join(''), ...point });
   },
 
   openCabinet(event: WechatMiniprogram.TouchEvent) {
