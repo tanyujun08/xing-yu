@@ -13,9 +13,11 @@
   <block wx:else>
     <view class="guide-header"><text wx:if="{{guide.kicker !== guide.title}}" class="guide-kicker">{{guide.kicker}}</text><text class="guide-title" role="heading" aria-level="1">{{guide.title}}</text><text class="guide-summary">{{guide.summary}}</text></view>
     <view class="guide-section-heading"><text class="guide-section-label">说明要点</text><text class="guide-section-count">{{guide.sections.length}} 个主题</text></view>
-    <view wx:for="{{guide.sections}}" wx:key="title" class="guide-section {{index === 0 ? 'is-first' : ''}}">
-      <view class="guide-index"><text>{{index < 9 ? '0' + (index + 1) : index + 1}}</text></view>
-      <view class="guide-section-copy"><text class="guide-section-title">{{item.title}}</text><text class="guide-section-body">{{item.body}}</text></view>
+    <view class="guide-list">
+      <view wx:for="{{guide.sections}}" wx:key="title" class="guide-section {{index === 0 ? 'is-first' : ''}}">
+        <view class="guide-index"><text>{{index < 9 ? '0' + (index + 1) : index + 1}}</text></view>
+        <view class="guide-section-copy"><text class="guide-section-title">{{item.title}}</text><text class="guide-section-body">{{item.body}}</text></view>
+      </view>
     </view>
   </block>
 </view>
