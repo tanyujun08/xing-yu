@@ -653,7 +653,8 @@ test('definitive wrong code opens shared feedback and acknowledgement allows a n
 test.each(['UNKNOWN', 'VERIFYING', 'EXECUTING', 'RESERVED', 'FAILED_CONFIRMED', 'SUCCEEDED'])('result dialog reflects authoritative %s without opening a cabinet', async status => {
     m.task.mockReturnValue(result({ ...task(status, 'PICKUP'), task_id: 't1' }));
     await mount('cabinet-open', { taskId: 't1' });
-    expect(page!.data['feedbackVisible']).toBe(true);
+    expect(page!.data['feedbackVisible']).toBe(false);
+    call('showResultFeedback'); expect(page!.data['feedbackVisible']).toBe(true);
     expect(page!.data['feedbackTone']).toBe(status === 'SUCCEEDED' ? 'success' : status === 'FAILED_CONFIRMED' ? 'error' : status === 'UNKNOWN' ? 'warning' : 'pending');
     if (status !== 'SUCCEEDED') expect(page!.data['feedbackTitle']).not.toContain('已完成');
     call('dismissFeedback'); await call('refresh'); expect(page!.data['feedbackVisible']).toBe(false);
@@ -678,7 +679,7 @@ test('an unconfirmed empty slot cannot be described as a completed pickup', asyn
 });
 test('acknowledging a confirmed pickup success opens only its original order', async () => {
     m.task.mockReturnValue(result({ ...task('SUCCEEDED','PICKUP'), task_id:'t1' }));
-    await mount('cabinet-open', { taskId:'t1' }); call('confirmFeedback');
+    await mount('cabinet-open', { taskId:'t1' }); call('showResultFeedback'); call('confirmFeedback');
     expect(wx.navigateTo).toHaveBeenCalledWith(expect.objectContaining({url:'/pages/order-detail/index?id=o1'}));
     expect(m.openCabinet).not.toHaveBeenCalled(); expect(extras.queryCabinet).not.toHaveBeenCalled();
 });

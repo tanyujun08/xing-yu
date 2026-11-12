@@ -11,6 +11,8 @@ export const designAssets = {
   orderLoadFailed: '/assets/order-states/order-load-failed.png',
   orderEmptyMessages: '/assets/order-communication/empty-order-conversations.png',
   orderSupport: '/assets/order-communication/official-support.svg',
+  flowSupport: '/assets/icons/flow-support.svg',
+  flowCheck: '/assets/icons/flow-check.svg',
   loginMark: '/assets/icons/login-mark.svg',
   returnSend: '/assets/return-icons/send.svg',
   returnRefresh: '/assets/return-icons/refresh.svg',

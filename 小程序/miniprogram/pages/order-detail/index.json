@@ -9,7 +9,8 @@
     "bottom-actions": "../../components/bottom-actions/index",
     "page-header": "../../components/page-header/index",
     "payable-amount": "../../components/payable-amount/index",
-    "media-state": "../../components/media-state/index"
+    "media-state": "../../components/media-state/index",
+    "status-hero": "../../components/status-hero/index"
   },
   "navigationStyle": "custom",
   "navigationBarTextStyle": "black"

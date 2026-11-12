@@ -42,7 +42,28 @@ const routes = {
   'no-deposit': { open: 'navigateTo', url: '/pages/no-deposit/index' },
   login: { open: 'navigateTo', url: '/pages/login/index' },
   region: { open: 'navigateTo', url: '/pages/region/index' },
+  // 第 2 批 订单流程
+  contract: { open: 'navigateTo', url: '/pages/contract/index?orderId=order-1' },
+  'contract-sign': { open: 'navigateTo', url: '/pages/contract-sign/index?orderId=order-1' },
+  'order-detail': { open: 'navigateTo', url: '/pages/order-detail/index?orderId=order-4' },
+  'order-detail-pay': { open: 'navigateTo', url: '/pages/order-detail/index?orderId=order-2', dir: 'order-detail' },
+  'order-detail-return': { open: 'navigateTo', url: '/pages/order-detail/index?orderId=order-5', dir: 'order-detail' },
+  'order-detail-supplement': { open: 'navigateTo', url: '/pages/order-detail/index?orderId=order-7', dir: 'order-detail' },
+  'order-detail-done': { open: 'navigateTo', url: '/pages/order-detail/index?orderId=order-9', dir: 'order-detail' },
+  'order-fees': { open: 'navigateTo', url: '/pages/order-fees/index?orderId=order-7' },
+  'service-detail': { open: 'navigateTo', url: '/pages/service-detail/index?mode=preview&service=guard' },
+  'device-orders': { open: 'navigateTo', url: '/pages/device-orders/index?mode=rent' },
+  'cabinet-open': { open: 'navigateTo', url: '/pages/cabinet-open/index?taskId=task-demo' },
+  'return-submit': { open: 'navigateTo', url: '/pages/return-submit/index?orderId=order-5' },
+  'cabinet-return': { open: 'navigateTo', url: '/pages/cabinet-return/index?orderId=order-4' },
+  dispute: { open: 'navigateTo', url: '/pages/dispute/index?orderId=order-6' },
+  // 手写签名：旧上传卡住后可重新签写的状态
+  'contract-sign-restart': { open: 'navigateTo', url: '/pages/contract-sign/index?orderId=order-1', dir: 'contract-sign', set: { loading: false, ready: false, hasDraft: true, rejected: false, canRestart: true, name: '林沐 · 演示', progressText: '', errorText: '签名图片上传没有成功，请重新签写' } },
+  'contract-sign-ready': { open: 'navigateTo', url: '/pages/contract-sign/index?orderId=order-1', dir: 'contract-sign', set: { loading: false, ready: true, hasDraft: false, name: '林沐 · 演示', progressText: '', errorText: '' } },
+  'contract-sign-draft': { open: 'navigateTo', url: '/pages/contract-sign/index?orderId=order-1', dir: 'contract-sign', set: { loading: false, ready: false, hasDraft: true, rejected: false, canRestart: false, name: '林沐 · 演示', progressText: '', errorText: '' } },
 };
+// 订单详情的 10 个演示状态：od-1（准备签约）… od-10（已关闭）
+for (let n = 1; n <= 10; n += 1) routes['od-' + n] = { open: 'navigateTo', url: '/pages/order-detail/index?orderId=order-' + n, dir: 'order-detail' };
 
 // 参数里可带 --shots（只截图不量尺寸，快）和 --prefix=before（截图文件名前缀，用于改前/改后对照）
 const args = process.argv.slice(2);
@@ -71,8 +92,15 @@ let mp;
 try { mp = await automator.connect({ wsEndpoint: `ws://127.0.0.1:${port}` }); console.log('复用已打开的开发者工具'); }
 catch { mp = await automator.launch({ cliPath, projectPath: root, port }); console.log('首次启动开发者工具（端口', port, '）'); }
 // 连上了但不响应（比如重新打开过项目），就重新开启自动化端口再连
-const alive = await Promise.race([mp.currentPage().then(() => true, () => false), new Promise((r) => setTimeout(() => r(false), 8000))]);
-if (!alive) { console.log('开发者工具不响应，重新开启自动化'); try { mp.disconnect(); } catch {} mp = await automator.launch({ cliPath, projectPath: root, port }); console.log('已重新连接'); }
+const ping = (ms) => Promise.race([mp.currentPage().then(() => true, () => false), new Promise((r) => setTimeout(() => r(false), ms))]);
+let alive = await ping(30000);
+// 不响应时先重连同一端口（避免“端口被占用”），仍不行再换端口重新开启自动化
+for (let i = 0; !alive && i < 3; i++) {
+  console.log('开发者工具不响应，第', i + 1, '次重连');
+  try { mp.disconnect(); } catch {}
+  try { mp = await automator.connect({ wsEndpoint: `ws://127.0.0.1:${port}` }); alive = await ping(30000); } catch {}
+}
+if (!alive) { console.log('改用端口', port + 1, '重新开启自动化'); try { mp.disconnect(); } catch {} mp = await automator.launch({ cliPath, projectPath: root, port: port + 1 }); alive = await ping(60000); console.log(alive ? '已重新连接' : '仍未响应'); }
 mp.on('exception', (e) => console.log('页面异常：', (e && e.message || '').slice(0, 300)));
 mp.on('console', (e) => { if (e.type === 'error' || e.type === 'warn') console.log('控制台', e.type, JSON.stringify(e.args).slice(0, 300)); });
 const result = {};
@@ -117,17 +145,25 @@ try {
     let bottom = 0;
     for (const list of Object.values(rows)) for (const row of list) { const p = row.split('|'); bottom = Math.max(bottom, Number(p[1]) + Number(p[3])); }
     if (shotsOnly) { try { const s = await page.size(); bottom = s.height; } catch { bottom = 1400; } }
-    // 分屏截图：每 600px 一张
-    for (let y = 0, i = 0; y < Math.max(bottom - 400, 1) && i < 8; y += 600, i += 1) {
-      await mp.pageScrollTo(y);
-      await page.waitFor(500);
-      await mp.screenshot({ path: path.join(outDir, `${prefix}${name}-${i}.png`) });
+    // 完整长图：先读页面总高，每次下滚 300px 截一张并记下实际滚动位置；之后按位置拼成一张长图
+    const shots = []; let win = {};
+    try { win = await mp.evaluate(() => { const w = wx.getWindowInfo(); return { width: w.windowWidth, height: w.windowHeight }; }); } catch { /* 取不到就不写 */ }
+    const offset = () => Promise.race([
+      mp.evaluate(() => new Promise((resolve) => { wx.createSelectorQuery().selectViewport().scrollOffset((r) => resolve(r ? { top: r.scrollTop, height: r.scrollHeight } : null)).exec(); })),
+      new Promise((resolve) => setTimeout(() => resolve(null), 4000)),
+    ]).catch(() => null);
+    for (let i = 0, last = -1; i < 30; i += 1) {
+      await mp.pageScrollTo(i * 300);
+      await page.waitFor(450);
+      const at = await offset();
+      const top = at ? Math.round(at.top) : Math.max(last, 0);
+      if (top === last) break;
+      const file = `${prefix}${name}-s${i}.png`;
+      await mp.screenshot({ path: path.join(outDir, file) });
+      shots.push({ file, top, pageHeight: at ? Math.round(at.height) : null }); last = top;
     }
-    if (bottom > 1000) {
-      await mp.pageScrollTo(99999);
-      await page.waitFor(600);
-      await mp.screenshot({ path: path.join(outDir, `${prefix}${name}-end.png`) });
-    }
+    fs.writeFileSync(path.join(outDir, `${prefix}${name}.shots.json`), JSON.stringify({ name, window: win, shots }));
+    console.log('截图', name, shots.length, '张，滚动到', shots.length ? shots[shots.length - 1].top : 0, '页面总高', shots.length ? shots[0].pageHeight : '?');
     await mp.pageScrollTo(0);
     console.log('完成', name, Object.keys(rows).length, '个 class');
   }

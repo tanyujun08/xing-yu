@@ -1,0 +1,34 @@
+.status-hero { position: relative; overflow: hidden; display: flex; align-items: center; gap: var(--xy-space-2); min-height: var(--xy-hero-min-height); padding: var(--xy-space-4) var(--xy-space-3) var(--xy-space-4) var(--xy-space-5); border-radius: var(--xy-radius-lg); box-shadow: var(--xy-shadow-hero); box-sizing: border-box; background: var(--xy-hero-bg-green); }
+.status-hero::before { content: ""; position: absolute; left: calc(var(--xy-space-6) * -2); top: calc(var(--xy-space-6) * -2.5); width: calc(var(--xy-space-6) * 10); height: calc(var(--xy-space-6) * 6); background: var(--xy-hero-highlight); pointer-events: none; }
+.status-hero--orange { background: var(--xy-hero-bg-orange); }
+.status-hero--red { background: var(--xy-hero-bg-red); }
+.status-hero--blue { background: var(--xy-hero-bg-blue); }
+.status-hero--purple { background: var(--xy-hero-bg-purple); }
+.status-hero--neutral { background: var(--xy-hero-bg-neutral); }
+.status-hero__main { position: relative; display: flex; align-items: center; gap: var(--xy-space-2); flex: 1; min-width: 0; }
+.status-hero__copy { position: relative; flex: 1; min-width: 0; display: flex; flex-direction: column; gap: var(--xy-space-1); }
+.status-hero__title { color: var(--xy-color-text-primary); font-size: var(--xy-hero-title-size); line-height: var(--xy-hero-title-line-height); font-weight: var(--xy-text-weight-semibold); }
+.status-hero__description { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; color: var(--xy-color-text-secondary); font-size: var(--xy-row-caption-size); line-height: var(--xy-row-caption-line-height); }
+.status-hero__art { position: relative; flex: none; width: var(--xy-hero-art-size); height: var(--xy-hero-art-size); margin-right: var(--xy-space-1); }
+
+/* 方向 A：通栏纯色带，没有圆角、描边、阴影和渐变 */
+.status-hero--band { flex-direction: column; align-items: stretch; gap: var(--xy-space-4); min-height: 0; padding: var(--xy-space-4); border-radius: 0; box-shadow: none; background: var(--xy-band-bg-green); }
+.status-hero--band::before { display: none; }
+.status-hero--band.status-hero--orange { background: var(--xy-band-bg-orange); }
+.status-hero--band.status-hero--red { background: var(--xy-band-bg-red); }
+.status-hero--band.status-hero--blue { background: var(--xy-band-bg-blue); }
+.status-hero--band.status-hero--purple { background: var(--xy-band-bg-purple); }
+.status-hero--band.status-hero--neutral { background: var(--xy-band-bg-neutral); }
+.status-hero--band .status-hero__description { color: var(--xy-band-copy); }
+.status-hero--band.status-hero--red .status-hero__title { color: var(--xy-band-title-red); }
+.status-hero--band.status-hero--orange .status-hero__title { color: var(--xy-band-title-orange); }
+.status-hero--band .status-hero__art { width: var(--xy-band-art-size); height: var(--xy-band-art-size); margin-right: 0; }
+.status-hero__rail { display: flex; }
+.status-hero__step { position: relative; flex: 1; display: flex; flex-direction: column; gap: var(--xy-space-1); padding-top: var(--xy-space-2); color: var(--xy-band-copy); font-size: var(--xy-text-caption-size); line-height: var(--xy-text-caption-line-height); }
+.status-hero__step::before { content: ""; position: absolute; top: 0; left: 0; right: calc(var(--xy-space-1) - 1px); height: 2px; border-radius: var(--xy-radius-compact); background: var(--xy-band-track); }
+.status-hero__step.is-done::before, .status-hero__step.is-current::before { background: var(--xy-color-brand); }
+.status-hero__step.is-current { color: var(--xy-color-text-primary); font-weight: var(--xy-text-weight-semibold); }
+.status-hero__step.is-current::after { content: ""; position: absolute; top: -3px; left: calc(50% - 6px); width: 8px; height: 8px; border-radius: var(--xy-radius-circle); background: var(--xy-color-brand); box-shadow: var(--xy-band-dot-ring); }
+.status-hero--orange .status-hero__step.is-current::before, .status-hero--orange .status-hero__step.is-current::after { background: var(--xy-color-key-warning); }
+.status-hero--red .status-hero__step.is-current::before, .status-hero--red .status-hero__step.is-current::after { background: var(--xy-color-danger); }
+.status-hero__note { color: var(--xy-band-copy); font-weight: var(--xy-text-weight-regular); }

@@ -10,7 +10,7 @@ const states = new WeakMap<object, ReturnType<typeof newState>>();
 const empty = { loaded: false, loading: false, errorText: '', unavailable: false, fees: null as ReturnType<typeof rentalFeeView>, previewError: '' };
 function current(state: ReturnType<typeof newState>) { return state.visible && !state.scope.disposed && state.owner === (accountApi.sessionIdentity() ?? ''); }
 Page({
-  data: { ...empty, successIcon: designAssets.returnSuccess },
+  data: { ...empty, successIcon: designAssets.returnSuccess, supportIcon: designAssets.flowSupport },
   onLoad(options: Record<string, string | undefined>) { states.set(this, newState(options['orderId'] ?? '')); },
   onShow() {
     const old = states.get(this); if (!old) return;

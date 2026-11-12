@@ -1,7 +1,31 @@
 @import "./shared/design/components.wxss";
 @import "./shared/design/page-action-states.wxss";
+@import "./shared/design/order-flow-h.wxss";
+@import "./shared/design/order-flow-a.wxss";
 
 page {
+  /* 订单流程方向 A：通栏纯色状态带、单张抬升白卡、灰底裸列表 */
+  --xy-band-bg-green: #eaf4f0;
+  --xy-band-bg-orange: #fcf0e6;
+  --xy-band-bg-red: #fcebe8;
+  --xy-band-bg-blue: #e9f0fb;
+  --xy-band-bg-purple: #efedfb;
+  --xy-band-bg-neutral: #ececf0;
+  --xy-band-title-red: #b42b0c;
+  --xy-band-title-orange: #9a4208;
+  --xy-band-copy: #55595e;
+  --xy-band-track: rgba(0, 0, 0, .1);
+  --xy-band-dot-ring: 0 0 0 2px rgba(255, 255, 255, .9);
+  --xy-band-art-size: 64px;
+  --xy-color-text-value: #3a3a3c;
+  --xy-color-well: #f2f2f5;
+  --xy-shadow-raised: 0 1px 2px rgba(0, 0, 0, .04), 0 0 0 1px rgba(0, 0, 0, .03);
+  --xy-key-currency-size: calc(12px + .5rem);
+  --xy-ticket-code-size: calc(22px + .5rem);
+  --xy-ticket-code-height: 56px;
+  --xy-row-height-a: 48px;
+  --xy-timeline-dot-size: 16px;
+  --xy-timeline-dot-ring: 0 0 0 4px #ddefe8;
   --xy-order-body-size: calc(7px + .5rem);
   --xy-order-body-line-height: calc(14px + .5rem);
   --xy-order-status-size: calc(16px + .5rem);
@@ -60,6 +84,29 @@ page {
   --xy-color-text-disabled: #c7c7cc;
   --xy-color-text-inverse: #fff;
   --xy-color-page: #f5f5f7;
+  /* 订单流程状态头（方向 H）：很浅的同色渐变 + 插画后柔光 */
+  --xy-hero-bg-green: radial-gradient(60% 90% at 86% 55%, rgba(52, 199, 140, .2), transparent 70%), linear-gradient(120deg, #f7fbf9 0%, #eef8f3 100%);
+  --xy-hero-bg-orange: radial-gradient(60% 90% at 86% 55%, rgba(255, 159, 64, .2), transparent 70%), linear-gradient(120deg, #fffaf6 0%, #fff2e8 100%);
+  --xy-hero-bg-red: radial-gradient(60% 90% at 86% 55%, rgba(255, 99, 88, .18), transparent 70%), linear-gradient(120deg, #fff9f9 0%, #ffefee 100%);
+  --xy-hero-bg-blue: radial-gradient(60% 90% at 86% 55%, rgba(64, 144, 255, .18), transparent 70%), linear-gradient(120deg, #f8fbff 0%, #edf4ff 100%);
+  --xy-hero-bg-purple: radial-gradient(60% 90% at 86% 55%, rgba(130, 110, 255, .18), transparent 70%), linear-gradient(120deg, #faf9ff 0%, #f1effd 100%);
+  --xy-hero-bg-neutral: radial-gradient(60% 90% at 86% 55%, rgba(120, 120, 128, .12), transparent 70%), linear-gradient(120deg, #fafafb 0%, #f1f2f5 100%);
+  --xy-hero-highlight: radial-gradient(closest-side, rgba(255, 255, 255, .9), transparent);
+  --xy-shadow-hero: inset 0 0 0 3rpx rgba(255, 255, 255, .95), 0 0 0 1rpx rgba(0, 0, 0, .04), 0 6px 16px rgba(0, 0, 0, .04);
+  --xy-hero-art-size: 72px;
+  --xy-hero-min-height: 112px;
+  --xy-hero-title-size: calc(12px + .5rem);
+  --xy-hero-title-line-height: calc(20px + .5rem);
+  --xy-key-amount-size: calc(24px + .5rem);
+  --xy-key-amount-line-height: calc(32px + .5rem);
+  --xy-color-key-warning: #e8590c;
+  --xy-color-key-warning-soft: #fff1e6;
+  --xy-color-hairline: rgba(60, 60, 67, .18);
+  --xy-row-height: 44px;
+  --xy-row-text-size: var(--xy-text-body-size);
+  --xy-row-text-line-height: var(--xy-text-body-line-height);
+  --xy-row-caption-size: var(--xy-text-body-small-size);
+  --xy-row-caption-line-height: var(--xy-text-body-small-line-height);
   --xy-color-canvas-muted: #eaebef;
   --xy-color-surface: #fff;
   --xy-color-surface-subtle: #fafafc;

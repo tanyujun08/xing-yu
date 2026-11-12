@@ -48,3 +48,32 @@
 .plain-button, .task-button { max-width:100%; }
 .touch-overlay { position:absolute; left:50%; top:50%; width:100% !important; height:100%; min-width:var(--xy-size-touch-min); min-height:var(--xy-size-touch-min); transform:translate(-50%,-50%); box-sizing:border-box; padding:0; margin:0; border:0; border-radius:0; background:transparent; }
 .touch-overlay::after { border:0; }
+/* 方向 H：胶囊筛选 + 一行一张白块，需处理的行带颜色状态和按钮 */
+.equipment-page { padding-top: var(--xy-space-3); }
+.h-tabs { gap: var(--xy-space-2); }
+.h-tab { min-height: var(--xy-size-touch-min); padding: 0 var(--xy-space-1); }
+.h-tab::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: calc(var(--xy-space-6) + var(--xy-space-2)); transform: translateY(-50%); border-radius: var(--xy-radius-pill); background: var(--xy-color-surface); z-index: var(--xy-z-behind); }
+.h-tab { position: relative; isolation: isolate; padding: 0 var(--xy-space-3); color: var(--xy-color-text-primary); font-size: var(--xy-row-caption-size); }
+.h-tab.active { color: var(--xy-color-text-inverse); font-weight: var(--xy-text-weight-semibold); }
+.h-tab.active::before { background: var(--xy-color-text-primary); }
+.h-tab.active::after { display: none; }
+.h-list { display: flex; flex-direction: column; gap: var(--xy-space-3); }
+.h-item { display: flex; align-items: center; gap: var(--xy-space-3); padding: var(--xy-space-3) var(--xy-space-4) var(--xy-space-3) var(--xy-space-3); }
+.h-item__main { flex: 1; min-width: 0; display: flex; align-items: center; gap: var(--xy-space-3); min-height: var(--xy-size-touch-min); }
+.h-item .name { font-size: var(--xy-row-text-size); line-height: var(--xy-row-text-line-height); }
+.h-state { display: block; margin-top: var(--xy-space-1); color: var(--xy-color-text-secondary); font-size: var(--xy-row-caption-size); line-height: var(--xy-row-caption-line-height); font-weight: var(--xy-text-weight-semibold); }
+.h-state--warning { color: var(--xy-color-key-warning); }
+.h-deadline { display: block; margin-top: var(--xy-space-1); color: var(--xy-color-key-warning); font-size: var(--xy-row-caption-size); line-height: var(--xy-row-caption-line-height); }
+.h-state--success { color: var(--xy-color-brand); }
+.h-state--muted { font-weight: var(--xy-text-weight-regular); }
+.h-item__action { flex: none; display: flex; align-items: center; justify-content: flex-end; min-height: var(--xy-size-touch-min); padding: 0; margin: 0; background: transparent; }
+.h-pill { display: flex; align-items: center; height: calc(var(--xy-space-6) + var(--xy-space-2)); padding: 0 var(--xy-space-3); border-radius: var(--xy-radius-pill); background: var(--xy-color-brand); color: var(--xy-color-text-inverse); font-size: var(--xy-row-caption-size); font-weight: var(--xy-text-weight-semibold); }
+.h-item__action::after, .h-item__more::after { border: 0; }
+.h-item__more { flex: none; display: flex; align-items: center; justify-content: flex-end; min-width: var(--xy-size-touch-min); min-height: var(--xy-size-touch-min); padding: 0; margin: 0; background: transparent; color: var(--xy-color-text-muted); font-size: var(--xy-text-section-title-size); }
+/* 全部：按需要你处理、进行中、已结束分组（2026-11-12 设计稿第二版） */
+.h-list--grouped { gap: 0; }
+.h-group { display: block; margin: var(--xy-space-6) 0 var(--xy-space-3); color: var(--xy-color-text-secondary); font-size: var(--xy-row-caption-size); line-height: var(--xy-row-caption-line-height); }
+.h-list--grouped > .h-group:first-child { margin-top: var(--xy-space-2); }
+.h-group__list { display: flex; flex-direction: column; gap: var(--xy-space-3); }
+.h-state--ended { color: var(--xy-color-text-muted); font-weight: var(--xy-text-weight-regular); }
+.h-item .summary { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

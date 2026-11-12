@@ -58,6 +58,12 @@ export const rentalSignatureDrafts = {
         if (owner() !== draft.owner || draft.upload.phase !== 'FAILED' && !draft.failure || rentalOrderApi.pendingSignature(draft.orderId)) throw new Error('上传结果待核实，不能丢弃原请求');
         this.forgetAccepted(draft);
     },
+    /** 签名图还没提交成签名请求时可以放弃重签：最多留下一张没被引用的图片，不会产生重复签署。 */
+    canRestart(draft: SignatureUploadDraft) { return owner() === draft.owner && !rentalOrderApi.pendingSignature(draft.orderId); },
+    discardUnsubmitted(draft: SignatureUploadDraft) {
+        if (!this.canRestart(draft)) throw new Error('签名请求结果待核实，不能丢弃原请求');
+        this.forgetAccepted(draft);
+    },
 };
 
 export async function submitRentalSignature(draft: SignatureUploadDraft, options: { scope: OperationScope; active: () => boolean; recovery: boolean; changed: (phase: string, progress: number) => void }): Promise<RentalRecord<RentalSignature> | null> {

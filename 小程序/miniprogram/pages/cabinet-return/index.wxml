@@ -3,7 +3,7 @@
 <page-shell surface="page" has-footer footer-surface="page">
   <page-header variant="return" title="{{taskStatus === 'SUCCEEDED' || taskStatus === 'ANOMALY' || taskStatus === 'FAILED_CONFIRMED' ? '归还结果' : taskStatus === 'UNKNOWN' ? '归还进度' : taskStatus === 'VERIFYING' ? '设备核验' : taskStatus === 'EXECUTING' ? '正在开柜' : taskStatus === 'AWAITING_CONFIRMATION' ? (door === '未关闭' ? '放入设备' : '确认归还') : '入柜归还'}}" bindback="onSecondaryNavigationBack" slot="header" />
   <view class="flow-page">
-    <return-progress wx:if="{{taskStatus !== 'SUCCEEDED' && taskStatus !== 'ANOMALY' && taskStatus !== 'FAILED_CONFIRMED' && taskStatus !== 'UNKNOWN'}}" step="{{taskStatus === 'VERIFYING' ? 3 : 2}}" />
+    <return-progress wx:if="{{taskStatus === 'AWAITING_CONFIRMATION' || taskStatus === 'EXECUTING' || taskStatus === 'VERIFYING'}}" step="{{taskStatus === 'VERIFYING' ? 3 : 2}}" />
     <view wx:if="{{errorText}}" class="return-note return-note--danger" role="alert">{{errorText}}</view>
     <view wx:if="{{loading && !loaded}}" role="status" class="return-copy">正在查询…</view>
     <block wx:if="{{loaded}}">
@@ -47,10 +47,19 @@
 未拍摄请联系客服协助补充</text></view></view>
         <view wx:if="{{door !== '未关闭'}}" class="return-card"><return-evidence-grid tiles="{{tiles}}" busy="{{busy}}" single album-only="{{door === '已关闭'}}" bindselect="selectEvidence" bindpreview="previewEvidence" bindexample="showExample" bindrecover="recoverEvidence" /><view wx:if="{{!photoComplete}}" class="return-note">可先核验柜内设备，照片需后续补充。请勿为补拍重复开柜。</view></view>
       </block>
-      <view wx:else class="return-card"><text class="return-title">{{taskId ? taskStatusLabel : '选择归还租赁柜'}}</text><text class="return-copy">{{taskId ? taskCopy : '请从本单可用的租赁柜中选择归还格口。'}}</text></view>
+      <view wx:else class="xa-page xa-page--inset">
+        <status-hero class="xa-hero" variant="band" step="{{3}}" step-note="{{taskId ? '处理中' : '选柜'}}" tone="green" art="cabinet" title="{{taskId ? taskStatusLabel : '选择归还租赁柜'}}" description="{{taskId ? taskCopy : '从本单可用的租赁柜中选择归还格口，选好后为你预留格口 30 分钟。'}}" />
+        <view class="xa-list">
+          <view class="xa-row"><text class="xa-row__k">本单设备</text><text class="xa-row__v">{{assetTitle || '待核实'}}</text></view>
+          <view class="xa-row"><text class="xa-row__k">归还前凭证</text><text class="xa-row__v">{{preReadyCount}}/{{preTotalCount}} 已提交</text></view>
+          <view wx:if="{{cabinetName}}" class="xa-row"><text class="xa-row__k">当前柜格</text><text class="xa-row__v">{{cabinetName}}{{compartmentNo ? ' · ' + compartmentNo + '号' : ''}}</text></view>
+        </view>
+        <text class="xa-note">到柜后扫描柜机上的小程序码，放入设备与全部配件并关好柜门，系统会自动核验。</text>
+      </view>
     </block>
   </view>
-  <view slot="footer" class="return-actions">
+  <bottom-actions wx:if="{{loaded && !taskId && !canConfirm && !canResumeReservation}}" slot="footer" layout="custom"><view slot="actions" class="xy-h-actions"><button class="xy-action-hit xy-h-kf" bindtap="demoSupport" aria-label="联系客服"><image src="{{icons.flowSupport}}" mode="aspectFit" aria-hidden="true" /><text>客服</text></button><view class="xy-h-actions__main"><button class="xy-action-hit xy-button-reset xy-button-fluid" bindtap="goOrder"><view class="{{canSelect ? 'xy-action-secondary' : 'xy-action-primary'}} xy-action-shell">返回订单</view></button><button wx:if="{{canSelect}}" class="xy-action-hit xy-button-reset xy-button-fluid" bindtap="goSelection" disabled="{{busy}}" aria-disabled="{{busy}}"><view class="xy-action-primary xy-action-shell">选择归还租赁柜</view></button></view></view></bottom-actions>
+  <view wx:else slot="footer" class="return-actions">
     <block wx:if="{{taskStatus === 'SUCCEEDED'}}"><button wx:if="{{!photoComplete}}" class="return-primary" bindtap="goPlacement">补充入柜照片</button><button wx:else class="return-primary" bindtap="goOrder">查看订单</button><button wx:if="{{photoComplete}}" class="return-secondary" bindtap="goMaterials">查看归还凭证</button><button wx:else class="return-secondary" bindtap="demoSupport">联系客服</button><button wx:if="{{!photoComplete}}" class="return-link" bindtap="goOrder">查看订单</button></block>
     <block wx:elif="{{taskStatus === 'ANOMALY'}}"><button class="return-primary" bindtap="demoSupport">联系客服</button><button class="return-secondary" bindtap="goOrder">查看订单</button></block>
     <block wx:elif="{{taskStatus === 'FAILED_CONFIRMED'}}"><button wx:if="{{canSelect}}" class="return-primary" bindtap="goSelection" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">重新选择归还租赁柜</button><button class="{{canSelect ? 'return-secondary' : 'return-primary'}}" bindtap="goOrder">查看订单</button><button class="return-link" bindtap="demoSupport">联系客服</button></block>
