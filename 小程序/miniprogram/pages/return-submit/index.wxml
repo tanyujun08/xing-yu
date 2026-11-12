@@ -1,4 +1,10 @@
 <page-meta root-font-size="system" />
+<wxs module="rsx">
+function parts(a) { return (a || '').split(' '); }
+function who(a) { var p = parts(a); return p.length > 2 ? p[0] + ' ' + p[1] + ' ' + p[2] : a; }
+function where(a) { var p = parts(a); return p.length > 3 ? p.slice(3).join(' ') : ''; }
+module.exports = { who: who, where: where };
+</wxs>
 <view class="return-theme">
 <page-shell surface="page" fixed-header has-footer>
   <page-header variant="return" title="{{recordOnly ? '归还记录' : supplementing ? '补交归还材料' : isAfterOpen ? '入柜摆放照片' : '归还凭证'}}" slot="header" bindback="onSecondaryNavigationBack" />
@@ -24,7 +30,7 @@
       <view wx:if="{{recordOnly}}" class="return-card"><text class="card-title">补交历史</text><text wx:if="{{!history.length}}" class="card-copy">暂无历史版本</text><view wx:for="{{history}}" wx:key="id"><text class="card-title">{{item.title}}</text><text class="card-copy">{{item.time}}</text><text wx:if="{{item.reason}}" class="card-copy">{{item.reason}}</text><button wx:if="{{item.url}}" class="return-link xy-action-hit" data-id="{{item.id}}" bindtap="previewHistory">查看{{item.kind === 'VIDEO' ? '视频' : '照片'}}原凭证</button><text wx:else class="card-copy">该版本凭证暂不可用</text></view></view>
       <view wx:if="{{method === 'EXPRESS' && !canStart}}" class="return-card rs-ship">
         <text class="rs-head__title">返程快递</text>
-        <view class="xa-well rs-well"><view class="xa-well__body"><text class="{{address ? 'xa-well__title' : 'xa-well__sub'}}">{{address || '等待出租方设置返程地址，请勿寄往未经确认的地址'}}</text></view></view>
+        <view class="xa-well rs-well"><view class="xa-well__body"><block wx:if="{{address}}"><text class="xa-well__title">{{rsx.who(address)}}</text><text wx:if="{{rsx.where(address)}}" class="xa-well__sub">{{rsx.where(address)}}</text></block><text wx:else class="xa-well__sub">等待出租方设置返程地址，请勿寄往未经确认的地址</text></view></view>
         <block wx:if="{{canShip || canCorrect}}">
           <button class="xa-row xy-action-hit rs-row" role="checkbox" aria-checked="{{addressConfirmed}}" bindtap="confirmAddress" disabled="{{busy}}" aria-disabled="{{busy}}"><text class="xa-row__k">核对返程地址</text><text class="xa-row__v {{addressConfirmed ? 'rs-ok' : ''}}">{{addressConfirmed ? '已核对' : '点按确认'}}</text><text class="xa-row__more" aria-hidden="true">{{addressConfirmed ? '✓' : '›'}}</text></button>
           <view class="xa-row rs-row"><text class="xa-row__k">快递单号</text><input class="rs-input" value="{{tracking}}" data-field="tracking" maxlength="64" bindinput="input" disabled="{{busy}}" aria-disabled="{{busy}}" placeholder="必填" placeholder-class="rs-placeholder" aria-label="返程快递单号" /></view>
@@ -40,9 +46,9 @@
     <button wx:if="{{!recordOnly && !supplementing}}" class="xy-action-hit xy-h-kf rs-kf" bindtap="demoSupport" aria-label="联系客服"><image src="{{icons.flowSupport}}" mode="aspectFit" aria-hidden="true" /><text>客服</text></button>
     <button wx:if="{{!recordOnly && !supplementing}}" class="return-secondary" bindtap="onSecondaryNavigationBack">暂存</button>
     <button wx:if="{{recordOnly || supplementing}}" class="return-primary" bindtap="returnToOrder">{{supplementing ? '返回订单查看进度' : '返回订单'}}</button>
-    <button wx:elif="{{method === 'CABINET'}}" class="return-primary" bindtap="openCabinet" disabled="{{busy || !canProceed}}" aria-disabled="{{busy || !canProceed}}">{{isAfterOpen ? '返回归还核验' : '提交凭证并选柜'}}</button>
+    <button wx:elif="{{method === 'CABINET'}}" class="return-primary {{busy || !canProceed ? 'is-disabled' : ''}}" bindtap="openCabinet" disabled="{{busy || !canProceed}}" aria-disabled="{{busy || !canProceed}}">{{isAfterOpen ? '返回归还核验' : '提交凭证并选柜'}}</button>
     <button wx:elif="{{canStart}}" class="return-primary" bindtap="start" disabled="{{busy}}" aria-disabled="{{busy}}">开始上传凭证</button>
-    <button wx:elif="{{canShip || canCorrect}}" class="return-primary" bindtap="saveShipment" disabled="{{busy || !addressConfirmed}}" aria-disabled="{{busy || !addressConfirmed}}">{{canCorrect ? '确认更正' : '确认寄回'}}</button>
+    <button wx:elif="{{canShip || canCorrect}}" class="return-primary {{busy || !addressConfirmed ? 'is-disabled' : ''}}" bindtap="saveShipment" disabled="{{busy || !addressConfirmed}}" aria-disabled="{{busy || !addressConfirmed}}">{{canCorrect ? '确认更正' : '确认寄回'}}</button>
   </view>
 </page-shell>
 <view wx:if="{{example}}" class="example-page">

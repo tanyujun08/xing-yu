@@ -50,3 +50,5 @@
 .return-actions.rs-footer .rs-kf { flex: none; width: auto !important; min-height: var(--xy-size-touch-min); background: transparent; border: 0; padding: 0; margin: 0; }
 .return-actions.rs-footer .rs-kf { flex-direction: column; gap: 0; color: var(--xy-color-text-primary); font-size: var(--xy-text-caption-size); line-height: var(--xy-text-caption-line-height); font-weight: var(--xy-text-weight-semibold); }
 .rs-well .xa-well__title { font-weight: var(--xy-text-weight-medium); }
+
+.rs-footer .return-primary.is-disabled { background: linear-gradient(var(--xy-member-color-button-overlay), var(--xy-member-color-button-overlay)), var(--xy-color-action-primary); border-color: var(--xy-color-action-primary); color: var(--xy-color-text-inverse); }

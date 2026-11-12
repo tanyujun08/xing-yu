@@ -104,7 +104,7 @@ module.exports = { cur: cur, num: num, cells: cells, md: md, hm: hm, aDispatch: 
         </view>
       </view>
       <view wx:elif="{{preparationPage}}" class="xa-page">
-        <status-hero class="xa-hero" variant="band" step="{{0}}" step-note="{{xa.md(preparationPage.deadline)}} 前" tone="{{preparationPage.expired ? 'orange' : 'green'}}" art="contract" title="{{preparationPage.title}}" description="{{preparationPage.hint}}" />
+        <status-hero class="xa-hero" variant="band" step="{{0}}" step-note="{{preparationPage.signed ? '待确认' : '待签署'}}" tone="{{preparationPage.expired ? 'orange' : 'green'}}" art="contract" title="{{preparationPage.title}}" description="{{preparationPage.hint}}" />
         <view class="xa-card">
           <view class="xa-key"><text class="xa-key__label">本单应付</text><view class="xa-key__amount"><text class="xa-key__cur">{{xa.cur(total)}}</text><text>{{xa.num(total)}}</text></view></view>
           <view class="xa-row"><text class="xa-row__k">租金</text><text class="xa-row__v">{{rent}}</text></view>

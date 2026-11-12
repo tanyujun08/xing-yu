@@ -28,7 +28,7 @@
     <view slot="actions" class="xy-h-actions">
       <button class="xy-action-hit xy-h-kf" bindtap="demoSupport" aria-label="联系客服"><image src="{{supportIcon}}" mode="aspectFit" aria-hidden="true" /><text>客服</text></button>
       <view class="xy-h-actions__main">
-        <button wx:if="{{orderId}}" class="xy-action-hit xy-button-reset xy-button-fluid" bindtap="goDetail"><view class="xy-action-secondary xy-action-shell">返回订单</view></button>
+        <button wx:if="{{orderId}}" class="xy-action-hit xy-button-reset xy-button-fluid" bindtap="goDetail"><view class="{{pickup && !monitorPaused && !canResumePickup ? 'xy-action-primary' : 'xy-action-secondary'}} xy-action-shell">返回订单</view></button>
         <button wx:if="{{canResumePickup}}" class="xy-action-hit xy-button-reset xy-button-fluid" bindtap="goPickup" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}"><view class="xy-action-primary xy-action-shell">继续取件</view></button>
         <button wx:elif="{{canQuery && !pickup}}" class="xy-action-hit xy-button-reset xy-button-fluid" bindtap="query" disabled="{{busy || !canQuery}}" aria-disabled="{{busy || !canQuery}}"><view class="xy-action-primary xy-action-shell">查询归还结果</view></button>
         <button wx:elif="{{!pickup || monitorPaused}}" class="xy-action-hit xy-button-reset xy-button-fluid" bindtap="refresh" disabled="{{busy}}" aria-disabled="{{busy}}"><view class="xy-action-primary xy-action-shell">{{pickup ? '继续核实' : '刷新状态'}}</view></button>

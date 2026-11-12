@@ -34,7 +34,7 @@
       </view>
       <view wx:elif="{{!resultPending}}" class="xa-card contract-a-card">
         <view class="xa-head contract-a-head"><image class="contract-doc-icon" src="{{docIcon}}" mode="aspectFit" aria-hidden="true" /><text class="contract-doc-title">{{docTitle || '设备租赁协议'}}</text></view>
-        <view class="contract-paper {{fullText ? 'contract-paper--full' : ''}}"><text class="contract-copy" user-select="{{true}}">{{fullText ? agreementText : docBody}}</text></view>
+        <view class="contract-paper {{fullText ? 'contract-paper--full' : 'contract-paper--clamp'}}"><text class="contract-copy" user-select="{{true}}">{{fullText ? agreementText : docBody}}</text></view>
         <button class="xy-action-hit xy-button-reset contract-outline contract-fulltext-toggle" bindtap="toggleText" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">{{fullText ? '收起全文' : '查看完整合同'}}<text wx:if="{{!fullText}}" class="contract-chevron" aria-hidden="true">›</text></button>
       </view>
 

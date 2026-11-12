@@ -8,14 +8,15 @@ function kind(it) {
 }
 function pick(items, k) { var out = []; for (var i = 0; i < (items || []).length; i++) if (kind(items[i]) === k) out.push(items[i]); return out; }
 function tone(it) { var k = kind(it); return k === 'todo' ? (it.statusTone === 'warning' || it.mainStatusText === '待补缴' ? 'warning' : 'success') : k === 'done' ? 'ended' : 'muted'; }
+function md(s) { return (s || '').replace(getRegExp('[0-9]{4}-', 'g'), ''); }
 var groups = [{ k: 'todo', t: '需要你处理' }, { k: 'doing', t: '进行中' }, { k: 'done', t: '已结束' }];
-module.exports = { pick: pick, tone: tone, groups: groups };
+module.exports = { pick: pick, tone: tone, groups: groups, md: md };
 </wxs>
 <template name="xg-item">
   <view class="xy-h-blk h-item">
     <view class="h-item__main" data-id="{{item.id}}" bindtap="openRental" role="button" aria-label="查看{{item.deviceName}}订单信息">
       <media-state class="thumb" state="{{item.mediaState}}" src="{{item.image}}" empty-label="暂无图片" mode="aspectFill" />
-      <view class="copy"><text class="name">{{item.deviceName}}</text><text class="summary">{{item.rentalText}} · {{item.pickupText}}</text><text class="h-state h-state--{{xg.tone(item)}}">{{item.mainStatusText}}<text wx:if="{{item.amountLabel === '待补缴金额' || item.actionLabel === '去支付'}}"> {{item.amountText}}</text></text><text wx:if="{{item.deadlineText}}" class="h-deadline">{{item.deadlineText}}</text></view>
+      <view class="copy"><text class="name">{{item.deviceName}}</text><text class="summary">{{xg.md(item.rentalText)}} · {{item.pickupText}}</text><text class="h-state h-state--{{xg.tone(item)}}">{{item.mainStatusText}}<text wx:if="{{item.amountLabel === '待补缴金额' || item.actionLabel === '去支付'}}"> {{item.amountText}}</text></text><text wx:if="{{item.deadlineText}}" class="h-deadline">{{item.deadlineText}}</text></view>
     </view>
     <button wx:if="{{item.actionPrimary || item.amountLabel === '待补缴金额'}}" class="h-item__action xy-action-hit" data-id="{{item.id}}" bindtap="openOrder" aria-label="{{item.amountLabel === '待补缴金额' ? '去支付' : item.actionLabel}}"><text class="h-pill">{{item.amountLabel === '待补缴金额' ? '去支付' : item.actionLabel}}</text></button>
     <button wx:else class="h-item__more xy-action-hit" data-id="{{item.id}}" bindtap="openOrder" aria-label="查看订单详情">›</button>

@@ -1493,3 +1493,5 @@ picker .dispatch-input { display: flex; align-items: center; }
 .h-step-title { display: block; font-size: var(--xy-row-text-size); line-height: var(--xy-row-text-line-height); font-weight: var(--xy-text-weight-semibold); }
 .h-flow .review-step { padding-bottom: var(--xy-space-4); min-height: 0; }
 .h-flow .review-step--last { padding-bottom: 0; }
+
+.h-footer .order-recovery-button.xy-action-secondary { border-color: var(--xy-color-border-strong); color: var(--xy-color-text-primary); }

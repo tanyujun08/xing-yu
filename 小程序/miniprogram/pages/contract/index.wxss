@@ -34,3 +34,6 @@
 .contract-a-error { margin: 0 var(--xy-space-4); }
 .contract-a-state { margin-left: 0; }
 .contract-a-query { display: flex; align-items: center; justify-content: space-between; gap: var(--xy-space-2); margin: calc(var(--xy-space-4) * -1) var(--xy-space-4) 0; }
+
+.contract-paper--clamp { max-height: none; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
+.contract-paper--clamp .contract-copy { display: inline; white-space: normal; }
