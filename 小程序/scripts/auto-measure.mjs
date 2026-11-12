@@ -61,6 +61,18 @@ const routes = {
   'contract-sign-restart': { open: 'navigateTo', url: '/pages/contract-sign/index?orderId=order-1', dir: 'contract-sign', set: { loading: false, ready: false, hasDraft: true, rejected: false, canRestart: true, name: '林沐 · 演示', progressText: '', errorText: '签名图片上传没有成功，请重新签写' } },
   'contract-sign-ready': { open: 'navigateTo', url: '/pages/contract-sign/index?orderId=order-1', dir: 'contract-sign', set: { loading: false, ready: true, hasDraft: false, name: '林沐 · 演示', progressText: '', errorText: '' } },
   'contract-sign-draft': { open: 'navigateTo', url: '/pages/contract-sign/index?orderId=order-1', dir: 'contract-sign', set: { loading: false, ready: false, hasDraft: true, rejected: false, canRestart: false, name: '林沐 · 演示', progressText: '', errorText: '' } },
+  // 第 3 批 发现与消息
+  info: { open: 'switchTab', url: '/pages/info/index' },
+  'order-messages': { open: 'navigateTo', url: '/pages/order-messages/index' },
+  'private-messages': { open: 'navigateTo', url: '/pages/private-messages/index' },
+  'info-guide': { open: 'navigateTo', url: '/pages/info-guide/index' },
+  'info-guide-flow': { open: 'navigateTo', url: '/pages/info-guide/index?id=rental-flow', dir: 'info-guide' },
+  chat: { open: 'navigateTo', url: '/pages/chat/index?mode=c2c&orderId=order-4' },
+  'chat-support': { open: 'navigateTo', url: '/pages/chat/index?mode=support', dir: 'chat' },
+  cabinets: { open: 'navigateTo', url: '/pages/cabinets/index' },
+  'cabinets-return': { open: 'navigateTo', url: '/pages/cabinets/index?mode=return&orderId=order-4', dir: 'cabinets' },
+  stores: { open: 'navigateTo', url: '/pages/stores/index' },
+  'check-in': { open: 'navigateTo', url: '/pages/check-in/index' },
 };
 // 订单详情的 10 个演示状态：od-1（准备签约）… od-10（已关闭）
 for (let n = 1; n <= 10; n += 1) routes['od-' + n] = { open: 'navigateTo', url: '/pages/order-detail/index?orderId=order-' + n, dir: 'order-detail' };
