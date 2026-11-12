@@ -8,6 +8,10 @@ const ART: Record<string, string> = {
   wallet: '/assets/status-3d/wallet.png',
   shield: '/assets/status-3d/shield.png',
   'shield-green': '/assets/status-3d/shield-green.png',
+  cabinet: '/assets/status-3d/cabinet.png',
+  parcel: '/assets/status-3d/parcel.png',
+  magnifier: '/assets/status-3d/magnifier.png',
+  bill: '/assets/status-3d/bill.png',
 };
 
 const TONES = ['green', 'orange', 'red', 'blue', 'purple', 'neutral'];

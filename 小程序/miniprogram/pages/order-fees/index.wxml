@@ -5,7 +5,7 @@
     <view wx:if="{{loading}}" class="fees-state" role="status">正在读取本单核定结果…</view>
     <view wx:elif="{{errorText}}" class="fees-state" role="alert"><text>{{errorText}}</text><button class="xy-button-reset fees-link" bindtap="refresh">重新读取</button></view>
     <view wx:elif="{{unavailable}}" class="xa-page">
-      <status-hero class="xa-hero" variant="band" tone="neutral" art="contract" title="费用还在核定" description="当前尚无可展示的最终核定。官方核定完成后，这里会列出每一项费用和依据。" />
+      <status-hero class="xa-hero" variant="band" tone="neutral" art="bill" title="费用还在核定" description="当前尚无可展示的最终核定。官方核定完成后，这里会列出每一项费用和依据。" />
       <text class="xa-cap">核定后会显示</text>
       <view class="xa-list">
         <view class="xa-row"><text class="xa-row__k">超期费</text><text class="xa-row__v">按超出时长计算</text></view>

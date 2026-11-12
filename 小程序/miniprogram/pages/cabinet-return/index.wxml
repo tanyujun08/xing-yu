@@ -48,7 +48,7 @@
         <view wx:if="{{door !== '未关闭'}}" class="return-card"><return-evidence-grid tiles="{{tiles}}" busy="{{busy}}" single album-only="{{door === '已关闭'}}" bindselect="selectEvidence" bindpreview="previewEvidence" bindexample="showExample" bindrecover="recoverEvidence" /><view wx:if="{{!photoComplete}}" class="return-note">可先核验柜内设备，照片需后续补充。请勿为补拍重复开柜。</view></view>
       </block>
       <view wx:else class="xa-page xa-page--inset">
-        <status-hero class="xa-hero" variant="band" step="{{3}}" step-note="{{taskId ? '处理中' : '选柜'}}" tone="green" art="clock" title="{{taskId ? taskStatusLabel : '选择归还租赁柜'}}" description="{{taskId ? taskCopy : '从本单可用的租赁柜中选择归还格口，选好后为你预留格口 30 分钟。'}}" />
+        <status-hero class="xa-hero" variant="band" step="{{3}}" step-note="{{taskId ? '处理中' : '选柜'}}" tone="green" art="cabinet" title="{{taskId ? taskStatusLabel : '选择归还租赁柜'}}" description="{{taskId ? taskCopy : '从本单可用的租赁柜中选择归还格口，选好后为你预留格口 30 分钟。'}}" />
         <view class="xa-list">
           <view class="xa-row"><text class="xa-row__k">本单设备</text><text class="xa-row__v">{{assetTitle || '待核实'}}</text></view>
           <view class="xa-row"><text class="xa-row__k">归还前凭证</text><text class="xa-row__v">{{preReadyCount}}/{{preTotalCount}} 已提交</text></view>

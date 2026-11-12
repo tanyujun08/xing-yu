@@ -179,7 +179,7 @@ module.exports = { cur: cur, num: num, cells: cells, md: md, hm: hm, aDispatch: 
         </view>
       </view>
       <view wx:elif="{{xa.aDispatch(returnDispatchPage)}}" class="xa-page">
-        <status-hero class="xa-hero" variant="band" step="{{3}}" step-note="{{returnDispatchPage.transit ? '运输中' : '已逾期'}}" tone="{{returnDispatchPage.transit ? 'green' : 'red'}}" art="{{returnDispatchPage.transit ? 'clock' : 'calendar'}}" title="{{returnDispatchPage.title}}" description="{{returnDispatchPage.note}}" />
+        <status-hero class="xa-hero" variant="band" step="{{3}}" step-note="{{returnDispatchPage.transit ? '运输中' : '已逾期'}}" tone="{{returnDispatchPage.transit ? 'green' : 'red'}}" art="{{returnDispatchPage.transit ? 'parcel' : 'calendar'}}" title="{{returnDispatchPage.title}}" description="{{returnDispatchPage.note}}" />
         <view wx:if="{{returnDispatchPage.code === 'F1e'}}" class="xa-card">
           <view class="xa-head"><text>归还到</text></view>
           <view class="xa-well"><button class="xa-well__body xy-action-hit" bindtap="openOrderCabinet"><text class="xa-well__title">{{orderCabinetName || '按归还指引选择可用租赁柜'}}</text><text class="xa-well__sub">{{orderCabinetAddress || '地址待核实，请联系客服'}}</text></button><button wx:if="{{orderCabinetId}}" class="xa-well__act xy-action-hit" bindtap="navigateOrderCabinet" aria-label="{{'导航到' + orderCabinetAddress}}">导航</button></view>
@@ -251,7 +251,7 @@ module.exports = { cur: cur, num: num, cells: cells, md: md, hm: hm, aDispatch: 
         <view wx:if="{{returnDispatchPage.transit}}" class="dispatch-context"><button wx:if="{{returnDispatchPage.canCorrect}}" class="delivery-link xy-action-hit" data-mode="correction" bindtap="openDispatchRecord" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">更正物流信息</button><button wx:if="{{returnDispatchPage.lessor}}" class="delivery-link xy-action-hit" bindtap="openDispatchRecord" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">查看归还材料</button><button class="delivery-link xy-action-hit" bindtap="refreshStatus" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}">刷新归还进度</button></view>
       </view>
       <view wx:elif="{{returnReviewPage && returnReviewPage.code === 'F4'}}" class="xa-page">
-        <status-hero class="xa-hero" variant="band" step="{{4}}" step-note="审核中" tone="green" art="clock" title="{{returnReviewPage.title}}" description="{{returnReviewPage.note}}" />
+        <status-hero class="xa-hero" variant="band" step="{{4}}" step-note="审核中" tone="green" art="magnifier" title="{{returnReviewPage.title}}" description="{{returnReviewPage.note}}" />
         <view class="xa-card">
           <view class="xa-tl" aria-label="审核进度">
             <view wx:for="{{returnReviewPage.steps}}" wx:key="key" class="xa-tl__item {{item.done ? 'is-done' : ''}} {{item.current ? 'is-current' : ''}}">
@@ -324,7 +324,7 @@ module.exports = { cur: cur, num: num, cells: cells, md: md, hm: hm, aDispatch: 
         <view class="settlement-services"><button wx:if="{{returnReviewPage.code !== 'F5'}}" class="xy-action-hit" bindtap="demoSupport">联系客服</button><button wx:if="{{peerContact}}" class="xy-action-hit" bindtap="openPeerConversation">{{peerContact}}</button><button class="xy-action-hit" bindtap="copyOrderNumber">复制订单号</button></view>
       </view>
       <view wx:elif="{{completionPage}}" class="xa-page">
-        <status-hero class="xa-hero" variant="band" step="{{completionPage.closed ? -1 : 5}}" tone="{{completionPage.closed ? 'neutral' : completionPage.transactionsVerified ? 'green' : 'orange'}}" art="{{completionPage.closed ? 'contract' : completionPage.transactionsVerified ? 'check' : 'clock'}}" title="{{completionPage.title}}" description="{{completionPage.note}}" />
+        <status-hero class="xa-hero" variant="band" step="{{completionPage.closed ? -1 : 5}}" tone="{{completionPage.closed ? 'neutral' : completionPage.transactionsVerified ? 'green' : 'orange'}}" art="{{completionPage.closed ? 'contract' : completionPage.transactionsVerified ? 'check' : 'bill'}}" title="{{completionPage.title}}" description="{{completionPage.note}}" />
         <view wx:if="{{!completionPage.closed}}" class="xa-card">
           <view class="xa-key"><text class="xa-key__label">最终花费</text><view wx:if="{{completionPage.known}}" class="xa-key__amount"><text class="xa-key__cur">{{xa.cur(completionPage.amount)}}</text><text>{{xa.num(completionPage.amount)}}</text></view><text wx:else class="xa-key__note" role="status">{{completionPage.cashNote}}</text></view>
           <view wx:for="{{completionPage.feeRows}}" wx:key="label" class="xa-row"><text class="xa-row__k">{{item.label}}</text><text class="xa-row__v">{{item.value}}</text></view>
@@ -459,7 +459,7 @@ module.exports = { cur: cur, num: num, cells: cells, md: md, hm: hm, aDispatch: 
         <view class="result-services"><button class="xy-action-hit" bindtap="demoSupport">联系官方客服</button><button wx:if="{{peerContact}}" class="xy-action-hit" bindtap="openPeerConversation">{{peerContact}}</button></view>
       </view>
       <view wx:elif="{{pickupPage && !pickupPage.ready}}" class="xa-page">
-        <status-hero class="xa-hero" variant="band" step="{{1}}" step-note="{{xa.md(pickupPage.start)}} 起" tone="green" art="clock" title="{{pickupPage.title}}" description="{{pickupPage.start}} 起可到柜取件" />
+        <status-hero class="xa-hero" variant="band" step="{{1}}" step-note="{{xa.md(pickupPage.start)}} 起" tone="green" art="cabinet" title="{{pickupPage.title}}" description="{{pickupPage.start}} 起可到柜取件" />
         <view class="xa-card xa-ticket">
           <block wx:if="{{pickupVisible}}">
             <view class="xa-ticket__top"><text>取件码</text><text wx:if="{{pickupCompartment}}" class="xa-ticket__slot">格口 {{pickupCompartment}}</text></view>
@@ -525,7 +525,7 @@ module.exports = { cur: cur, num: num, cells: cells, md: md, hm: hm, aDispatch: 
       </view>
       <block wx:else>
       <view class="xa-page">
-        <status-hero class="xa-hero" variant="band" step="{{status === '已关闭' || status === '已取消' || hasException ? -1 : xa.step(status)}}" step-note="{{status === '待补缴' ? '待补缴' : ''}}" tone="{{status === '待补缴' || status === '待支付' ? 'orange' : status === '已关闭' || status === '已取消' ? 'neutral' : hasException ? 'red' : 'green'}}" art="{{status === '待补缴' || status === '待支付' ? 'clock' : status === '已关闭' || status === '已取消' ? 'contract' : hasException ? 'shield' : 'check'}}" title="{{status}}" description="{{hasException ? '订单异常，请联系客服协助处理。' : blockers || paymentNotice || (status === '待补缴' ? '核定费用超过押金抵扣，请补缴差额。' : status === '已关闭' || status === '已取消' ? '订单已结束，相关记录仍可查看。' : '')}}" />
+        <status-hero class="xa-hero" variant="band" step="{{status === '已关闭' || status === '已取消' || hasException ? -1 : xa.step(status)}}" step-note="{{status === '待补缴' ? '待补缴' : ''}}" tone="{{status === '待补缴' || status === '待支付' ? 'orange' : status === '已关闭' || status === '已取消' ? 'neutral' : hasException ? 'red' : 'green'}}" art="{{status === '待补缴' ? 'bill' : status === '待支付' ? 'clock' : status === '已关闭' || status === '已取消' ? 'contract' : hasException ? 'shield' : 'check'}}" title="{{status}}" description="{{hasException ? '订单异常，请联系客服协助处理。' : blockers || paymentNotice || (status === '待补缴' ? '核定费用超过押金抵扣，请补缴差额。' : status === '已关闭' || status === '已取消' ? '订单已结束，相关记录仍可查看。' : '')}}" />
         <view wx:if="{{depositSettlementVisible}}" class="xa-card">
           <view class="xa-key {{supplement !== '¥0.00' ? 'xa-key--warn' : 'xa-key--brand'}}"><text class="xa-key__label">{{supplement !== '¥0.00' ? '应补缴' : '应退押金'}}</text><view class="xa-key__amount"><text class="xa-key__cur">{{xa.cur(supplement !== '¥0.00' ? supplement : refundDue)}}</text><text>{{xa.num(supplement !== '¥0.00' ? supplement : refundDue)}}</text></view><text class="xa-key__note">{{billFinalized ? '官方费用已核定' : '等待官方核定，待核实金额不是零元'}}</text></view>
           <view class="xa-row"><text class="xa-row__k">超期费</text><text wx:if="{{supplement !== '¥0.00'}}" class="xa-tag xa-tag--warn">待付</text><text class="xa-row__v">{{overtime}}</text></view>
