@@ -63,6 +63,7 @@
 .h-item .name { font-size: var(--xy-row-text-size); line-height: var(--xy-row-text-line-height); }
 .h-state { display: block; margin-top: var(--xy-space-1); color: var(--xy-color-text-secondary); font-size: var(--xy-row-caption-size); line-height: var(--xy-row-caption-line-height); font-weight: var(--xy-text-weight-semibold); }
 .h-state--warning { color: var(--xy-color-key-warning); }
+.h-deadline { display: block; margin-top: var(--xy-space-1); color: var(--xy-color-key-warning); font-size: var(--xy-row-caption-size); line-height: var(--xy-row-caption-line-height); }
 .h-state--success { color: var(--xy-color-brand); }
 .h-state--muted { font-weight: var(--xy-text-weight-regular); }
 .h-item__action { flex: none; display: flex; align-items: center; justify-content: flex-end; min-height: var(--xy-size-touch-min); padding: 0; margin: 0; background: transparent; }

@@ -26,9 +26,9 @@ function step(status) {
 module.exports = { cur: cur, num: num, cells: cells, md: md, hm: hm, aDispatch: aDispatch, legacy: legacy, step: step };
 </wxs>
 <template name="xa-funding">
-  <button class="xa-row xy-action-hit" data-kind="payment" bindtap="showFundingHistory" disabled="{{fundingHistoryBusy}}" aria-disabled="{{fundingHistoryBusy}}"><text class="xa-row__k">支付记录</text><text class="xa-row__v"></text><text class="xa-row__more" aria-hidden="true">›</text></button>
-  <button class="xa-row xy-action-hit" data-kind="refund" bindtap="showFundingHistory" disabled="{{fundingHistoryBusy}}" aria-disabled="{{fundingHistoryBusy}}"><text class="xa-row__k">退款记录</text><text class="xa-row__v"></text><text class="xa-row__more" aria-hidden="true">›</text></button>
+  <button class="xa-row xy-action-hit" data-kind="payment" bindtap="showFundingHistory" disabled="{{fundingHistoryBusy}}" aria-disabled="{{fundingHistoryBusy}}" aria-expanded="{{fundingHistoryOpen}}"><text class="xa-row__k">支付与退款记录</text><text class="xa-row__v"></text><text class="xa-row__more" aria-hidden="true">›</text></button>
   <view wx:if="{{fundingHistoryOpen}}" class="xa-records">
+    <view class="xa-records__tabs"><button class="xa-records__act xy-action-hit {{fundingHistoryKind === 'payment' ? 'is-on' : ''}}" data-kind="payment" bindtap="showFundingHistory" disabled="{{fundingHistoryBusy}}" aria-disabled="{{fundingHistoryBusy}}">支付记录</button><button class="xa-records__act xy-action-hit {{fundingHistoryKind === 'refund' ? 'is-on' : ''}}" data-kind="refund" bindtap="showFundingHistory" disabled="{{fundingHistoryBusy}}" aria-disabled="{{fundingHistoryBusy}}">退款记录</button></view>
     <text wx:if="{{fundingHistoryBusy}}" role="status">加载中</text>
     <text wx:if="{{fundingHistoryError}}" role="alert">{{fundingHistoryError}}</text>
     <button wx:if="{{fundingHistoryError}}" class="xa-records__act xy-action-hit" bindtap="retryFundingHistory">重试读取</button>
@@ -100,7 +100,7 @@ module.exports = { cur: cur, num: num, cells: cells, md: md, hm: hm, aDispatch: 
         <text class="xa-cap">订单信息</text>
         <view class="xa-list">
           <button class="xa-row xy-action-hit" bindtap="copyOrderNumber"><text class="xa-row__k">订单编号</text><text class="xa-row__v">{{orderNo}}</text><text class="xa-row__more">复制</text></button>
-          <block wx:if="{{role === '我的租赁订单'}}"><template is="xa-funding" data="{{fundingHistoryBusy, fundingHistoryOpen, fundingHistoryError, fundingHistoryRows, fundingHistoryPrevious, fundingHistoryNext}}" /></block>
+          <block wx:if="{{role === '我的租赁订单'}}"><template is="xa-funding" data="{{fundingHistoryBusy, fundingHistoryOpen, fundingHistoryKind, fundingHistoryError, fundingHistoryRows, fundingHistoryPrevious, fundingHistoryNext}}" /></block>
         </view>
       </view>
       <view wx:elif="{{preparationPage}}" class="xa-page">
@@ -123,7 +123,7 @@ module.exports = { cur: cur, num: num, cells: cells, md: md, hm: hm, aDispatch: 
         <view class="xa-list">
           <button class="xa-row xy-action-hit" bindtap="copyOrderNumber"><text class="xa-row__k">订单编号</text><text class="xa-row__v">{{orderNo}}</text><text class="xa-row__more">复制</text></button>
           <button wx:if="{{peerContact}}" class="xa-row xy-action-hit" bindtap="openPeerConversation"><text class="xa-row__k">{{peerContact}}</text><text class="xa-row__v"></text><text class="xa-row__more" aria-hidden="true">›</text></button>
-          <block wx:if="{{role === '我的租赁订单'}}"><template is="xa-funding" data="{{fundingHistoryBusy, fundingHistoryOpen, fundingHistoryError, fundingHistoryRows, fundingHistoryPrevious, fundingHistoryNext}}" /></block>
+          <block wx:if="{{role === '我的租赁订单'}}"><template is="xa-funding" data="{{fundingHistoryBusy, fundingHistoryOpen, fundingHistoryKind, fundingHistoryError, fundingHistoryRows, fundingHistoryPrevious, fundingHistoryNext}}" /></block>
           <button wx:if="{{preparationPage.canCancel}}" class="xa-row xy-action-hit" data-code="CANCEL_UNPAID" bindtap="handleAction" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}"><text class="xa-row__k">取消本次订单</text><text class="xa-row__v"></text><text class="xa-row__more" aria-hidden="true">›</text></button>
         </view>
       </view>
@@ -204,7 +204,7 @@ module.exports = { cur: cur, num: num, cells: cells, md: md, hm: hm, aDispatch: 
         <view class="xa-list">
           <button class="xa-row xy-action-hit" bindtap="copyOrderNumber"><text class="xa-row__k">订单编号</text><text class="xa-row__v">{{orderNo}}</text><text class="xa-row__more">复制</text></button>
           <button wx:if="{{peerContact}}" class="xa-row xy-action-hit" bindtap="openPeerConversation"><text class="xa-row__k">{{peerContact}}</text><text class="xa-row__v"></text><text class="xa-row__more" aria-hidden="true">›</text></button>
-          <block wx:if="{{role === '我的租赁订单'}}"><template is="xa-funding" data="{{fundingHistoryBusy, fundingHistoryOpen, fundingHistoryError, fundingHistoryRows, fundingHistoryPrevious, fundingHistoryNext}}" /></block>
+          <block wx:if="{{role === '我的租赁订单'}}"><template is="xa-funding" data="{{fundingHistoryBusy, fundingHistoryOpen, fundingHistoryKind, fundingHistoryError, fundingHistoryRows, fundingHistoryPrevious, fundingHistoryNext}}" /></block>
         </view>
       </view>
       <view wx:elif="{{returnDispatchPage}}" class="dispatch-page h-flow dispatch-page--{{returnDispatchPage.code}}">
@@ -270,7 +270,7 @@ module.exports = { cur: cur, num: num, cells: cells, md: md, hm: hm, aDispatch: 
         <view class="xa-list">
           <button class="xa-row xy-action-hit" bindtap="copyOrderNumber"><text class="xa-row__k">订单编号</text><text class="xa-row__v">{{orderNo}}</text><text class="xa-row__more">复制</text></button>
           <button wx:if="{{peerContact}}" class="xa-row xy-action-hit" bindtap="openPeerConversation"><text class="xa-row__k">{{peerContact}}</text><text class="xa-row__v"></text><text class="xa-row__more" aria-hidden="true">›</text></button>
-          <block wx:if="{{role === '我的租赁订单'}}"><template is="xa-funding" data="{{fundingHistoryBusy, fundingHistoryOpen, fundingHistoryError, fundingHistoryRows, fundingHistoryPrevious, fundingHistoryNext}}" /></block>
+          <block wx:if="{{role === '我的租赁订单'}}"><template is="xa-funding" data="{{fundingHistoryBusy, fundingHistoryOpen, fundingHistoryKind, fundingHistoryError, fundingHistoryRows, fundingHistoryPrevious, fundingHistoryNext}}" /></block>
         </view>
       </view>
       <view wx:elif="{{returnReviewPage}}" class="review-page review-page--{{returnReviewPage.code}}">
@@ -358,7 +358,7 @@ module.exports = { cur: cur, num: num, cells: cells, md: md, hm: hm, aDispatch: 
           </view>
           <button wx:if="{{!completionPage.known}}" class="xa-row xy-action-hit" bindtap="refreshStatus" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}"><text class="xa-row__k">刷新原订单</text><text class="xa-row__v"></text><text class="xa-row__more" aria-hidden="true">›</text></button>
           <button wx:if="{{peerContact}}" class="xa-row xy-action-hit" bindtap="openPeerConversation"><text class="xa-row__k">{{peerContact}}</text><text class="xa-row__v"></text><text class="xa-row__more" aria-hidden="true">›</text></button>
-          <block wx:if="{{role === '我的租赁订单'}}"><template is="xa-funding" data="{{fundingHistoryBusy, fundingHistoryOpen, fundingHistoryError, fundingHistoryRows, fundingHistoryPrevious, fundingHistoryNext}}" /></block>
+          <block wx:if="{{role === '我的租赁订单'}}"><template is="xa-funding" data="{{fundingHistoryBusy, fundingHistoryOpen, fundingHistoryKind, fundingHistoryError, fundingHistoryRows, fundingHistoryPrevious, fundingHistoryNext}}" /></block>
         </view>
       </view>
       <view wx:elif="{{settlementPage && settlementPage.isRefund && !settlementPage.compact}}" class="xa-page">
@@ -380,7 +380,7 @@ module.exports = { cur: cur, num: num, cells: cells, md: md, hm: hm, aDispatch: 
         <view class="xa-list">
           <button class="xa-row xy-action-hit" bindtap="copyOrderNumber"><text class="xa-row__k">订单编号</text><text class="xa-row__v">{{orderNo}}</text><text class="xa-row__more">复制</text></button>
           <button wx:if="{{peerContact}}" class="xa-row xy-action-hit" bindtap="openPeerConversation"><text class="xa-row__k">{{peerContact}}</text><text class="xa-row__v"></text><text class="xa-row__more" aria-hidden="true">›</text></button>
-          <block wx:if="{{role === '我的租赁订单'}}"><template is="xa-funding" data="{{fundingHistoryBusy, fundingHistoryOpen, fundingHistoryError, fundingHistoryRows, fundingHistoryPrevious, fundingHistoryNext}}" /></block>
+          <block wx:if="{{role === '我的租赁订单'}}"><template is="xa-funding" data="{{fundingHistoryBusy, fundingHistoryOpen, fundingHistoryKind, fundingHistoryError, fundingHistoryRows, fundingHistoryPrevious, fundingHistoryNext}}" /></block>
         </view>
       </view>
       <view wx:elif="{{settlementPage}}" class="settlement-page">
@@ -483,7 +483,7 @@ module.exports = { cur: cur, num: num, cells: cells, md: md, hm: hm, aDispatch: 
         <view class="xa-list">
           <button class="xa-row xy-action-hit" bindtap="copyOrderNumber"><text class="xa-row__k">订单编号</text><text class="xa-row__v">{{orderNo}}</text><text class="xa-row__more">复制</text></button>
           <button wx:if="{{pickupPage.taskAction}}" class="xa-row xy-action-hit" data-code="{{pickupPage.taskAction}}" bindtap="handleAction" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}"><text class="xa-row__k">继续原取件任务</text><text class="xa-row__v"></text><text class="xa-row__more" aria-hidden="true">›</text></button>
-          <block wx:if="{{role === '我的租赁订单'}}"><template is="xa-funding" data="{{fundingHistoryBusy, fundingHistoryOpen, fundingHistoryError, fundingHistoryRows, fundingHistoryPrevious, fundingHistoryNext}}" /></block>
+          <block wx:if="{{role === '我的租赁订单'}}"><template is="xa-funding" data="{{fundingHistoryBusy, fundingHistoryOpen, fundingHistoryKind, fundingHistoryError, fundingHistoryRows, fundingHistoryPrevious, fundingHistoryNext}}" /></block>
         </view>
       </view>
       <view wx:elif="{{pickupPage}}" class="pickup-order-page">
@@ -547,6 +547,7 @@ module.exports = { cur: cur, num: num, cells: cells, md: md, hm: hm, aDispatch: 
         <view class="xa-list">
           <view class="xa-dev"><order-product-summary variant="order-list" clickable bindopen="openProduct" title="{{title}}" secondary="{{pickupText}}" media-src="{{media}}" media-state="{{media ? 'ready' : 'idle'}}" /></view>
           <view class="xa-row"><text class="xa-row__k">{{status === '已关闭' || status === '已取消' ? '原租期' : '租赁日期'}}</text><text class="xa-row__v">{{term}}</text></view>
+          <view wx:if="{{status === '已关闭' || status === '已取消'}}" class="xa-row"><text class="xa-row__k">取还方式</text><text class="xa-row__v">{{pickupText}}</text></view>
           <view wx:if="{{stage === '准备签约' || stage === '待支付'}}" class="xa-row"><text class="xa-row__k">本阶段截止</text><text class="xa-row__v">{{deadline}}</text></view>
           <button wx:if="{{orderCabinetId}}" class="xa-row xy-action-hit" bindtap="openOrderCabinet"><text class="xa-row__k">取还地点</text><text class="xa-row__v">{{orderCabinetName || '位置待核实'}}</text><text class="xa-row__more" aria-hidden="true">›</text></button>
           <button wx:if="{{viewContract}}" class="xa-row xy-action-hit" data-code="VIEW_CONTRACT" bindtap="handleAction" disabled="{{busy || loading}}" aria-disabled="{{busy || loading}}"><text class="xa-row__k">租赁合同</text><text class="xa-row__v">{{status === '已关闭' || status === '已取消' ? '只读' : '已签署'}}</text><text class="xa-row__more" aria-hidden="true">›</text></button>
@@ -554,7 +555,7 @@ module.exports = { cur: cur, num: num, cells: cells, md: md, hm: hm, aDispatch: 
         <text class="xa-cap">订单信息</text>
         <view class="xa-list h-more">
           <button class="xa-row xy-action-hit" bindtap="copyOrderNumber"><text class="xa-row__k">订单编号</text><text class="xa-row__v">{{orderNo}}</text><text class="xa-row__more">复制</text></button>
-          <button class="xa-row xy-action-hit" bindtap="toggleOrderInfo" aria-expanded="{{orderInfoExpanded}}"><text class="xa-row__k">订单明细</text><text class="xa-row__v"></text><text class="xa-row__more" aria-hidden="true">{{orderInfoExpanded ? '收起' : '›'}}</text></button>
+          <button class="xa-row xy-action-hit" bindtap="toggleOrderInfo" aria-expanded="{{orderInfoExpanded}}"><text class="xa-row__k">订单明细与物流</text><text class="xa-row__v"></text><text class="xa-row__more" aria-hidden="true">{{orderInfoExpanded ? '收起' : '›'}}</text></button>
           <view wx:if="{{orderInfoExpanded}}" class="order-info-details">
             <view wx:for="{{assetFacts}}" wx:key="label" class="detail-line">
               <text>{{item.label}}</text>
@@ -595,8 +596,7 @@ module.exports = { cur: cur, num: num, cells: cells, md: md, hm: hm, aDispatch: 
               <text class="status-copy">权益释放或恢复不延长原有效期，以本单最新记录为准。</text>
             </block>
           </view>
-          <button class="xa-row xy-action-hit" bindtap="toggleProgress" aria-expanded="{{progressExpanded}}"><text class="xa-row__k">订单进度与物流</text><text class="xa-row__v"></text><text class="xa-row__more" aria-hidden="true">{{progressExpanded ? '收起' : '›'}}</text></button>
-          <view wx:if="{{progressExpanded}}" class="order-info-details h-details">
+          <view wx:if="{{orderInfoExpanded || progressExpanded}}" class="order-info-details h-details">
           <view>
             <view class="detail-line">
               <text>订单 / 实物 / 审核</text>
@@ -619,8 +619,7 @@ module.exports = { cur: cur, num: num, cells: cells, md: md, hm: hm, aDispatch: 
           <text class="status-copy">{{pickupText === '快递往返' ? '运输时间不顺延租期。' : ''}}归还需提交照片与视频，官方核费后办理退押或补缴。</text>
           </view>
           <button wx:if="{{peerContact}}" class="xa-row xy-action-hit" bindtap="openPeerConversation"><text class="xa-row__k">{{peerContact}}</text><text class="xa-row__v"></text><text class="xa-row__more" aria-hidden="true">›</text></button>
-          <block wx:if="{{role === '我的租赁订单'}}"><template is="xa-funding" data="{{fundingHistoryBusy, fundingHistoryOpen, fundingHistoryError, fundingHistoryRows, fundingHistoryPrevious, fundingHistoryNext}}" /></block>
-          <button class="xa-row xy-action-hit" bindtap="refreshStatus" disabled="{{busy}}" aria-disabled="{{busy}}"><text class="xa-row__k">刷新订单状态</text><text class="xa-row__v"></text><text class="xa-row__more" aria-hidden="true">›</text></button>
+          <block wx:if="{{role === '我的租赁订单'}}"><template is="xa-funding" data="{{fundingHistoryBusy, fundingHistoryOpen, fundingHistoryKind, fundingHistoryError, fundingHistoryRows, fundingHistoryPrevious, fundingHistoryNext}}" /></block>
         </view>
       </view>
       <view wx:if="{{orderInfoExpanded && (paymentRows.length || depositSettlementVisible || refundRecordVisible || assessmentVisible)}}" class="support-panel h-finance">
@@ -809,10 +808,11 @@ module.exports = { cur: cur, num: num, cells: cells, md: md, hm: hm, aDispatch: 
       <button class="xy-action-hit xy-h-kf" bindtap="demoSupport" aria-label="联系官方客服"><image src="{{icons.flowSupport}}" mode="aspectFit" aria-hidden="true" /><text>客服</text></button>
       <view class="xy-h-actions__main h-order-actions">
         <view wx:for="{{actions}}" wx:key="action_code" wx:if="{{item.action_code !== 'VIEW_CONTRACT'}}" class="order-action-item {{item.primary ? 'is-primary' : ''}}">
-          <button class="xy-action-hit xy-button-reset xy-button-fluid" data-code="{{item.action_code}}" bindtap="handleAction" disabled="{{busy || !item.allowed}}" aria-disabled="{{busy || !item.allowed}}"><view class="{{item.primary ? 'xy-action-primary' : 'xy-action-secondary'}} xy-action-shell">{{item.label}}</view></button>
+          <button class="xy-action-hit xy-button-reset xy-button-fluid" data-code="{{item.action_code}}" bindtap="handleAction" disabled="{{busy || !item.allowed}}" aria-disabled="{{busy || !item.allowed}}"><view class="{{item.primary ? 'xy-action-primary' : 'xy-action-secondary'}} xy-action-shell">{{item.label}}{{item.action_code === 'PAY_SUPPLEMENT' && supplement && supplement !== '¥0.00' ? ' ' + supplement : ''}}</view></button>
           <text wx:if="{{!item.allowed}}" class="status-copy">{{item.display_reason}}</text>
         </view>
-        <button wx:if="{{!actions.length || actions.length === 1 && actions[0].action_code === 'VIEW_CONTRACT'}}" class="xy-action-hit xy-button-reset xy-button-fluid" bindtap="backToOrders"><view class="xy-action-secondary xy-action-shell">返回订单列表</view></button>
+        <button wx:if="{{!actions.length || actions.length === 1 && actions[0].action_code === 'VIEW_CONTRACT'}}" class="xy-action-hit xy-button-reset xy-button-fluid" bindtap="backToOrders"><view class="xy-action-secondary xy-action-shell">{{status === '已关闭' || status === '已取消' ? '返回订单' : '返回订单列表'}}</view></button>
+        <button wx:if="{{(status === '已关闭' || status === '已取消') && (!actions.length || actions.length === 1 && actions[0].action_code === 'VIEW_CONTRACT')}}" class="xy-action-hit xy-button-reset xy-button-fluid" bindtap="browseOtherDevices"><view class="xy-action-primary xy-action-shell">选择其他设备</view></button>
       </view>
     </view>
   </bottom-actions>

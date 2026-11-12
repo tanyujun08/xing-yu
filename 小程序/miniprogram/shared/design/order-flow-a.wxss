@@ -82,6 +82,8 @@
 .xa-records__title { color: var(--xy-color-text-primary); font-size: var(--xy-row-text-size); line-height: var(--xy-row-text-line-height); }
 .xa-records__act { justify-content: flex-start; padding: 0; margin: 0; background: transparent; color: var(--xy-color-brand); font-size: var(--xy-row-caption-size); }
 .xa-records__act::after { border: 0; }
+.xa-records__tabs { display: flex; gap: var(--xy-space-4); }
+.xa-records__act.is-on { color: var(--xy-color-text-primary); font-weight: var(--xy-text-weight-semibold); }
 .xa-records + .xa-row, .xa-list .order-info-details + .xa-row { border-top: 1rpx solid var(--xy-color-hairline); }
 .xa-list .order-info-details { margin-top: 0; padding: 0 0 var(--xy-space-3); border-top: 0; }
 .xa-page .xa-well__body { align-items: flex-start; justify-content: center; font-weight: var(--xy-text-weight-regular); }
