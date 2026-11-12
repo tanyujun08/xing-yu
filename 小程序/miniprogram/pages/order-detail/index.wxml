@@ -385,7 +385,7 @@
       </view>
       <block wx:else>
       <view class="h-flow h-generic">
-        <status-hero tone="{{status === '待补缴' || status === '待支付' ? 'orange' : status === '已关闭' || status === '已取消' ? 'neutral' : hasException ? 'red' : 'green'}}" art="{{status === '待补缴' || status === '待支付' ? 'clock' : status === '已关闭' || status === '已取消' ? 'contract' : hasException ? 'shield' : 'check'}}" title="{{status}}" description="{{hasException ? '订单异常，请联系客服协助处理。' : blockers || paymentNotice || (status === '待补缴' ? '核定费用超过押金抵扣，请补缴差额。' : '')}}" />
+        <status-hero tone="{{status === '待补缴' || status === '待支付' ? 'orange' : status === '已关闭' || status === '已取消' ? 'neutral' : hasException ? 'red' : 'green'}}" art="{{status === '待补缴' || status === '待支付' ? 'clock' : status === '已关闭' || status === '已取消' ? 'contract' : hasException ? 'shield' : 'check'}}" title="{{status}}" description="{{hasException ? '订单异常，请联系客服协助处理。' : blockers || paymentNotice || (status === '待补缴' ? '核定费用超过押金抵扣，请补缴差额。' : status === '已关闭' || status === '已取消' ? '订单已结束，相关记录仍可查看。' : '')}}" />
         <view wx:if="{{depositSettlementVisible}}" class="xy-h-blk">
           <view class="xy-h-key {{supplement !== '¥0.00' ? 'xy-h-key--warn' : ''}}"><text class="xy-h-key__label">{{supplement !== '¥0.00' ? '应补缴' : '应退押金'}}</text><text class="xy-h-key__amount">{{supplement !== '¥0.00' ? supplement : refundDue}}</text><text class="xy-h-key__note">{{billFinalized ? '官方费用已核定' : '等待官方核定，待核实金额不是零元'}}</text></view>
           <view class="xy-h-row"><text class="xy-h-row__k">租金</text><text class="xy-h-tag">已付</text><text class="xy-h-row__v xy-h-row__v--strong">{{rent}}</text></view>
@@ -397,6 +397,7 @@
         <view class="xy-h-blk">
           <view class="h-device"><order-product-summary variant="order-list" clickable bindopen="openProduct" title="{{title}}" secondary="{{term}}" media-src="{{media}}" media-state="{{media ? 'ready' : 'idle'}}" /></view>
           <view class="xy-h-row"><text class="xy-h-row__k">取还方式</text><text class="xy-h-row__v">{{pickupText}}</text></view>
+          <button wx:if="{{orderCabinetId}}" class="h-link xy-action-hit" bindtap="openOrderCabinet"><text class="h-link__k">取还地点</text><text class="xy-h-row__v">{{orderCabinetName || '位置待核实'}}</text><text class="h-link__more" aria-hidden="true">›</text></button>
           <view wx:if="{{stage === '准备签约' || stage === '待支付'}}" class="xy-h-row"><text class="xy-h-row__k">本阶段截止</text><text class="xy-h-row__v">{{deadline}}</text></view>
         </view>
           <view wx:if="{{pickupVisible}}" class="xy-h-blk xy-h-blk--pad pickup-card-preview">
@@ -561,7 +562,7 @@
       </view>
       </block>
     </block>
-    <view wx:if="{{loaded && orderCabinetId && !pickupPage && !returnDispatchPage}}" class="pickup-order-card"><view class="order-cabinet-location">
+    <view wx:if="{{loaded && orderCabinetId && !pickupPage && !returnDispatchPage && (returnLanding || preparationPage || nonfulfillmentPage || resultPage && resultPage.kind || returnReviewPage || completionPage || settlementPage || paymentPage || deliveryPage)}}" class="pickup-order-card"><view class="order-cabinet-location">
             <text class="delivery-label">取还地点</text>
             <button class="order-cabinet-line xy-action-hit" bindtap="openOrderCabinet"><text class="order-cabinet-line__label">租赁柜</text><text class="order-cabinet-line__value">{{orderCabinetName || '位置待核实'}}</text><text aria-hidden="true">›</text></button>
             <button class="order-cabinet-line xy-action-hit" bindtap="navigateOrderCabinet" aria-label="{{'导航到' + orderCabinetAddress}}"><image class="delivery-row-icon" src="{{icons.discoveryLocation}}" mode="aspectFit" /><text class="order-cabinet-line__value">{{orderCabinetAddress || '地址待核实，请联系客服'}}</text><text class="order-cabinet-line__label">导航</text></button>

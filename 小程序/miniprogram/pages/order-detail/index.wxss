@@ -1488,3 +1488,4 @@ picker .dispatch-input { display: flex; align-items: center; }
 .h-cabinet .h-plain .xy-h-row__sub { font-weight: var(--xy-text-weight-regular); }
 .h-link, .h-funding .funding-history-links > button { font-weight: var(--xy-text-weight-regular); }
 .h-funding .funding-history-links > button { gap: var(--xy-space-3); }
+.h-flow .xy-h-row + .h-link { border-top: 1rpx solid var(--xy-color-hairline); }
