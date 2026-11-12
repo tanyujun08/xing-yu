@@ -67,6 +67,7 @@ const routes = {
   'private-messages': { open: 'navigateTo', url: '/pages/private-messages/index' },
   'info-guide': { open: 'navigateTo', url: '/pages/info-guide/index' },
   'info-guide-flow': { open: 'navigateTo', url: '/pages/info-guide/index?id=rental-flow', dir: 'info-guide' },
+  'info-guide-legal': { open: 'navigateTo', url: '/pages/info-guide/index?id=user-agreement', dir: 'info-guide' },
   chat: { open: 'navigateTo', url: '/pages/chat/index?mode=c2c&orderId=order-4' },
   'chat-support': { open: 'navigateTo', url: '/pages/chat/index?mode=support', dir: 'chat' },
   cabinets: { open: 'navigateTo', url: '/pages/cabinets/index' },
