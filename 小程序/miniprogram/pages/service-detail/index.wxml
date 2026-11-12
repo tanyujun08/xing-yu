@@ -2,14 +2,14 @@
 <page-shell surface="page" has-footer="{{preview}}">
 <page-header title="{{secondaryNavigationTitle || '服务详情'}}" background="#ffffff" inverse="{{false}}" bindback="onSecondaryNavigationBack" slot="header" /><view class="xy-h-page service-detail-page {{missing ? 'is-missing' : ''}}">
   <block wx:if="{{preview}}">
- <status-hero tone="green" art="{{service === 'guard' ? 'shield-green' : 'shield'}}" title="{{previewTitle}}" description="{{service === 'guard' ? '租赁期间遇到问题，优先处理、进度主动通知。' : '租赁期间意外损坏，可按本单保障规则申请审核。'}}" />
- <view wx:if="{{service === 'guard'}}" class="xy-h-blk xy-h-blk--pad">
+ <status-hero class="sd-band" variant="band" tone="green" art="{{service === 'guard' ? 'shield-green' : 'shield'}}" title="{{previewTitle}}" description="{{service === 'guard' ? '租赁期间遇到问题，优先处理、进度主动通知。' : '租赁期间意外损坏，可按本单保障规则申请审核。'}}" />
+ <view wx:if="{{service === 'guard'}}" class="xy-h-blk xy-h-blk--pad sd-card">
    <view class="sd-head"><text class="xy-h-title">服务内容</text><text class="sd-price">{{previewPrice === '—' ? '下单页显示价格' : '¥' + previewPrice}}<text wx:if="{{previewPrice !== '—'}}" class="sd-unit"> / 单</text></text></view>
    <view class="sd-check"><image src="{{checkIcon}}" mode="aspectFit" aria-hidden="true" /><text>售后问题优先排队处理</text></view>
    <view class="sd-check"><image src="{{checkIcon}}" mode="aspectFit" aria-hidden="true" /><text>关键处理进度消息提醒</text></view>
    <view class="sd-check"><image src="{{checkIcon}}" mode="aspectFit" aria-hidden="true" /><text>一次人工主动跟进</text></view>
  </view>
- <view wx:else class="xy-h-blk">
+ <view wx:else class="xy-h-blk sd-card">
    <view class="xy-h-row"><view class="xy-h-row__k"><text>适用范围</text><text class="xy-h-row__sub">租赁期间意外碰撞、跌落、进液等意外损坏。</text></view></view>
    <view class="xy-h-row"><view class="xy-h-row__k"><text>不包含</text><text class="xy-h-row__sub">故意损坏、遗失、盗抢、正常磨损、耗材损耗、未经允许拆修。</text></view></view>
    <view class="xy-h-row"><view class="xy-h-row__k"><text>生效及申请</text><text class="xy-h-row__sub">实际交接至有效归还期间；需提供订单、设备与事故证据。保障上限与期限以本单快照为准。</text></view></view>
@@ -23,8 +23,8 @@
   </block>
   <block wx:else>
     <block wx:if="{{service === 'guard'}}">
-      <status-hero tone="green" art="shield-green" title="{{detail.title}}" description="{{detail.summary}}" />
-      <view class="xy-h-blk xy-h-blk--pad">
+      <status-hero class="sd-band" variant="band" tone="green" art="shield-green" title="{{detail.title}}" description="{{detail.summary}}" />
+      <view class="xy-h-blk xy-h-blk--pad sd-card">
         <view class="sd-head"><text class="xy-h-title">本单权益</text><text class="sd-price">{{detail.priceText}}</text></view>
         <view wx:for="{{detail.benefits}}" wx:key="id" class="sd-check"><image src="{{checkIcon}}" mode="aspectFit" aria-hidden="true" /><view><text>{{item.title}}</text><text class="xy-h-row__sub sd-sub">{{item.copy}}</text></view></view>
         <text class="sd-status">{{detail.statusText}}</text>

@@ -25,3 +25,12 @@
 .contract-signature-image--error { display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--xy-color-text-secondary); }
 .contract-button, .contract-button .contract-button-shell { min-height: var(--xy-control-height-large); font-size: var(--xy-text-section-title-size); line-height: var(--xy-text-section-title-line-height); }
 .contract-button--secondary { order: -1; }
+
+/* 方向 A：通栏状态带 + 一张白卡（合同内容）+ 裸列表 */
+.contract-page--a { padding: 0; gap: 0; }
+.contract-a-card { padding-bottom: var(--xy-space-4); }
+.contract-a-head { justify-content: flex-start; }
+.contract-a-page { margin-left: auto; color: var(--xy-color-text-secondary); }
+.contract-a-error { margin: 0 var(--xy-space-4); }
+.contract-a-state { margin-left: 0; }
+.contract-a-query { display: flex; align-items: center; justify-content: space-between; gap: var(--xy-space-2); margin: calc(var(--xy-space-4) * -1) var(--xy-space-4) 0; }
