@@ -1,8 +1,31 @@
 @import "./shared/design/components.wxss";
 @import "./shared/design/page-action-states.wxss";
 @import "./shared/design/order-flow-h.wxss";
+@import "./shared/design/order-flow-a.wxss";
 
 page {
+  /* 订单流程方向 A：通栏纯色状态带、单张抬升白卡、灰底裸列表 */
+  --xy-band-bg-green: #eaf4f0;
+  --xy-band-bg-orange: #fcf0e6;
+  --xy-band-bg-red: #fcebe8;
+  --xy-band-bg-blue: #e9f0fb;
+  --xy-band-bg-purple: #efedfb;
+  --xy-band-bg-neutral: #ececf0;
+  --xy-band-title-red: #b42b0c;
+  --xy-band-title-orange: #9a4208;
+  --xy-band-copy: #55595e;
+  --xy-band-track: rgba(0, 0, 0, .1);
+  --xy-band-dot-ring: 0 0 0 2px rgba(255, 255, 255, .9);
+  --xy-band-art-size: 64px;
+  --xy-color-text-value: #3a3a3c;
+  --xy-color-well: #f2f2f5;
+  --xy-shadow-raised: 0 1px 2px rgba(0, 0, 0, .04), 0 0 0 1px rgba(0, 0, 0, .03);
+  --xy-key-currency-size: calc(12px + .5rem);
+  --xy-ticket-code-size: calc(22px + .5rem);
+  --xy-ticket-code-height: 56px;
+  --xy-row-height-a: 48px;
+  --xy-timeline-dot-size: 16px;
+  --xy-timeline-dot-ring: 0 0 0 4px #ddefe8;
   --xy-order-body-size: calc(7px + .5rem);
   --xy-order-body-line-height: calc(14px + .5rem);
   --xy-order-status-size: calc(16px + .5rem);

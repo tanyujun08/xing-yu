@@ -1,8 +1,16 @@
-<view class="status-hero status-hero--{{toneClass}}" role="status">
-  <view class="status-hero__copy">
-    <text class="status-hero__title">{{title}}</text>
-    <text wx:if="{{description}}" class="status-hero__description">{{description}}</text>
-    <slot></slot>
+<view class="status-hero status-hero--{{toneClass}} status-hero--{{variantClass}}" role="status">
+  <view class="status-hero__main">
+    <view class="status-hero__copy">
+      <text class="status-hero__title">{{title}}</text>
+      <text wx:if="{{description}}" class="status-hero__description">{{description}}</text>
+      <slot></slot>
+    </view>
+    <image wx:if="{{artSrc}}" class="status-hero__art" src="{{artSrc}}" mode="aspectFit" aria-hidden="true" />
   </view>
-  <image wx:if="{{artSrc}}" class="status-hero__art" src="{{artSrc}}" mode="aspectFit" aria-hidden="true" />
+  <view wx:if="{{steps.length}}" class="status-hero__rail" aria-label="订单进度">
+    <view wx:for="{{steps}}" wx:key="key" class="status-hero__step {{item.state}}">
+      <text>{{item.label}}</text>
+      <text wx:if="{{item.state === 'is-current' && stepNote}}" class="status-hero__note">{{stepNote}}</text>
+    </view>
+  </view>
 </view>

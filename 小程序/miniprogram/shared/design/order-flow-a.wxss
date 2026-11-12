@@ -1,0 +1,87 @@
+/* 订单流程方向 A（2026-11-12 用户确认）：
+   通栏纯色状态带 + 五段进度；每页只有一张抬升白卡放「现在要处理的事」；
+   其余信息裸放在灰底上，用发丝线分隔；地址类信息用浅灰凹槽；组间距 24。 */
+.xa-page { display: flex; flex-direction: column; gap: var(--xy-space-6); padding: 0 0 var(--xy-space-6); color: var(--xy-color-text-primary); font-size: var(--xy-row-text-size); line-height: var(--xy-row-text-line-height); }
+.xa-hero { display: block; margin-bottom: calc(var(--xy-space-2) * -1); }
+.xa-card { margin: 0 var(--xy-space-4); padding: 0 var(--xy-space-4); border-radius: var(--xy-radius-lg); background: var(--xy-color-surface); box-shadow: var(--xy-shadow-raised); }
+.xa-card + .xa-card { margin-top: calc(var(--xy-space-3) * -1); }
+.xa-list { margin: 0 var(--xy-space-4); border-top: 1rpx solid var(--xy-color-hairline); border-bottom: 1rpx solid var(--xy-color-hairline); }
+.xa-cap { display: block; margin: 0 var(--xy-space-4) calc(var(--xy-space-4) * -1); color: var(--xy-color-text-secondary); font-size: var(--xy-row-caption-size); line-height: var(--xy-row-caption-line-height); }
+.xa-note { display: block; margin: calc(var(--xy-space-4) * -1) var(--xy-space-4) 0; color: var(--xy-color-text-secondary); font-size: var(--xy-row-caption-size); line-height: var(--xy-row-caption-line-height); overflow-wrap: anywhere; }
+.xa-note--alert { color: var(--xy-color-danger); }
+/* 行：左标签、右值；按钮行复用同一外观 */
+.xa-row { position: relative; display: flex; align-items: center; gap: var(--xy-space-2); width: 100%; min-height: var(--xy-row-height-a); padding: var(--xy-space-2) 0; margin: 0; box-sizing: border-box; background: transparent; color: var(--xy-color-text-primary); font-size: var(--xy-row-text-size); line-height: var(--xy-row-text-line-height); font-weight: var(--xy-text-weight-regular); text-align: left; border-radius: 0; }
+.xa-row::after { border: 0; }
+.xa-row + .xa-row, .xa-dev + .xa-row, .xa-key + .xa-row, .xa-well + .xa-row, .xa-row + .xa-well, .xa-head + .xa-row { border-top: 1rpx solid var(--xy-color-hairline); }
+.xa-row__k { flex: none; }
+.xa-row__v { flex: 1; min-width: 0; text-align: right; color: var(--xy-color-text-value); overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.xa-card .xa-row__v { color: var(--xy-color-text-primary); }
+.xa-row__v--strong { color: var(--xy-color-text-primary); font-weight: var(--xy-text-weight-medium); }
+.xa-row__more { flex: none; color: var(--xy-color-text-muted); font-size: var(--xy-row-caption-size); }
+.xa-row__more--brand { color: var(--xy-color-brand); font-weight: var(--xy-text-weight-semibold); }
+.xa-tag { flex: none; margin-left: auto; color: var(--xy-color-text-secondary); font-size: var(--xy-text-caption-size); line-height: var(--xy-text-caption-line-height); }
+.xa-tag + .xa-row__v { flex: none; }
+.xa-tag--warn { color: var(--xy-color-key-warning); font-weight: var(--xy-text-weight-semibold); }
+.xa-tag--brand { color: var(--xy-color-brand); font-weight: var(--xy-text-weight-semibold); }
+/* 设备行 */
+.xa-dev { display: block; padding: var(--xy-space-3) 0; }
+/* 卡内小标题行 */
+.xa-head { display: flex; align-items: center; justify-content: space-between; gap: var(--xy-space-2); padding: var(--xy-space-4) 0 var(--xy-space-2); font-weight: var(--xy-text-weight-semibold); }
+.xa-head__aside { color: var(--xy-color-brand); font-size: var(--xy-row-caption-size); line-height: var(--xy-row-caption-line-height); font-weight: var(--xy-text-weight-regular); }
+/* 钱的结论 */
+.xa-key { display: flex; flex-direction: column; padding: var(--xy-space-4) 0 var(--xy-space-3); }
+.xa-key__label, .xa-key__note { color: var(--xy-color-text-secondary); font-size: var(--xy-row-caption-size); line-height: var(--xy-row-caption-line-height); }
+.xa-key__amount { display: flex; align-items: baseline; color: var(--xy-color-text-primary); font-size: var(--xy-key-amount-size); line-height: var(--xy-key-amount-line-height); font-weight: var(--xy-text-weight-semibold); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.xa-key__cur { margin-right: calc(var(--xy-space-1) / 2); font-size: var(--xy-key-currency-size); font-weight: var(--xy-text-weight-semibold); }
+.xa-key--warn .xa-key__amount { color: var(--xy-color-key-warning); }
+.xa-key--brand .xa-key__amount { color: var(--xy-color-brand); }
+/* 浅灰凹槽：地址、柜机、收件人 */
+.xa-well { display: flex; align-items: center; gap: var(--xy-space-3); margin: var(--xy-space-1) 0 var(--xy-space-4); padding: var(--xy-space-3); border-radius: var(--xy-radius-lg); background: var(--xy-color-well); }
+.xa-well + .xa-row { border-top: 0; margin-top: calc(var(--xy-space-3) * -1); }
+.xa-well__body { flex: 1; min-width: 0; display: flex; flex-direction: column; padding: 0; margin: 0; background: transparent; text-align: left; font-size: var(--xy-row-text-size); line-height: var(--xy-row-text-line-height); color: var(--xy-color-text-primary); border-radius: 0; }
+.xa-well__body::after { border: 0; }
+.xa-well__title { font-weight: var(--xy-text-weight-semibold); overflow-wrap: anywhere; }
+.xa-well__sub { color: var(--xy-color-text-secondary); font-size: var(--xy-row-caption-size); line-height: var(--xy-row-caption-line-height); overflow-wrap: anywhere; }
+.xa-well__act { flex: none; display: flex; align-items: center; min-height: var(--xy-size-touch-min); padding: 0; margin: 0; background: transparent; color: var(--xy-color-brand); font-size: var(--xy-row-text-size); font-weight: var(--xy-text-weight-semibold); }
+.xa-well__act::after { border: 0; }
+/* 取件码票据 */
+.xa-ticket { padding-top: var(--xy-space-4); }
+.xa-ticket__top { display: flex; justify-content: space-between; align-items: center; color: var(--xy-color-text-secondary); font-size: var(--xy-row-caption-size); line-height: var(--xy-row-caption-line-height); }
+.xa-ticket__slot { padding: 0 var(--xy-space-2); border-radius: var(--xy-radius-sm); background: var(--xy-color-brand-soft); color: var(--xy-color-brand); font-weight: var(--xy-text-weight-semibold); }
+.xa-ticket__code { display: flex; gap: var(--xy-space-2); margin: var(--xy-space-3) 0 var(--xy-space-4); padding: 0; background: transparent; width: 100%; }
+.xa-ticket__code::after { border: 0; }
+.xa-ticket__cell { flex: 1; height: var(--xy-ticket-code-height); display: flex; align-items: center; justify-content: center; border-radius: var(--xy-radius-lg); background: var(--xy-color-well); color: var(--xy-color-text-primary); font-size: var(--xy-ticket-code-size); font-weight: var(--xy-text-weight-semibold); font-variant-numeric: tabular-nums; }
+.xa-ticket__cols { display: flex; padding: var(--xy-space-3) 0; border-top: 1rpx dashed var(--xy-color-border); }
+.xa-ticket__col { flex: 1; display: flex; flex-direction: column; }
+.xa-ticket__k { color: var(--xy-color-text-secondary); font-size: var(--xy-row-caption-size); line-height: var(--xy-row-caption-line-height); }
+.xa-ticket__v { font-weight: var(--xy-text-weight-semibold); font-variant-numeric: tabular-nums; }
+.xa-ticket .xa-well { margin-top: 0; }
+/* 竖向时间线 */
+.xa-tl { padding: var(--xy-space-4) 0; }
+.xa-tl__item { position: relative; display: flex; gap: var(--xy-space-3); padding-bottom: var(--xy-space-4); }
+.xa-tl__item:last-child { padding-bottom: 0; }
+.xa-tl__item::before { content: ""; position: absolute; left: calc(var(--xy-timeline-dot-size) / 2 - 1px); top: calc(var(--xy-timeline-dot-size) + var(--xy-space-1)); bottom: calc(var(--xy-space-1) * -1); width: 2px; background: var(--xy-color-border); }
+.xa-tl__item:last-child::before { display: none; }
+.xa-tl__item.is-done::before { background: var(--xy-color-brand); }
+.xa-tl__dot { flex: none; width: var(--xy-timeline-dot-size); height: var(--xy-timeline-dot-size); margin-top: calc(var(--xy-space-1) - 1px); border: 2px solid var(--xy-color-text-disabled); border-radius: var(--xy-radius-circle); background: var(--xy-color-surface); box-sizing: border-box; position: relative; z-index: 1; }
+.xa-tl__item.is-done .xa-tl__dot { border-color: var(--xy-color-brand); background: var(--xy-color-brand); }
+.xa-tl__item.is-current .xa-tl__dot { border-color: var(--xy-color-brand); box-shadow: var(--xy-timeline-dot-ring); }
+.xa-tl__body { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.xa-tl__title { font-weight: var(--xy-text-weight-semibold); }
+.xa-tl__item:not(.is-done):not(.is-current) .xa-tl__title { color: var(--xy-color-text-secondary); font-weight: var(--xy-text-weight-regular); }
+.xa-tl__sub { color: var(--xy-color-text-secondary); font-size: var(--xy-row-caption-size); line-height: var(--xy-row-caption-line-height); }
+/* 按钮行：压过基础库 button 的固定宽度与居中外边距 */
+.xa-page .xa-row, .xa-page .xa-ticket__code, .xa-page .xa-well__body { width: 100%; margin-left: 0; margin-right: 0; }
+.xa-page .xa-well__act { width: auto; margin: 0; line-height: var(--xy-row-text-line-height); }
+.xa-ticket__code { line-height: var(--xy-row-text-line-height); border-radius: 0; }
+.xa-page .xa-well__body { flex: 1; }
+.xa-note--inset { margin: 0 0 var(--xy-space-2); }
+/* 订单信息里展开的记录 */
+.xa-records { display: flex; flex-direction: column; gap: var(--xy-space-3); padding: 0 0 var(--xy-space-3); color: var(--xy-color-text-secondary); font-size: var(--xy-row-caption-size); line-height: var(--xy-row-caption-line-height); }
+.xa-records__item { display: flex; flex-direction: column; }
+.xa-records__title { color: var(--xy-color-text-primary); font-size: var(--xy-row-text-size); line-height: var(--xy-row-text-line-height); }
+.xa-records__act { justify-content: flex-start; padding: 0; margin: 0; background: transparent; color: var(--xy-color-brand); font-size: var(--xy-row-caption-size); }
+.xa-records__act::after { border: 0; }
+.xa-records + .xa-row, .xa-list .order-info-details + .xa-row { border-top: 1rpx solid var(--xy-color-hairline); }
+.xa-list .order-info-details { margin-top: 0; padding: 0 0 var(--xy-space-3); border-top: 0; }
+.xa-page .xa-well__body { align-items: flex-start; justify-content: center; font-weight: var(--xy-text-weight-regular); }
