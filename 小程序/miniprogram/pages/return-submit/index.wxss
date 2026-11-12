@@ -31,3 +31,22 @@
 .example-page .return-actions button { gap:var(--xy-space-2); }
 .example-page .return-primary image { filter:brightness(0) invert(1); }
 .example-photo-steps .example-step { background:transparent; margin-top:0; padding:var(--xy-space-1) 0; }
+/* 归还凭证（2026-11-12 设计稿第二版） */
+.rs-head { display: flex; align-items: center; justify-content: space-between; gap: var(--xy-space-2); }
+.rs-head__title { display: block; color: var(--xy-color-text-primary); font-size: var(--xy-text-body-size); line-height: var(--xy-text-body-line-height); font-weight: var(--xy-text-weight-semibold); }
+.rs-head__count { color: var(--xy-color-text-secondary); font-size: var(--xy-text-caption-size); line-height: var(--xy-text-caption-line-height); }
+.rs-head__count.is-ready { color: var(--xy-color-brand); font-weight: var(--xy-text-weight-semibold); }
+.rs-ship .rs-well { margin: var(--xy-space-3) 0 0; }
+.rs-ship .rs-row { width: 100%; margin: 0; padding: 0; background: transparent; }
+.rs-ship .rs-row + .rs-row { border-top: 1rpx solid var(--xy-color-hairline); }
+.rs-ship .rs-well + .rs-row { margin-top: var(--xy-space-1); }
+.rs-ok { color: var(--xy-color-brand); }
+.rs-input { flex: 1; min-width: 0; min-height: var(--xy-size-touch-min); text-align: right; color: var(--xy-color-text-primary); font-size: var(--xy-row-text-size); }
+.rs-placeholder { color: var(--xy-color-text-muted); }
+.rs-label { margin-top: var(--xy-space-2); }
+.rs-notes { display: flex; flex-direction: column; gap: var(--xy-space-1); color: var(--xy-color-text-secondary); font-size: var(--xy-row-caption-size); line-height: var(--xy-row-caption-line-height); }
+.return-actions.rs-footer { flex-direction: row; align-items: center; gap: var(--xy-space-3); }
+.return-actions.rs-footer .return-primary, .return-actions.rs-footer .return-secondary { flex: 1; min-width: 0; width: auto !important; }
+.return-actions.rs-footer .rs-kf { flex: none; width: auto !important; min-height: var(--xy-size-touch-min); background: transparent; border: 0; padding: 0; margin: 0; }
+.return-actions.rs-footer .rs-kf { flex-direction: column; gap: 0; color: var(--xy-color-text-primary); font-size: var(--xy-text-caption-size); line-height: var(--xy-text-caption-line-height); font-weight: var(--xy-text-weight-semibold); }
+.rs-well .xa-well__title { font-weight: var(--xy-text-weight-medium); }

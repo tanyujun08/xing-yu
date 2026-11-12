@@ -40,3 +40,20 @@
 .evidence-single-copy .evidence-link { justify-content:flex-start; gap:var(--xy-space-2); font-size:var(--xy-text-body-size); }
 .evidence-tile.is-focused { outline:1px solid var(--xy-color-brand); }
 .evidence-focus { display:block; color:var(--xy-color-brand); font-size:var(--xy-text-body-small-size); line-height:var(--xy-text-body-small-line-height); margin-bottom:var(--xy-space-2); }
+
+/* 紧凑格（2026-11-12 设计稿第二版）：三列灰底方格，加号和项目名在格内，已拍的照片铺满并在底部压名字 */
+.is-compact { grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--xy-space-3); }
+.is-compact .evidence-tile { position:relative; display:flex; flex-direction:column; padding:0; border:0; border-radius:var(--xy-radius-lg); background:transparent; }
+.is-compact .evidence-heading { position:absolute; top:0; right:0; z-index:var(--xy-z-local-raised); min-height:0; padding:0; }
+.is-compact .evidence-title { display:none; }
+.is-compact .evidence-example { position:static; min-height:var(--xy-size-touch-min); padding:0 var(--xy-space-2); font-size:var(--xy-text-caption-size); color:var(--xy-color-text-secondary); align-items:flex-start; padding-top:var(--xy-space-1); }
+.is-compact .evidence-body { display:block; }
+.is-compact .evidence-preview,.is-compact .evidence-upload,.is-compact .has-media .evidence-preview,.is-compact .has-media .evidence-upload { width:100% !important; height:auto; aspect-ratio:1; border-radius:var(--xy-radius-lg); background:var(--xy-color-well); overflow:hidden; }
+.is-compact .evidence-upload { gap:var(--xy-space-1); color:var(--xy-color-text-secondary); font-size:var(--xy-text-caption-size); line-height:var(--xy-text-caption-line-height); }
+.evidence-plus { font-size:var(--xy-text-page-title-size); line-height:var(--xy-text-page-title-line-height); color:var(--xy-color-text-muted); }
+.evidence-compact-title { padding:0 var(--xy-space-1); text-align:center; overflow-wrap:anywhere; }
+.evidence-media-title { position:absolute; left:0; right:0; bottom:0; padding:var(--xy-space-1) var(--xy-space-2); background:var(--xy-color-scrim); color:var(--xy-color-text-inverse); font-size:var(--xy-text-caption-size); line-height:var(--xy-text-caption-line-height); text-align:center; }
+.is-compact .evidence-media { object-fit:cover; }
+.is-compact .evidence-status { display:none; }
+.is-compact .evidence-controls { height:auto; justify-content:center; }
+.is-compact .evidence-controls .evidence-replace { top:0; min-height:var(--xy-size-touch-min); font-size:var(--xy-text-caption-size); }
