@@ -2,12 +2,12 @@
 <wxs module="xg">
 function kind(it) {
   var s = it.mainStatusText;
-  if (it.actionPrimary || it.statusTone === 'warning') return 'todo';
+  if (it.actionPrimary || it.statusTone === 'warning' || it.mainStatusText === '待补缴') return 'todo';
   if (s === '已完成' || s === '已关闭' || s === '已取消') return 'done';
   return 'doing';
 }
 function pick(items, k) { var out = []; for (var i = 0; i < (items || []).length; i++) if (kind(items[i]) === k) out.push(items[i]); return out; }
-function tone(it) { var k = kind(it); return k === 'todo' ? (it.statusTone === 'warning' ? 'warning' : 'success') : k === 'done' ? 'ended' : 'muted'; }
+function tone(it) { var k = kind(it); return k === 'todo' ? (it.statusTone === 'warning' || it.mainStatusText === '待补缴' ? 'warning' : 'success') : k === 'done' ? 'ended' : 'muted'; }
 var groups = [{ k: 'todo', t: '需要你处理' }, { k: 'doing', t: '进行中' }, { k: 'done', t: '已结束' }];
 module.exports = { pick: pick, tone: tone, groups: groups };
 </wxs>
