@@ -1,14 +1,4 @@
 <page-meta root-font-size="system" />
-<template name="xg-item">
-  <view class="xy-h-blk h-item">
-    <view class="h-item__main" data-id="{{item.id}}" bindtap="openRental" role="button" aria-label="查看{{item.deviceName}}订单信息">
-      <media-state class="thumb" state="{{item.mediaState}}" src="{{item.image}}" empty-label="暂无图片" mode="aspectFill" />
-      <view class="copy"><text class="name">{{item.deviceName}}</text><text class="summary">{{item.rentalText}} · {{item.pickupText}}</text><text class="h-state h-state--{{tone}}">{{item.mainStatusText}}<text wx:if="{{item.amountLabel === '待补缴金额' || item.actionLabel === '去支付'}}"> {{item.amountText}}</text></text></view>
-    </view>
-    <button wx:if="{{item.actionPrimary}}" class="h-item__action xy-action-hit" data-id="{{item.id}}" bindtap="openOrder" aria-label="{{item.actionLabel}}"><text class="h-pill">{{item.actionLabel}}</text></button>
-    <button wx:else class="h-item__more xy-action-hit" data-id="{{item.id}}" bindtap="openOrder" aria-label="查看订单详情">›</button>
-  </view>
-</template>
 <wxs module="xg">
 function kind(it) {
   var s = it.mainStatusText;
@@ -21,6 +11,16 @@ function tone(it) { var k = kind(it); return k === 'todo' ? (it.statusTone === '
 var groups = [{ k: 'todo', t: '需要你处理' }, { k: 'doing', t: '进行中' }, { k: 'done', t: '已结束' }];
 module.exports = { pick: pick, tone: tone, groups: groups };
 </wxs>
+<template name="xg-item">
+  <view class="xy-h-blk h-item">
+    <view class="h-item__main" data-id="{{item.id}}" bindtap="openRental" role="button" aria-label="查看{{item.deviceName}}订单信息">
+      <media-state class="thumb" state="{{item.mediaState}}" src="{{item.image}}" empty-label="暂无图片" mode="aspectFill" />
+      <view class="copy"><text class="name">{{item.deviceName}}</text><text class="summary">{{item.rentalText}} · {{item.pickupText}}</text><text class="h-state h-state--{{xg.tone(item)}}">{{item.mainStatusText}}<text wx:if="{{item.amountLabel === '待补缴金额' || item.actionLabel === '去支付'}}"> {{item.amountText}}</text></text></view>
+    </view>
+    <button wx:if="{{item.actionPrimary}}" class="h-item__action xy-action-hit" data-id="{{item.id}}" bindtap="openOrder" aria-label="{{item.actionLabel}}"><text class="h-pill">{{item.actionLabel}}</text></button>
+    <button wx:else class="h-item__more xy-action-hit" data-id="{{item.id}}" bindtap="openOrder" aria-label="查看订单详情">›</button>
+  </view>
+</template>
 <page-shell surface="page" fixed-header>
 <page-header slot="header" title="{{title}}" bindback="goBack" />
 <view class="equipment-page">
@@ -43,13 +43,13 @@ module.exports = { pick: pick, tone: tone, groups: groups };
         <block wx:if="{{xg.pick(items, g.k).length}}">
           <text class="h-group">{{g.t}}</text>
           <view class="h-group__list">
-            <block wx:for="{{xg.pick(items, g.k)}}" wx:key="id"><template is="xg-item" data="{{item, tone: xg.tone(item)}}" /></block>
+            <block wx:for="{{xg.pick(items, g.k)}}" wx:key="id"><template is="xg-item" data="{{item: item}}" /></block>
           </view>
         </block>
       </block>
     </view>
     <view wx:else class="h-list">
-      <block wx:for="{{items}}" wx:key="id"><template is="xg-item" data="{{item, tone: xg.tone(item)}}" /></block>
+      <block wx:for="{{items}}" wx:key="id"><template is="xg-item" data="{{item: item}}" /></block>
     </view>
     </view>
 
