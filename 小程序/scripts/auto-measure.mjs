@@ -61,6 +61,21 @@ const routes = {
   'contract-sign-restart': { open: 'navigateTo', url: '/pages/contract-sign/index?orderId=order-1', dir: 'contract-sign', set: { loading: false, ready: false, hasDraft: true, rejected: false, canRestart: true, name: '林沐 · 演示', progressText: '', errorText: '签名图片上传没有成功，请重新签写' } },
   'contract-sign-ready': { open: 'navigateTo', url: '/pages/contract-sign/index?orderId=order-1', dir: 'contract-sign', set: { loading: false, ready: true, hasDraft: false, name: '林沐 · 演示', progressText: '', errorText: '' } },
   'contract-sign-draft': { open: 'navigateTo', url: '/pages/contract-sign/index?orderId=order-1', dir: 'contract-sign', set: { loading: false, ready: false, hasDraft: true, rejected: false, canRestart: false, name: '林沐 · 演示', progressText: '', errorText: '' } },
+  // 第 3 批 发现与消息
+  info: { open: 'switchTab', url: '/pages/info/index' },
+  'order-messages': { open: 'navigateTo', url: '/pages/order-messages/index' },
+  'order-messages-filled': { open: 'navigateTo', url: '/pages/order-messages/index', dir: 'order-messages', set: { loggedIn: true, messages: [{ id: 'm1', orderId: 'order-1', title: '订单已支付', deviceName: '大疆 Pocket 3', statusText: '待取件', content: '取件码 123456，请在 10-27 前到柜取件。', timeText: '10-26 19:58' }, { id: 'm2', orderId: 'order-2', title: '归还审核通过', deviceName: '索尼 A7M4', statusText: '退押处理中', content: '押金将在 1 个工作日内原路退回。', timeText: '10-25 14:20' }] } },
+  'private-messages': { open: 'navigateTo', url: '/pages/private-messages/index' },
+  'info-guide': { open: 'navigateTo', url: '/pages/info-guide/index' },
+  'info-guide-flow': { open: 'navigateTo', url: '/pages/info-guide/index?id=rental-flow', dir: 'info-guide' },
+  'info-guide-legal': { open: 'navigateTo', url: '/pages/info-guide/index?id=user-agreement', dir: 'info-guide' },
+  chat: { open: 'navigateTo', url: '/pages/chat/index?mode=c2c&orderId=order-4' },
+  'chat-support': { open: 'navigateTo', url: '/pages/chat/index?mode=support', dir: 'chat' },
+  cabinets: { open: 'navigateTo', url: '/pages/cabinets/index' },
+  'cabinets-return': { open: 'navigateTo', url: '/pages/cabinets/index?mode=return&orderId=order-4', dir: 'cabinets' },
+  stores: { open: 'navigateTo', url: '/pages/stores/index' },
+  'check-in': { open: 'navigateTo', url: '/pages/check-in/index' },
+  'check-in-unsigned': { open: 'navigateTo', url: '/pages/check-in/index', set: { signedToday: false, streak: '3', streakText: '03', signedMonthCount: 3, recent: [], 'weekDays[0].state': 'done', 'weekDays[1].state': 'done', 'weekDays[2].state': 'done', 'weekDays[4].state': 'normal', 'calendarDays[15].state': 'signed', 'calendarDays[16].state': 'signed', 'calendarDays[17].state': 'signed', 'calendarDays[18].state': 'today', nextMilestone: { streak: 3, days: 7, remaining: 4, reward: '300 粉钻', percent: 43 } } },
 };
 // 订单详情的 10 个演示状态：od-1（准备签约）… od-10（已关闭）
 for (let n = 1; n <= 10; n += 1) routes['od-' + n] = { open: 'navigateTo', url: '/pages/order-detail/index?orderId=order-' + n, dir: 'order-detail' };
