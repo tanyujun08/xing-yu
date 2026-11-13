@@ -1,7 +1,7 @@
 <page-meta root-font-size="system" />
 <view class="stores-page {{largeType ? 'page--large' : ''}}">
 <page-header title="{{secondaryNavigationTitle || '门店列表'}}" background="#ffffff" inverse="{{false}}" bindback="onSecondaryNavigationBack" />
-  <view class="location-bar"><view class="location-row xy-tap" bindtap="chooseRegion" role="button" aria-label="选择城市"><image class="location-icon" src="{{icons.homeLocation}}" mode="aspectFit" /><text>{{regionCity}}</text><image class="location-caret" src="{{icons.homeChevronDown}}" mode="aspectFit" /></view><view class="mode-switch xy-tabs"><view class="mode-option xy-tab xy-tap"><text>柜机</text><button class="touch-overlay" hover-class="none" bindtap="openCabinets" aria-label="切换到柜机"></button></view><view class="mode-option xy-tab is-active" role="button" aria-label="当前为门店">门店<view class="xy-tab__indicator"></view></view></view></view>
+  <view class="location-bar"><view class="location-row xy-tap" bindtap="chooseRegion" role="button" aria-label="选择城市"><image class="location-icon" src="{{icons.homeLocation}}" mode="aspectFit" /><text>{{regionCity}}</text><image class="location-caret" src="{{icons.homeChevronDown}}" mode="aspectFit" /></view><view class="mode-seg" role="tablist" aria-label="切换供给类型"><view class="mode-seg__item"><text>柜机</text><view class="hit-area xy-tap" bindtap="openCabinets" role="tab" aria-selected="false" aria-label="切换到柜机"></view></view><view class="mode-seg__item is-on" role="tab" aria-selected="true" aria-label="当前为门店"><text>门店</text></view></view></view>
   <scroll-view class="store-scroll" scroll-y="true" show-scrollbar="false" bindscrolltolower="loadMore">
     <scroll-view wx:if="{{districts.length > 1}}" class="chips" scroll-x="true" show-scrollbar="false" enhanced="true">
       <view class="chips__row">
@@ -12,11 +12,12 @@
     <block wx:if="{{stores.length}}">
       <view class="sortbar"><text>{{shownCount}} 家门店</text><text wx:if="{{sortedByDistance}}">按距离从近到远</text></view>
       <block wx:for="{{stores}}" wx:key="id">
-      <view wx:if="{{item.id !== expandedId}}" class="mini xy-tap" data-id="{{item.id}}" bindtap="expandStore" role="button" aria-label="展开{{item.name}}">
+      <view wx:if="{{index === 1}}" class="sortbar sortbar--sub"><text>其他门店</text><text>点箭头展开货架</text></view>
+      <view wx:if="{{item.id !== expandedId}}" class="mini xy-tap" data-id="{{item.id}}" bindtap="openStore" role="button" aria-label="进入{{item.name}}">
         <view class="mini__thumb"><media-state class="sq__img" state="{{item.cover ? 'loading' : 'idle'}}" src="{{item.cover}}" density="thumbnail" mode="aspectFill" placeholder-src="{{icons.deviceMark}}" empty-label="" alt="{{item.name}}门头" /></view>
         <view class="mini__info"><text class="mini__name">{{item.name}}</text><text class="mini__meta"><text wx:if="{{item.statusLabel}}" class="mini__status {{item.statusLabel === '营业中' ? 'is-ok' : ''}}">{{item.statusLabel}} · </text>{{item.hoursLabel}}<text wx:if="{{item.distance}}"> · {{item.distance}}</text></text></view>
         <view class="mini__price"><text wx:if="{{item.fromPrice}}" class="mini__from"><text class="mini__yen">¥</text>{{item.fromPrice}}<text class="mini__unit"> 起</text></text><text class="mini__count">{{item.total ? item.total + ' 台可租' : '进店查看'}}</text></view>
-        <image class="mini__chev" src="{{icons.homeChevronDown}}" mode="aspectFit" />
+        <view class="mini__open"><image class="mini__chev" src="{{icons.homeChevronDown}}" mode="aspectFit" /><view class="hit-area hit-area--chev xy-tap" data-id="{{item.id}}" catchtap="expandStore" role="button" aria-label="展开{{item.name}}的货架"></view></view>
       </view>
       <view wx:else class="shop">
         <view class="shop__head xy-tap" data-id="{{item.id}}" bindtap="openStore" role="button" aria-label="进入{{item.name}}">
@@ -33,7 +34,7 @@
               <view wx:for="{{row.items}}" wx:for-item="slot" wx:key="id" class="slot xy-tap {{slot.cheapest ? 'slot--low' : ''}}" data-id="{{slot.id}}" bindtap="openDevice" role="button" aria-label="{{slot.name}}">
                 <view class="sq"><media-state class="sq__img" state="{{slot.image ? 'loading' : 'idle'}}" src="{{slot.image}}" density="thumbnail" mode="aspectFill" placeholder-src="{{icons.deviceMark}}" empty-label="" alt="{{slot.name}}" /></view>
                 <text class="slot__name">{{slot.name}}</text>
-                <text class="slot__price"><text class="slot__yen">¥</text>{{slot.priceValue}}<text class="slot__unit">{{slot.priceUnit}}</text></text>
+                <text class="slot__price"><text class="slot__yen">¥</text>{{slot.priceValue}}<text class="slot__unit">{{slot.priceUnit}}</text><text wx:if="{{slot.cheapest && item.total > 1}}" class="slot__tag">最低</text></text>
               </view>
             </view>
           </block>

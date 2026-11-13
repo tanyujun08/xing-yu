@@ -33,9 +33,9 @@
       <text>{{regionCity}}</text>
       <image class="location-caret" src="{{icons.homeChevronDown}}" mode="aspectFit" />
     </view>
-    <view class="mode-switch xy-tabs" aria-label="切换供给类型">
-      <view class="mode-option xy-tab xy-tab--active is-active" role="button" aria-label="当前为柜机"><text>柜机</text><view class="xy-tab__indicator"></view></view>
-      <view class="mode-option xy-tab xy-hit-target xy-tap"><text>门店</text><button class="touch-overlay" hover-class="none" bindtap="openStores" aria-label="切换到门店"></button></view>
+    <view class="mode-seg" role="tablist" aria-label="切换供给类型">
+      <view class="mode-seg__item is-on" role="tab" aria-selected="true" aria-label="当前为柜机"><text>柜机</text></view>
+      <view class="mode-seg__item"><text>门店</text><view class="hit-area xy-tap" bindtap="openStores" role="tab" aria-selected="false" aria-label="切换到门店"></view></view>
     </view>
   </view>
   <view wx:if="{{errorText}}" class="cabinet-page-empty" role="alert"><text>{{errorText}}</text><view class="xy-discovery-empty__action xy-tap" bindtap="loadCabinets" role="button" aria-label="重新加载">重新加载</view></view>
@@ -43,11 +43,12 @@
   <scroll-view wx:else class="cabinet-scroll" scroll-y="true" show-scrollbar="false">
     <view class="sortbar"><text>{{cabinets.length}} 个柜机</text><text wx:if="{{sortedByDistance}}">按距离从近到远</text></view>
     <block wx:for="{{cabinets}}" wx:key="id">
-    <view wx:if="{{item.id !== expandedId}}" class="mini xy-tap" data-id="{{item.id}}" bindtap="expandCabinet" role="button" aria-label="展开{{item.name}}">
+    <view wx:if="{{index === 1}}" class="sortbar sortbar--sub"><text>其他柜机</text><text>点箭头展开格口</text></view>
+    <view wx:if="{{item.id !== expandedId}}" class="mini xy-tap" data-id="{{item.id}}" bindtap="openCabinet" role="button" aria-label="查看{{item.name}}详情">
       <image class="mini__thumb" src="{{icons.discoveryReferenceCabinet}}" mode="aspectFill" />
       <view class="mini__info"><text class="mini__name">{{item.name}}</text><text class="mini__meta">{{item.address}}<text wx:if="{{item.distance}}"> · {{item.distance}}</text></text></view>
       <view class="mini__price"><text wx:if="{{item.fromPrice}}" class="mini__from"><text class="mini__yen">¥</text>{{item.fromPrice}}<text class="mini__unit"> 起</text></text><text class="mini__count">{{item.countLabel || '暂无可租'}}</text></view>
-      <image class="mini__chev" src="{{icons.homeChevronDown}}" mode="aspectFit" />
+      <view class="mini__open"><image class="mini__chev" src="{{icons.homeChevronDown}}" mode="aspectFit" /><view class="hit-area hit-area--chev xy-tap" data-id="{{item.id}}" catchtap="expandCabinet" role="button" aria-label="展开{{item.name}}的格口"></view></view>
     </view>
     <view wx:else class="cab {{item.devices.length ? '' : 'cab--off'}}">
       <view class="cab-sign xy-tap" data-id="{{item.id}}" bindtap="openCabinet" role="button" aria-label="查看{{item.name}}详情">
@@ -61,7 +62,7 @@
       <view wx:if="{{item.devices.length}}" class="cab-grid">
         <view wx:for="{{item.devices}}" wx:for-item="slot" wx:key="id" class="slot xy-tap {{slot.cheapest ? 'slot--low' : ''}}" data-id="{{slot.id}}" bindtap="openDevice" role="button" aria-label="{{slot.name}}">
           <view class="sq"><media-state class="sq__img" state="{{slot.image ? 'loading' : 'idle'}}" src="{{slot.image}}" density="thumbnail" mode="aspectFill" placeholder-src="{{icons.deviceMark}}" empty-label="" alt="{{slot.name}}" /></view>
-          <view class="slot__text"><text class="slot__name">{{slot.name}}</text><text class="slot__price"><text class="slot__yen">¥</text>{{slot.priceValue}}<text class="slot__unit">{{slot.priceUnit}}</text></text></view>
+          <view class="slot__text"><text class="slot__name">{{slot.name}}</text><text class="slot__price"><text class="slot__yen">¥</text>{{slot.priceValue}}<text class="slot__unit">{{slot.priceUnit}}</text><text wx:if="{{slot.cheapest && item.devices.length > 1}}" class="slot__tag">最低</text></text></view>
         </view>
       </view>
       <view wx:else class="cab-empty">柜里暂时没有可租设备</view>
