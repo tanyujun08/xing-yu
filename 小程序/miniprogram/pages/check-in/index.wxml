@@ -7,7 +7,7 @@
     <text wx:if="{{receiptText}}" class="ci-note">{{receiptText}}</text>
     <view class="ci-hero">
       <view class="ci-hero__title"><view wx:if="{{signedToday}}" class="ci-hero__ok"><text>✓</text></view><text>{{signedToday ? '签到成功' : '今天还没签到'}}</text></view>
-      <text class="ci-hero__sub">{{signedToday ? '今日已到账 ' + dailyReward : ruleAvailable ? '签到可得 ' + dailyReward : '签到规则暂不可用'}}</text>
+      <text class="ci-hero__sub">{{signedToday ? '今日已到账 ' : ruleAvailable ? '签到可得 ' : '签到规则暂不可用'}}<text wx:if="{{ruleAvailable}}" class="ci-brand">{{dailyReward}}</text></text>
       <view class="ci-hero__streak"><text class="ci-hero__label">已连续签到</text><view class="ci-hero__row"><text class="ci-hero__num">{{streakText}}</text><text class="ci-hero__unit">天</text></view></view>
     </view>
     <view class="ci-card">
@@ -29,7 +29,7 @@
     </view>
     <view wx:if="{{recent.length || receiptCoupons.length}}" class="ci-group"><text class="ci-group__title">最近签到</text>
       <view class="ci-list">
-        <button wx:for="{{recent}}" wx:key="key" class="ci-row xy-button-reset check-in-receipt" data-id="{{item.key}}" bindtap="openReceipt"><view class="ci-row__main"><text>{{item.date}} · 连续 {{item.streak}} 天</text></view><text class="ci-row__reward">+{{item.reward}}</text><text class="ci-row__chev" aria-hidden="true">›</text></button>
+        <button wx:for="{{recent}}" wx:key="key" class="ci-row xy-button-reset check-in-receipt" data-id="{{item.key}}" bindtap="openReceipt"><view class="ci-row__main"><text>{{item.dateShort}} · 连续 {{item.streak}} 天</text></view><text class="ci-row__reward">{{item.reward}}</text><text class="ci-row__chev" aria-hidden="true">›</text></button>
         <button wx:for="{{receiptCoupons}}" wx:key="id" class="ci-row xy-button-reset check-in-coupon" data-id="{{item.id}}" bindtap="openCoupon"><view class="ci-row__main"><text>查看签到奖励：{{item.title}}</text></view><text class="ci-row__chev" aria-hidden="true">›</text></button>
       </view>
     </view>

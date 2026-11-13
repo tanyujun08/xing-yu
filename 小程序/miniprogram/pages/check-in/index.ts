@@ -55,9 +55,9 @@ Page({
     balance: '—', starPoints: '—', streak: '—', streakText: '0', monthTitle: '', monthShort: '', signedMonthCount: 0,
     calendarDays: [] as ReturnType<typeof calendar>, weekDays: [] as ReturnType<typeof week>,
     ruleAvailable: false, dailyReward: '—', firstReward: '—', milestones: [] as Array<{ key: string; day: string; reward: string }>,
-    history: [] as Array<{ key: string; date: string; streak: string; reward: string }>,
+    history: [] as Array<{ key: string; date: string; dateShort: string; streak: string; reward: string }>,
     receiptCoupons:[] as {id:string;title:string}[],
-    nextMilestone: null as { streak: number; days: number; remaining: number; reward: string; percent: number } | null, ruleNote: '', recent: [] as Array<{ key: string; date: string; streak: string; reward: string }>,
+    nextMilestone: null as { streak: number; days: number; remaining: number; reward: string; percent: number } | null, ruleNote: '', recent: [] as Array<{ key: string; date: string; dateShort: string; streak: string; reward: string }>,
   },
   onLoad(options:Record<string,string|undefined> = {}){state(this).receiptId=loyaltyIdentifier(options['check_in_id']??'')?options['check_in_id']!:'';},
   onPageScroll(event: { scrollTop: number }) { const scrolled = event.scrollTop > 40; if (scrolled !== this.data.headerScrolled) this.setData({ headerScrolled: scrolled }); },
@@ -119,8 +119,8 @@ Page({
       monthTitle: month.month.replace('-', ' 年 ') + ' 月', monthShort: String(Number(month.month.slice(5))) + ' 月', calendarDays: calendar(month), weekDays: week(month),
       signedMonthCount: month.items.length, signedToday: !!todayEntry, streak: todayEntry?.check_in.streak_days ?? month.items[0]?.check_in.streak_days ?? '—',
       history: month.items.map((entry) => ({
-        key: entry.check_in.check_in_id, date: entry.check_in.business_date, streak: entry.check_in.streak_days,
-        reward: entry.grants.map(grantLabel).join('、') || '无额外奖励',
+        key: entry.check_in.check_in_id, date: entry.check_in.business_date, dateShort: entry.check_in.business_date.slice(5).replace('-', '.'), streak: entry.check_in.streak_days,
+        reward: entry.grants.map((grant) => '+' + grantLabel(grant)).join('、') || '无额外奖励',
       })),
     });
     this.setData({ recent: this.data.history.filter((_, index) => index < 3) });
