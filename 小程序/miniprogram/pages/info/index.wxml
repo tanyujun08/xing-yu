@@ -9,9 +9,9 @@
     </button></view>
     <text wx:if="{{supportError}}" class="info-feedback">{{supportError}}</text>
     <view class="seg" role="tablist">
-      <view class="seg-item xy-tap {{filter === 'all' ? 'is-on' : ''}}" data-filter="all" bindtap="chooseFilter" role="tab">全部</view>
-      <view class="seg-item xy-tap {{filter === 'rent' ? 'is-on' : ''}}" data-filter="rent" bindtap="chooseFilter" role="tab">我租的</view>
-      <view class="seg-item xy-tap {{filter === 'lease' ? 'is-on' : ''}}" data-filter="lease" bindtap="chooseFilter" role="tab">我出租的</view>
+      <view class="seg-item {{filter === 'all' ? 'is-on' : ''}}">全部<view class="hit-area xy-tap" data-filter="all" bindtap="chooseFilter" role="tab" aria-label="全部"></view></view>
+      <view class="seg-item {{filter === 'rent' ? 'is-on' : ''}}">我租的<view class="hit-area xy-tap" data-filter="rent" bindtap="chooseFilter" role="tab" aria-label="我租的"></view></view>
+      <view class="seg-item {{filter === 'lease' ? 'is-on' : ''}}">我出租的<view class="hit-area xy-tap" data-filter="lease" bindtap="chooseFilter" role="tab" aria-label="我出租的"></view></view>
     </view>
     <view wx:if="{{errorText}}" class="info-feedback" role="alert"><text>{{errorText}}</text><button class="xy-button-reset info-text-action" bindtap="refresh">重试</button></view>
     <view wx:if="{{!loggedIn}}" class="xy-empty-page info-empty"><image class="xy-empty-page__illustration" src="{{icons.orderEmptyMessages}}" mode="aspectFit" aria-hidden="true" /><text class="xy-empty-page__title">登录后查看订单会话</text><text class="xy-empty-page__copy">与出租方或承租方继续沟通</text><button class="xy-button-reset info-text-action" bindtap="openLogin">登录</button></view>

@@ -18,7 +18,7 @@
       <view class="chat-order-copy"><text class="chat-order-name">{{order.deviceName}}</text><view class="chat-order-meta"><text class="chip chip--{{order.tone}}">{{order.statusText}}</text><text class="chat-order-status">{{order.periodShort}}</text></view></view>
       <text class="chat-order-link">订单详情</text>
     </button>
-    <view class="chat-tools"><button class="xy-button-reset chat-pill" bindtap="refresh" disabled="{{loading || busy}}" aria-disabled="{{loading || busy}}">{{loading ? '正在读取…' : '消息不会实时推送，点此刷新'}}</button></view>
+    <view class="chat-tools"><button class="xy-button-reset chat-pill" bindtap="refresh" disabled="{{loading || busy}}" aria-disabled="{{loading || busy}}"><text class="chat-pill-label">{{loading ? '正在读取…' : '消息不会实时推送，点此刷新'}}</text></button></view>
     <text wx:if="{{supportError}}" class="chat-error">{{supportError}}</text>
     <view wx:if="{{loading && !loaded}}" class="chat-empty"><text>正在读取订单消息…</text></view>
     <view wx:elif="{{unavailable}}" class="chat-empty"><text class="chat-empty-title">暂时无法打开会话</text><text>{{unavailableReason}}</text><button class="xy-button-reset chat-text-action" bindtap="refresh">重新读取</button></view>
@@ -62,7 +62,7 @@
     <view wx:else class="chat-input-bar">
       <textarea class="chat-input" value="{{content}}" maxlength="-1" auto-height="{{true}}" adjust-position="{{true}}" cursor-spacing="16" disabled="{{busy || !!pending}}" aria-disabled="{{busy || !!pending}}" placeholder="请输入消息" aria-label="消息，最多500字" bindinput="inputMessage" />
       <button class="xy-button-reset chat-image-action" bindtap="chooseImage" disabled="{{busy || !!pending}}" aria-disabled="{{busy || !!pending}}" aria-label="选择一张图片"><image src="{{icons.returnAlbum}}" mode="aspectFit" aria-hidden="true" /></button>
-      <button class="xy-button-reset chat-send" bindtap="send" disabled="{{!canSend}}" aria-disabled="{{!canSend}}" aria-label="{{imageSrc ? '发送图片' : '发送消息'}}">{{busy ? '发送中' : '发送'}}</button>
+      <button class="xy-button-reset chat-send" bindtap="send" disabled="{{!canSend}}" aria-disabled="{{!canSend}}" aria-label="{{imageSrc ? '发送图片' : '发送消息'}}"><text class="chat-send-label">{{busy ? '发送中' : '发送'}}</text></button>
     </view>
   </view>
 </page-shell>

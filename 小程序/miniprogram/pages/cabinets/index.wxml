@@ -59,8 +59,8 @@
       </view>
       <view wx:else class="cab-empty">柜里暂时没有可租设备</view>
       <view class="cab-base">
-        <view wx:if="{{item.canNavigate}}" class="cab-btn xy-tap" data-id="{{item.id}}" bindtap="navigateToCabinet" role="button" aria-label="导航到{{item.name}}"><image src="{{icons.discoveryNavigate}}" mode="aspectFit" /><text>导航</text></view>
-        <view class="cab-btn cab-btn--main xy-tap" data-id="{{item.id}}" bindtap="openCabinet" role="button" aria-label="看整柜"><text>看整柜</text></view>
+        <view wx:if="{{item.canNavigate}}" class="cab-btn"><image src="{{icons.discoveryNavigate}}" mode="aspectFit" /><text>导航</text><view class="hit-area xy-tap" data-id="{{item.id}}" bindtap="navigateToCabinet" role="button" aria-label="导航到{{item.name}}"></view></view>
+        <view class="cab-btn cab-btn--main"><text>看整柜</text><view class="hit-area xy-tap" data-id="{{item.id}}" bindtap="openCabinet" role="button" aria-label="看整柜"></view></view>
       </view>
     </view>
     <view wx:if="{{loading}}" class="cab-loading">正在加载…</view>

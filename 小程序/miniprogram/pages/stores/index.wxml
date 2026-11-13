@@ -5,8 +5,8 @@
   <scroll-view class="store-scroll" scroll-y="true" show-scrollbar="false" bindscrolltolower="loadMore">
     <scroll-view wx:if="{{districts.length > 1}}" class="chips" scroll-x="true" show-scrollbar="false" enhanced="true">
       <view class="chips__row">
-        <view class="chip xy-tap {{activeDistrict === '' ? 'is-on' : ''}}" data-district="" bindtap="chooseDistrict" role="button">全部</view>
-        <view wx:for="{{districts}}" wx:key="label" class="chip xy-tap {{activeDistrict === item.label ? 'is-on' : ''}}" data-district="{{item.label}}" bindtap="chooseDistrict" role="button">{{item.label}}<text class="chip__n">{{item.count}}</text></view>
+        <view class="chip {{activeDistrict === '' ? 'is-on' : ''}}">全部<view class="hit-area xy-tap" data-district="" bindtap="chooseDistrict" role="button" aria-label="全部"></view></view>
+        <view wx:for="{{districts}}" wx:key="label" class="chip {{activeDistrict === item.label ? 'is-on' : ''}}">{{item.label}}<text class="chip__n">{{item.count}}</text><view class="hit-area xy-tap" data-district="{{item.label}}" bindtap="chooseDistrict" role="button" aria-label="{{item.label}}"></view></view>
       </view>
     </scroll-view>
     <block wx:if="{{stores.length}}">

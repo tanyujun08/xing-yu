@@ -8,7 +8,7 @@
     <view class="xy-empty-page__action xy-action-primary xy-action-text xy-tap" bindtap="goBack" role="button" aria-label="返回上一页">返回上一页</view>
   </view>
   <block wx:else>
-    <view wx:if="{{tabs.length}}" class="guide-seg" role="tablist"><view wx:for="{{tabs}}" wx:key="id" class="guide-seg-item xy-tap {{item.id === activeId ? 'is-on' : ''}}" data-id="{{item.id}}" bindtap="chooseTab" role="tab" aria-selected="{{item.id === activeId}}">{{item.title}}</view></view>
+    <view wx:if="{{tabs.length}}" class="guide-seg" role="tablist"><view wx:for="{{tabs}}" wx:key="id" class="guide-seg-item {{item.id === activeId ? 'is-on' : ''}}">{{item.title}}<view class="hit-area xy-tap" data-id="{{item.id}}" bindtap="chooseTab" role="tab" aria-label="{{item.title}}" aria-selected="{{item.id === activeId}}"></view></view></view>
     <view class="guide-header"><text class="guide-title" role="heading" aria-level="1">{{guide.title}}</text><text class="guide-summary">{{guide.summary}}</text></view>
     <view wx:if="{{legal}}" class="legal-body">
       <view wx:for="{{guide.sections}}" wx:key="title" class="legal-section"><text class="legal-title">{{item.title}}</text><text class="legal-text">{{item.body}}</text></view>

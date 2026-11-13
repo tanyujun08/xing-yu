@@ -17,7 +17,7 @@
     <view class="ci-group"><text class="ci-group__title">{{monthTitle}} · 已签 {{signedMonthCount}} 天</text>
       <view class="ci-cal">
         <view class="ci-cal__head"><text>一</text><text>二</text><text>三</text><text>四</text><text>五</text><text>六</text><text>日</text></view>
-        <view class="ci-cal__grid"><block wx:for="{{calendarDays}}" wx:key="key"><view wx:if="{{item.state === 'empty'}}" class="ci-cal__cell"></view><view wx:else class="ci-cal__cell ci-cal__cell--{{item.state}} {{item.id ? 'xy-tap' : ''}}" data-id="{{item.id}}" bindtap="openReceipt" role="{{item.id ? 'button' : ''}}" aria-label="{{item.id ? item.day + '日已签到，查看回执' : ''}}"><text>{{item.day}}</text></view></block></view>
+        <view class="ci-cal__grid"><block wx:for="{{calendarDays}}" wx:key="key"><view wx:if="{{item.state === 'empty'}}" class="ci-cal__cell"></view><view wx:else class="ci-cal__cell ci-cal__cell--{{item.state}}"><text>{{item.day}}</text><view wx:if="{{item.id}}" class="hit-area xy-tap" data-id="{{item.id}}" bindtap="openReceipt" role="button" aria-label="{{item.day}}日已签到，查看回执"></view></view></block></view>
       </view>
     </view>
     <view wx:if="{{recent.length || receiptCoupons.length}}" class="ci-group"><text class="ci-group__title">最近签到</text>
