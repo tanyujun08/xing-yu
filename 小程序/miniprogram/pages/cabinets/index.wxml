@@ -42,7 +42,14 @@
   <view wx:elif="{{cabinets.length === 0 && !loading}}" class="cabinet-page-empty"><image class="xy-empty-illustration" src="{{icons.emptyLocation}}" mode="aspectFit" aria-hidden="true" /><text>当前地区暂无柜机</text><view class="xy-discovery-empty__action xy-tap" bindtap="chooseRegion" role="button" aria-label="切换区域">切换区域</view></view>
   <scroll-view wx:else class="cabinet-scroll" scroll-y="true" show-scrollbar="false">
     <view class="sortbar"><text>{{cabinets.length}} 个柜机</text><text wx:if="{{sortedByDistance}}">按距离从近到远</text></view>
-    <view wx:for="{{cabinets}}" wx:key="id" class="cab {{item.devices.length ? '' : 'cab--off'}}">
+    <block wx:for="{{cabinets}}" wx:key="id">
+    <view wx:if="{{item.id !== expandedId}}" class="mini xy-tap" data-id="{{item.id}}" bindtap="expandCabinet" role="button" aria-label="展开{{item.name}}">
+      <image class="mini__thumb" src="{{icons.discoveryReferenceCabinet}}" mode="aspectFill" />
+      <view class="mini__info"><text class="mini__name">{{item.name}}</text><text class="mini__meta">{{item.address}}<text wx:if="{{item.distance}}"> · {{item.distance}}</text></text></view>
+      <view class="mini__price"><text wx:if="{{item.fromPrice}}" class="mini__from"><text class="mini__yen">¥</text>{{item.fromPrice}}<text class="mini__unit"> 起</text></text><text class="mini__count">{{item.countLabel || '暂无可租'}}</text></view>
+      <image class="mini__chev" src="{{icons.homeChevronDown}}" mode="aspectFit" />
+    </view>
+    <view wx:else class="cab {{item.devices.length ? '' : 'cab--off'}}">
       <view class="cab-sign xy-tap" data-id="{{item.id}}" bindtap="openCabinet" role="button" aria-label="查看{{item.name}}详情">
         <text class="cab-sign__name">{{item.name}}</text>
         <text class="cab-sign__from">{{item.countLabel || '暂无可租'}}</text>
@@ -53,7 +60,7 @@
       </view>
       <view wx:if="{{item.devices.length}}" class="cab-grid">
         <view wx:for="{{item.devices}}" wx:for-item="slot" wx:key="id" class="slot xy-tap {{slot.cheapest ? 'slot--low' : ''}}" data-id="{{slot.id}}" bindtap="openDevice" role="button" aria-label="{{slot.name}}">
-          <media-state class="slot__img" state="{{slot.image ? 'loading' : 'idle'}}" src="{{slot.image}}" density="thumbnail" mode="aspectFill" placeholder-src="{{icons.deviceMark}}" empty-label="" alt="{{slot.name}}" />
+          <view class="sq"><media-state class="sq__img" state="{{slot.image ? 'loading' : 'idle'}}" src="{{slot.image}}" density="thumbnail" mode="aspectFill" placeholder-src="{{icons.deviceMark}}" empty-label="" alt="{{slot.name}}" /></view>
           <view class="slot__text"><text class="slot__name">{{slot.name}}</text><text class="slot__price"><text class="slot__yen">¥</text>{{slot.priceValue}}<text class="slot__unit">{{slot.priceUnit}}</text></text></view>
         </view>
       </view>
@@ -63,6 +70,7 @@
         <view class="cab-btn cab-btn--main"><text>看整柜</text><view class="hit-area xy-tap" data-id="{{item.id}}" bindtap="openCabinet" role="button" aria-label="看整柜"></view></view>
       </view>
     </view>
+    </block>
     <view wx:if="{{loading}}" class="cab-loading">正在加载…</view>
   </scroll-view>
 </view>

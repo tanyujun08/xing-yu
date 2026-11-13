@@ -30,7 +30,7 @@ type CabinetListView = {
   metaLabel: string;
 };
 
-const cabinetStates = new WeakMap<object, { epoch: number; visible: boolean; covers: Map<string, string>; origin: Point | null; items: PublicCabinet[] }>();
+const cabinetStates = new WeakMap<object, { epoch: number; visible: boolean; covers: Map<string, string>; origin: Point | null; items: PublicCabinet[]; pinned: string }>();
 const returnStates = new WeakMap<object, ReturnType<typeof createReturnCabinetState<RentalOrder, RentalTask>>>();
 function returnState(page: object) { let value = returnStates.get(page); if (!value) { value = createReturnCabinetState<RentalOrder, RentalTask>(); returnStates.set(page, value); } return value; }
 function captureReturnView(state: ReturnType<typeof returnState>) {
@@ -45,7 +45,7 @@ function captureReturnSessionLoss(state: ReturnType<typeof returnState>) {
 function cabinetState(page: object) {
   const current = cabinetStates.get(page);
   if (current) return current;
-  const created = { epoch: 0, visible: true, covers: new Map<string, string>(), origin: null as Point | null, items: [] as PublicCabinet[] };
+  const created = { epoch: 0, visible: true, covers: new Map<string, string>(), origin: null as Point | null, items: [] as PublicCabinet[], pinned: '' };
   cabinetStates.set(page, created);
   return created;
 }
@@ -121,6 +121,7 @@ Page({
     cabinets: [] as CabinetListView[],
     sortedByDistance: false,
     selectedCabinetId: '',
+    expandedId: '',
     activeCabinet: null as CabinetListView | null,
     loading: false,
     errorText: '',
@@ -187,7 +188,15 @@ Page({
   showCabinets() {
     const state = cabinetState(this);
     const cabinets = sortByDistance(state.items.map((cabinet) => cabinetView(cabinet, state.covers, state.origin)), state.origin);
-    this.setData({ cabinets, sortedByDistance: !!state.origin && cabinets.some((cabinet) => !!cabinet.distance) });
+    const expandedId = cabinets.some((cabinet) => cabinet.id === state.pinned) ? state.pinned : (cabinets[0]?.id ?? '');
+    this.setData({ cabinets, expandedId, sortedByDistance: !!state.origin && cabinets.some((cabinet) => !!cabinet.distance) });
+  },
+
+  expandCabinet(event: WechatMiniprogram.TouchEvent) {
+    const id = String(event.currentTarget.dataset['id'] ?? '');
+    if (!id) return;
+    cabinetState(this).pinned = id;
+    this.setData({ expandedId: id });
   },
 
   async refreshOrigin(epoch: number) {

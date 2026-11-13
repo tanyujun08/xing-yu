@@ -30,6 +30,7 @@ type StoreListView = {
   gallery: string[];
   cover: string;
   rows: { id: string; items: ShelfSlot[] }[];
+  fromPrice: string;
   total: number;
   hasMoreDevices: boolean;
   canNavigate: boolean;
@@ -40,7 +41,7 @@ type StoreListView = {
 const SHELF_LIMIT = 6;
 
 const coverStates = new WeakMap<object, Map<string, string>>();
-type StoreState = { origin: Point | null; epoch: number; visible: boolean; owner: string; items: (PublicStore | DiscoveryStoreSummary)[]; cursors: Set<string>; active?: { abort: () => void } };
+type StoreState = { origin: Point | null; epoch: number; visible: boolean; owner: string; pinned: string; items: (PublicStore | DiscoveryStoreSummary)[]; cursors: Set<string>; active?: { abort: () => void } };
 const pageStates = new WeakMap<object, StoreState>();
 
 function covers(page: object): Map<string, string> {
@@ -54,7 +55,7 @@ function covers(page: object): Map<string, string> {
 function pageState(page: object): StoreState {
   const current = pageStates.get(page);
   if (current) return current;
-  const created: StoreState = { origin: null, epoch: 0, visible: true, owner: '', items: [], cursors: new Set() };
+  const created: StoreState = { origin: null, epoch: 0, visible: true, owner: '', pinned: '', items: [], cursors: new Set() };
   pageStates.set(page, created);
   return created;
 }
@@ -94,7 +95,7 @@ function storeView(store: PublicStore | DiscoveryStoreSummary, coverMap: Map<str
     id: store.store_id, name: store.name, district: store.region.district_name ?? '',
     addressLabel: [store.region.city_name, store.region.district_name].filter(Boolean).join(' '),
     statusLabel: '', hoursLabel: '营业时间未填写', distance: '', meters: Number.POSITIVE_INFINITY,
-    gallery: store.cover ? [store.cover.url] : [], cover: store.cover?.url ?? '', rows: [], total: 0, hasMoreDevices: false, canNavigate: false, empty: false, summaryOnly: true,
+    gallery: store.cover ? [store.cover.url] : [], cover: store.cover?.url ?? '', rows: [], fromPrice: '', total: 0, hasMoreDevices: false, canNavigate: false, empty: false, summaryOnly: true,
   };
   const supplies = Array.isArray(store.supplies) ? store.supplies : [];
   const all: ShelfSlot[] = supplies.map((supply) => {
@@ -116,6 +117,7 @@ function storeView(store: PublicStore | DiscoveryStoreSummary, coverMap: Map<str
     meters: distance?.meters ?? Number.POSITIVE_INFINITY,
     gallery, cover: gallery[0] ?? '',
     rows: shelfRows(all),
+    fromPrice: all[0]?.priceValue ?? '',
     total: all.length,
     hasMoreDevices: all.length > SHELF_LIMIT,
     canNavigate: !!pointOf(store.address?.location),
@@ -136,6 +138,7 @@ Page({
     regionShort: '全部城市',
     districts: [] as { label: string; count: number }[],
     activeDistrict: '',
+    expandedId: '',
     sortedByDistance: false,
     shownCount: 0,
     stores: [] as StoreListView[],
@@ -202,7 +205,15 @@ Page({
     const shown = views.filter((view) => !active || view.district === active);
     const byDistance = !!state.origin && shown.some((view) => !!view.distance);
     const stores = byDistance ? [...shown].sort((x, y) => x.meters - y.meters) : shown;
-    this.setData({ stores, districts, activeDistrict: active, sortedByDistance: byDistance, shownCount: stores.length });
+    const expandedId = stores.some((store) => store.id === state.pinned) ? state.pinned : (stores[0]?.id ?? '');
+    this.setData({ stores, districts, activeDistrict: active, expandedId, sortedByDistance: byDistance, shownCount: stores.length });
+  },
+
+  expandStore(event: WechatMiniprogram.TouchEvent) {
+    const id = String(event.currentTarget.dataset['id'] ?? '');
+    if (!id) return;
+    pageState(this).pinned = id;
+    this.setData({ expandedId: id });
   },
 
   chooseDistrict(event: WechatMiniprogram.TouchEvent) {
