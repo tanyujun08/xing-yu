@@ -75,6 +75,7 @@ const routes = {
   'cabinets-return': { open: 'navigateTo', url: '/pages/cabinets/index?mode=return&orderId=order-4', dir: 'cabinets' },
   stores: { open: 'navigateTo', url: '/pages/stores/index' },
   'check-in': { open: 'navigateTo', url: '/pages/check-in/index' },
+  'check-in-unsigned': { open: 'navigateTo', url: '/pages/check-in/index', set: { signedToday: false, streak: '3', streakText: '03', signedMonthCount: 3, recent: [], 'weekDays[0].state': 'done', 'weekDays[1].state': 'done', 'weekDays[2].state': 'done', 'weekDays[4].state': 'normal', 'calendarDays[15].state': 'signed', 'calendarDays[16].state': 'signed', 'calendarDays[17].state': 'signed', 'calendarDays[18].state': 'today', nextMilestone: { streak: 3, days: 7, remaining: 4, reward: '300 粉钻', percent: 43 } } },
 };
 // 订单详情的 10 个演示状态：od-1（准备签约）… od-10（已关闭）
 for (let n = 1; n <= 10; n += 1) routes['od-' + n] = { open: 'navigateTo', url: '/pages/order-detail/index?orderId=order-' + n, dir: 'order-detail' };

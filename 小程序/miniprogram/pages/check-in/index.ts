@@ -24,7 +24,7 @@ function chinaMonth(): string { return monthOf(new Date(Date.now() + 8 * 3600000
 function dayOf(date: string): string { return /^\d{4}-\d{2}-\d{2}/u.exec(date)?.[0] ?? ''; }
 function calendar(month: Month) {
   const [year, value] = month.month.split('-').map(Number);
-  const first = new Date(Date.UTC(year!, value! - 1, 1)).getUTCDay();
+  const first = (new Date(Date.UTC(year!, value! - 1, 1)).getUTCDay() + 6) % 7;
   const days = new Date(Date.UTC(year!, value!, 0)).getUTCDate();
   const signed = new Set(month.items.map((item) => item.check_in.business_date));
   const ids = new Map(month.items.map((item) => [item.check_in.business_date, item.check_in.check_in_id]));

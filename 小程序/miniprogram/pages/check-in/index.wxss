@@ -22,6 +22,7 @@
 .ci-week { display:grid; grid-template-columns:repeat(7, minmax(0, 1fr)); padding:var(--xy-space-4) 0 var(--xy-space-2); }
 .ci-day { display:flex; flex-direction:column; align-items:center; gap:var(--xy-space-1); color:var(--xy-color-text-secondary); font-size:var(--xy-text-caption-size); line-height:var(--xy-text-caption-line-height); }
 .ci-dot { display:flex; width:calc(var(--xy-space-6) + var(--xy-space-2)); height:calc(var(--xy-space-6) + var(--xy-space-2)); align-items:center; justify-content:center; margin-bottom:var(--xy-space-1); border-radius:50%; background:var(--xy-color-well); color:var(--xy-color-text-muted); font-size:var(--xy-text-body-small-size); }
+.is-today .ci-dot { background:var(--xy-color-surface); box-shadow:inset 0 0 0 2rpx var(--xy-color-brand); color:var(--xy-color-brand); font-weight:var(--xy-text-weight-semibold); }
 .is-done .ci-dot { background:var(--xy-color-brand); color:var(--xy-color-text-inverse); }
 .is-gift .ci-dot { background:var(--xy-color-brand-soft); color:var(--xy-color-brand); font-weight:var(--xy-text-weight-semibold); }
 .is-today .ci-day__name { color:var(--xy-color-brand); font-weight:var(--xy-text-weight-semibold); }

@@ -109,6 +109,8 @@ export const designAssets = {
   powderMallExpress10: '/assets/figma-media/powder-mall-express-10.webp',
   lotteryHero: '/assets/figma-media/lottery-hero.webp',
   checkInHero: '/assets/figma-media/check-in-hero.webp',
+  checkInDiamond: '/assets/figma-icons/check-in-diamond.svg',
+  checkInStar: '/assets/figma-icons/check-in-star.svg',
   checkInHeaderBg: '/assets/figma-media/check-in-header-bg.jpg',
   guideRental: '/assets/figma-icons/guide-rental.svg',
   guideDeposit: '/assets/figma-icons/guide-deposit.svg',
