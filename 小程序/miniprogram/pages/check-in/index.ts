@@ -11,6 +11,7 @@ function grantLabel(grant:Receipt['grants'][number]){return grant.reward_code===
 type Month = CheckInMonth;
 type Reward = CheckInReward;
 type Rule = CurrentCheckInRule;
+function thousands(value: string): string { return /^\d+$/u.test(value) ? value.replace(/\B(?=(\d{3})+(?!\d))/gu, ',') : value; }
 function monthOf(date: string): string { return /^\d{4}-\d{2}/u.exec(date)?.[0] ?? ''; }
 function rewardLabel(item: Reward): string {
   if (item.kind === 'PINK') return (item.units ?? '0') + ' 粉钻';
@@ -50,7 +51,7 @@ function current(page: object, value: ReturnType<typeof createState>) { return s
 
 Page({
   data: {
-    icons: designAssets, loggedIn: false, busy: false, errorText: '', receiptText: '', signedToday: false,
+    icons: designAssets, headerScrolled: false, loggedIn: false, busy: false, errorText: '', receiptText: '', signedToday: false,
     balance: '—', starPoints: '—', streak: '—', streakText: '0', monthTitle: '', monthShort: '', signedMonthCount: 0,
     calendarDays: [] as ReturnType<typeof calendar>, weekDays: [] as ReturnType<typeof week>,
     ruleAvailable: false, dailyReward: '—', firstReward: '—', milestones: [] as Array<{ key: string; day: string; reward: string }>,
@@ -59,6 +60,7 @@ Page({
     nextMilestone: null as { streak: number; days: number; remaining: number; reward: string; percent: number } | null, ruleNote: '', recent: [] as Array<{ key: string; date: string; streak: string; reward: string }>,
   },
   onLoad(options:Record<string,string|undefined> = {}){state(this).receiptId=loyaltyIdentifier(options['check_in_id']??'')?options['check_in_id']!:'';},
+  onPageScroll(event: { scrollTop: number }) { const scrolled = event.scrollTop > 40; if (scrolled !== this.data.headerScrolled) this.setData({ headerScrolled: scrolled }); },
   onSecondaryNavigationBack() { navigateBackWithFallback(state(this).navigation); },
   async onShow() {
     let value = state(this);
@@ -93,7 +95,7 @@ Page({
       const result = await value.scope.latest('check-in-balance', () => benefitApi.summary().promise);
       if (result.accepted && current(this, value)) {
         if (result.value.profile.account_id !== value.owner) throw new Error('账户响应不一致');
-        this.setData({ balance: result.value.profile.available_pink_units, starPoints: displayGrowthUnits(result.value.profile.total_growth_units) });
+        this.setData({ balance: thousands(result.value.profile.available_pink_units), starPoints: thousands(displayGrowthUnits(result.value.profile.total_growth_units)) });
       }
     } catch (error) { if (current(this, value)) this.setData({ errorText: error instanceof Error ? error.message : '权益读取失败' }); }
   },

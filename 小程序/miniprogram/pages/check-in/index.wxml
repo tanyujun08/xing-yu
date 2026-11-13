@@ -1,7 +1,7 @@
 <page-meta root-font-size="system" />
 <view class="check-in-page">
   <image class="ci-bg" src="{{icons.checkInHeaderBg}}" mode="widthFix" aria-hidden="true" />
-  <page-header title="{{secondaryNavigationTitle || '每日签到'}}" background="transparent" inverse="{{false}}" bindback="onSecondaryNavigationBack" />
+  <page-header title="{{secondaryNavigationTitle || '每日签到'}}" background="{{headerScrolled ? '#ffffff' : 'transparent'}}" inverse="{{false}}" bindback="onSecondaryNavigationBack" />
   <view class="check-in-main">
     <text wx:if="{{errorText}}" class="ci-note ci-note--error" role="alert">{{errorText}}</text>
     <text wx:if="{{receiptText}}" class="ci-note">{{receiptText}}</text>
