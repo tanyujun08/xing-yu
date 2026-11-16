@@ -11,7 +11,19 @@ type State = { owner: string | null; visible: boolean; scope: OperationScope; na
 const states = new WeakMap<object, State>();
 function active(state: State) { return state.visible && !state.scope.disposed && accountApi.sessionIdentity() === state.owner; }
 async function read<T>(state: State, handle: RequestHandle<T>) { const release = state.scope.registerCleanup(handle.abort); try { return await handle.promise; } catch (error) { if (state.visible && accountApi.sessionIdentity() !== state.owner) state.invalidate(); throw error; } finally { release(); } }
-const empty = { loggedIn: false, conversations: [] as ReturnType<typeof orderConversationView>[], loaded: false, loading: false, loadingMore: false, hasMore: false, errorText: '' };
+type ConversationView = ReturnType<typeof orderConversationView>;
+function groupConversations(items: ConversationView[], filter: string) {
+  const shown = items.filter(item => filter === 'all' || (filter === 'rent' ? item.role === 'TENANT' : item.role === 'LESSOR'));
+  const unread = shown.filter(item => item.unreadText && item.tone !== 'end');
+  const rest = shown.filter(item => !unread.includes(item));
+  const ongoing = rest.filter(item => item.tone !== 'end'), ended = rest.filter(item => item.tone === 'end');
+  return [
+    { key: 'unread', title: '有未读', items: unread },
+    { key: 'ongoing', title: '进行中', items: ongoing },
+    { key: 'ended', title: '已结束', items: ended },
+  ].filter(group => group.items.length);
+}
+const empty = { loggedIn: false, conversations: [] as ReturnType<typeof orderConversationView>[], groups: [] as { key: string; title: string; items: ReturnType<typeof orderConversationView>[] }[], filter: 'all', loaded: false, loading: false, loadingMore: false, hasMore: false, errorText: '' };
 
 Page({
   ...loginHostMethods,
@@ -54,11 +66,20 @@ Page({
           items = [...items, ...result.items]; cursor = result.next_cursor; total = result.total_unread_count; pages++;
         } while (cursor && pages < state.pages);
         state.items = [...new Map(items.map(item => [item.conversation_id, item])).values()]; state.cursor = cursor; state.pages = pages;
-        this.setData({ loaded: true, conversations: state.items.map(orderConversationView), hasMore: !!cursor });
+        this.showConversations({ loaded: true, hasMore: !!cursor });
         this.getTabBar()?.setData({ unreadOwner: state.owner, unreadText: unreadLabel(total) });
       } catch (error) { if (active(state)) this.setData({ errorText: error instanceof Error ? error.message : '会话读取失败，请重试' }); }
       finally { if (active(state)) this.setData({ loading: false }); }
     });
+  },
+  showConversations(extra: Record<string, unknown> = {}) {
+    const state = states.get(this); if (!state) return;
+    const conversations = state.items.map(orderConversationView);
+    this.setData({ ...extra, conversations, groups: groupConversations(conversations, this.data.filter) });
+  },
+  chooseFilter(event: WechatMiniprogram.TouchEvent) {
+    const filter = String(event.currentTarget.dataset['filter'] ?? 'all');
+    this.setData({ filter }); this.showConversations();
   },
   async loadMore() {
     const state = states.get(this); if (!state || !active(state) || !state.cursor || this.data.loading || this.data.loadingMore) return;
@@ -67,7 +88,7 @@ Page({
       try {
         const result = await read(state, orderConversationApi.list(state.cursor!)); if (!active(state)) return;
         state.items = [...new Map([...state.items, ...result.items].map(item => [item.conversation_id, item])).values()]; state.cursor = result.next_cursor; state.pages++;
-        this.setData({ conversations: state.items.map(orderConversationView), hasMore: !!state.cursor });
+        this.showConversations({ hasMore: !!state.cursor });
         this.getTabBar()?.setData({ unreadOwner: state.owner, unreadText: unreadLabel(result.total_unread_count) });
       } catch (error) { if (active(state)) this.setData({ errorText: error instanceof Error ? error.message : '加载失败，请重试' }); }
       finally { if (active(state)) this.setData({ loadingMore: false }); }

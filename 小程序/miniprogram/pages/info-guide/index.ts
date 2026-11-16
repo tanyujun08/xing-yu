@@ -6,25 +6,31 @@ Page({
   data: {
     icons: designAssets,
     missing: false,
-    directory: false,
-    entries: infoGuideDirectory(),
+    tabs: [] as { id: string; title: string }[],
+    activeId: '',
     guide: null as InfoGuideView | null,
+    legal: false,
+    secondaryNavigationTitle: '租赁指南',
   },
 
+  // The three rental guides share one page with a segment switch; the agreement and privacy policy
+  // open on their own as plain reading text. The legacy reading-journey counter lived only in the
+  // mock fixture and has no server contract, so opening a guide does not fabricate a reward.
   onLoad(options: Record<string, string | undefined>) {
-    if (!options.id) { this.setData({ directory: true, missing: false, secondaryNavigationTitle: '租赁指南' }); return; }
-    const guide = infoGuideView(options.id ?? '');
+    const entries = infoGuideDirectory();
+    const id = options.id || entries[0]?.id || '';
+    const guide = infoGuideView(id);
     if (!guide) { this.setData({ missing: true }); return; }
-    // The legacy reading-journey counter lived only in the mock fixture and has no server
-    // contract, so this page no longer fabricates a reward for opening a guide.
-    this.setData({ secondaryNavigationTitle: guide.title });
-    this.setData({ guide });
+    const inDirectory = entries.some((entry) => entry.id === id);
+    this.setData({ tabs: inDirectory ? entries.map((entry) => ({ id: entry.id, title: entry.title })) : [], activeId: id, guide, legal: !inDirectory, secondaryNavigationTitle: inDirectory ? '租赁指南' : guide.title });
+  },
+
+  chooseTab(event: WechatMiniprogram.TouchEvent) {
+    const id = String(event.currentTarget.dataset['id'] ?? '');
+    const guide = infoGuideView(id);
+    if (guide) this.setData({ activeId: id, guide });
   },
 
   goBack() { wx.navigateBack(); },
-  openEntry(event: WechatMiniprogram.TouchEvent) {
-    const id = String(event.currentTarget.dataset['id'] ?? '');
-    const entry = this.data.entries.find((item) => item.id === id);
-    if (entry) wx.navigateTo({ url: entry.route });
-  },
+  openSupport() { wx.navigateTo({ url: '/pages/demo-support/index' }); },
 });

@@ -1,1 +1,1 @@
-{"navigationBarTitleText":"离线演示客服","usingComponents":{"page-header":"../../components/page-header/index"}}
+{"navigationBarTitleText":"离线演示客服","navigationStyle":"custom","navigationBarTextStyle":"black","usingComponents":{"page-header":"../../components/page-header/index","page-shell":"../../components/page-shell/index"}}

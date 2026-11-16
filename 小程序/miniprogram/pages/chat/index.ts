@@ -5,7 +5,7 @@ import type { RequestHandle } from '../../shared/api/rental-api';
 import { designAssets } from '../../shared/design/assets';
 import { createNavigateOnce, navigateBackWithFallback, type NavigateOnce } from '../../shared/interaction/navigate-once';
 import { createOperationScope, type OperationScope } from '../../shared/interaction/operation-scope';
-import { orderConversationView, orderMessageView, mergeOrderMessages, compareSequence, conversationBlockedReason } from '../../shared/presentation/order-conversation';
+import { orderConversationView, orderMessageView, decorateMessages, mergeOrderMessages, compareSequence, conversationBlockedReason } from '../../shared/presentation/order-conversation';
 
 type State = {
   owner: string; orderId: string; conversationId: string; valid: boolean; visible: boolean; entered: boolean;
@@ -30,7 +30,7 @@ async function run<T>(state: State, handle: RequestHandle<T>) {
 }
 const empty = {
   title: '订单沟通', order: null as ReturnType<typeof orderConversationView> | null,
-  messages: [] as ReturnType<typeof orderMessageView>[], content: '', errorText: '', loaded: false,
+  messages: [] as ReturnType<typeof decorateMessages<ReturnType<typeof orderMessageView>>>, content: '', errorText: '', loaded: false,
   loading: false, loadingMore: false, busy: false, unavailable: false, unavailableReason: '',
   readonly: false, readonlyReason: '', canPost: false, canSend: false, hasMore: false,
   pending: null as MessageIntent | null, pendingText: '', imageSrc: '', imagePhase: '', imageProgress: 0,
@@ -116,8 +116,8 @@ Page({
   renderMessages(anchor = '') {
     const state = states.get(this); if (!state || !current(state) || !state.conversation) return;
     const order = orderConversationView(state.conversation);
-    this.setData({ order, title: order.counterpartName + ' · ' + order.counterpartRoleText, loaded: true, unavailable: false,
-      messages: state.messages.map(value => orderMessageView(value, state.owner)), hasMore: !!state.before,
+    this.setData({ order, title: order.counterpartName, loaded: true, unavailable: false,
+      messages: decorateMessages(state.messages.map(value => orderMessageView(value, state.owner))), hasMore: !!state.before,
       canPost: state.conversation.can_post, readonly: !state.conversation.can_post, readonlyReason: conversationBlockedReason(state.conversation),
     }, () => {
       if (!current(state)) return;
@@ -132,7 +132,7 @@ Page({
     const imageBusy = !!image && ['UPLOADING', 'PROCESSING'].includes(image.upload.phase) && this.data.busy;
     this.setData({ pending, pendingText: pending?.body.kind === 'IMAGE' ? '[图片]' : pending?.body.body ?? '',
       imageConfirmation: !!image && !pending,
-      title: image && !pending ? '发送图片' : this.data.order ? this.data.order.counterpartName + ' · ' + this.data.order.counterpartRoleText : '订单沟通',
+      title: image && !pending ? '发送图片' : this.data.order ? this.data.order.counterpartName : '订单沟通',
       canRetryOriginal: !!state.conversation?.can_post && pending?.phase === 'NOT_FOUND' && !this.data.busy,
       imageSrc: image?.url || image?.upload.file || '', imagePhase: image?.upload.phase ?? '', imageProgress: image?.upload.progress ?? 0,
       imageError: image?.upload.error ?? '', imageReady: image?.upload.phase === 'READY', imageBusy, imageFailed: image?.upload.phase === 'FAILED',

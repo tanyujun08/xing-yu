@@ -1,1 +1,17 @@
-<view class="support"><page-header title="离线演示客服" bindback="back" /><view class="notice">消息只保存在本机 · 不发送给真实客服</view><view class="messages"><view wx:for="{{messages}}" wx:key="id" class="row {{item.mine?'mine':''}}"><view class="avatar">{{item.mine?'我':'星'}}</view><view class="bubble">{{item.text}}</view></view></view><view class="composer"><input value="{{content}}" bindinput="input" placeholder="输入演示咨询内容" maxlength="500" confirm-type="send" bindconfirm="send" /><button bindtap="send">发送</button></view></view>
+<page-meta root-font-size="system" />
+<page-shell has-footer="{{true}}">
+  <page-header variant="order" slot="header" title="离线演示客服" bindback="back" />
+  <view class="sp-content">
+    <view class="sp-notice"><text>消息只保存在本机 · 不发送给真实客服</text></view>
+    <view class="sp-list">
+      <view wx:for="{{messages}}" wx:key="id" class="sp-row {{item.mine ? 'is-mine' : ''}}">
+        <view wx:if="{{!item.mine}}" class="sp-avatar"><text>星</text></view>
+        <view class="sp-bubble"><text class="sp-text" selectable="{{true}}">{{item.text}}</text></view>
+      </view>
+    </view>
+  </view>
+  <view slot="footer" class="sp-bar">
+    <input class="sp-input" value="{{content}}" bindinput="input" placeholder="请输入咨询内容" placeholder-class="sp-ph" maxlength="500" confirm-type="send" bindconfirm="send" aria-label="咨询内容，最多500字" />
+    <button class="xy-button-reset sp-send" bindtap="send" aria-label="发送消息"><text class="sp-send-label">发送</text></button>
+  </view>
+</page-shell>

@@ -1,1 +1,19 @@
-page{background:#f5f6fa;color:#172722}.notice{text-align:center;color:#7d8b83;font-size:23rpx;padding:24rpx}.messages{padding:20rpx 28rpx 160rpx}.row{display:flex;gap:16rpx;margin:28rpx 0}.avatar{width:60rpx;height:60rpx;line-height:60rpx;border-radius:18rpx;background:#e0eee7;color:#0a7f5e;text-align:center;flex-shrink:0}.bubble{max-width:520rpx;background:#fff;border-radius:20rpx;padding:24rpx;font-size:28rpx;line-height:1.7}.mine{flex-direction:row-reverse}.mine .bubble{background:#0a7f5e;color:#fff}.composer{position:fixed;bottom:0;left:0;right:0;display:flex;gap:18rpx;padding:24rpx 28rpx calc(24rpx + env(safe-area-inset-bottom));background:#fff;border-top:1rpx solid #e5e9e6;align-items:center}.composer input{flex:1;background:#f3f5f4;padding:20rpx;border-radius:14rpx;font-size:28rpx}.composer button{background:#0a7f5e;color:#fff;font-size:26rpx;line-height:2.5;margin:0;border-radius:14rpx}button::after{border:0}
+/* 离线演示客服：与订单沟通页同一套气泡与输入栏。 */
+.sp-content { padding:0 0 var(--xy-space-4); color:var(--xy-color-text-primary); font-size:var(--xy-text-body-size); line-height:var(--xy-text-body-line-height); }
+.sp-notice { display:flex; justify-content:center; padding:var(--xy-space-3) var(--xy-space-4) 0; }
+.sp-notice text { padding:var(--xy-space-1) var(--xy-space-3); border-radius:var(--xy-radius-pill); background:var(--xy-color-well); color:var(--xy-color-text-secondary); font-size:var(--xy-text-caption-size); line-height:var(--xy-text-caption-line-height); }
+.sp-list { padding:0 var(--xy-space-4); }
+.sp-row { display:flex; align-items:flex-end; gap:var(--xy-space-2); margin-top:var(--xy-space-3); }
+.sp-row.is-mine { justify-content:flex-end; }
+.sp-avatar { display:flex; flex:none; width:calc(var(--xy-size-icon-nav) + var(--xy-space-2)); height:calc(var(--xy-size-icon-nav) + var(--xy-space-2)); align-items:center; justify-content:center; border-radius:50%; background:var(--xy-color-brand-soft); color:var(--xy-color-brand); font-size:var(--xy-text-body-small-size); font-weight:var(--xy-text-weight-semibold); }
+.sp-bubble { min-width:0; max-width:calc(100% - var(--xy-size-icon-nav) * 3); padding:var(--xy-space-2) var(--xy-space-3); box-sizing:border-box; border-radius:var(--xy-radius-sheet); border-bottom-left-radius:var(--xy-radius-sm); background:var(--xy-color-surface); box-shadow:var(--xy-shadow-raised); }
+.sp-row.is-mine .sp-bubble { border-bottom-left-radius:var(--xy-radius-sheet); border-bottom-right-radius:var(--xy-radius-sm); background:var(--xy-color-brand); box-shadow:none; }
+.sp-text { display:block; color:var(--xy-color-text-primary); font-size:var(--xy-text-body-size); line-height:var(--xy-text-body-line-height); white-space:pre-wrap; overflow-wrap:anywhere; }
+.sp-row.is-mine .sp-text { color:var(--xy-color-text-inverse); }
+.sp-bar { display:flex; align-items:center; gap:var(--xy-space-2); min-height:var(--xy-chat-composer-height); padding:var(--xy-space-2) var(--xy-space-4); box-sizing:border-box; border-top:1rpx solid var(--xy-color-divider); background:var(--xy-color-surface); }
+.sp-input { flex:1; min-width:0; height:var(--xy-size-touch-min); padding:0 var(--xy-space-3); box-sizing:border-box; border-radius:var(--xy-radius-pill); background:var(--xy-color-well); color:var(--xy-color-text-primary); font-size:var(--xy-text-body-size); }
+.sp-ph { color:var(--xy-color-text-muted); }
+.sp-send { display:flex; flex:none; align-items:center; justify-content:center; min-width:var(--xy-size-touch-min); min-height:var(--xy-size-touch-min); margin:0; padding:0; background:transparent; }
+.sp-send::after { border:0; }
+.sp-send-label { padding:var(--xy-space-1) var(--xy-space-4); border-radius:var(--xy-radius-pill); background:var(--xy-color-brand); color:var(--xy-color-text-inverse); font-size:var(--xy-text-body-small-size); line-height:var(--xy-text-body-line-height); font-weight:var(--xy-text-weight-semibold); }
+.sp-send:active .sp-send-label { background:var(--xy-color-brand-pressed); }
