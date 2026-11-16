@@ -65,6 +65,7 @@
 .ci-row { position:relative; display:flex; align-items:center; gap:var(--xy-space-2); width:100%; min-height:var(--xy-size-touch-min); margin:0; padding:var(--xy-space-3) var(--xy-space-4) var(--xy-space-3) 0; box-sizing:border-box; text-align:left; background:transparent; font-size:var(--xy-text-body-size); line-height:var(--xy-text-body-line-height); }
 .ci-row + .ci-row::before { content:""; position:absolute; top:0; right:0; left:0; height:1rpx; background:var(--xy-color-divider); }
 .ci-row:active { opacity:var(--xy-opacity-pressed); }
+.ci-row--static:active { opacity:1; }
 .ci-row__main { flex:1; min-width:0; }
 .ci-row__reward { flex:none; color:var(--xy-color-brand); font-weight:var(--xy-text-weight-semibold); }
 .ci-row__chev { flex:none; color:var(--xy-color-text-disabled); font-size:var(--xy-text-section-title-size); }

@@ -4,7 +4,6 @@
   <page-header title="{{secondaryNavigationTitle || '每日签到'}}" background="{{headerScrolled ? '#ffffff' : 'transparent'}}" inverse="{{false}}" bindback="onSecondaryNavigationBack" />
   <view class="check-in-main">
     <text wx:if="{{errorText}}" class="ci-note ci-note--error" role="alert">{{errorText}}</text>
-    <text wx:if="{{receiptText}}" class="ci-note">{{receiptText}}</text>
     <view class="ci-hero">
       <view class="ci-hero__title"><view wx:if="{{signedToday}}" class="ci-hero__ok"><text>✓</text></view><text>{{signedToday ? '签到成功' : '今天还没签到'}}</text></view>
       <text class="ci-hero__sub">{{signedToday ? '今日已到账 ' : ruleAvailable ? '签到可得 ' : '签到规则暂不可用'}}<text wx:if="{{ruleAvailable}}" class="ci-brand">{{dailyReward}}</text></text>
@@ -24,12 +23,12 @@
       <view class="ci-card__head"><text class="ci-card__title">{{monthShort}}签到记录</text><text class="ci-card__hint">本月已签 <text class="ci-brand">{{signedMonthCount}}</text> 天</text></view>
       <view class="ci-cal">
         <view class="ci-cal__head"><text>一</text><text>二</text><text>三</text><text>四</text><text>五</text><text>六</text><text>日</text></view>
-        <view class="ci-cal__grid"><block wx:for="{{calendarDays}}" wx:key="key"><view wx:if="{{item.state === 'empty'}}" class="ci-cal__cell"></view><view wx:else class="ci-cal__cell ci-cal__cell--{{item.state}} {{item.today ? 'is-today' : ''}}"><text class="ci-cal__day">{{item.day}}</text><view wx:if="{{item.id}}" class="hit-area xy-tap" data-id="{{item.id}}" bindtap="openReceipt" role="button" aria-label="{{item.day}}日已签到，查看回执"></view></view></block></view>
+        <view class="ci-cal__grid"><block wx:for="{{calendarDays}}" wx:key="key"><view wx:if="{{item.state === 'empty'}}" class="ci-cal__cell"></view><view wx:else class="ci-cal__cell ci-cal__cell--{{item.state}} {{item.today ? 'is-today' : ''}}"><text class="ci-cal__day">{{item.day}}</text></view></block></view>
       </view>
     </view>
     <view wx:if="{{recent.length || receiptCoupons.length}}" class="ci-group"><text class="ci-group__title">最近签到</text>
       <view class="ci-list">
-        <button wx:for="{{recent}}" wx:key="key" class="ci-row xy-button-reset check-in-receipt" data-id="{{item.key}}" bindtap="openReceipt"><view class="ci-row__main"><text>{{item.dateShort}} · 连续 {{item.streak}} 天</text></view><text class="ci-row__reward">{{item.reward}}</text><text class="ci-row__chev" aria-hidden="true">›</text></button>
+        <view wx:for="{{recent}}" wx:key="key" class="ci-row ci-row--static"><view class="ci-row__main"><text>{{item.dateShort}} · 连续 {{item.streak}} 天</text></view><text class="ci-row__reward">{{item.reward}}</text></view>
         <button wx:for="{{receiptCoupons}}" wx:key="id" class="ci-row xy-button-reset check-in-coupon" data-id="{{item.id}}" bindtap="openCoupon"><view class="ci-row__main"><text>查看签到奖励：{{item.title}}</text></view><text class="ci-row__chev" aria-hidden="true">›</text></button>
       </view>
     </view>
