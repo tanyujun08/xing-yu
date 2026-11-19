@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, expect, test, vi } from 'vitest';
 import { prepareGrowthTaskIntent, readGrowthTaskIntent, clearConfirmedGrowthTaskIntent } from '../miniprogram/shared/api/growth-task-intent';
 import { benefitApi } from '../miniprogram/shared/api/account-api';
+import { demoWx } from '../miniprogram/preview/platform';
 
 let owner: string;
 let values: Map<string, unknown>;
@@ -8,13 +9,13 @@ beforeEach(() => {
   owner = 'account-a'; values = new Map();
   vi.stubGlobal('wx', {
     getAccountInfoSync: () => ({ miniProgram: { envVersion: 'develop' } }),
-    getStorageSync: (key: string) => key === 'xingyu.api-session.v1'
+    getStorageSync: (key: string) => key === 'xingyu.offline-v102.xingyu.api-session.v1'
       ? { accountId: owner, accessToken: 'token', refreshToken: 'refresh', expiresAt: Date.now() + 60_000 } : values.get(key),
     setStorageSync: (key: string, value: unknown) => values.set(key, structuredClone(value)),
-    removeStorageSync: (key: string) => values.delete(key), request: vi.fn(() => ({ abort: vi.fn() })),
+    removeStorageSync: (key: string) => values.delete(key),
   });
 });
-afterEach(() => vi.unstubAllGlobals());
+afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals(); });
 
 test('keeps one original empty command across process reads and account changes, blocking a different task', () => {
   const intent = prepareGrowthTaskIntent(owner, 'register-reward');
@@ -48,9 +49,13 @@ test('a stale completion cannot clear the next original command', () => {
 });
 
 test('real request adapter uses the two registered paths and only empty body plus original Header key', () => {
+  const requestMock = vi.spyOn(demoWx, 'request').mockReturnValue({
+    abort: vi.fn(), onChunkReceived: vi.fn(), offChunkReceived: vi.fn(),
+    onHeadersReceived: vi.fn(), offHeadersReceived: vi.fn(),
+  });
   const intent = prepareGrowthTaskIntent(owner, 'register-reward');
   benefitApi.tasks(); benefitApi.claimTask(intent.benefitCode, intent.key);
-  const calls = vi.mocked(wx.request).mock.calls.map(call => call[0]);
+  const calls = requestMock.mock.calls.map(call => call[0]);
   expect(calls[0]).toMatchObject({ method: 'GET' });
   expect(calls[0]!.url).toMatch(/\/v1\/me\/growth-tasks$/);
   expect(calls[0]!.data).toBeUndefined();

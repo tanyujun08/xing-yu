@@ -28,7 +28,44 @@ for (const entry of entries.filter(v => !v.key.startsWith('order-state-'))) test
  const show = page.onShow?.(); await vi.advanceTimersByTimeAsync(entry.key === 'region' ? 3000 : 1000); await show;
  expect(page.data.error ?? '').toBe('');
  expect(page.data.errorText ?? '', entry.key + ': ' + page.data.errorText).toBe('');
- if (entry.key === 'home') expect(page.data.visibleDevices.length).toBeGreaterThan(0);
+ if (entry.key === 'home') {
+  expect(page.data.visibleDevices).toHaveLength(20);
+  const { readDemo: readPageDemo } = await import('../miniprogram/preview/engine');
+  const demo = readPageDemo();
+  demo.latency = 0;
+  const laterDevice = demo.supplies[23]!;
+  laterDevice.display_name = '测试相机 MX-900';
+  expect(page.data.visibleDevices.some((item: Row) => item.id === laterDevice.asset_id)).toBe(false);
+
+  page.onSearchInput({ detail: { value: '  mx-900  ' } });
+  await vi.advanceTimersByTimeAsync(500);
+  expect(page.data.visibleDevices.map((item: Row) => item.id)).toEqual([laterDevice.asset_id]);
+  expect(page.data.stores).toEqual([]);
+
+  page.onSearchInput({ detail: { value: '南山店' } });
+  page.onSearchConfirm({ detail: { value: '福田店' } });
+  await vi.advanceTimersByTimeAsync(500);
+  expect(page.data.visibleDevices).toEqual([]);
+  expect(page.data.stores.map((store: Row) => store.name)).toEqual(['星遇影像 · 福田店']);
+  expect(page.data).toMatchObject({ loading: false, storesLoading: false, hasMore: false });
+
+  page.onSearchConfirm({ detail: { value: '深圳市' } });
+  await vi.advanceTimersByTimeAsync(500);
+  expect(page.data.visibleDevices).toHaveLength(20);
+  expect(page.data.hasMore).toBe(true);
+  page.loadMore();
+  await vi.advanceTimersByTimeAsync(500);
+  expect(page.data.visibleDevices).toHaveLength(24);
+  expect(page.data.hasMore).toBe(false);
+
+  demo.latency = 500;
+  page.onSearchConfirm({ detail: { value: '福田店' } });
+  demo.latency = 0;
+  page.clearSearch();
+  await vi.advanceTimersByTimeAsync(1000);
+  expect(page.data).toMatchObject({ searching: false, keyword: '', storeCount: 3, hasMore: true });
+  expect(page.data.visibleDevices).toHaveLength(20);
+ }
  if (entry.key === 'orders') expect(JSON.stringify(page.data)).toContain('RO-DEMO');
  if (entry.key === 'profile') {expect(page.data.localProfile.name).toContain('演示');expect(page.data.identityText).toBe('实名认证已完成');expect(page.data.rentalSummary.deviceName).toBeTruthy();expect(page.data.lendStatus.listingStatus).not.toBe('暂未接入');expect(page.data.lendStatus.lendOrderStatus).not.toBe('暂未接入');}
  if (entry.key === 'publish') expect(page.data.hasDraftTarget).toBe(true);

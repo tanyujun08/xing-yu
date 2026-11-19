@@ -1,6 +1,6 @@
 import { demoStorage } from './storage';
 import { DemoProblem, etag, requireRule, rules, businessDay, entitlement, nextId, quantity, addPoints, iso } from './rule-core';
-import { loyaltyRoute } from './loyalty-rules';
+import { loyaltyRoute, recordDemoAssetView, recordDemoGuideRead } from './loyalty-rules';
 import { rentalRoute, expireOrders, paymentResult, externalEvent, beginRefund, previewDemoReview } from './rental-rules';
 export { DemoProblem } from './rule-core';
 import { routes } from './contract-data';
@@ -94,8 +94,21 @@ function doRoute(method: string, path: string, q: Row, body: Row, ids: Row, temp
  if (path.includes('/identity/verifications')) return { ...template, verification_id: ids.verification_id ?? 'identity-demo', account_id: ACCOUNT, status: 'SUCCEEDED', result: 'VERIFIED', verified_at: NOW() };
  if (path.startsWith('/v1/materials/')) { const materialId = ids.material_id ?? 'photo-demo'; const existing = s.materials[materialId]; if (existing) return existing; const assetMedia = s.supplies.flatMap(v => v.media).find((m: Row) => m.material_id === materialId); if (assetMedia) return materialValue(materialId, 'RENTAL_ASSET_IMAGE', assetMedia.url); if (materialId === 'avatar-demo') return materialValue(materialId, 'PROFILE_IMAGE', '/assets/demo/avatar.png'); throw new DemoProblem('RESOURCE_NOT_FOUND', '演示素材不存在', 404); }
  if (path === '/v1/regions') { const parent = q.parent_id; return { dataset_id: 'demo-regions', parent_id: parent ?? null, items: regionChildren(parent) }; }
- if (path.endsWith('/rental-supplies')) { const rows = s.supplies.filter(v => (!q.supply_type || v.supply_type === q.supply_type) && (!q.category_id || v.category.category_id === q.category_id) && (!q.query || v.display_name.includes(q.query))); return page(rows, q, { facets: { categories: ['相机', '镜头', '配件'].map((name, i) => ({ category_id: 'category-' + (i + 1), name })) }, filters: { city_id: q.city_id ?? '', category_id: q.category_id ?? '', supply_type: q.supply_type ?? '', query: q.query ?? '' } }); }
- if (/\/(?:discovery\/)?rental-supplies\//.test(path)) { const found = s.supplies.find(v => v.asset_id === (ids.asset_id ?? ids.id)); if (!found) throw new DemoProblem('RESOURCE_NOT_FOUND', '设备不存在', 404); return found; }
+ if (path.endsWith('/rental-supplies')) {
+  const query = String(q.query ?? '').trim().toLowerCase();
+  const rows = s.supplies.filter(v => {
+   if ((q.supply_type && v.supply_type !== q.supply_type) || (q.category_id && v.category.category_id !== q.category_id)) return false;
+   const location = [v.region?.city_name, v.region?.district_name].filter(Boolean).join('');
+   return !query || v.display_name.toLowerCase().includes(query) || location.toLowerCase().includes(query);
+  });
+  return page(rows, q, { facets: { categories: ['相机', '镜头', '配件'].map((name, i) => ({ category_id: 'category-' + (i + 1), name })) }, filters: { city_id: q.city_id ?? '', category_id: q.category_id ?? '', supply_type: q.supply_type ?? '', query: q.query ?? '' } });
+ }
+ if (/\/(?:discovery\/)?rental-supplies\//.test(path)) {
+  const found = s.supplies.find(v => v.asset_id === (ids.asset_id ?? ids.id));
+  if (!found) throw new DemoProblem('RESOURCE_NOT_FOUND', '设备不存在', 404);
+  if (method === 'GET' && /^\/v1\/rental-supplies\/[^/]+$/.test(path)) recordDemoAssetView(s);
+  return found;
+ }
  if (path === '/v1/rental-stores' || path === '/v1/discovery/stores') return page([0, 1, 2].map(getStore), q, { filters: { city_id: q.city_id ?? '' } });
  if (path.startsWith('/v1/rental-stores/') || path.startsWith('/v1/discovery/stores/')) return getStore(Math.max(0, Number((ids.store_id ?? ids.id).split('-').slice(-1)[0]) - 1) % 3);
  if (path === '/v1/rental-cabinets') return page([0, 1, 2].map(getCabinet), q);
@@ -103,7 +116,7 @@ function doRoute(method: string, path: string, q: Row, body: Row, ids: Row, temp
  if (path.startsWith('/v1/rental-cabinets/')) { if (!/^cabinet-[1-3]$/.test(ids.cabinet_id ?? '')) throw new DemoProblem('RESOURCE_NOT_FOUND', '演示柜机不存在', 404); return getCabinet(Number(ids.cabinet_id.slice(-1)) - 1); }
  if (path.includes('/ops-wechat-challenges/')) return { ...template, purpose: 'LOGIN', status: path.endsWith('/decisions') ? body.approve ? 'APPROVED' : 'REJECTED' : 'PENDING', display_name: '林沐 · 演示管理员', phone_masked: '138****0000' };
  if (path === '/v1/me/benefits') return benefits();
- if (path === '/v1/me/growth-tasks') return { ...schema('OwnGrowthTaskList'), enabled: true, disabled_reason: null, rule_version_id: 'demo-growth-v1', items: ['REGISTER', 'VIEW_ASSET', 'VIEW_ASSET', 'VIEW_ASSET'].map((task_code, i) => ({ ...schema('OwnGrowthTask'), benefit_code: 'task-' + (i + 1), task_code, cycle_key: 'DEMO', limit: '1', progress_count: '1', claimed_count: s.receipts['growth:task-' + (i + 1)] ? '1' : '0', claimable_count: s.receipts['growth:task-' + (i + 1)] ? '0' : '1', state: s.receipts['growth:task-' + (i + 1)] ? 'COMPLETED' : 'CLAIMABLE', rewards: [{ kind: 'GROWTH', units: '100' }, { kind: 'PINK', units: '50' }] })), as_of_at: NOW() };
+
  if (path === '/v1/me/coupons') return page(s.coupons.filter(v => (!q.status || v.status === q.status) && (!q.coupon_type || v.coupon_type === q.coupon_type)), q);
  if (path === '/v1/me/coupons/' + ids.coupon_id) { const coupon = s.coupons.find(v => v.coupon_id === ids.coupon_id); if (!coupon) throw new DemoProblem('RESOURCE_NOT_FOUND', '优惠券不存在', 404); return { ...schema('CouponDetail'), ...coupon, status_events: [], redemption_id: null, entitlement_lot_id: null, movement_id: null }; }
  if (path === '/v1/me/lottery') return { ...schema('LotteryState'), account_id: ACCOUNT, enabled: true, blocked_reason: null, cost_pink_units: '50', available_pink_units: String(s.pink), lottery_config_version_id: 'lottery-demo', coupon_config_version_id: 'coupon-demo', prizes: ['PINK', 'DEPOSIT_WAIVER', 'PUBLISH_ONCE', 'ONE_DAY_RENT', 'GUARD_DISCOUNT'].map(prize_code => ({ prize_code, enabled: true, remaining_qty: '999', pink_reward_units: '100', rights_display: prize_code === 'PINK' ? null : prize_code === 'DEPOSIT_WAIVER' ? { kind: 'DEPOSIT_WAIVER', deposit_waiver: 'FULL' } : prize_code === 'PUBLISH_ONCE' ? { kind: 'PUBLISH_ONCE', publish_quota_quantity: '1' } : prize_code === 'ONE_DAY_RENT' ? { kind: 'ONE_DAY_RENT', rental_days: '1' } : { kind: 'GUARD_DISCOUNT', insurance_discount_fen: '2000' } })), as_of_at: NOW() };
@@ -202,7 +215,9 @@ export function runDemoExtra(kind: string, input: Row, key: string): Row {
  const snapshot=clone(s);
  try {
   let result: Row;
-  if(kind==='servicePurchase') {
+  if(kind==='readRentalGuide') {
+   result=recordDemoGuideRead(s,input.id);
+  } else if(kind==='servicePurchase') {
    const qty=Number(input.quantity), service=String(input.service??'');
    requireRule([1,5,10].includes(qty) && ['contract','face','risk','bundle'].includes(service),'请选择有效演示服务和数量','VALIDATION_FAILED',422);
    const id=nextId(s,'service-purchase'), title:Record<string,string>={contract:'电子合同',face:'人脸核身',risk:'风控报告',bundle:'组合服务'};

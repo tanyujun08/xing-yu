@@ -1,7 +1,56 @@
 import { ACCOUNT, clone, schema, type DemoState, type Row } from './seed';
 import { addPoints, businessDay, entitlement, grant, iso, list, nextId, quantity, requireRule, rules, time } from './rule-core';
+import { infoGuideDirectory } from '../shared/presentation/info-guides';
 
 export const checkInRule = { rule_version_id: 'check-in-demo-v2', policy: { schema_version: 2, timezone: 'Asia/Shanghai', daily_rewards: [{ kind: 'PINK', units: '100' }], first_rewards: [{ kind: 'PINK', units: '500' }], milestones: [{ days: 7, rewards: [{ kind: 'PINK', units: '300' }] }] } };
+const growthRuleVersion = 'demo-growth-v3';
+const growthRewards = [{ kind: 'GROWTH', units: '100' }, { kind: 'PINK', units: '50' }];
+const guideIds = infoGuideDirectory().map(guide => guide.id);
+const growthTasks = [
+ { benefit_code: 'task-1', task_code: 'REGISTER', period: 'LIFETIME', target_count: 1, rewards: growthRewards },
+ { benefit_code: 'task-2', task_code: 'VIEW_ASSET', period: 'LIFETIME', target_count: 1, rewards: growthRewards },
+ { benefit_code: 'task-read-guides', task_code: 'READ_RENTAL_GUIDES', period: 'LIFETIME', target_count: guideIds.length, rewards: growthRewards.slice(0, 1) },
+ { benefit_code: 'task-daily-view', task_code: 'VIEW_ASSET', period: 'DAY', target_count: 1, rewards: growthRewards },
+] as const;
+
+export function recordDemoAssetView(s: DemoState): void {
+ const day = businessDay(s);
+ if (s.receipts['growth:last-asset-view']?.day !== day) s.receipts['growth:last-asset-view'] = { day };
+}
+
+export function readDemoGuideIds(s: DemoState): string[] {
+ const reads = s.receipts['growth:guide-reads'];
+ return guideIds.filter(id => reads?.[id] === true);
+}
+
+export function recordDemoGuideRead(s: DemoState, id: unknown): { readIds: string[] } {
+ const guideId = guideIds.find(guide => guide === id);
+ requireRule(guideId, '租赁指南不存在', 'RESOURCE_NOT_FOUND', 404);
+ const reads = s.receipts['growth:guide-reads'] ??= {};
+ reads[guideId] = true;
+ return { readIds: readDemoGuideIds(s) };
+}
+
+function growthTaskItems(s: DemoState) {
+ const day = businessDay(s);
+ return growthTasks.map(({ target_count, ...task }) => {
+  const daily = task.period === 'DAY';
+  const cycle_key = daily ? day : 'LIFETIME';
+  const sourceId = daily ? `${task.benefit_code}:${cycle_key}` : task.benefit_code;
+  const received = !!s.receipts['growth:' + sourceId];
+  const lastView = s.receipts['growth:last-asset-view']?.day;
+  let progress = 1;
+  if (task.task_code === 'VIEW_ASSET') progress = Number(daily ? lastView === day : !!lastView);
+  if (task.task_code === 'READ_RENTAL_GUIDES') progress = readDemoGuideIds(s).length;
+  const met = received || progress >= target_count;
+  return { sourceId, task: { ...task, cycle_key, limit: '1',
+   ...(task.task_code === 'READ_RENTAL_GUIDES' ? { target_count } : {}),
+   progress_count: String(received ? Math.max(progress, target_count) : progress),
+   claimed_count: received ? '1' : '0', claimable_count: met && !received ? '1' : '0',
+   state: received ? 'COMPLETED' : met ? 'CLAIMABLE' : 'IN_PROGRESS' } };
+ });
+}
+
 export function couponRights(kind: string): Row {
  return kind === 'DEPOSIT_WAIVER' ? { kind, deposit_waiver: 'FULL' } : kind === 'PUBLISH_ONCE' ? { kind, publish_quota_quantity: '1' } : kind === 'ONE_DAY_RENT' ? { kind, rental_days: '1' } : { kind, insurance_discount_fen: '2000' };
 }
@@ -52,7 +101,13 @@ export function loyaltyRoute(s: DemoState, method: string, path: string, q: Row,
   return { month, today: businessDay(s), items: checked(s).filter(v => v.check_in.business_date.startsWith(month)).sort((a, b) => b.check_in.business_date.localeCompare(a.check_in.business_date)) };
  }
  if (ids.check_in_id) { const receipt = checked(s).find(v => v.check_in.check_in_id === ids.check_in_id); requireRule(receipt, '签到回执不存在', 'RESOURCE_NOT_FOUND', 404); return receipt; }
- if (ids.grant_id) { requireRule(r.grants[ids.grant_id], '奖励记录不存在', 'RESOURCE_NOT_FOUND', 404); const g = r.grants[ids.grant_id]; return { ...g, coupon_ids: g.coupon_id ? [g.coupon_id] : [], pink_entry_ids: g.point_entry_id ? [g.point_entry_id] : [] }; }
+ if (ids.grant_id) {
+  const grant = r.grants[ids.grant_id];
+  requireRule(grant, '奖励记录不存在', 'RESOURCE_NOT_FOUND', 404);
+  return { ...grant, source_kind: grant.source_kind === 'GROWTH_TASK' ? 'PROGRESS' : grant.source_kind,
+   coupon_ids: grant.coupon_id ? [grant.coupon_id] : [],
+   pink_entry_ids: grant.reward_code === 'PINK' && grant.point_entry_id ? [grant.point_entry_id] : [] };
+ }
  if (path === '/v1/me/entitlement-movements') return list((Object.values(r.movements) as Row[]).filter(v => v.kind === 'PUBLISH_QUOTA').reverse(), q);
  if (ids.movement_id) { requireRule(r.movements[ids.movement_id], '权益流水不存在', 'RESOURCE_NOT_FOUND', 404); return r.movements[ids.movement_id]; }
  if (path === '/v1/me/point-entries') {
@@ -61,11 +116,25 @@ export function loyaltyRoute(s: DemoState, method: string, path: string, q: Row,
   return list(items, q, { account_id: ACCOUNT, account: { ...schema('MemberPointAccount'), point_kind: q.point_kind ?? 'PINK', available_points: String(q.point_kind === 'GROWTH' ? s.growth : s.pink) }, statistics: { ...schema('OwnPointStatistics'), today_earned_delta: String(earned), week_earned_delta: String(earned) }, as_of_at: iso(s) });
  }
  if (ids.entry_id) { const e = s.points.find(v => v.entry_id === ids.entry_id); requireRule(e, '积分流水不存在', 'RESOURCE_NOT_FOUND', 404); return { ...schema('PointEntryDetail'), ...e }; }
+ if (path === '/v1/me/growth-tasks') {
+  return { enabled: true, disabled_reason: null, rule_version_id: growthRuleVersion,
+   items: growthTaskItems(s).map(item => item.task), as_of_at: iso(s) };
+ }
  if (path.includes('/growth-tasks/') && method === 'POST') {
-  requireRule(/^task-[1-4]$/.test(ids.benefit_code), '任务不存在', 'RESOURCE_NOT_FOUND', 404);
-  const slot = 'growth:' + ids.benefit_code;
-  if (s.receipts[slot]) return { ...s.receipts[slot], replayed: true };
-  const result = { task: { ...schema('OwnGrowthTask'), benefit_code: ids.benefit_code, state: 'COMPLETED', claimed_count: '1', claimable_count: '0', progress_count: '1', cycle_key: 'DEMO' }, grants: [{ kind: 'GROWTH', units: '100' }, { kind: 'PINK', units: '50' }].map(v => grant(s, v, 'GROWTH_TASK', ids.benefit_code)), replayed: false };
+  const item = growthTaskItems(s).find(entry => entry.task.benefit_code === ids.benefit_code);
+  const slot = 'growth:' + (item?.sourceId ?? ids.benefit_code);
+  const prior = s.receipts[slot];
+  if (prior) return { ...prior, replayed: true };
+  requireRule(item, '任务不存在', 'RESOURCE_NOT_FOUND', 404);
+  requireRule(item.task.state === 'CLAIMABLE', '完成任务后可领取奖励');
+  const grants = item.task.rewards.map((reward, index) => {
+   const delivered = grant(s, reward, 'PROGRESS', item.sourceId);
+   Object.assign(r.grants[delivered.grant_id], {
+    source_rule_version_id: growthRuleVersion, source_award_ordinal: index + 1,
+   });
+   return delivered;
+  });
+  const result = { task: { ...item.task, state: 'COMPLETED', claimed_count: '1', claimable_count: '0' }, grants, replayed: false };
   s.receipts[slot] = result; return result;
  }
  if (path.includes('/coupons/') && path.endsWith('/redemptions')) {

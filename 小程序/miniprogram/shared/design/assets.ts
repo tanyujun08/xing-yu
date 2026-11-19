@@ -176,6 +176,7 @@ export const designAssets = {
   membershipShop: '/assets/figma-icons/membership-shop.svg',
   membershipBalanceDiamond: '/assets/figma-icons/membership-balance-diamond.svg',
   membershipBalanceCheckin: '/assets/figma-icons/membership-balance-checkin.svg',
+  membershipLottery: '/assets/membership/lottery.svg',
   membershipBalanceShop: '/assets/figma-icons/membership-balance-shop.svg',
   tabHome: '/assets/figma-icons/xy-tab-home.svg',
   tabHomeSelected: '/assets/figma-icons/xy-tab-home-selected.svg',

@@ -9,7 +9,7 @@ function validCount(value: unknown): value is string {
 }
 
 function assertTask(task: GrowthTask): void {
-  if (!loyaltyIdentifier(task.benefit_code) || !['REGISTER', 'VIEW_ASSET'].includes(task.task_code)
+  if (!loyaltyIdentifier(task.benefit_code) || !['REGISTER', 'VIEW_ASSET', 'READ_RENTAL_GUIDES'].includes(task.task_code)
     || !['LIFETIME', 'DAY', 'MONTH'].includes(task.period) || !task.cycle_key
     || ![task.limit, task.progress_count, task.claimed_count, task.claimable_count].every(validCount)
     || task.limit === '0' || BigInt(task.claimed_count) > BigInt(task.limit)
@@ -20,6 +20,10 @@ function assertTask(task: GrowthTask): void {
     || (task.state === 'CLAIMABLE') !== (task.claimable_count !== '0')
     || (task.state === 'COMPLETED') !== (task.claimed_count === task.limit)
     || !Array.isArray(task.rewards) || task.rewards.length === 0) throw new Error('任务进度响应无效，请重新读取。');
+  if (task.task_code === 'READ_RENTAL_GUIDES' && (!Number.isSafeInteger(task.target_count) || task.target_count < 1
+    || (BigInt(task.progress_count) >= BigInt(task.target_count)) !== (task.state !== 'IN_PROGRESS'))) {
+    throw new Error('指南阅读进度响应无效，请重新读取。');
+  }
   task.rewards.forEach(reward => {
     if (reward.kind === 'PINK' || reward.kind === 'GROWTH') {
       if (displayQuantity(reward.units) === '—' || reward.units === '0') throw new Error('任务奖励响应无效。');
@@ -37,17 +41,21 @@ export function assertGrowthTaskList(list: GrowthTaskList): void {
   list.items.forEach(assertTask);
 }
 
-export function growthRewardText(task: GrowthTask): string {
-  return task.rewards.map(item => item.kind === 'PINK' ? item.units + ' 粉钻'
+export function growthRewardLabel(item: GrowthTask['rewards'][number]): string {
+  return item.kind === 'PINK' ? item.units + ' 粉钻'
     : item.kind === 'GROWTH' ? displayGrowthUnits(item.units) + ' 星光'
       : item.kind === 'COUPON' ? item.quantity + ' 张' + couponTitles[item.coupon_type!]
-        : item.quantity + (item.kind === 'CONTRACT' ? ' 次合同权益' : ' 次发布额度')).join(' · ');
+      : item.quantity + (item.kind === 'CONTRACT' ? ' 次合同权益' : ' 次发布额度');
+}
+
+export function growthRewardText(task: GrowthTask): string {
+  return task.rewards.map(growthRewardLabel).join(' · ');
 }
 
 export function growthTaskView(task: GrowthTask) {
   assertTask(task);
   return {
-    id: task.benefit_code, title: task.task_code === 'REGISTER' ? '注册任务' : '浏览设备任务',
+    id: task.benefit_code, title: task.task_code === 'REGISTER' ? '注册任务' : task.task_code === 'VIEW_ASSET' ? '浏览设备任务' : '阅读租赁指南',
     detail: '来源 ' + task.progress_count + ' · 已领取 ' + task.claimed_count + '/' + task.limit,
     reward: growthRewardText(task), done: task.state === 'COMPLETED', claimable: task.state === 'CLAIMABLE',
     progress: String(BigInt(task.claimed_count) * 100n / BigInt(task.limit)) + '%',

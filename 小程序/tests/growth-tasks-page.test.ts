@@ -22,7 +22,7 @@ beforeEach(() => {
   api.grant.mockReset().mockReturnValue(result(trace));
   api.summary.mockReset().mockImplementation(() => result({ profile: { account_id: api.owner, available_pink_units: '9007199254740993', total_growth_units: '123' } }));
   vi.stubGlobal('wx', { showToast: vi.fn(), navigateTo: vi.fn(), navigateBack: vi.fn(), switchTab: vi.fn(),
-    getStorageSync: (key: string) => key === 'xingyu.api-session.v1' && api.owner ? { accountId: api.owner, accessToken: 'token', refreshToken: 'refresh', expiresAt: Date.now() + 60_000 } : storage.get(key),
+    getStorageSync: (key: string) => key === 'xingyu.offline-v102.xingyu.api-session.v1' && api.owner ? { accountId: api.owner, accessToken: 'token', refreshToken: 'refresh', expiresAt: Date.now() + 60_000 } : storage.get(key),
     setStorageSync: (key: string, value: unknown) => storage.set(key, structuredClone(value)), removeStorageSync: (key: string) => storage.delete(key) });
   page = fresh();
 });
@@ -74,4 +74,18 @@ test('a mismatched grant or failed readback retains the request and never announ
   const original = api.claim.mock.calls[0]!;
   api.summary.mockReturnValueOnce({ promise: Promise.reject(new Error('summary unavailable')), abort: vi.fn() });
   await call('recoverClaim'); expect(api.claim.mock.calls[1]).toEqual(original); expect(storage.size).toBe(1); expect(page.data.receiptText).toBe('');
+});
+
+test('the daily entry shows its group first and keeps upgrade tasks on the same page', async () => {
+  const daily = { ...task, benefit_code: 'daily-device', task_code: 'VIEW_ASSET', period: 'DAY',
+    cycle_key: '2026-10-02', state: 'IN_PROGRESS', progress_count: '0', claimable_count: '0' };
+  api.tasks.mockReturnValue(result({ enabled: true, disabled_reason: null, rule_version_id: 'rule', as_of_at: '2026-10-02T00:00:00Z', items: [task, daily] }));
+  expect(page.data.groupOrder).toEqual(['upgrade', 'daily']);
+  call('onLoad', { section: 'daily' });
+  await call('onShow');
+  expect(page.data.tasks).toEqual([expect.objectContaining({ id: task.benefit_code })]);
+  expect(page.data.missions).toEqual([expect.objectContaining({ id: daily.benefit_code, actionText: '去浏览' })]);
+  expect(page.data.groupOrder).toEqual(['daily', 'upgrade']);
+  call('onHide'); await call('onShow');
+  expect(page.data.groupOrder).toEqual(['daily', 'upgrade']);
 });

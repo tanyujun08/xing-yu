@@ -1,10 +1,11 @@
 import { accountApi, benefitApi, loyaltyTraceApi, readGrowthTaskIntent, prepareGrowthTaskIntent, clearConfirmedGrowthTaskIntent } from '../../shared/api/account-api';
+import { supplyApi } from '../../shared/api/supply-api';
 import { designAssets } from '../../shared/design/assets';
 import { createOperationScope } from '../../shared/interaction/operation-scope';
 import { createNavigateOnce, navigateBackWithFallback } from '../../shared/interaction/navigate-once';
 import { watchDayRefresh, stopDayRefresh, disposeDayRefresh, dayPageDisposed } from '../../shared/interaction/day-refresh';
-import type { GrowthTaskList, GrowthTaskGrant, GrowthTaskIntent, GrowthTaskGrantTrace } from '../../shared/model/growth-task-intent';
-import { assertGrowthTaskList, assertGrowthTaskClaim, assertGrowthGrantTrace, growthTaskView, growthGrantText } from '../../shared/presentation/growth-task';
+import type { GrowthTask, GrowthTaskList, GrowthTaskGrant, GrowthTaskIntent, GrowthTaskGrantTrace } from '../../shared/model/growth-task-intent';
+import { assertGrowthTaskList, assertGrowthTaskClaim, assertGrowthGrantTrace, growthTaskView, growthGrantText, growthRewardLabel } from '../../shared/presentation/growth-task';
 import { displayQuantity } from '../../shared/format/quantity';
 import { displayGrowthUnits } from '../../shared/presentation/api-points';
 
@@ -22,16 +23,50 @@ async function response<T>(value: ReturnType<typeof createState>, handle: { prom
   const release = value.scope.registerCleanup(handle.abort);
   try { return await handle.promise; } finally { release(); }
 }
+
+function taskRow(task: GrowthTask) {
+  const view = growthTaskView(task);
+  const daily = task.period === 'DAY';
+  const isGuide = task.task_code === 'READ_RENTAL_GUIDES';
+  const canBrowse = task.task_code === 'VIEW_ASSET' && !view.done && !view.claimable;
+  const canRead = isGuide && !view.done && !view.claimable;
+  const progress = canRead ? Math.min(Number(task.progress_count), task.target_count) : 0;
+  const goal = canRead ? {
+    label: progress + '/' + task.target_count,
+    percent: Math.round(progress * 100 / task.target_count),
+  } : null;
+  return {
+    ...view, period: task.period, canBrowse, canRead, goal,
+    icon: isGuide ? designAssets.profileRentalGuide
+      : task.task_code === 'REGISTER' ? designAssets.profileVerified : designAssets.search,
+    title: isGuide ? '阅读 ' + task.target_count + ' 篇租赁指南'
+      : task.task_code === 'REGISTER' ? '完成注册'
+      : daily ? '今日浏览 1 台设备' : task.limit === '1' ? '首次浏览 1 台设备' : '浏览设备详情',
+    actionText: view.done ? '已领取' : view.claimable ? '领取' : canRead ? '去完成' : canBrowse ? '去浏览' : '待完成',
+    rewards: task.rewards.map(reward => ({
+      label: '+' + growthRewardLabel(reward),
+      tone: reward.kind === 'GROWTH' ? 'star' : reward.kind === 'PINK' ? 'diamond' : '',
+      icon: reward.kind === 'GROWTH' ? designAssets.checkInStar : reward.kind === 'PINK' ? designAssets.checkInDiamond : '',
+    })),
+  };
+}
+
 const blank = {
-  loggedIn: false, tasks: [] as Array<ReturnType<typeof growthTaskView> & { icon: string }>,
-  missions: [] as Array<ReturnType<typeof growthTaskView> & { icon: string }>, browseMissions: [] as Array<ReturnType<typeof growthTaskView> & { icon: string }>,
-  taskCount: '—', taskProgress: '0%', dailyCount: '—', loading: false, busy: false, errorText: '', notice: '',
+  loggedIn: false, tasks: [] as ReturnType<typeof taskRow>[], missions: [] as ReturnType<typeof taskRow>[],
+  loading: false, busy: false, browsing: false, errorText: '', notice: '',
   pendingBenefitCode: '', receiptText: '', receiptGrants: [] as { id: string; label: string; couponId: string | null }[],
   grantDetail: '', balance: '—', starPoints: '—',
 };
 
 Page({
-  data: { ...blank, icons: designAssets, browseExpanded: false },
+  data: { ...blank, groupOrder: ['upgrade', 'daily'], headerScrolled: false },
+  onLoad(options) {
+    if (options?.['section'] === 'daily') this.setData({ groupOrder: ['daily', 'upgrade'] });
+  },
+  onPageScroll({ scrollTop }) {
+    const headerScrolled = scrollTop >= 64;
+    if (headerScrolled !== this.data.headerScrolled) this.setData({ headerScrolled });
+  },
   onSecondaryNavigationBack() { navigateBackWithFallback(state(this).navigation); },
   async onShow() {
     if (dayPageDisposed(this)) return;
@@ -56,6 +91,10 @@ Page({
     this.setData({ ...blank });
   },
   onUnload() { this.onHide(); disposeDayRefresh(this); states.delete(this); },
+  retryTasks() {
+    this.setData({ errorText: '' });
+    return this.refresh();
+  },
   async refresh(): Promise<boolean> {
     const value = state(this);
     if (!current(this, value)) return false;
@@ -65,17 +104,14 @@ Page({
       if (!result.accepted || !current(this, value)) return false;
       assertGrowthTaskList(result.value);
       value.list = result.value;
-      const views = result.value.items.map(task => ({ ...growthTaskView(task), icon: task.task_code === 'REGISTER' ? designAssets.profileVerified : designAssets.profileSupport }));
-      const tasks = views.filter(item => result.value.items.find(task => task.benefit_code === item.id)!.period !== 'DAY');
-      const missions = views.filter(item => result.value.items.find(task => task.benefit_code === item.id)!.period === 'DAY');
-      const completed = tasks.filter(task => task.done).length;
-      this.setData({ tasks, missions, browseMissions: missions,
-        taskCount: tasks.length ? completed + '/' + tasks.length : '—', taskProgress: tasks.length ? Math.floor(completed * 100 / tasks.length) + '%' : '0%',
-        dailyCount: missions.length ? missions.filter(item => item.done).length + '/' + missions.length : '—',
-        notice: !result.value.enabled ? '当前没有可用的已发布任务配置。' : views.length ? '' : '当前没有可显示的成长任务。' });
+      const views = result.value.items.map(taskRow);
+      const tasks = views.filter(item => item.period !== 'DAY');
+      const missions = views.filter(item => item.period === 'DAY');
+      this.setData({ tasks, missions,
+        notice: result.value.enabled ? '' : '任务暂未开放' });
       return true;
     } catch (error) {
-      if (current(this, value)) { value.list = null; this.setData({ tasks: [], missions: [], browseMissions: [], taskCount: '—', dailyCount: '—', taskProgress: '0%', errorText: error instanceof Error ? error.message : '任务读取失败，请重试。' }); }
+      if (current(this, value)) { value.list = null; this.setData({ tasks: [], missions: [], notice: '', errorText: error instanceof Error ? error.message : '任务读取失败，请重试。' }); }
       return false;
     } finally { if (current(this, value)) this.setData({ loading: false }); }
   },
@@ -88,6 +124,31 @@ Page({
       wx.showToast({ title: '暂无可领取的真实任务奖励。', icon: 'none' }); return Promise.resolve();
     }
     return this.claim(id);
+  },
+  async browseDevice() {
+    const value = state(this);
+    if (!current(this, value) || this.data.browsing || this.data.busy) return;
+    this.setData({ browsing: true });
+    try {
+      const { items } = await response(value, supplyApi.list());
+      if (!current(this, value)) return;
+      const device = items[0];
+      if (!device) { wx.showToast({ title: '暂无可浏览设备', icon: 'none' }); return; }
+      value.navigation.navigateOnce('browse-device', callbacks => wx.navigateTo({
+        url: '/pages/detail/index?id=' + encodeURIComponent(device.asset_id), ...callbacks,
+      }));
+    } catch {
+      if (current(this, value)) wx.showToast({ title: '设备读取失败，请重试', icon: 'none' });
+    } finally {
+      if (current(this, value)) this.setData({ browsing: false });
+    }
+  },
+  openGuides() {
+    const value = state(this);
+    if (!current(this, value)) return;
+    value.navigation.navigateOnce('rental-guides', callbacks => wx.navigateTo({
+      url: '/pages/info-guide/index?from=task-center', ...callbacks,
+    }));
   },
   recoverClaim() {
     const value = state(this);
@@ -150,7 +211,4 @@ Page({
           : grant.reward_code === 'PUBLISH_QUOTA' ? '/pages/publish-quota/index' : '/pages/rental-service/index';
     value.navigation.navigateOnce('reward:' + id, callbacks => wx.navigateTo({ url: route, ...callbacks }));
   },
-  openMission(event: WechatMiniprogram.TouchEvent) { return this.openTask(event); },
-  openBrowseMission(event: WechatMiniprogram.TouchEvent) { return this.openTask(event); },
-  toggleBrowse() { this.setData({ browseExpanded: !this.data.browseExpanded }); },
 });

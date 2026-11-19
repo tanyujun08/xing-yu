@@ -19,6 +19,12 @@
         <view class="guide-section-copy"><text class="guide-section-title">{{item.title}}</text><text class="guide-section-body">{{item.body}}</text></view>
       </view>
     </view>
+    <view wx:if="{{fromTask}}" class="guide-reading-progress">
+      <text>已读 {{readIds.length}}/{{tabs.length}} 篇</text>
+      <button wx:if="{{!currentRead}}" class="guide-read-button xy-button-reset" bindtap="markGuideRead" disabled="{{markingRead}}" loading="{{markingRead}}">标记本篇已读</button>
+      <button wx:elif="{{readIds.length === tabs.length}}" class="guide-read-button xy-button-reset" bindtap="goBack">返回领取</button>
+      <text wx:else>本篇已读，可切换其他指南</text>
+    </view>
     <view class="guide-foot"><text>没找到答案？</text><text class="guide-foot-link xy-tap" bindtap="openSupport" role="button" aria-label="联系官方客服">联系官方客服</text></view>
   </block>
 </view>

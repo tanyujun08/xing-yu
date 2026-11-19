@@ -5,6 +5,7 @@ import { assertLotteryAttempt, assertRedemptionAttempt } from '../miniprogram/sh
 import { ACCOUNT, type Row } from '../miniprogram/preview/seed';
 import { assertOrderPayment } from '../miniprogram/shared/presentation/rental-order-payment';
 import { validateCatalogProductPage, validateCatalogProduct } from '../miniprogram/shared/api/publication-api';
+import { infoGuideDirectory } from '../miniprogram/shared/presentation/info-guides';
 let sequence = 0;
 const read = (path: string) => handleDemo('GET', path).data;
 function write(path: string, body: Row = {}, aggregate?: string, key = 'rule-intent-' + ++sequence, method = 'POST') {
@@ -305,6 +306,54 @@ test('growth task replay cannot grant twice and both point ledgers reference the
  expect(again.replayed).toBe(true); expect(readDemo().pink).toBe(28850); expect(readDemo().growth).toBe(12900);
  for (const g of a.grants) expect(read('/v1/me/point-entries/' + g.point_entry_id).source_id).toBe('task-1');
  expect(read('/v1/me/growth-tasks').items[0].claimable_count).toBe('0');
+});
+test('daily growth task unlocks from an authenticated device detail and can be claimed once per Shanghai day', () => {
+ const task = () => read('/v1/me/growth-tasks').items.find((row: Row) => row.period === 'DAY');
+ const path = '/v1/me/growth-tasks/task-daily-view/claims';
+ const original = task();
+ expect(original).toMatchObject({ state: 'IN_PROGRESS', claimable_count: '0' });
+ expect(() => write(path)).toThrow('完成任务后');
+ const device = read('/v1/rental-supplies').items[0];
+ expect(task().state).toBe('IN_PROGRESS');
+ read('/v1/rental-supplies/' + device.asset_id);
+ read('/v1/rental-supplies/' + device.asset_id);
+ expect(task()).toMatchObject({ state: 'CLAIMABLE', progress_count: '1' });
+ expect(read('/v1/me/growth-tasks').items.find((row: Row) => row.benefit_code === 'task-2').state).toBe('CLAIMABLE');
+ const receipt = write(path);
+ expect(write(path).replayed).toBe(true);
+ expect(task().state).toBe('COMPLETED');
+ expect(receipt.task).toEqual(task());
+ expect(readDemo().pink).toBe(28850);
+ expect(readDemo().growth).toBe(12900);
+ const grantFacts = receipt.grants.map((grant: Row) => read('/v1/me/benefit-grants/' + grant.grant_id));
+ expect(grantFacts).toEqual([
+  expect.objectContaining({ source_kind: 'PROGRESS', reward_code: 'GROWTH', pink_entry_ids: [] }),
+  expect.objectContaining({ source_kind: 'PROGRESS', reward_code: 'PINK', pink_entry_ids: [receipt.grants[1].point_entry_id] }),
+ ]);
+ rules(readDemo()).dayOffset += 1;
+ expect(task()).toMatchObject({ state: 'IN_PROGRESS', progress_count: '0', claimed_count: '0' });
+ expect(task().cycle_key).not.toBe(original.cycle_key);
+ read('/v1/rental-supplies/' + device.asset_id);
+ expect(write(path).replayed).toBe(false);
+ expect(readDemo().pink).toBe(28900);
+});
+test('three distinct rental guides unlock the upgrade reward without counting repeat reads or legal texts', () => {
+ const task = () => read('/v1/me/growth-tasks').items.find((row: Row) => row.task_code === 'READ_RENTAL_GUIDES');
+ const claimPath = '/v1/me/growth-tasks/task-read-guides/claims';
+ const guides = infoGuideDirectory().map(guide => guide.id);
+ expect(task()).toMatchObject({ state: 'IN_PROGRESS', progress_count: '0', target_count: 3 });
+ expect(() => write(claimPath)).toThrow('完成任务后');
+ expect(() => runDemoExtra('readRentalGuide', { id: 'user-agreement' }, 'guide-legal')).toThrow('租赁指南不存在');
+ runDemoExtra('readRentalGuide', { id: guides[0] }, 'guide-first');
+ runDemoExtra('readRentalGuide', { id: guides[0] }, 'guide-first-repeat');
+ expect(task()).toMatchObject({ state: 'IN_PROGRESS', progress_count: '1' });
+ guides.slice(1).forEach(id => runDemoExtra('readRentalGuide', { id }, 'guide-' + id));
+ expect(task()).toMatchObject({ state: 'CLAIMABLE', progress_count: '3', claimable_count: '1' });
+ expect(write(claimPath).grants).toEqual([expect.objectContaining({ reward_code: 'GROWTH', reward_units: '100' })]);
+ expect(write(claimPath).replayed).toBe(true);
+ expect(task()).toMatchObject({ state: 'COMPLETED', claimed_count: '1' });
+ expect(readDemo().growth).toBe(12900);
+ expect(readDemo().pink).toBe(28800);
 });
 test('publication validates required evidence and consumes quota once', () => {
  const draft = readDemo().drafts[0]!; draft.asset.media = [];

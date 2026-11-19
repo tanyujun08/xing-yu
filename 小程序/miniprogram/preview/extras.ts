@@ -1,11 +1,10 @@
 import { readDemo, benefits, handleDemo, runDemoExtra, DemoProblem } from './engine';
 import { type Row } from './seed';
 import { rules } from './rule-core';
-import { designAssets } from '../shared/design/assets';
 import { displayGrowthUnits } from '../shared/presentation/api-points';
+import { groupMemberNumber, offlineMembershipEntitlements, offlineMembershipLevel } from './membership-levels';
 import { isLinked, linkedAction, linkedRequest, refreshLinked } from './linked';
 const go = (url: string) => wx.navigateTo({ url });
-const levels = ['青铜', '白银', '黄金', '铂金', '钻石', '星耀', '王者'].map((name, i) => ({ name, threshold: String([0, 1000, 5000, 20000, 50000, 100000, 200000][i]), state: i < 2 ? 'passed' : i === 2 ? 'current' : 'locked' }));
 const common = { onSecondaryNavigationBack() { wx.navigateBack({ fail: () => wx.navigateTo({ url: '/pages/demo-center/index' }) }); } };
 function rentalPackages(kind: string): Row[] { return [1, 5, 10].map(quantity => ({ kind, quantity, title: quantity + ' 次' + ({ contract: '电子合同', face: '人脸核身', risk: '风控报告', bundle: '组合服务' }[kind] ?? '服务'), copy: '演示权益，即时到账，有效期 365 天', priceText: quantity * 100 + ' 粉钻', costText: quantity * 100 + ' 粉钻' })); }
 function fail(page: Row, error: unknown) { const message=error instanceof Error?error.message:'本机演示操作失败'; page.setData({errorText:message}); wx.showToast({title:message,icon:'none'}); }
@@ -30,6 +29,11 @@ function request(method: string, path: string, body: Row = {}, key = ''): Promis
   success:(value: Row)=>value.statusCode>=400?reject(Object.assign(new Error(value.data?.message??'演示请求失败'),{outcomeKnown:true})):resolve(value.data),
   fail:(value: Row)=>reject(new Error(value.errMsg??'本机 Mock 服务不可用'))}));
 }
+async function todayMemberGrowth() {
+ const ledger = await request('GET', '/v1/me/point-entries?point_kind=GROWTH&page_size=1').catch(() => null);
+ const amount = displayGrowthUnits(ledger?.statistics?.today_earned_delta);
+ return amount === '—' ? amount : groupMemberNumber(amount);
+}
 export function demoExtras(name: string): Row {
  if (name === 'rental-service') return { ...common,
   async onShow(this: Row) { try { await refresh(); const s=readDemo();this.setData({loggedIn:true,errorText:'',loading:false,diamondBalance:String(s.pink),currentTab:this.data.currentTab||'contract',stats:[{label:'电子合同',value:String(rules(s).entitlements.CONTRACT)},{label:'人脸核身（模拟）',value:String(rules(s).entitlements.FACE??0)},{label:'风控报告（模拟）',value:String(rules(s).entitlements.RISK??0)}],packages:rentalPackages(this.data.currentTab||'contract'),records:s.purchases.map(v=>({id:v.purchase_id,label:v.name,quantityText:v.quantity+' 次',createdText:v.created_at,priceText:v.total_cost+' 粉钻'}))}); } catch(error) {fail(this,error);} },
@@ -42,8 +46,58 @@ export function demoExtras(name: string): Row {
   redeem(this: Row, e: Row) { if(this._demoBusy)return;const product=String(e.currentTarget.dataset.productId);wx.showModal({title:'兑换演示优惠券',content:'使用 100 演示粉钻，可在优惠券中查看。',success:result=>{if(!result.confirm)return;void extra(this,'mallRedeem',{product}).then(()=>this.setData({balance:String(readDemo().pink),errorText:'兑换成功，可在优惠券页面查看。'})).catch(error=>fail(this,error));}}); },
   goLedger() { go('/pages/powder-ledger/index'); }, goCheckIn() { go('/pages/check-in/index'); }, goCoupons() { go('/pages/coupons/index'); },
  };
- if (name === 'level-rights') return { ...common, async onShow(this: Row) { try {await refresh();const s=readDemo();this.setData({loggedIn:true,loading:false,errorText:'',currentLevelName:'黄金',currentLevelNumber:'3',currentThresholdText:'5000',hasNextLevel:true,levels,currentBenefits:[{id:'publish',label:'发布额度 '+rules(s).entitlements.PUBLISH_QUOTA+' 次'},{id:'contract',label:'电子合同 '+rules(s).entitlements.CONTRACT+' 次'},{id:'coupon',label:'免押优惠券'}],nextBenefits:[{title:'更高免押额度',detail:'铂金会员模拟权益',icon:designAssets.membershipTaskWaiver},{title:'额外发布额度',detail:'每月赠送 5 次',icon:designAssets.membershipTaskQuota}],starPoints:displayGrowthUnits(s.growth),nextLevel:'铂金',nextThreshold:'20000',remainingPoints:displayGrowthUnits(Math.max(0,200000-s.growth)),progress:64,progressText:'64%'});}catch(error){fail(this,error);} }, openStarLedger() { go('/pages/star-ledger/index'); }, openGrowthTasks() { go('/pages/growth-tasks/index'); } };
- if (name === 'membership') return { ...common, async onShow(this: Row) { try {await refresh();const b=benefits();this.setData({loggedIn:true,loading:false,errorText:'',level:'黄金会员',levelCode:'GOLD',starPoints:displayGrowthUnits(b.profile.total_growth_units),nextLevel:'铂金',nextLevelPoints:'20000',progress:64,progressPercent:'64%',todayGrowth:'100',diamonds:b.profile.available_pink_units,shopCount:'6',dailyCheckInReward:'+100 粉钻',taskRows:[{title:'升级任务',detail:'完成任务获得星光',icon:designAssets.membershipTaskUpgrade},{title:'每日星光任务',detail:'签到领取奖励',icon:designAssets.membershipTaskCheckin}]});}catch(error){fail(this,error);} }, openTask(e: Row) { go(e.currentTarget.dataset.section === 'more' ? '/pages/publish-quota/index' : '/pages/growth-tasks/index'); }, openStarDetails() { go('/pages/star-ledger/index'); }, openBalanceDetails() { go('/pages/powder-ledger/index'); }, openShop() { go('/pages/powder-mall/index'); }, copyInvite() { wx.setClipboardData({ data: 'XINGYU-DEMO-10001' }); }, openCheckIn() { go('/pages/check-in/index'); }, openDetails() { go('/pages/level-rights/index'); } };
+ if (name === 'level-rights') return {
+  ...common,
+  async onShow(this: Row) {
+   try {
+    await refresh();
+    const dossier = benefits();
+    const todayGrowth = await todayMemberGrowth();
+    this.setData({
+     loggedIn: true, loading: false, errorText: '',
+     ...offlineMembershipLevel(dossier.profile.total_growth_units),
+     todayGrowth,
+    });
+   } catch (error) { fail(this, error); }
+  },
+  openGrowthTasks() { go('/pages/growth-tasks/index'); },
+  showStarOverview(this: Row) {
+   const { starPoints, todayGrowth } = this.data;
+   const today = todayGrowth === '—' ? '今日新增暂不可用。' : `今日新增 ${todayGrowth} 星光。`;
+   wx.showModal({ title: '星光概览', content: `累计 ${starPoints} 星光。${today}`,
+    cancelText: '关闭', confirmText: '星光明细',
+    success: result => { if (result.confirm) go('/pages/star-ledger/index'); },
+   });
+  },
+ };
+ if (name === 'membership') return {
+  ...common,
+  async onShow(this: Row) {
+   try {
+    await refresh();
+    const dossier = benefits();
+    const todayGrowth = await todayMemberGrowth();
+    const rights = offlineMembershipEntitlements(dossier.entitlements);
+    this.setData({
+     loggedIn: true, loading: false, errorText: '',
+     ...offlineMembershipLevel(dossier.profile.total_growth_units),
+     todayGrowth: todayGrowth === '—' ? todayGrowth : '+' + todayGrowth,
+     diamonds: groupMemberNumber(dossier.profile.available_pink_units),
+     publishAllowance: rights.find(item => item.id === 'PUBLISH_QUOTA')?.value ?? '查看当前额度',
+    });
+   } catch (error) { fail(this, error); }
+  },
+  openTask() { go('/pages/growth-tasks/index'); },
+  openDailyTasks() { go('/pages/growth-tasks/index?section=daily'); },
+  openStarDetails() { go('/pages/star-ledger/index'); },
+  openBalanceDetails() { go('/pages/powder-ledger/index'); },
+  openCheckIn() { go('/pages/check-in/index'); },
+  openShop() { go('/pages/powder-mall/index'); },
+  openLottery() { go('/pages/lottery/index'); },
+  openDetails() { go('/pages/level-rights/index'); },
+  openWaiver() { go('/pages/no-deposit/index'); },
+  openPublishAllowance() { go('/pages/publish-quota/index'); },
+ };
  if (name === 'withdrawal') return { ...common,
   onShow(this: Row) {return this.loadWallet();},
   async loadWallet(this: Row) {try {const wallet=await request('GET','/v1/me/cash-balance'),items=await request('GET','/v1/me/withdrawals');

@@ -1,8 +1,8 @@
 {
-  "navigationBarTitleText": "升级任务",
-  "navigationBarBackgroundColor": "#F7F9F8",
+  "navigationBarTitleText": "任务中心",
+  "navigationBarBackgroundColor": "#F3F4F6",
   "navigationBarTextStyle": "black",
-  "backgroundColor": "#F2F5F3",
+  "backgroundColor": "#F3F4F6",
   "backgroundTextStyle": "light",
   "navigationStyle": "custom",
   "usingComponents": {

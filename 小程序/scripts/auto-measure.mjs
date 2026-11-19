@@ -84,6 +84,25 @@ const routes = {
   'powder-ledger': { open: 'navigateTo', url: '/pages/powder-ledger/index' },
   'star-ledger': { open: 'navigateTo', url: '/pages/star-ledger/index' },
   lottery: { open: 'navigateTo', url: '/pages/lottery/index' },
+  // 第 5 批 发布与其他
+  'publish-eligibility': { open: 'navigateTo', url: '/pages/publish-eligibility/index' },
+  'publish-quota': { open: 'navigateTo', url: '/pages/publish-quota/index' },
+  'rental-service': { open: 'navigateTo', url: '/pages/rental-service/index' },
+  'rental-service-records': { open: 'navigateTo', url: '/pages/rental-service/index', dir: 'rental-service', set: { showRecords: true } },
+  'publish-new': { open: 'navigateTo', url: '/pages/publish/index', dir: 'publish' },
+  publish: { open: 'navigateTo', url: '/pages/publish/index?draft_id=draft-demo' },
+  'publish-view': { open: 'navigateTo', url: '/pages/publish/index?draft_id=draft-demo&mode=view', dir: 'publish' },
+  'publish-pricing': { open: 'navigateTo', url: '/pages/publish/index?draft_id=draft-demo', dir: 'publish', set: { activeSheet: 'pricing', pricingCalendarOpen: false } },
+  'publish-calendar': { open: 'navigateTo', url: '/pages/publish/index?draft_id=draft-demo', dir: 'publish', set: { activeSheet: 'pricing', pricingCalendarOpen: true } },
+  'publish-details': { open: 'navigateTo', url: '/pages/publish/index?draft_id=draft-demo', dir: 'publish', set: { activeSheet: 'details' } },
+  'publish-delivery': { open: 'navigateTo', url: '/pages/publish/index?draft_id=draft-demo', dir: 'publish', set: { activeSheet: 'delivery' } },
+  'publish-accessories': { open: 'navigateTo', url: '/pages/publish/index?draft_id=draft-demo', dir: 'publish', set: { activeSheet: 'accessories' } },
+  'publish-proof': { open: 'navigateTo', url: '/pages/publish/index?draft_id=draft-demo', dir: 'publish', set: { activeSheet: 'proof' } },
+  listings: { open: 'navigateTo', url: '/pages/listings/index' },
+  'listing-price': { open: 'navigateTo', url: '/pages/listing-price/index?draft_id=draft-demo' },
+  'admin-approval': { open: 'navigateTo', url: '/pages/admin-approval/index?scene=offline_demo_approval_123456' },
+  'demo-center': { open: 'navigateTo', url: '/pages/demo-center/index' },
+  'demo-support': { open: 'navigateTo', url: '/pages/demo-support/index' },
 };
 // 订单详情的 10 个演示状态：od-1（准备签约）… od-10（已关闭）
 for (let n = 1; n <= 10; n += 1) routes['od-' + n] = { open: 'navigateTo', url: '/pages/order-detail/index?orderId=order-' + n, dir: 'order-detail' };

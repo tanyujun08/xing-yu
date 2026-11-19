@@ -1,9 +1,11 @@
 import type { components } from '../../../types/api/schema';
 import { loyaltyIdentifier, validLoyaltyBody } from './loyalty-intent';
 
-export type GrowthTask = components['schemas']['OwnGrowthTask'];
-export type GrowthTaskList = components['schemas']['OwnGrowthTaskList'];
-export type GrowthTaskClaim = components['schemas']['OwnGrowthTaskClaim'];
+type ServerGrowthTask = components['schemas']['OwnGrowthTask'];
+// The guide mission is an extension of the offline demo response only.
+export type GrowthTask = ServerGrowthTask | (Omit<ServerGrowthTask, 'task_code'> & { task_code: 'READ_RENTAL_GUIDES'; target_count: number });
+export type GrowthTaskList = Omit<components['schemas']['OwnGrowthTaskList'], 'items'> & { items: GrowthTask[] };
+export type GrowthTaskClaim = Omit<components['schemas']['OwnGrowthTaskClaim'], 'task'> & { task: GrowthTask };
 export type GrowthTaskGrant = components['schemas']['BenefitGrantReceipt'];
 export type GrowthTaskGrantTrace = components['schemas']['BenefitGrantTrace'];
 
