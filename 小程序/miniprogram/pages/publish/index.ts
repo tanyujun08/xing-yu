@@ -95,7 +95,7 @@ function initial(){
   availabilityStart:'',availabilityEnd:'',location:'',originAddressLabels:[] as string[],originAddressIndex:0,
   meetingAddress:'',meetingTime:'',runnerAddress:'',runnerContact:'',runnerPhone:'',runnerService:'',
   deliveries:[{id:'express',label:'快递配送',selected:false,outbound:'',return:''},{id:'runner',label:'跑腿配送',selected:false,outbound:'',return:''}] as DeliveryChoice[],
-  deliveryText:'尚未设置',draftId:'',draftNoticeText:'',showDraftNotice:false,activeSheet:'',pricingCalendarOpen:false,
+  deliveryText:'尚未设置',splitMap:{} as Record<string,boolean>,draftId:'',draftNoticeText:'',showDraftNotice:false,activeSheet:'',pricingCalendarOpen:false,
   canSubmit:false,submitHint:'先新建草稿，再由服务端校验提交条件。',missingFields:[] as MissingFieldView[],missingMedia:false,hasDraftTarget:false,weekdays:calendarWeekdays,
  };
 }
@@ -434,6 +434,15 @@ selectProduct(option:CatalogOption){
   if(!deliveries.some(choice=>choice.id===id&&choice.selected))return;
   r.deliveryChanged=true;this.setData({deliveries,canSubmit:true,submitHint:'可直接提交；页面会先保存并回读当前修改。'});
  },
+ chooseRuleBoth(event:WechatMiniprogram.TouchEvent){
+  const r=states.get(this);if(!r||!current(this,r)||!this.data.editable||this.data.submitting||r.pending||r.submitIntent)return;
+  const id=String(event.currentTarget.dataset['delivery']??'');const payer=String(event.currentTarget.dataset['payer']??'');
+  if(payer!=='TENANT'&&payer!=='LESSOR')return;
+  const deliveries=this.data.deliveries.map(choice=>choice.id===id&&choice.selected?{...choice,outbound:payer,return:payer}:choice) as DeliveryChoice[];
+  if(!deliveries.some(choice=>choice.id===id&&choice.selected))return;
+  r.deliveryChanged=true;this.setData({deliveries,canSubmit:true,submitHint:'可直接提交；页面会先保存并回读当前修改。'});
+ },
+ toggleSplit(event:WechatMiniprogram.TouchEvent){const id=String(event.currentTarget.dataset['delivery']??'');if(id)this.setData({[`splitMap.${id}`]:!this.data.splitMap[id]});},
  changeStartDate(event:WechatMiniprogram.CustomEvent<{value:string}>){this.changeAvailabilityDate('availabilityStart',event.detail.value);},
  changeEndDate(event:WechatMiniprogram.CustomEvent<{value:string}>){this.changeAvailabilityDate('availabilityEnd',event.detail.value);},
  changeAvailabilityDate(field:'availabilityStart'|'availabilityEnd',value:string){

@@ -3,6 +3,7 @@ import { accountApi, ApiProblem } from '../../shared/api/account-api';
 import { publicationApi, type AssetDraft, type AssetDraftInput } from '../../shared/api/rental-api';
 import { createNavigateOnce, navigateBackWithFallback } from '../../shared/interaction/navigate-once';
 import { createOperationScope } from '../../shared/interaction/operation-scope';
+import { designAssets } from '../../shared/design/assets';
 import { draftMoneyInput, publicationDraftView } from '../../shared/presentation/api-publication-draft';
 
 type PublicationUpdateIntent = ReturnType<typeof publicationApi.prepareUpdateIntent>;
@@ -112,7 +113,7 @@ function formMatchesDraft(page: { data: ReturnType<typeof initial> }, draft: Ass
 
 Page({
   ...loginHostMethods,
-  data: initial(),
+  data: { ...initial(), icons: designAssets },
   onLoad(options: Record<string, string | undefined>) {
     const id = options.draft_id ?? (options.mode === 'draft' ? options.id : '') ?? '';
     states.set(this, { id, owner: null, visible: false, epoch: 0, forcedView: options.mode === 'view', scope: createOperationScope(), navigation: createNavigateOnce() });
