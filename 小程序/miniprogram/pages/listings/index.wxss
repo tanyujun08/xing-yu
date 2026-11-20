@@ -21,4 +21,4 @@
 .ls-reason { display: flex; flex-direction: column; gap: var(--xy-space-1); margin-bottom: var(--xy-space-3); padding: var(--xy-space-3) var(--xy-space-4); border-radius: var(--xy-pf-radius); background: var(--xy-color-key-warning-soft); color: var(--xy-color-text-primary); font-size: var(--xy-text-body-small-size); line-height: var(--xy-text-body-line-height); }
 .ls-reason__k { color: var(--xy-color-key-warning); font-weight: var(--xy-text-weight-semibold); }
 .listing-detail-photos { display: flex; gap: var(--xy-space-2); margin-bottom: var(--xy-space-3); overflow-x: auto; }
-.listing-detail-photo { flex: none; width: var(--xy-pf-pic-lg); height: var(--xy-pf-pic-lg); border-radius: var(--xy-radius-md); overflow: hidden; }
+.listing-detail-photos .listing-detail-photo { width: 180rpx; height: 180rpx; flex: 0 0 180rpx; border-radius: var(--xy-radius-media); overflow: hidden; }
