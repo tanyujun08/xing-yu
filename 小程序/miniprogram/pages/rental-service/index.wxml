@@ -1,22 +1,43 @@
 <page-meta root-font-size="system" />
-<view class="service-page">
-<page-header title="{{secondaryNavigationTitle || '出租服务'}}" background="#ffffff" inverse="{{false}}" bindback="onSecondaryNavigationBack" />
-  <view class="service-head"><text wx:if="{{errorText}}">{{errorText}}</text>
-    <view class="service-head-row"><text class="service-heading">我的服务余额</text><view class="service-head-actions"><text class="diamond-balance">粉钻 {{diamondBalance}}</text><view class="record-link"><text>{{showRecords ? '收起记录' : '查看记录'}}</text><button class="touch-overlay" hover-class="none" bindtap="toggleRecords" aria-label="{{showRecords ? '收起记录' : '查看记录'}}" aria-expanded="{{showRecords}}"></button></view></view></view>
-    <view class="service-stats"><view wx:for="{{stats}}" wx:key="label" class="service-stat"><text class="service-stat-value">{{item.value}}</text><text class="service-stat-label">{{item.label}}</text></view></view>
-    <view class="service-explain">电子合同额度来自当前账户。购买、人脸核身和风控报告为演示补充，仅模拟本地权益。</view>
-  </view>
+<view class="pf-page">
+  <page-header title="{{secondaryNavigationTitle || '出租服务'}}" background="#ffffff" inverse="{{false}}" bindback="onSecondaryNavigationBack" />
 
-  <view wx:if="{{showRecords}}" class="record-list">
-    <view wx:for="{{records}}" wx:key="id" class="record-row"><view><text class="record-label">{{item.label}}</text><text class="record-time">{{item.createdText}}</text></view><text class="record-value">{{item.quantityText}} · {{item.priceText}}</text></view>
-    <view wx:if="{{records.length === 0}}" class="record-empty xy-empty-section"><text class="xy-empty-section__title">服务记录暂未接入</text><text class="xy-empty-section__copy">当前仅展示已有电子合同额度。</text></view>
+  <view class="pf-sum">
+    <text class="pf-k">电子合同剩余</text>
+    <view class="pf-n"><text class="pf-n__v">{{stats[0].value || '—'}}</text><text class="pf-n__u">次</text></view>
+    <view class="pf-sum__f"><text>粉钻<text>{{diamondBalance}}</text></text><text class="pf-link" bindtap="toggleRecords" role="button" aria-expanded="{{showRecords}}">{{showRecords ? '收起购买记录' : '购买记录 ›'}}</text></view>
   </view>
+  <text wx:if="{{errorText}}" class="pf-fnote">{{errorText}}</text>
 
-  <view class="service-tabs"><view wx:for="{{tabs}}" wx:key="id" class="service-tab {{currentTab === item.id ? 'is-active' : ''}}" data-tab="{{item.id}}" bindtap="chooseTab" role="button">{{item.label}}</view></view>
-  <view class="service-list">
-    <view wx:for="{{packages}}" wx:key="quantity" class="service-package">
-      <view class="package-head"><view><text class="package-title">{{item.title}}</text><text class="package-copy">{{item.copy}}</text></view><view class="package-price-wrap"><text class="package-price">{{item.priceText}}</text><text class="package-cost">扣除 {{item.costText}}</text></view></view>
-      <view class="package-button" data-kind="{{item.kind}}" data-quantity="{{item.quantity}}" bindtap="buyPackage" role="button" aria-disabled="{{buying || !loggedIn}}"><view class="package-button-shell">{{buying ? '购买中…' : '立即购买'}}</view></view>
+  <view wx:if="{{showRecords}}" class="pf-block">
+    <text class="pf-gt">购买记录</text>
+    <view class="pf-cd">
+      <view wx:for="{{records}}" wx:key="id" class="pf-row"><view style="flex:1;min-width:0"><text style="display:block">{{item.label}}</text><text class="pf-k">{{item.createdText}}</text></view><text style="font-variant-numeric:tabular-nums">{{item.quantityText}} · {{item.priceText}}</text></view>
+      <view wx:if="{{records.length === 0}}" class="pf-empty">暂无购买记录</view>
     </view>
+  </view>
+
+  <view class="pf-block">
+    <text class="pf-gt">电子合同</text>
+    <view class="pf-cd" style="padding:var(--xy-space-4)">
+      <text class="pf-k">承租方签署电子合同时按次扣减，有效期 365 天。</text>
+      <view wx:if="{{packages.length}}" style="display:flex;gap:var(--xy-space-3);margin-top:var(--xy-space-3)">
+        <view wx:for="{{packages}}" wx:key="quantity" class="spec {{selectedQty === item.quantity ? 'is-on' : ''}}" data-quantity="{{item.quantity}}" bindtap="chooseSpec" role="radio" aria-checked="{{selectedQty === item.quantity}}">
+          <text class="spec__q">{{item.quantity}} 次</text><text class="spec__p">{{item.priceText}}</text>
+        </view>
+      </view>
+      <view wx:else class="pf-empty" style="padding:var(--xy-space-4) 0 0">购买暂未开放，当前仅展示已有额度。</view>
+      <view wx:if="{{packages.length}}" class="xy-action-primary" style="margin-top:var(--xy-space-4)" data-kind="contract" data-quantity="{{selectedQty}}" bindtap="buyPackage" role="button" aria-disabled="{{buying || !loggedIn}}">{{buying ? '购买中…' : '立即购买'}}</view>
+    </view>
+  </view>
+
+  <view class="pf-block">
+    <text class="pf-gt">更多服务</text>
+    <view class="pf-cd">
+      <view class="pf-row"><text class="pf-row__k pf-row__k--ink">人脸核身</text><text class="pf-row__v is-muted">即将上线</text></view>
+      <view class="pf-row"><text class="pf-row__k pf-row__k--ink">风控报告</text><text class="pf-row__v is-muted">即将上线</text></view>
+      <view class="pf-row"><text class="pf-row__k pf-row__k--ink">组合包</text><text class="pf-row__v is-muted">即将上线</text></view>
+    </view>
+    <text class="pf-fnote">风控报告不影响出租，用于判断承租人的履约风险。</text>
   </view>
 </view>

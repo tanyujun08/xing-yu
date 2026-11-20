@@ -9,7 +9,7 @@ import { publicationLocalDay } from '../../shared/presentation/api-publication-d
 type ListingView = {
   id: string; assetId: string; draftId: string; name: string; photoRefs: string[]; mediaState: 'real' | 'empty';
   statusText: string; statusCopy: string; filterGroup: string; price: string; deposit: string; deliveryText: string; createdDate: string;
-  canContinue: boolean; canView: boolean; canEdit: boolean;
+  canContinue: boolean; canView: boolean; canEdit: boolean; chip: string; todo: boolean;
 };
 type OwnDetailView = {
   assetId: string; name: string; state: string; reviewStatus: string; reviewReason: string; publishStatus: string;
@@ -21,7 +21,7 @@ type OwnDetailView = {
 const statePresentation: Record<OwnRentalAssetItem['state'], { text: string; copy: string; group: string }> = {
   DRAFT: { text: '草稿', copy: '资料尚未提交，可继续填写后提交', group: '进行中' },
   REVIEWING: { text: '审核中', copy: '资料已提交，等待平台审核结果', group: '进行中' },
-  REJECTED: { text: '已驳回', copy: '请根据审核意见修改资料后重新提交', group: '异常' },
+  REJECTED: { text: '已驳回', copy: '审核未通过，请查看原因，修改后重新提交', group: '异常' },
   ONLINE: { text: '已上架', copy: '其他用户可以查看设备资料', group: '已上架' },
   OFFLINE: { text: '已下架', copy: '当前设备未对其他用户展示', group: '已下架' },
   OCCUPIED: { text: '履约中', copy: '设备存在进行中的订单或占用', group: '进行中' },
@@ -67,6 +67,7 @@ async function toView(item: OwnRentalAssetItem,owner:string): Promise<ListingVie
     deliveryText: item.delivery_methods.map((method) => ({ EXPRESS: '快递', RUNNER: '跑腿', MEET: '面交' } as Record<string, string>)[method] ?? method).join('、') || '未设置',
     createdDate: formatDate(item.updated_at), canContinue: enabled(item, 'CONTINUE_DRAFT'), canView: enabled(item, 'VIEW'),
     canEdit: enabled(item, 'OPEN_EDIT_DRAFT') || enabled(item, 'CREATE_EDIT_DRAFT'),
+    chip: ({ DRAFT: 'n', REVIEWING: 'b', REJECTED: 'o', ONLINE: 'g', OFFLINE: 'n', OCCUPIED: 'g' } as Record<string, string>)[item.state] ?? 'n', todo: item.state === 'DRAFT' || item.state === 'REJECTED',
   };
 }
 
@@ -95,22 +96,22 @@ async function toDetailView(detail: OwnRentalAssetDetail,owner:string): Promise<
 }
 
 Page({
-  data: { icons: designAssets, filters: [{id:'all',label:'全部'},{id:'processing',label:'进行中'},{id:'active',label:'已上架'},{id:'inactive',label:'已下架'},{id:'error',label:'异常'}], filter: '全部', listings: [] as ListingView[], loading: false, editingId: '', errorText: '', ownDetail: null as OwnDetailView | null, detailLoading: false, detailError: '' },
+  data: { icons: designAssets, todoList: [] as ListingView[], doneList: [] as ListingView[], listings: [] as ListingView[], loading: false, editingId: '', errorText: '', ownDetail: null as OwnDetailView | null, detailLoading: false, detailError: '' },
   onSecondaryNavigationBack() { wx.navigateBack({ fail: () => wx.switchTab({ url: '/pages/home/index' }) }); },
-  onShow() { invalidateListings(this); this.setData({ listings: [], loading: false, editingId: '', errorText: '', ownDetail: null, detailLoading: false, detailError: '' }); void this.loadListings(); },
-  onHide() { invalidateListings(this); this.setData({ listings: [], loading: false, editingId: '', errorText: '', ownDetail: null, detailLoading: false, detailError: '' }); },
-  onUnload() { invalidateListings(this); editIntents.delete(this); this.setData({ listings: [], loading: false, ownDetail: null, detailLoading: false }); },
+  onShow() { invalidateListings(this); this.setData({ listings: [], todoList: [], doneList: [], loading: false, editingId: '', errorText: '', ownDetail: null, detailLoading: false, detailError: '' }); void this.loadListings(); },
+  onHide() { invalidateListings(this); this.setData({ listings: [], todoList: [], doneList: [], loading: false, editingId: '', errorText: '', ownDetail: null, detailLoading: false, detailError: '' }); },
+  onUnload() { invalidateListings(this); editIntents.delete(this); this.setData({ listings: [], todoList: [], doneList: [], loading: false, ownDetail: null, detailLoading: false }); },
   async loadListings() {
     if (this.data.loading) return;
     const owner = accountApi.sessionIdentity();
     const epoch = (listEpochs.get(this) ?? 0) + 1;
     listEpochs.set(this, epoch);
-    if (!owner) { this.setData({ listings: [], loading: false, errorText: '请先登录并刷新本人资产。' }); return; }
+    if (!owner) { this.setData({ listings: [], todoList: [], doneList: [], loading: false, errorText: '请先登录并刷新本人资产。' }); return; }
     const current = () => {
       if (listEpochs.get(this) !== epoch) return false;
       if (accountApi.sessionIdentity() === owner) return true;
       invalidateListings(this);
-      this.setData({ listings: [], loading: false, errorText: '登录状态已变化，请刷新本人资产。' });
+      this.setData({ listings: [], todoList: [], doneList: [], loading: false, errorText: '登录状态已变化，请刷新本人资产。' });
       return false;
     };
     this.setData({ loading: true, errorText: '' });
@@ -126,14 +127,14 @@ Page({
       } while (cursor && items.length < 200);
       const listings = await Promise.all(items.map(item=>toView(item,owner)));
       if (!current()) return;
-      this.setData({ listings, loading: false });
+      this.setData({ listings, todoList: listings.filter(v => v.todo), doneList: listings.filter(v => !v.todo), loading: false });
     } catch (error) {
       if (!current()) return;
-      this.setData({ listings: [], loading: false, errorText: error instanceof Error ? error.message : '本人资产读取失败，请重试。' });
+      this.setData({ listings: [], todoList: [], doneList: [], loading: false, errorText: error instanceof Error ? error.message : '本人资产读取失败，请重试。' });
     }
   },
-  chooseFilter(event: WechatMiniprogram.TouchEvent) { this.setData({ filter: String(event.currentTarget.dataset['filter'] ?? '全部') }); },
   retry() { void this.loadListings(); },
+  noop() { /* 拦截点击，避免关闭弹层 */ },
   continueDraft(event: WechatMiniprogram.TouchEvent) { const id = String(event.currentTarget.dataset['id'] ?? ''); if (id) wx.navigateTo({ url: `/pages/publish/index?mode=draft&id=${encodeURIComponent(id)}` }); },
   async viewMaterial(event: WechatMiniprogram.TouchEvent) {
     const id = String(event.currentTarget.dataset['id'] ?? '');
