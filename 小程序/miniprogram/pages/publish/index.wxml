@@ -1,5 +1,5 @@
 <page-meta root-font-size="system" />
-<view class="pf-page pf-page--bar publish-page">
+<view class="pf-page pf-page--bar publish-page {{mode === 'view' ? 'is-view' : ''}}">
   <page-header title="{{navigationTitle}}" bindback="handleNavigationBack" />
 
   <status-view wx:if="{{!loggedIn}}" state="empty" title="登录后查看本人草稿" action-text="去登录" bindaction="openLogin" />
@@ -86,7 +86,7 @@
     <text class="pf-fnote pb-after">{{showDraftNotice && draftNoticeText ? draftNoticeText + '。' : ''}}提交后由平台审核，结果在「我发布的设备」里查看。</text>
   </block>
 
-  <view wx:if="{{draftId && !activeSheet}}" class="xy-bottom-action pf-foot">
+  <view wx:if="{{draftId && !activeSheet}}" class="xy-bottom-action pf-foot {{mode === 'view' && !pendingSubmit ? 'pb-hide' : ''}}">
       <view wx:if="{{(editable && !pendingSubmit) || pendingSave}}" class="xy-action-secondary pf-foot__s {{submitting ? 'is-disabled' : ''}}" aria-label="{{pendingSave ? '重试原保存' : '保存草稿'}}" aria-disabled="{{submitting}}" bindtap="saveDraft" role="button">{{submitting ? '保存中…' : pendingSave ? '重试原保存' : '存草稿'}}</view>
       <button class="xy-action-primary {{submitting || (mode === 'view' && !pendingSubmit) || !canSubmit ? 'is-disabled' : 'is-ready'}}" aria-label="{{pendingSubmit ? '重试原提交' : mode === 'view' ? '查看资料' : submitting ? '提交中' : mode === 'edit' ? '保存并重新审核' : '提交平台审核'}}" aria-disabled="{{submitting || (mode === 'view' && !pendingSubmit)}}" disabled="{{submitting || (mode === 'view' && !pendingSubmit)}}" bindtap="submit" role="button">{{submitting ? '提交中…' : pendingSubmit ? '重试原提交' : mode === 'view' ? '查看资料' : mode === 'edit' ? '保存并重新审核' : '提交审核'}}</button>
   </view>

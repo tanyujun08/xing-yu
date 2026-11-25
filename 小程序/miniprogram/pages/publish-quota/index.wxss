@@ -12,3 +12,5 @@
 .qr__s { display: block; color: var(--xy-color-text-muted); font-size: var(--xy-text-caption-size); line-height: var(--xy-text-caption-line-height); font-variant-numeric: tabular-nums; }
 .qr__q { flex: none; font-size: var(--xy-text-body-size); font-weight: var(--xy-text-weight-semibold); font-variant-numeric: tabular-nums; }
 .qr__q.is-plus { color: var(--xy-color-brand); }
+.qs__fs { margin-left: var(--xy-space-1); }
+.pf-page { padding-top: var(--xy-space-3); }

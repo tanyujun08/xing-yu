@@ -22,3 +22,4 @@
 .svc__note .pf-link { font-size: var(--xy-text-body-small-size); }
 .svc__rec { flex: 1; min-width: 0; }
 .svc__rec-t { display: block; }
+.svc__note-t { margin-right: var(--xy-space-1); }

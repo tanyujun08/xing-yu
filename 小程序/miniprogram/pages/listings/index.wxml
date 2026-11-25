@@ -13,7 +13,7 @@
         <media-state class="ls-pic" state="{{item.mediaState}}" src="{{item.mediaState === 'real' ? item.photoRefs[0] : ''}}" mode="aspectFit" placeholder-src="{{icons.profileRentalCamera}}" empty-label="暂无图片" failure-label="图片暂时无法加载" aria-label="发布设备图片" />
         <view class="ls-info">
           <view class="ls-name"><text class="ls-name__t">{{item.name}}</text><text class="pf-chip pf-chip--{{item.chip}}">{{item.statusText}}</text></view>
-          <text class="ls-price">{{item.priceValue}}<text class="ls-small">{{item.priceUnit}} · 押金 {{item.deposit}}</text></text>
+          <text class="ls-price {{item.priceUnit ? '' : 'is-empty'}}">{{item.priceUnit ? item.priceValue : '租金未填'}}<text class="ls-small">{{item.priceUnit}} · 押金 {{item.deposit}}</text></text>
           <text class="ls-reason-line {{item.chip === 'o' ? 'is-warn' : ''}}">{{item.statusCopy}}</text>
           <view class="ls-act">
             <view wx:if="{{item.canView}}" class="pf-btn pf-btn--o ls-btn" data-id="{{item.assetId}}" bindtap="viewMaterial" role="button" aria-label="查看 {{item.name}} 资料">查看资料</view>

@@ -25,7 +25,7 @@
       <view class="pf-row"><text class="pf-row__k pf-row__k--ink">风控报告</text><text class="pf-row__v is-muted">敬请期待</text></view>
       <view class="pf-row"><text class="pf-row__k pf-row__k--ink">组合包</text><text class="pf-row__v is-muted">敬请期待</text></view>
     </view>
-    <view class="svc__note"><text>可用粉钻 {{diamondBalance}} · </text><text class="pf-link" bindtap="toggleRecords" role="button" aria-expanded="{{showRecords}}">{{showRecords ? '收起购买记录' : '购买记录 ›'}}</text></view>
+    <view class="svc__note"><text class="svc__note-t">可用粉钻 {{diamondBalance}} ·</text><text class="pf-link" bindtap="toggleRecords" role="button" aria-expanded="{{showRecords}}">{{showRecords ? '收起购买记录' : '购买记录 ›'}}</text></view>
   </view>
 
   <view wx:if="{{showRecords}}" class="pf-block">

@@ -65,7 +65,7 @@ async function toView(item: OwnRentalAssetItem,owner:string): Promise<ListingVie
     statusText: presentation.text, statusCopy: presentation.copy, filterGroup: presentation.group,
     price: `${money(item.unit_price_fen)}${item.rental_unit === 'HOUR' ? '/小时' : '/天'}`,
     priceValue: money(item.unit_price_fen),
-    priceUnit: item.rental_unit === 'HOUR' ? '/小时' : '/天', deposit: money(item.deposit_fen),
+    priceUnit: item.unit_price_fen == null ? '' : item.rental_unit === 'HOUR' ? '/小时' : '/天', deposit: money(item.deposit_fen),
     deliveryText: item.delivery_methods.map((method) => ({ EXPRESS: '快递', RUNNER: '跑腿', MEET: '面交' } as Record<string, string>)[method] ?? method).join('、') || '未设置',
     createdDate: formatDate(item.updated_at), canContinue: enabled(item, 'CONTINUE_DRAFT'), canView: enabled(item, 'VIEW'),
     canEdit: enabled(item, 'OPEN_EDIT_DRAFT') || enabled(item, 'CREATE_EDIT_DRAFT'),

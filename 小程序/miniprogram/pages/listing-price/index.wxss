@@ -14,3 +14,4 @@
 .lp-v { font-weight: var(--xy-text-weight-medium); }
 .lp-error { padding: var(--xy-space-3) var(--xy-space-4); border-radius: var(--xy-radius-md); background: var(--xy-color-key-warning-soft); color: var(--xy-color-key-warning); font-size: var(--xy-text-body-small-size); line-height: var(--xy-text-body-line-height); }
 .is-disabled { opacity: .5; }
+.lp-pad { padding-right: calc(var(--xy-size-icon-base) + var(--xy-space-3)); }
