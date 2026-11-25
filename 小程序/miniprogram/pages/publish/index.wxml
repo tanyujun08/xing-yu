@@ -101,7 +101,7 @@
         <view class="pf-row pf-tap" data-sheet="pricing" aria-label="设置{{priceUnitLabel}}" bindtap="openSheet" role="button"><text class="pf-row__k pf-row__k--ink">{{priceUnitLabel}}</text><text class="pf-row__v {{expectedRent ? '' : 'is-warn'}}">{{expectedRent ? '¥' + expectedRent : '待填写'}}</text><image class="pf-arrow" src="{{icons.arrowRight}}" mode="aspectFit" /></view>
         <view class="pf-row pf-tap" data-sheet="pricing" aria-label="设置期望押金" bindtap="openSheet" role="button"><text class="pf-row__k pf-row__k--ink">期望押金</text><text class="pf-row__v {{expectedDeposit ? '' : 'is-warn'}}">{{expectedDeposit ? '¥' + expectedDeposit : '待填写'}}</text><image class="pf-arrow" src="{{icons.arrowRight}}" mode="aspectFit" /></view>
         <view class="pf-row pf-tap" data-sheet="pricing" aria-label="设置最低租期" bindtap="openSheet" role="button"><text class="pf-row__k pf-row__k--ink">最低租期</text><text class="pf-row__v {{minimumUnits ? '' : 'is-warn'}}">{{minimumUnits ? minimumUnits + ' 天' : '待填写'}}</text><image class="pf-arrow" src="{{icons.arrowRight}}" mode="aspectFit" /></view>
-        <view class="pf-row pf-tap" data-sheet="pricing" data-calendar="true" aria-label="设置可租档期" bindtap="openSheet" role="button"><text class="pf-row__k pf-row__k--ink">可租档期</text><text class="pf-row__v {{availabilityStart && availabilityEnd ? '' : 'is-warn'}}">{{availabilityStart && availabilityEnd ? availabilityStart + ' ～ ' + availabilityEnd : '待填写'}}</text><image class="pf-arrow" src="{{icons.arrowRight}}" mode="aspectFit" /></view>
+        <view class="pf-row pf-tap" data-sheet="pricing" aria-label="设置可租档期" bindtap="openSheet" role="button"><text class="pf-row__k pf-row__k--ink">可租档期</text><text class="pf-row__v {{availabilityStart && availabilityEnd ? '' : 'is-warn'}}">{{availabilityStart && availabilityEnd ? availabilityStart + ' ～ ' + availabilityEnd : '待填写'}}</text><image class="pf-arrow" src="{{icons.arrowRight}}" mode="aspectFit" /></view>
       </view>
       <text class="pf-fnote">{{guidanceText}}</text>
     </view>
@@ -132,37 +132,7 @@
   </view>
 
   <view wx:if="{{activeSheet}}" class="sheet-mask" bindtap="closeSheet" role="button" aria-label="关闭设置面板">
-    <view class="publish-sheet {{activeSheet === 'pricing' && pricingCalendarOpen ? 'publish-sheet-calendar' : ''}}" catchtap="stopSheetTap" role="dialog" aria-label="设备设置面板">
-      <block wx:if="{{activeSheet === 'pricing' && pricingCalendarOpen}}">
-        <view class="pb-sheet-head"><text class="pf-gt">选择可租日期</text><view class="pb-close" bindtap="closeSheet" role="button" aria-label="关闭">×</view></view>
-        <view class="calendar-weekdays" aria-label="星期">
-          <text wx:for="{{weekdays}}" wx:for-item="weekday" wx:for-index="weekdayIndex" wx:key="id" class="calendar-weekday {{weekdayIndex === 0 || weekdayIndex === 6 ? 'is-weekend' : ''}}">{{weekday.label}}</text>
-        </view>
-        <scroll-view class="calendar-month-scroll" scroll-y="true">
-          <view wx:for="{{sheetMonths}}" wx:for-item="month" wx:key="key" class="calendar-month">
-            <text class="calendar-month-title">{{month.title}}</text>
-            <view class="calendar-grid">
-              <view wx:for="{{month.days}}" wx:for-item="day" wx:key="key" class="calendar-day {{day.isPlaceholder ? 'is-placeholder' : ''}} {{day.disabled ? 'is-disabled' : ''}} {{day.inRange ? 'is-in-range' : ''}} {{day.isStart ? 'is-start' : ''}} {{day.isEnd ? 'is-end' : ''}} {{day.isToday ? 'is-today' : ''}} xy-tap" data-date="{{day.date}}" bindtap="chooseCalendarDate" role="button" aria-label="{{day.ariaLabel}}" aria-disabled="{{day.disabled}}">
-                <view class="calendar-day-inner"><text>{{day.dayLabel}}</text></view>
-                <text wx:if="{{day.isToday}}" class="calendar-day-caption">今天</text>
-                <text wx:elif="{{day.isStart}}" class="calendar-day-caption">开始</text>
-                <text wx:elif="{{day.isEnd}}" class="calendar-day-caption">结束</text>
-              </view>
-            </view>
-          </view>
-        </scroll-view>
-        <view class="calendar-sheet-summary">
-          <view class="calendar-summary-item"><text class="calendar-summary-label">开始日期</text><text class="calendar-summary-value {{sheetStartDate ? 'is-selected' : ''}}">{{sheetStartDate ? sheetStartDateText : '未选择'}}</text></view>
-          <view class="calendar-summary-days"><text>共</text><text class="calendar-summary-days-value">{{sheetDays}}</text><text>天</text></view>
-          <view class="calendar-summary-item calendar-summary-item-end"><text class="calendar-summary-label">结束日期</text><text class="calendar-summary-value {{sheetEndDate ? 'is-selected' : ''}}">{{sheetEndDate ? sheetEndDateText : '未选择'}}</text></view>
-        </view>
-        <view class="calendar-sheet-actions pf-foot">
-          <view class="xy-action-secondary {{mode === 'view' ? 'is-disabled' : ''}}" bindtap="resetPricingDates" role="button" aria-disabled="{{!editable || submitting || pendingSave || pendingSubmit}}">重置</view>
-          <view class="xy-action-primary {{sheetStartDate && sheetEndDate && mode !== 'view' ? '' : 'is-disabled'}}" bindtap="applyPricingDates" role="button" aria-disabled="{{!sheetStartDate || !sheetEndDate || mode === 'view'}}">确定</view>
-        </view>
-      </block>
-
-      <block wx:else>
+    <view class="publish-sheet" catchtap="stopSheetTap" role="dialog" aria-label="设备设置面板">
         <view class="pb-sheet-head"><text class="pf-gt">{{activeSheet === 'product' ? '选择标准商品' : activeSheet === 'pricing' ? '租金与押金' : activeSheet === 'details' ? '说明与瑕疵' : activeSheet === 'delivery' ? '交付方式' : activeSheet === 'accessories' ? '随附配件' : '购买凭证 / 发票'}}</text><view class="pb-close" bindtap="closeSheet" role="button" aria-label="关闭">×</view></view>
         <scroll-view class="sheet-scroll" scroll-y="true">
           <block wx:if="{{activeSheet === 'pricing'}}">
@@ -170,7 +140,8 @@
             <view class="pb-field"><text class="pb-label">期望押金（元）</text><view class="pb-box"><text>¥</text><input type="digit" maxlength="22" data-field="expectedDeposit" value="{{expectedDeposit}}" placeholder="请输入押金" disabled="{{!editable || submitting || pendingSave || pendingSubmit}}" bindinput="input" /></view></view>
             <view class="pb-field"><text class="pb-label">最低租期（天）</text><view class="pb-box"><input type="number" data-field="minimumUnits" value="{{minimumUnits}}" placeholder="请输入正整数天" disabled="{{!editable || submitting || pendingSave || pendingSubmit}}" bindinput="input" /></view></view>
             <view class="pb-field"><text class="pb-label">参考价值（元）</text><view class="pb-box"><text>¥</text><input type="digit" data-field="referenceValue" value="{{referenceValue}}" placeholder="请输入设备参考价值" disabled="{{!editable || submitting || pendingSave || pendingSubmit}}" bindinput="input" /></view></view>
-            <view class="pb-field"><text class="pb-label">可租档期</text><view class="pb-box pb-box--tap" data-sheet="pricing" data-calendar="true" bindtap="openSheet" role="button"><text class="{{availabilityStart && availabilityEnd ? '' : 'is-muted'}}">{{availabilityStart && availabilityEnd ? availabilityStart + ' ～ ' + availabilityEnd : '请选择开始和结束日期'}}</text></view></view>
+            <view class="pb-field"><text class="pb-label">可租开始日</text><picker mode="date" value="{{availabilityStart}}" disabled="{{!editable || submitting || pendingSave || pendingSubmit}}" bindchange="changeStartDate"><view class="pb-box pb-box--tap"><text class="{{availabilityStart ? '' : 'is-muted'}}">{{availabilityStart || '请选择开始日'}}</text></view></picker></view>
+            <view class="pb-field"><text class="pb-label">可租截止日（含）</text><picker mode="date" value="{{availabilityEnd}}" disabled="{{!editable || submitting || pendingSave || pendingSubmit}}" bindchange="changeEndDate"><view class="pb-box pb-box--tap"><text class="{{availabilityEnd ? '' : 'is-muted'}}">{{availabilityEnd || '请选择截止日'}}</text></view></picker></view>
             <text class="pf-fnote">{{guidanceText}}</text>
           </block>
 
@@ -233,7 +204,6 @@
           </block>
         </scroll-view>
         <view class="xy-bottom-action pf-foot sheet-actions"><view class="xy-action-primary" aria-label="确定设置" bindtap="confirmSheet" role="button">确定</view></view>
-      </block>
     </view>
   </view>
 </view>
