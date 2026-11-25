@@ -1,48 +1,69 @@
 <page-meta root-font-size="system" />
-<view class="listings-page">
-<page-header title="{{secondaryNavigationTitle || '我发布的设备'}}" background="#ffffff" inverse="{{false}}" bindback="onSecondaryNavigationBack" />
-  <view class="listing-filter-scroll">
-    <view class="listing-filters"><view wx:for="{{filters}}" wx:key="id" class="listing-filter {{filter === item.label ? 'is-active' : ''}}" data-filter="{{item.label}}" bindtap="chooseFilter" role="tab">{{item.label}}</view></view>
+<view class="pf-page">
+  <page-header title="{{secondaryNavigationTitle || '我发布的设备'}}" background="#ffffff" inverse="{{false}}" bindback="onSecondaryNavigationBack" />
+
+  <view wx:if="{{errorText}}" class="pf-cd">
+    <view class="pf-row"><text class="pf-row__k pf-row__k--ink" style="flex:1">{{errorText}}</text><view class="pf-btn pf-btn--s" bindtap="retry" role="button">重新加载</view></view>
   </view>
-  <view class="listing-list">
-    <view wx:if="{{errorText}}" class="listing-empty xy-empty-page xy-empty-page--surface"><text class="xy-empty-page__title">读取失败</text><text class="xy-empty-page__copy">{{errorText}}</text><view class="listing-button is-primary" bindtap="retry" role="button"><view class="listing-button-shell">重新加载</view></view></view>
-    <view wx:for="{{listings}}" wx:key="id" wx:if="{{filter === '全部' || filter === item.filterGroup}}" class="listing-card xy-card">
-      <view class="listing-head"><text>{{item.statusText}}</text><text class="listing-time">{{item.createdDate}}</text></view>
-      <view class="listing-main"><media-state class="listing-thumb" state="{{item.mediaState}}" src="{{item.mediaState === 'real' ? item.photoRefs[0] : ''}}" mode="aspectFill" placeholder-src="{{icons.profileRentalCamera}}" empty-label="暂无设备图片" failure-label="设备图片暂时无法加载" aria-label="发布设备图片" /><view class="listing-copy"><text class="listing-name">{{item.name}}</text><view class="listing-prices"><view class="listing-price"><text class="listing-label">日租：</text><text class="listing-value">{{item.price}}</text></view><view class="listing-price"><text class="listing-label">押金：</text><text class="listing-value">{{item.deposit}}</text></view></view><view class="listing-delivery"><text class="listing-label">支持：</text><text>{{item.deliveryText}}</text></view></view></view>
-      <view class="listing-footer">
-      <text class="listing-status-copy">{{item.statusCopy}}</text>
-      <view class="listing-actions">
-        <view wx:if="{{item.canContinue}}" class="listing-button is-primary" data-id="{{item.draftId}}" bindtap="continueDraft" role="button"><view class="listing-button-shell">继续填写</view></view>
-        <view wx:if="{{item.canView}}" class="listing-button" data-id="{{item.assetId}}" bindtap="viewMaterial" role="button"><view class="listing-button-shell">查看资料</view></view>
-        <view wx:if="{{item.canEdit}}" class="listing-button is-primary" data-asset="{{item.assetId}}" data-draft="{{item.draftId}}" bindtap="editListing" role="button"><view class="listing-button-shell">编辑资料</view></view>
-      </view>
+
+  <view wx:if="{{todoList.length}}" class="pf-block">
+    <view class="pf-gt-row"><text class="pf-gt">需要你处理</text><text class="pf-gt-row__aside">{{todoList.length}} 台</text></view>
+    <view class="ls-list">
+      <view wx:for="{{todoList}}" wx:key="id" class="ls-card">
+        <media-state class="ls-pic" state="{{item.mediaState}}" src="{{item.mediaState === 'real' ? item.photoRefs[0] : ''}}" mode="aspectFit" placeholder-src="{{icons.profileRentalCamera}}" empty-label="暂无图片" failure-label="图片暂时无法加载" aria-label="发布设备图片" />
+        <view class="ls-info">
+          <view class="ls-name"><text class="ls-name__t">{{item.name}}</text><text class="pf-chip pf-chip--{{item.chip}}">{{item.statusText}}</text></view>
+          <text class="ls-price {{item.priceUnit ? '' : 'is-empty'}}">{{item.priceUnit ? item.priceValue : '租金未填'}}<text class="ls-small">{{item.priceUnit}} · 押金 {{item.deposit}}</text></text>
+          <text class="ls-reason-line {{item.chip === 'o' ? 'is-warn' : ''}}">{{item.statusCopy}}</text>
+          <view class="ls-act">
+            <view wx:if="{{item.canView}}" class="pf-btn pf-btn--o ls-btn" data-id="{{item.assetId}}" bindtap="viewMaterial" role="button" aria-label="查看 {{item.name}} 资料">查看资料</view>
+            <view wx:if="{{item.canContinue}}" class="pf-btn pf-btn--p ls-btn" data-id="{{item.draftId}}" bindtap="continueDraft" role="button" aria-label="继续填写 {{item.name}}">继续填写</view>
+            <view wx:if="{{item.canEdit}}" class="pf-btn pf-btn--p ls-btn" data-asset="{{item.assetId}}" data-draft="{{item.draftId}}" bindtap="editListing" role="button" aria-label="修改 {{item.name}}">修改</view>
+          </view>
+        </view>
       </view>
     </view>
-    <view wx:if="{{!loading && !errorText && listings.length === 0}}" class="listing-empty xy-empty-page xy-empty-page--surface"><image class="xy-empty-page__illustration" src="{{icons.emptyDevices}}" mode="aspectFit" aria-hidden="true" /><text class="xy-empty-page__title">还没有发布设备</text><text class="xy-empty-page__copy">发布或保存草稿后，设备会显示在这里。</text></view>
-    <text wx:if="{{detailError}}" class="listing-detail-error">{{detailError}}</text>
   </view>
-  <view wx:if="{{detailLoading || ownDetail}}" class="listing-detail-mask">
-    <scroll-view scroll-y class="listing-detail-panel">
-      <view class="listing-detail-head"><text>本人发布资料</text><view class="listing-button" bindtap="closeMaterial" role="button"><view class="listing-button-shell">关闭</view></view></view>
-      <text wx:if="{{detailLoading}}">正在读取本人资产版本…</text>
-      <view wx:if="{{ownDetail}}" class="listing-detail-body">
-        <text class="listing-detail-name">{{ownDetail.name}}</text>
-        <text>业务状态：{{ownDetail.state}} · 审核：{{ownDetail.reviewStatus}} · {{ownDetail.publishStatus}}</text>
-        <text>最新提交版本：{{ownDetail.latestRevisionId}}</text>
-        <text wx:if="{{ownDetail.reviewReason}}">审核意见：{{ownDetail.reviewReason}}</text>
-        <text>日租金：{{ownDetail.rent}} · 押金：{{ownDetail.deposit}}</text>
-        <text>最低租期：{{ownDetail.minimum}} · 参考价值：{{ownDetail.referenceValue}}</text>
-        <text>可租日期：{{ownDetail.availableFrom}} 至 {{ownDetail.availableUntil}}（含）</text>
-        <text>成色：{{ownDetail.condition}}</text>
-        <text>瑕疵：{{ownDetail.defectDescription}}</text>
-        <text>配件：{{ownDetail.accessoriesText}}</text>
-        <text>说明：{{ownDetail.description}}</text>
-        <text>交付方式：{{ownDetail.deliveryMethods}}</text>
-        <text wx:if="{{ownDetail.hasDifferentCurrent}}">当前线上版本：{{ownDetail.currentRevisionId}} · 租金 {{ownDetail.currentRent}}；上方为最新待审/驳回版本。</text>
-        <view wx:if="{{ownDetail.photos.length}}" class="listing-detail-photos"><media-state wx:for="{{ownDetail.photos}}" wx:key="id" class="listing-detail-photo" state="real" src="{{item.url}}" mode="aspectFill" failure-label="设备图片暂时无法加载" retry-label="重试" aria-label="本人设备实拍图" /></view>
-        <view wx:if="{{ownDetail.blockers.length}}" class="listing-detail-blockers"><text>未上架原因：</text><text wx:for="{{ownDetail.blockers}}" wx:key="id">{{item.code}}</text></view>
-        <text class="listing-detail-note">本人可查看不等于对外上架；本页面不提供下单操作。</text>
+
+  <view wx:if="{{doneList.length}}" class="pf-block">
+    <view class="pf-gt-row"><text class="pf-gt">已提交</text><text class="pf-gt-row__aside">{{doneList.length}} 台</text></view>
+    <view class="pf-cd">
+      <view wx:for="{{doneList}}" wx:key="id" class="pf-row pf-tap ls-row" data-id="{{item.assetId}}" bindtap="viewMaterial" role="button">
+        <media-state class="ls-pic ls-pic--s" state="{{item.mediaState}}" src="{{item.mediaState === 'real' ? item.photoRefs[0] : ''}}" mode="aspectFit" placeholder-src="{{icons.profileRentalCamera}}" empty-label="暂无图片" failure-label="图片暂时无法加载" aria-label="发布设备图片" />
+        <view class="ls-info"><text class="ls-name__t ls-name__t--r">{{item.name}}</text><text class="ls-sub">{{item.price}} · 押金 {{item.deposit}}</text></view>
+        <text class="ls-state ls-state--{{item.chip}}">{{item.statusText}}</text><image class="pf-arrow" src="{{icons.arrowRight}}" mode="aspectFit" />
       </view>
+    </view>
+  </view>
+
+  <view wx:if="{{!loading && !errorText && listings.length === 0}}" class="pf-cd"><view class="pf-empty">还没有发布设备。发布或保存草稿后，设备会显示在这里。</view></view>
+  <text wx:if="{{detailError}}" class="pf-fnote">{{detailError}}</text>
+
+  <view wx:if="{{detailLoading || ownDetail}}" class="ls-mask" bindtap="closeMaterial" role="button" aria-label="关闭">
+    <scroll-view scroll-y class="ls-sheet" catchtap="noop" role="dialog">
+      <view class="ls-sheet__head"><text class="pf-gt">本人发布资料</text><view class="pf-btn pf-btn--d" bindtap="closeMaterial" role="button">关闭</view></view>
+      <text wx:if="{{detailLoading}}" class="pf-fnote">正在读取本人资产版本…</text>
+      <block wx:if="{{ownDetail}}">
+        <view wx:if="{{ownDetail.reviewReason}}" class="ls-reason"><text class="ls-reason__k">审核意见</text><text>{{ownDetail.reviewReason}}</text></view>
+        <view wx:if="{{ownDetail.photos.length}}" class="listing-detail-photos"><media-state wx:for="{{ownDetail.photos}}" wx:key="id" class="listing-detail-photo" state="real" src="{{item.url}}" mode="aspectFill" failure-label="设备图片暂时无法加载" retry-label="重试" aria-label="本人设备实拍图" /></view>
+        <view class="pf-cd ls-sheet__card">
+          <view class="pf-row"><text class="pf-row__k">设备</text><text class="pf-row__v">{{ownDetail.name}}</text></view>
+          <view class="pf-row"><text class="pf-row__k">状态</text><text class="pf-row__v">{{ownDetail.state}} · {{ownDetail.reviewStatus}} · {{ownDetail.publishStatus}}</text></view>
+          <view class="pf-row"><text class="pf-row__k">租金</text><text class="pf-row__v">{{ownDetail.rent}}</text></view>
+          <view class="pf-row"><text class="pf-row__k">押金</text><text class="pf-row__v">{{ownDetail.deposit}}</text></view>
+          <view class="pf-row"><text class="pf-row__k">最低租期</text><text class="pf-row__v">{{ownDetail.minimum}}</text></view>
+          <view class="pf-row"><text class="pf-row__k">参考价值</text><text class="pf-row__v">{{ownDetail.referenceValue}}</text></view>
+          <view class="pf-row"><text class="pf-row__k">可租日期</text><text class="pf-row__v">{{ownDetail.availableFrom}} 至 {{ownDetail.availableUntil}}</text></view>
+          <view class="pf-row"><text class="pf-row__k">成色</text><text class="pf-row__v">{{ownDetail.condition}}</text></view>
+          <view class="pf-row"><text class="pf-row__k">瑕疵</text><text class="pf-row__v">{{ownDetail.defectDescription}}</text></view>
+          <view class="pf-row"><text class="pf-row__k">配件</text><text class="pf-row__v">{{ownDetail.accessoriesText}}</text></view>
+          <view class="pf-row"><text class="pf-row__k">交付方式</text><text class="pf-row__v">{{ownDetail.deliveryMethods}}</text></view>
+          <view class="pf-row"><text class="pf-row__k">说明</text><text class="pf-row__v">{{ownDetail.description}}</text></view>
+        </view>
+        <text wx:if="{{ownDetail.hasDifferentCurrent}}" class="pf-fnote">当前线上版本租金 {{ownDetail.currentRent}}；上方为最新待审或驳回版本。</text>
+        <view wx:if="{{ownDetail.blockers.length}}" class="ls-reason"><text class="ls-reason__k">未上架原因</text><text wx:for="{{ownDetail.blockers}}" wx:key="id">{{item.code}}</text></view>
+        <text class="pf-fnote">本人可查看不等于对外上架，此处不提供下单操作。</text>
+      </block>
     </scroll-view>
   </view>
 </view>

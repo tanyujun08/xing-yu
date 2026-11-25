@@ -537,7 +537,7 @@ test('team page structure remains while current controller has no Mock, cached p
  const ts=readFileSync(new URL('../miniprogram/pages/publish/index.ts',import.meta.url),'utf8');
  const wxml=readFileSync(new URL('../miniprogram/pages/publish/index.wxml',import.meta.url),'utf8');
  for(const token of ['mockApi','shared/fixture','persistDraft','completeGrowthTask','chooseAndSaveMedia','setStorageSync'])expect(ts).not.toContain(token);
- for(const cls of ['publish-page','media-card','core-card','pricing-card','disclosure-card','review-card','publish-bottom','publish-sheet'])expect(wxml).toContain(cls);
+ for(const cls of ['publish-page','pf-cd','pf-foot','publish-sheet'])expect(wxml).toContain(cls);
  expect(wxml).toContain('bindtap="saveDraft"');expect(wxml).toContain('identityLocked');expect(wxml).toContain('bindaction="handleErrorAction"');expect(wxml).toContain("hasDraftTarget ? '重新读取草稿'");expect(wxml).toContain('bindtap="createDraft"');
 });
 

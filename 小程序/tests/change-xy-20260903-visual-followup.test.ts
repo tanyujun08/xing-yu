@@ -247,9 +247,8 @@ describe('XY-20260903-001 revision 8 visual relationship contracts', () => {
     expect(read('miniprogram/pages/store-detail/index.ts')).toContain('goBack');
 
     expect(styleValue(pageStyle('device-orders'), '.tabs', 'border-bottom')).toBe('');
-    expect(styleValue(pageStyle('rental-service'), '.service-tabs', 'border-bottom')).toBe('0');
-    expect(styleValue(pageStyle('rental-service'), '.service-tabs', 'margin-top')).toBe('16px');
-    expect(pageStyle('rental-service')).toMatch(/\.service-stat:not\(:last-child\)::after \{[^}]*top: var\(--xy-inset-card\);[^}]*bottom: var\(--xy-inset-card\)/);
+    // 出租服务第 5 批改版：不再使用切换 tab 与三格统计，改为电子合同规格格子
+    expect(pageStyle('rental-service')).not.toContain('.service-tabs');
   });
 
   test('keeps white-list dividers aligned and removes duplicate store boundaries', () => {

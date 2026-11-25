@@ -2,8 +2,17 @@
 @import "./shared/design/page-action-states.wxss";
 @import "./shared/design/order-flow-h.wxss";
 @import "./shared/design/order-flow-a.wxss";
+@import "./shared/design/publish-flow.wxss";
 
 page {
+  /* 发布与出租（第 5 批） */
+  --xy-pf-row: 56px;
+  --xy-pf-field: 48px;
+  --xy-pf-btn: 32px;
+  --xy-pf-pic: 56px;
+  --xy-pf-pic-lg: 72px;
+  --xy-pf-title: calc(10px + .5rem);
+  --xy-pf-radius: 12px;
   /* 订单流程方向 A：通栏纯色状态带、单张抬升白卡、灰底裸列表 */
   --xy-band-bg-green: #eaf4f0;
   --xy-band-bg-orange: #fcf0e6;

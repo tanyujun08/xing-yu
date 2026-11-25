@@ -10,20 +10,16 @@ describe('XY-20260903-001 revision 14 listing-price Figma contract', () => {
     const view = read('miniprogram/pages/listing-price/index.wxml');
     const style = read('miniprogram/pages/listing-price/index.wxss');
 
-    expect(style).toMatch(/\.listing-summary-card \{ min-height: 68px;/);
-    expect(style).toMatch(/\.price-reference-card \{ min-height: 102px;/);
-    expect(style).toMatch(/\.price-settings-card \{ min-height: 380px;/);
-    expect(style).toMatch(/\.input-wrap \{[^}]*height: var\(--xy-button-height-standard\);[^}]*justify-content: flex-start/su);
-    expect(style).toMatch(/\.date-control \{[^}]*height: var\(--xy-fixed-bottom-height\)/su);
-    expect(style).toMatch(/\.delivery-pill \{[^}]*height: var\(--xy-button-height-small\)/su);
-    expect(style).toMatch(/\.edit-button,[\s\S]*?\.confirm-button \{[^}]*height: var\(--xy-control-height-standard\)/u);
-    expect(view).toContain('<text class="section-title">价格设置</text>');
+    // 第 5 批改版：摘要卡 + 白色分组行；行高 56、输入占满整行、底栏次左主右
+    expect(view).toContain('class="lp-pd"');
+    expect(view).toContain('<text class="pf-ch__t">出租条件</text>');
     expect(view).toContain("{{editable ? '待提交' : '只读'}}");
-    expect(view).toContain('<text class="field-label">出租时间</text>');
-    expect(view).toContain('<text class="date-label">开始时间</text>');
-    expect(view).toContain('<text class="date-label">结束时间</text>');
-    expect(view).toContain('wx:for="{{deliveryItems}}"');
+    expect(view).toContain('可租开始');
+    expect(view).toContain('可租截止');
+    expect(view).toContain('deliveryItems');
     expect(view).toContain("{{submitting ? '处理中…' : primaryActionText}}");
+    expect(style).toMatch(/\.lp-input \{[^}]*height: var\(--xy-pf-row\)/u);
+    expect(view).toContain('pf-foot');
   });
 
   test('keeps live values and handlers while following the Figma leading value axis', () => {
@@ -37,11 +33,8 @@ describe('XY-20260903-001 revision 14 listing-price Figma contract', () => {
     expect(view).toMatch(/<input[^>]*value="\{\{deposit\}\}"[^>]*bindinput="input"/u);
     expect(view).toContain('bindchange="changeStartDate"');
     expect(view).toContain('bindchange="changeEndDate"');
-    expect(view).toContain('<text class="price-unit xy-price__unit">{{priceUnitSuffix}}</text></view>');
-    expect(style).not.toContain('min-width: 156px');
-    expect(style).toMatch(/\.price-input-cell \{[^}]*min-width: 1ch/su);
-    expect(style).toMatch(/\.price-input-cell input \{[^}]*text-align: left/su);
-    expect(style).toMatch(/\.price-unit \{[^}]*margin-left: auto/su);
+    expect(view).toContain('{{priceUnitSuffix}}');
+    expect(style).toMatch(/\.lp-input \{[^}]*text-align: right/su);
     expect(script).toContain('publicationApi.prepareUpdateIntent');
     expect(script).toContain('publicationApi.updateDraft');
     expect(script).toContain('publicationApi.submitDraft');
