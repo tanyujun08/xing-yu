@@ -23,15 +23,15 @@
     <text wx:if="{{busy}}" class="pf-fnote ap-center">正在处理…</text>
 
     <view class="ap-actions">
-      <button wx:if="{{!loggedIn}}" class="xy-action-primary" disabled="{{busy}}" aria-disabled="{{busy}}" bindtap="login" role="button" aria-label="微信登录并查看确认请求">微信登录并查看</button>
+      <view wx:if="{{!loggedIn}}" class="xy-action-primary" aria-disabled="{{busy}}" bindtap="login" role="button" aria-label="微信登录并查看确认请求">微信登录并查看</view>
       <block wx:elif="{{status === 'PENDING'}}">
-        <button wx:if="{{uncertain}}" class="xy-action-primary" disabled="{{busy}}" aria-disabled="{{busy}}" bindtap="retryDecision" role="button" aria-label="重试原确认请求">重试原请求</button>
+        <view wx:if="{{uncertain}}" class="xy-action-primary" aria-disabled="{{busy}}" bindtap="retryDecision" role="button" aria-label="重试原确认请求">重试原请求</view>
         <block wx:else>
-          <button class="xy-action-primary" disabled="{{busy}}" aria-disabled="{{busy}}" bindtap="approve" role="button" aria-label="确认{{purpose === 'BIND' ? '绑定' : '登录'}}">确认{{purpose === 'BIND' ? '绑定' : '登录'}}</button>
-          <button class="xy-action-secondary" disabled="{{busy}}" aria-disabled="{{busy}}" bindtap="reject" role="button" aria-label="拒绝本次请求">拒绝</button>
+          <view class="xy-action-primary" aria-disabled="{{busy}}" bindtap="approve" role="button" aria-label="确认{{purpose === 'BIND' ? '绑定' : '登录'}}">确认{{purpose === 'BIND' ? '绑定' : '登录'}}</view>
+          <view class="xy-action-secondary" aria-disabled="{{busy}}" bindtap="reject" role="button" aria-label="拒绝本次请求">拒绝</view>
         </block>
       </block>
-      <button wx:if="{{loggedIn && error && !uncertain}}" class="xy-action-secondary" disabled="{{busy}}" aria-disabled="{{busy}}" bindtap="inspect" role="button" aria-label="重新查询请求状态">重新查询</button>
+      <view wx:if="{{loggedIn && error && !uncertain}}" class="xy-action-secondary" aria-disabled="{{busy}}" bindtap="inspect" role="button" aria-label="重新查询请求状态">重新查询</view>
     </view>
   </view>
 </page-shell>
