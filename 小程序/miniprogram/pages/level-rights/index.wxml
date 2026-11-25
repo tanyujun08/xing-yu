@@ -1,73 +1,68 @@
 <page-meta root-font-size="system" />
-<view class="level-page member-theme tier-{{tierKey}}">
-  <view class="member-page-light" aria-hidden="true"></view>
+<view class="level-page member-theme levels-page tier-{{tierKey || 'gold'}}">
+  <view class="page-light" aria-hidden="true"><view class="page-light__a"></view><view class="page-light__b"></view></view>
   <page-header title="{{secondaryNavigationTitle || '等级与权益'}}" background="{{headerScrolled ? 'var(--xy-color-page, #F5F5F7)' : 'transparent'}}" bindback="onSecondaryNavigationBack" />
-  <view class="member-layout">
+  <view class="levels-body">
     <text wx:if="{{errorText}}" class="member-notice" role="status">{{errorText}}</text>
-    <view class="level-hero">
-      <view class="level-hero-copy">
-        <text wx:if="{{tierKey}}" class="level-current">✦ 当前等级</text>
-        <text class="level-hero-title member-tier-name">{{level}}</text>
-        <view class="level-balance"><text class="member-points-number">{{starPoints}}</text><text class="member-unit">星光</text></view>
+    <view class="levels-hero">
+      <view class="levels-hero-copy">
+        <view wx:if="{{tierKey}}" class="levels-current"><view class="levels-current__star" aria-hidden="true"></view>当前等级</view>
+        <text class="levels-name">{{level}}</text>
+        <view class="levels-balance"><text class="levels-balance__n">{{starPoints}}</text> 星光</view>
         <block wx:if="{{tierKey}}">
-          <view class="member-track" aria-label="当前等级进度 {{progress}}%"><view class="member-fill" style="width:{{progress}}%;"></view></view>
-          <view class="level-range"><text>{{currentLevelName}} {{currentThreshold}}</text><text>{{hasNextLevel ? nextLevel + ' ' + nextThreshold : '最高等级'}}</text></view>
+          <view class="level-hero-progress" aria-label="当前等级升级进度 {{progress}}%"><view class="level-hero-progress__fill" style="width:{{progress}}%;"></view></view>
+          <view class="levels-range"><text>{{currentLevelName}} {{currentThreshold}}</text><text>{{hasNextLevel ? nextLevel + ' ' + nextThreshold : '最高等级'}}</text></view>
         </block>
       </view>
-      <view wx:if="{{heroVisual}}" class="level-visual tier-{{heroVisual.key}}">
-        <view wx:if="{{heroVisual.showStand}}" class="level-stand" aria-hidden="true"></view>
-        <image class="level-art {{heroVisual.showStand ? 'level-art--floating' : ''}}" src="{{heroVisual.src}}" mode="aspectFit" aria-hidden="true" />
+      <view wx:if="{{heroVisual}}" class="levels-hero-visual">
+        <view class="levels-hero-visual__in {{heroVisual.showStand ? 'has-stand stand-' + heroVisual.key : ''}}">
+          <view wx:if="{{heroVisual.showStand}}" class="levels-art-base" aria-hidden="true"></view>
+          <image class="levels-hero-art" src="{{heroVisual.src}}" mode="aspectFit" aria-hidden="true" />
+        </view>
       </view>
     </view>
 
-    <view wx:if="{{levels.length}}" class="level-rail" aria-label="会员成长路线">
-      <view class="level-rail-track" style="--rail-progress: {{railProgress}}%;" aria-hidden="true"></view>
-      <view wx:for="{{levels}}" wx:key="key" class="level-node level-node--{{item.state}} {{item.next ? 'level-node--next' : ''}}" style="margin-top:{{(6 - index) * 6}}px;" aria-label="{{item.name}}，{{item.state === 'locked' && !item.next ? '未解锁' : item.statusLabel}}">
-        <view class="level-dot" aria-hidden="true"><view wx:if="{{item.state === 'locked'}}" class="level-lock"></view><text wx:else>{{item.state === 'passed' ? '✓' : '✦'}}</text></view>
-        <text class="level-name">{{item.name}}</text>
+    <view wx:if="{{levels.length}}" class="level-rail" style="--m-rail-filled:{{railProgress}}%;" aria-label="会员成长路径">
+      <view class="level-rail-items">
+        <view wx:for="{{levels}}" wx:key="key" class="level-rail-item level-rail-item--{{item.state === 'passed' ? 'reached' : item.state}} {{item.next ? 'level-rail-item--next' : ''}}" style="transform:translateY({{-6 * index}}px);" aria-label="{{item.name}}，{{item.state === 'passed' ? '已达成' : item.state === 'current' ? '当前等级' : item.next ? '下一等级' : '未解锁'}}">
+          <view class="level-rail-marker" aria-hidden="true">
+            <image src="{{item.state === 'current' ? '/assets/membership/icons/star-white.svg' : item.state === 'passed' ? '/assets/membership/icons/rail-check.svg' : '/assets/membership/icons/rail-lock.svg'}}" mode="aspectFit" />
+          </view>
+          <text class="level-rail-name">{{item.name}}</text>
+        </view>
       </view>
     </view>
 
-    <view wx:if="{{tierKey}}" class="member-surface level-next">
-      <view class="level-next-heading">
-        <view class="level-next-copy">
-          <text wx:if="{{hasNextLevel}}" class="level-next-title">距{{nextLevel}}还差 <text class="level-next-amount">{{remainingPoints}} 星光</text></text>
-          <text wx:else class="level-next-title">已达最高等级</text>
-          <text class="member-secondary">{{rightsCaption}}</text>
-        </view>
-        <view wx:if="{{panelVisual}}" class="level-next-visual tier-{{panelVisual.key}}">
-          <view wx:if="{{panelVisual.showStand}}" class="level-stand" aria-hidden="true"></view>
-          <image class="level-art {{panelVisual.showStand ? 'level-art--floating' : ''}}" src="{{panelVisual.src}}" mode="aspectFit" aria-hidden="true" />
+    <view wx:if="{{tierKey}}" class="next-level-panel">
+      <view class="next-level-copy">
+        <text wx:if="{{hasNextLevel}}" class="next-level-title">距{{nextLevel}}还差 <text class="next-level-title__gap">{{remainingPoints}} 星光</text></text>
+        <text wx:else class="next-level-title">已达最高等级</text>
+        <text class="next-level-caption">{{rightsCaption}}</text>
+      </view>
+      <view wx:if="{{panelVisual}}" class="next-level-visual">
+        <view class="next-level-visual__in {{panelVisual.showStand ? 'has-stand stand-' + panelVisual.key : ''}}">
+          <view wx:if="{{panelVisual.showStand}}" class="levels-art-base" aria-hidden="true"></view>
+          <image class="next-level-art" src="{{panelVisual.src}}" mode="aspectFit" aria-hidden="true" />
         </view>
       </view>
-      <view class="level-benefits">
-        <view class="level-benefit"><view class="level-benefit-icon" aria-hidden="true"><image src="{{icons.membershipTaskWaiver}}" mode="aspectFit" /></view><text>信用免押</text></view>
-        <view class="level-benefit"><view class="level-benefit-icon" aria-hidden="true"><image src="{{icons.membershipTaskQuota}}" mode="aspectFit" /></view><text>出租发布额度</text></view>
+      <view class="next-benefits">
+        <view class="next-benefit"><view class="next-benefit__icon" aria-hidden="true"><image src="/assets/membership/icons/shield-benefit.svg" mode="aspectFit" /></view><text>信用免押</text></view>
+        <view class="next-benefit"><view class="next-benefit__icon" aria-hidden="true"><image src="/assets/membership/icons/layers-benefit.svg" mode="aspectFit" /></view><text>出租发布额度</text></view>
       </view>
       <view class="level-actions">
-        <button wx:if="{{hasNextLevel}}" class="xy-button-reset primary-button level-button" bindtap="openGrowthTasks">去做升级任务</button>
-        <button wx:elif="{{atMaxLevel}}" class="xy-button-reset primary-button level-button" bindtap="showCurrentBenefits">查看当前权益</button>
-        <button class="xy-button-reset secondary-button level-button level-button--overview" bindtap="showStarOverview">星光概览</button>
+        <button wx:if="{{hasNextLevel}}" class="xy-button-reset level-action" bindtap="openGrowthTasks">去做升级任务</button>
+        <button wx:else class="xy-button-reset level-action" bindtap="showCurrentBenefits">查看当前权益</button>
+        <button class="xy-button-reset level-action level-action--secondary" bindtap="showStarOverview">星光概览</button>
       </view>
     </view>
 
-    <view wx:if="{{loggedIn && !tierKey}}" class="member-section">
-      <text class="member-section-title">当前权益</text>
-      <view class="member-surface member-list">
-        <view wx:for="{{currentBenefits}}" wx:key="id" class="level-benefit-line">
-          <text class="member-row-title">{{item.label}}</text><text class="member-secondary">{{item.value}}</text>
-        </view>
-        <text wx:if="{{!currentBenefits.length}}" class="level-empty">暂无可展示的权益</text>
-      </view>
-    </view>
-
-    <view wx:if="{{levels.length}}" class="member-section">
-      <view class="level-rules-header"><text class="member-section-title">等级规则</text><text class="member-secondary">按累计星光评定等级</text></view>
-      <view class="member-surface level-rules">
-        <view class="level-rule level-rule--heading"><text class="level-rule-name">等级</text><text class="level-rule-value">所需星光</text><text class="level-rule-status">状态</text></view>
-        <view wx:for="{{levels}}" wx:key="key" class="level-rule level-rule--{{item.state}}">
-          <text class="level-rule-name">{{item.name}}会员</text><text class="level-rule-value">{{item.threshold}}</text>
-          <view class="level-rule-status"><text class="{{item.state === 'locked' ? '' : 'level-state-pill'}}">{{item.statusLabel}}</text></view>
+    <view wx:if="{{levels.length}}" class="level-rules">
+      <view class="level-rules-header"><text class="level-rules-header__t">等级规则</text><text class="level-rules-header__s">按累计星光评定等级</text></view>
+      <view class="level-rule-box">
+        <view class="level-rule level-rule--head"><text class="level-rule__c">等级</text><text class="level-rule__c">所需星光</text><text class="level-rule__c">状态</text></view>
+        <view wx:for="{{levels}}" wx:key="key" class="level-rule {{item.state === 'current' ? 'level-rule--current' : ''}}">
+          <text class="level-rule__c">{{item.name}}会员</text><text class="level-rule__c">{{item.threshold}}</text>
+          <view class="level-rule__c"><text wx:if="{{item.state !== 'locked'}}" class="level-state-pill {{item.state === 'current' ? 'level-state-pill--current' : ''}}">{{item.statusLabel}}</text><text wx:else>{{item.statusLabel}}</text></view>
         </view>
       </view>
     </view>

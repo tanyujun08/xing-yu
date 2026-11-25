@@ -1,91 +1,98 @@
 <page-meta root-font-size="system" />
-<view class="membership-page member-theme tier-{{tierKey}}">
-  <view class="member-page-light" aria-hidden="true"></view>
+<view class="membership-page member-theme tier-{{tierKey || 'gold'}}">
+  <view class="page-light" aria-hidden="true"><view class="page-light__a"></view><view class="page-light__b"></view></view>
   <page-header title="会员中心" background="{{headerScrolled ? 'var(--xy-color-page, #F5F5F7)' : 'transparent'}}" bind:back="goBack" />
-  <view class="member-layout">
-    <view class="member-card">
-      <view class="member-card-wave" aria-hidden="true"></view>
-      <image wx:if="{{art}}" class="member-card-art" src="{{art}}" mode="aspectFit" aria-hidden="true" />
-      <view class="member-identity">
-        <view class="member-seal" aria-hidden="true">✦</view>
-        <view class="member-identity-copy">
-          <text class="member-level member-tier-name">{{level}}</text>
-          <text wx:if="{{levelEnglish}}" class="member-english">{{levelEnglish}}</text>
-        </view>
+  <view class="member-body">
+    <view class="mc">
+      <view class="mc__l mc__sweep"></view><view class="mc__l mc__sweepl"></view>
+      <view class="mc__l mc__rib"></view><view class="mc__l mc__rib2"></view>
+      <view class="mc__l mc__wave"></view><view class="mc__l mc__wave2"></view>
+      <view class="mc__l mc__grain"></view><view class="mc__l mc__refl"></view>
+      <view wx:if="{{tierKey === 'diamond'}}" class="mc__prism"></view>
+      <view class="mc__l mc__flare"></view>
+      <image wx:if="{{art}}" class="mc__art" src="{{art}}" mode="aspectFit" aria-hidden="true" />
+      <view class="mc__id">
+        <view class="mc__seal" aria-hidden="true"><view class="mc__seal-i"></view></view>
+        <view class="mc__nm"><text class="mc__nm-b">{{level}}</text><text wx:if="{{levelEnglish}}" class="mc__nm-i">{{levelEnglish}}</text></view>
       </view>
-      <view class="member-stars"><text class="member-points-number">{{starPoints}}</text><text class="member-unit">星光</text></view>
-      <view class="member-card-footer">
-        <view wx:if="{{hasNextLevel}}" class="member-upgrade">
-          <view class="member-track" aria-label="会员成长进度"><view class="member-fill" style="width:{{progress}}%;"></view></view>
-          <text class="member-upgrade-copy">距{{nextLevel}}还差 <text>{{remainingPoints}}</text> 星光</text>
+      <view class="mc__bal"><text class="mc__bal-b">{{starPoints}}</text><text class="mc__bal-s">星光</text></view>
+      <view class="mc__ft">
+        <view wx:if="{{hasNextLevel}}" class="mc__pg">
+          <view class="mc__bar" aria-label="升级进度 {{progress}}%"><view class="mc__bar-i" style="width:{{progress}}%;"></view></view>
+          <text class="mc__tx">距{{nextLevel}}还差 <text class="mc__tx-b">{{remainingPoints}}</text> 星光</text>
         </view>
-        <text wx:elif="{{atMaxLevel}}" class="member-upgrade-copy">✦ 已达最高等级</text>
-        <view wx:else></view>
-        <button class="member-card-action xy-button-reset" bindtap="openDetails">
-          <view class="member-card-action-shell">等级权益 <view class="member-chevron" aria-hidden="true"></view></view>
-        </button>
+        <text wx:elif="{{atMaxLevel}}" class="mc__max">已达最高等级</text>
+        <view wx:else class="mc__pg"></view>
+        <button class="xy-button-reset m-btn mc__hit" bindtap="openDetails"><view class="mc__btn">等级权益</view></button>
       </view>
     </view>
 
     <text wx:if="{{errorText}}" class="member-notice" role="status">{{errorText}}</text>
 
-    <view class="member-surface member-assets">
-      <button class="xy-button-reset member-asset" bindtap="openBalanceDetails" aria-label="粉钻余额 {{diamonds}}，查看粉钻明细">
-        <view class="member-icon member-icon--pink"><image src="{{icons.membershipBalanceDiamond}}" mode="aspectFit" /></view>
-        <view class="member-asset-copy"><text>粉钻余额</text><text class="member-asset-number">{{diamonds}}</text></view>
-        <view class="member-chevron" aria-hidden="true"></view>
-      </button>
-      <button class="xy-button-reset member-asset" bindtap="openStarDetails" aria-label="今日星光 {{todayGrowth}}，查看星光明细">
-        <view class="member-icon member-icon--gold" aria-hidden="true"><image src="{{icons.checkInStar}}" mode="aspectFit" /></view>
-        <view class="member-asset-copy"><text>今日星光</text><text class="member-asset-number">{{todayGrowth}}</text></view>
-        <view class="member-chevron" aria-hidden="true"></view>
-      </button>
-    </view>
-
-    <view class="member-shortcuts" aria-label="常用入口">
-      <button class="xy-button-reset member-shortcut" bindtap="openCheckIn">
-        <view class="member-icon member-icon--mint"><image src="{{icons.membershipBalanceCheckin}}" mode="aspectFit" /></view>
-        <text class="member-row-title">每日签到</text>
-      </button>
-      <button class="xy-button-reset member-shortcut" bindtap="openLottery">
-        <view class="member-icon member-icon--pink" aria-hidden="true"><image src="{{icons.membershipLottery}}" mode="aspectFit" /></view>
-        <text class="member-row-title">每日抽奖</text>
-      </button>
-      <button class="xy-button-reset member-shortcut" bindtap="openShop">
-        <view class="member-icon member-icon--gold"><image src="{{icons.membershipBalanceShop}}" mode="aspectFit" /></view>
-        <text class="member-row-title">粉钻商城</text>
-      </button>
-    </view>
-
-    <view class="member-section">
-      <text class="member-section-title">任务中心</text>
-      <view class="member-surface member-list">
-        <button class="xy-button-reset xy-button-fluid member-row" bindtap="openTask">
-          <view class="member-icon"><image src="{{icons.membershipTaskUpgrade}}" mode="aspectFit" /></view>
-          <view class="member-row-copy"><text class="member-row-title">升级任务</text><text class="member-secondary">完成任务获得星光</text></view>
-          <view class="member-chevron" aria-hidden="true"></view>
+    <view class="member-overview">
+      <view class="asset-panel ov-panel">
+        <button class="xy-button-reset m-btn asset-row" bindtap="openBalanceDetails" aria-label="粉钻余额 {{diamonds}}，查看粉钻明细">
+          <view class="ov-icon ov-icon--pink" aria-hidden="true"><image src="/assets/membership/icons/gem.svg" mode="aspectFit" /></view>
+          <view class="asset-copy"><text class="asset-label">粉钻余额</text><text class="asset-value">{{diamonds}}</text></view>
+          <view class="chevron" aria-hidden="true"></view>
         </button>
-        <button class="xy-button-reset xy-button-fluid member-row" bindtap="openDailyTasks">
-          <view class="member-icon"><image src="{{icons.membershipTaskCheckin}}" mode="aspectFit" /></view>
-          <view class="member-row-copy"><text class="member-row-title">每日星光任务</text><text class="member-secondary">查看每日任务和奖励</text></view>
-          <view class="member-chevron" aria-hidden="true"></view>
+        <button class="xy-button-reset m-btn asset-row" bindtap="openStarDetails" aria-label="今日获得星光 {{todayGrowth}}，查看星光明细">
+          <view class="ov-icon ov-icon--gold" aria-hidden="true"><image src="/assets/membership/icons/star.svg" mode="aspectFit" /></view>
+          <view class="asset-copy"><text class="asset-label">今日获得星光</text><text class="asset-value asset-value--up">{{todayGrowth}}</text></view>
+          <view class="chevron" aria-hidden="true"></view>
         </button>
       </view>
-    </view>
 
-    <view id="membership-benefits" class="member-section">
-      <text class="member-section-title">我的权益</text>
-      <view class="member-surface member-list">
-        <button class="xy-button-reset xy-button-fluid member-row" bindtap="openWaiver">
-          <view class="member-icon"><image src="{{icons.membershipTaskWaiver}}" mode="aspectFit" /></view>
-          <text class="member-row-title">信用免押</text>
-          <text class="member-secondary">查看规则</text><view class="member-chevron" aria-hidden="true"></view>
+      <view class="quick-actions" aria-label="常用入口">
+        <button class="xy-button-reset m-btn quick-item" bindtap="openCheckIn">
+          <view class="ov-icon" aria-hidden="true"><image src="/assets/membership/icons/shortcut-mint.svg" mode="aspectFit" /></view>
+          <text class="ov-name">每日签到</text><text class="ov-meta ov-meta--pink">+100 粉钻</text>
         </button>
-        <button class="xy-button-reset xy-button-fluid member-row" bindtap="openPublishAllowance">
-          <view class="member-icon"><image src="{{icons.membershipTaskQuota}}" mode="aspectFit" /></view>
-          <text class="member-row-title">出租发布额度</text>
-          <text class="member-secondary">{{publishAllowance}}</text><view class="member-chevron" aria-hidden="true"></view>
+        <button class="xy-button-reset m-btn quick-item" bindtap="openLottery">
+          <view class="ov-icon quick-pink" aria-hidden="true"><image src="/assets/membership/icons/shortcut-pink.svg" mode="aspectFit" /></view>
+          <text class="ov-name">每日抽奖</text><text class="ov-meta">50 粉钻/次</text>
         </button>
+        <button class="xy-button-reset m-btn quick-item" bindtap="openShop">
+          <view class="ov-icon quick-gold" aria-hidden="true"><image src="/assets/membership/icons/shortcut-amber.svg" mode="aspectFit" /></view>
+          <text class="ov-name">粉钻商城</text><text class="ov-meta">6 种好物</text>
+        </button>
+      </view>
+
+      <view class="ov-section">
+        <view class="ov-section-header">
+          <text class="ov-title">升级任务</text>
+          <button class="xy-button-reset m-btn ov-link" bindtap="openTask">全部任务<view class="chevron" aria-hidden="true"></view></button>
+        </view>
+        <view class="task-list ov-panel">
+          <view wx:for="{{tasks}}" wx:key="id" class="task-row">
+            <view class="ov-icon" aria-hidden="true"><image src="{{item.icon}}" mode="aspectFit" /></view>
+            <view class="task-text">
+              <text class="ov-name">{{item.title}}</text>
+              <view class="task-rewards">
+                <text wx:for="{{item.rewards}}" wx:for-item="reward" wx:key="label" class="{{reward.tone === 'star' ? 'reward-stars' : 'reward-pink'}}">{{reward.label}}</text>
+                <block wx:if="{{item.goal}}">
+                  <view class="task-progress" aria-label="进度 {{item.goal.label}}"><view class="task-progress__fill" style="width:{{item.goal.percent}}%;"></view></view>
+                  <text class="task-count">{{item.goal.label}}</text>
+                </block>
+              </view>
+            </view>
+            <button class="xy-button-reset m-btn task-button {{item.claimable ? '' : item.done ? 'task-button--done' : 'task-button--todo'}}" bindtap="openTask" aria-label="{{item.title}}，{{item.actionText}}"><view class="task-button__in">{{item.actionText}}</view></button>
+          </view>
+        </view>
+      </view>
+
+      <view id="membership-benefits" class="ov-section">
+        <view class="ov-section-header"><text class="ov-title">我的权益</text></view>
+        <view class="perk-grid ov-panel">
+          <button class="xy-button-reset m-btn member-perk" bindtap="openWaiver">
+            <view class="ov-icon" aria-hidden="true"><image src="/assets/membership/icons/shield.svg" mode="aspectFit" /></view>
+            <text class="ov-name">信用免押</text><text class="ov-meta">{{waiverText}}</text><view class="chevron" aria-hidden="true"></view>
+          </button>
+          <button class="xy-button-reset m-btn member-perk" bindtap="openPublishAllowance">
+            <view class="ov-icon" aria-hidden="true"><image src="/assets/membership/icons/layers.svg" mode="aspectFit" /></view>
+            <text class="ov-name">出租发布额度</text><text class="ov-meta">{{publishAllowance}}</text><view class="chevron" aria-hidden="true"></view>
+          </button>
+        </view>
       </view>
     </view>
   </view>

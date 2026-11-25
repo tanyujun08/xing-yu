@@ -303,7 +303,7 @@ test('purchase balance, quota summary and movements agree after earning and spen
 });
 test('growth task replay cannot grant twice and both point ledgers reference the task', () => {
  const a = write('/v1/me/growth-tasks/task-1/claims'), again = write('/v1/me/growth-tasks/task-1/claims');
- expect(again.replayed).toBe(true); expect(readDemo().pink).toBe(28850); expect(readDemo().growth).toBe(12900);
+ expect(again.replayed).toBe(true); expect(readDemo().pink).toBe(28850); expect(readDemo().growth).toBe(128100);
  for (const g of a.grants) expect(read('/v1/me/point-entries/' + g.point_entry_id).source_id).toBe('task-1');
  expect(read('/v1/me/growth-tasks').items[0].claimable_count).toBe('0');
 });
@@ -324,7 +324,7 @@ test('daily growth task unlocks from an authenticated device detail and can be c
  expect(task().state).toBe('COMPLETED');
  expect(receipt.task).toEqual(task());
  expect(readDemo().pink).toBe(28850);
- expect(readDemo().growth).toBe(12900);
+ expect(readDemo().growth).toBe(128100);
  const grantFacts = receipt.grants.map((grant: Row) => read('/v1/me/benefit-grants/' + grant.grant_id));
  expect(grantFacts).toEqual([
   expect.objectContaining({ source_kind: 'PROGRESS', reward_code: 'GROWTH', pink_entry_ids: [] }),
@@ -352,7 +352,7 @@ test('three distinct rental guides unlock the upgrade reward without counting re
  expect(write(claimPath).grants).toEqual([expect.objectContaining({ reward_code: 'GROWTH', reward_units: '100' })]);
  expect(write(claimPath).replayed).toBe(true);
  expect(task()).toMatchObject({ state: 'COMPLETED', claimed_count: '1' });
- expect(readDemo().growth).toBe(12900);
+ expect(readDemo().growth).toBe(128100);
  expect(readDemo().pink).toBe(28800);
 });
 test('publication validates required evidence and consumes quota once', () => {

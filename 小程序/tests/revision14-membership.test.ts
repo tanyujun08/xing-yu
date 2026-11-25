@@ -16,12 +16,11 @@ test('membership uses the shared native theme and three daily shortcuts', () => 
   expect(view).toContain('bindtap="openCheckIn"');
   expect(view).toContain('bindtap="openLottery"');
   expect(view).toContain('bindtap="openShop"');
-  expect(view.match(/bindtap="openTask"/g)).toHaveLength(1);
-  expect(view.match(/bindtap="openDailyTasks"/g)).toHaveLength(1);
-  const taskCenter = view.slice(view.indexOf('任务中心'), view.indexOf('我的权益'));
-  expect(taskCenter).toContain('升级任务');
-  expect(taskCenter).toContain('每日星光任务');
-  expect(taskCenter).toContain('bindtap="openDailyTasks"');
+  // 11-25 按用户 member-card.html：升级任务列表（全部任务 + 每行按钮都进任务中心）
+  const tasks = view.slice(view.indexOf('升级任务'), view.indexOf('我的权益'));
+  expect(tasks).toContain('全部任务');
+  expect(tasks).toContain('wx:for="{{tasks}}"');
+  expect(tasks).toContain('bindtap="openTask"');
   expect(view).toContain('bindtap="openStarDetails"');
   expect(view).toContain('bindtap="openBalanceDetails"');
 });

@@ -8,7 +8,8 @@ const initial = {
   icons: designAssets, tierKey: '', level: '会员', levelEnglish: '', art: '',
   starPoints: '—', todayGrowth: '—', diamonds: '—', nextLevel: '', remainingPoints: '',
   progress: 0, hasNextLevel: false, atMaxLevel: false,
-  publishAllowance: '查看当前额度',
+  publishAllowance: '查看当前额度', waiverText: '查看规则',
+  tasks: [] as { id: string; icon: string; title: string; rewards: { tone: string; label: string }[]; goal: { label: string; percent: number } | null; claimable: boolean; done: boolean; actionText: string }[],
 };
 
 const benefitPage = createBenefitPage(initial, accountApi.sessionIdentity, benefitApi.summary,

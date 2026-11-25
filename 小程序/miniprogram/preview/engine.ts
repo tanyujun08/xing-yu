@@ -27,7 +27,7 @@ function regionChildren(parent?: string): Row[] {
 }
 let storageKey = KEY;
 let memory: DemoState | undefined;
-export function readDemo(): DemoState { if (!memory) { const value = typeof wx !== 'undefined' ? demoStorage.getStorageSync(storageKey) : null; memory = value?.revision === 1 ? value as DemoState : seed(); } return memory!; }
+export function readDemo(): DemoState { if (!memory) { const value = typeof wx !== 'undefined' ? demoStorage.getStorageSync(storageKey) : null; memory = value?.revision === 1 ? value as DemoState : seed(); if (memory.growth === 12800) memory.growth = 128000; /* 旧演示存档 1,280 星光 → 12,800（黄金） */ } return memory!; }
 export function saveDemo(): void { if (typeof wx !== 'undefined') demoStorage.setStorageSync(storageKey, readDemo()); }
 // Keep the pre-link data intact; only the new namespace receives shared updates.
 export function useLinkedState(): void { const original = clone(readDemo()); storageKey = KEY + '.linked'; const saved = demoStorage.getStorageSync(storageKey); memory = saved?.revision === 1 ? saved as DemoState : original; }

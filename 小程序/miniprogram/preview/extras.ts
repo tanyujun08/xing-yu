@@ -29,6 +29,29 @@ function request(method: string, path: string, body: Row = {}, key = ''): Promis
   success:(value: Row)=>value.statusCode>=400?reject(Object.assign(new Error(value.data?.message??'演示请求失败'),{outcomeKnown:true})):resolve(value.data),
   fail:(value: Row)=>reject(new Error(value.errMsg??'本机 Mock 服务不可用'))}));
 }
+const taskIcons: Record<string, string> = { REGISTER: '/assets/membership/icons/person.svg', VIEW_ASSET: '/assets/membership/icons/eye.svg', READ_RENTAL_GUIDES: '/assets/membership/icons/guide.svg' };
+// 会员中心只列升级任务（非每日），领取和去完成都进任务中心处理
+async function memberUpgradeTasks() {
+ const list = await request('GET', '/v1/me/growth-tasks').catch(() => null);
+ const items: Row[] = Array.isArray(list?.items) ? list.items : [];
+ return items.filter(task => task.period !== 'DAY').slice(0, 3).map(task => {
+  const done = task.state === 'COMPLETED', claimable = task.state === 'CLAIMABLE';
+  const guide = task.task_code === 'READ_RENTAL_GUIDES';
+  const progress = Math.min(Number(task.progress_count) || 0, Number(task.target_count) || 0);
+  return {
+   id: String(task.benefit_code),
+   icon: taskIcons[String(task.task_code)] ?? taskIcons['VIEW_ASSET'],
+   title: guide ? '阅读 ' + task.target_count + ' 条租赁指南' : task.task_code === 'REGISTER' ? '完成注册' : '浏览 1 台设备',
+   rewards: (task.rewards as Row[]).filter(reward => reward.kind === 'GROWTH' || reward.kind === 'PINK').map(reward => ({
+    tone: reward.kind === 'GROWTH' ? 'star' : 'pink',
+    label: '+' + (reward.kind === 'GROWTH' ? groupMemberNumber(displayGrowthUnits(String(reward.units))) + ' 星光' : groupMemberNumber(String(reward.units)) + ' 粉钻'),
+   })),
+   goal: guide && !done && !claimable && task.target_count ? { label: progress + '/' + task.target_count, percent: Math.round(progress * 100 / Number(task.target_count)) } : null,
+   claimable, done,
+   actionText: done ? '已领取' : claimable ? '领取' : '去完成',
+  };
+ });
+}
 async function todayMemberGrowth() {
  const ledger = await request('GET', '/v1/me/point-entries?point_kind=GROWTH&page_size=1').catch(() => null);
  const amount = displayGrowthUnits(ledger?.statistics?.today_earned_delta);
@@ -84,6 +107,7 @@ export function demoExtras(name: string): Row {
      todayGrowth: todayGrowth === '—' ? todayGrowth : '+' + todayGrowth,
      diamonds: groupMemberNumber(dossier.profile.available_pink_units),
      publishAllowance: rights.find(item => item.id === 'PUBLISH_QUOTA')?.value ?? '查看当前额度',
+     tasks: await memberUpgradeTasks(),
     });
    } catch (error) { fail(this, error); }
   },
