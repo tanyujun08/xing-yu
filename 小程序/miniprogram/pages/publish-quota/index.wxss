@@ -1,1 +1,14 @@
-/* 样式见 shared/design/publish-flow.wxss */
+/* 发布额度（设计稿 v5）：左大数、右已用/共发放；底行发布一次券 → 去兑换。其余样式见 shared/design/publish-flow.wxss */
+.qs { display: flex; align-items: center; gap: var(--xy-space-3); }
+.qs__n { flex: 1; min-width: 0; }
+.qs__r { display: flex; flex-direction: column; align-items: flex-end; gap: var(--xy-space-0-5); color: var(--xy-color-text-secondary); font-size: var(--xy-text-caption-size); line-height: var(--xy-text-caption-line-height); font-variant-numeric: tabular-nums; }
+.qs__b { margin-left: var(--xy-space-1); color: var(--xy-color-text-primary); font-weight: var(--xy-text-weight-semibold); }
+.qs__f { display: flex; align-items: center; min-height: var(--xy-size-touch-min); margin-top: var(--xy-space-3); padding-top: var(--xy-space-1); border-top: 1rpx solid var(--xy-color-hairline); }
+.qs__ft { font-size: var(--xy-text-body-size); }
+.qs__fs { flex: 1; color: var(--xy-color-text-secondary); font-size: var(--xy-text-caption-size); }
+.qs__go { color: var(--xy-color-brand); font-size: var(--xy-text-body-size); }
+.qr { flex: 1; min-width: 0; padding: var(--xy-space-2-5) 0; }
+.qr__t { display: block; font-size: var(--xy-text-body-size); line-height: var(--xy-text-body-line-height); }
+.qr__s { display: block; color: var(--xy-color-text-muted); font-size: var(--xy-text-caption-size); line-height: var(--xy-text-caption-line-height); font-variant-numeric: tabular-nums; }
+.qr__q { flex: none; font-size: var(--xy-text-body-size); font-weight: var(--xy-text-weight-semibold); font-variant-numeric: tabular-nums; }
+.qr__q.is-plus { color: var(--xy-color-brand); }

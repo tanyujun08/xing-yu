@@ -7,11 +7,12 @@
  </view>
  <block wx:else>
   <view class="pf-sum">
-   <text class="pf-k">可用发布额度</text>
-   <view class="pf-n"><text class="pf-n__v">{{available}}</text><text class="pf-n__u">次</text></view>
-   <view class="pf-sum__f"><text>已用<text>{{used}}</text>次</text><text>共发放<text>{{total}}</text>次</text><text>粉钻<text>{{diamondBalance}}</text></text></view>
-   <view class="pf-row pf-tap quota-coupons" style="margin:var(--xy-space-3) calc(var(--xy-space-4) * -1) calc(var(--xy-space-4) * -1)" bindtap="openCoupons" role="button">
-    <text class="pf-row__k pf-row__k--ink">发布一次券</text><text class="pf-row__v is-muted">1 张兑换 1 次</text><view class="pf-btn pf-btn--s">查看可用券</view>
+   <view class="qs">
+    <view class="qs__n"><text class="pf-k">可用发布额度</text><view class="pf-n"><text class="pf-n__v">{{available}}</text><text class="pf-n__u">次</text></view></view>
+    <view class="qs__r"><text>已用<text class="qs__b">{{used}}</text></text><text>共发放<text class="qs__b">{{total}}</text></text></view>
+   </view>
+   <view class="qs__f pf-tap quota-coupons" bindtap="openCoupons" role="button" aria-label="发布一次券，去兑换">
+    <text class="qs__ft">发布一次券</text><text class="qs__fs"> · 每张兑换 1 次</text><text class="qs__go">去兑换</text><image class="pf-arrow" src="/assets/figma-icons/arrow-right.svg" mode="aspectFit" />
    </view>
   </view>
 
@@ -28,13 +29,13 @@
   </view>
 
   <view class="pf-block">
-   <text class="pf-gt">额度流水</text>
+   <view class="pf-gt-row"><text class="pf-gt">额度流水</text><text wx:if="{{items.length}}" class="pf-gt-row__aside">最近 {{items.length}} 条</text></view>
    <status-view wx:if="{{listState.phase === 'initial-loading'}}" state="loading" title="正在读取流水" /><status-view wx:elif="{{listState.phase === 'initial-error'}}" state="error" title="流水读取失败" action-text="重试" bindaction="retryMovements" />
-   <text wx:elif="{{listState.phase === 'empty'}}" class="pf-fnote">暂无额度流水</text>
+   <view wx:elif="{{listState.phase === 'empty'}}" class="pf-cd"><text class="pf-empty">还没有记录，发布设备或兑换券后会出现在这里</text></view>
    <view wx:else class="pf-cd">
     <view wx:for="{{items}}" wx:key="id" class="pf-row pf-tap quota-movement" data-id="{{item.id}}" bindtap="openMovement" role="button">
-     <view style="flex:1;min-width:0"><text style="display:block">{{item.title}}</text><text class="pf-k">{{item.time}}</text></view>
-     <text style="font-variant-numeric:tabular-nums">{{item.quantity}}</text><image class="pf-arrow" src="/assets/figma-icons/arrow-right.svg" mode="aspectFit" />
+     <view class="qr"><text class="qr__t">{{item.title}}</text><text class="qr__s">{{item.time}}</text></view>
+     <text class="qr__q {{item.tone === 'plus' ? 'is-plus' : ''}}">{{item.quantity}}</text>
     </view>
    </view>
    <status-view wx:if="{{listState.incremental === 'load-more-error'}}" state="error" density="compact-footer" title="加载失败" action-text="重试" bindaction="retryMore" /><status-view wx:elif="{{listState.incremental === 'done'}}" state="end" density="compact-footer" title="已显示全部流水" />
@@ -43,11 +44,11 @@
   <view class="pf-block">
    <text class="pf-gt">券兑换记录</text>
    <status-view wx:if="{{redemptionListState.phase === 'initial-loading'}}" state="loading" title="正在读取兑换记录" /><status-view wx:elif="{{redemptionListState.phase === 'initial-error'}}" state="error" title="兑换记录读取失败" action-text="重试" bindaction="retryRedemptions" />
-   <text wx:elif="{{redemptionListState.phase === 'empty'}}" class="pf-fnote">暂无兑换记录</text>
+   <view wx:elif="{{redemptionListState.phase === 'empty'}}" class="pf-cd"><text class="pf-empty">还没有兑换过发布一次券</text></view>
    <view wx:else class="pf-cd">
     <view wx:for="{{redemptions}}" wx:key="id" class="pf-row pf-tap quota-redemption" data-id="{{item.id}}" bindtap="openRedemption" role="button">
-     <view style="flex:1;min-width:0"><text style="display:block">{{item.title}}</text><text class="pf-k">{{item.time}}</text></view>
-     <text class="pf-link">查看原券</text>
+     <view class="qr"><text class="qr__t">{{item.title}}</text><text class="qr__s">{{item.time}}</text></view>
+     <text class="pf-row__v is-muted">查看原券</text><image class="pf-arrow" src="/assets/figma-icons/arrow-right.svg" mode="aspectFit" />
     </view>
    </view>
    <status-view wx:if="{{redemptionListState.incremental === 'load-more-error'}}" state="error" density="compact-footer" title="加载失败" action-text="重试" bindaction="retryMore" /><status-view wx:elif="{{redemptionListState.incremental === 'done'}}" state="end" density="compact-footer" title="已显示全部记录" />

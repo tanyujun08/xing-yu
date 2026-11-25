@@ -1,10 +1,14 @@
+/* 后台确认（设计稿 v5）：56 圆底线性图标 + 18 标题 + 两行说明 + 信息卡 + 底栏（拒绝 120 宽 / 确认登录） */
 .ap { padding-top: var(--xy-space-6); }
-.ap-head { display: flex; flex-direction: column; align-items: center; gap: var(--xy-space-2); text-align: center; }
-.ap-mark { display: flex; width: calc(var(--xy-space-6) * 2 + var(--xy-space-2)); height: calc(var(--xy-space-6) * 2 + var(--xy-space-2)); align-items: center; justify-content: center; border-radius: 50%; background: var(--xy-color-brand-soft); color: var(--xy-color-brand); font-size: var(--xy-pf-title); font-weight: var(--xy-text-weight-bold); }
-.ap-mark.is-off { background: var(--xy-color-well); color: var(--xy-color-text-muted); }
-.ap-title { margin-top: var(--xy-space-2); font-size: var(--xy-pf-title); font-weight: var(--xy-text-weight-semibold); }
+.ap-head { display: flex; flex-direction: column; align-items: center; gap: var(--xy-space-1); padding: var(--xy-space-2) var(--xy-space-6) 0; text-align: center; }
+.ap-ico { display: flex; width: calc(var(--xy-space-6) * 2 + var(--xy-space-2)); height: calc(var(--xy-space-6) * 2 + var(--xy-space-2)); margin-bottom: var(--xy-space-3); align-items: center; justify-content: center; border-radius: 50%; background: var(--xy-color-brand-soft); }
+.ap-ico.is-off { background: var(--xy-color-well); }
+.ap-ico image { width: calc(var(--xy-space-6) + var(--xy-space-1)); height: calc(var(--xy-space-6) + var(--xy-space-1)); }
+.ap-title { font-size: var(--xy-pf-title); font-weight: var(--xy-text-weight-semibold); line-height: calc(var(--xy-pf-title) + 8px); }
 .ap-sub { color: var(--xy-color-text-secondary); font-size: var(--xy-text-body-small-size); line-height: var(--xy-text-body-line-height); }
+.ap-line { display: block; }
 .ap-error { color: var(--xy-color-key-warning); font-size: var(--xy-text-body-small-size); line-height: var(--xy-text-body-line-height); text-align: center; }
 .ap-center { text-align: center; }
-.ap-actions { display: flex; flex-direction: column; gap: var(--xy-space-3); }
-.ap-actions button { width: 100%; }
+.ap-foot { display: flex; gap: var(--xy-space-3); }
+.ap-foot > .ap-reject { flex: 0 0 calc(var(--xy-space-6) * 5); }
+.ap-foot > view:last-child { flex: 1; }

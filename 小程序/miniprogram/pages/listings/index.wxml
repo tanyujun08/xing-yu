@@ -8,19 +8,19 @@
 
   <view wx:if="{{todoList.length}}" class="pf-block">
     <view class="pf-gt-row"><text class="pf-gt">需要你处理</text><text class="pf-gt-row__aside">{{todoList.length}} 台</text></view>
-    <view wx:for="{{todoList}}" wx:key="id" class="pf-cd ls-card">
-      <view class="ls-top">
-        <media-state class="ls-pic" state="{{item.mediaState}}" src="{{item.mediaState === 'real' ? item.photoRefs[0] : ''}}" mode="aspectFill" placeholder-src="{{icons.profileRentalCamera}}" empty-label="暂无图片" failure-label="图片暂时无法加载" aria-label="发布设备图片" />
+    <view class="ls-list">
+      <view wx:for="{{todoList}}" wx:key="id" class="ls-card">
+        <media-state class="ls-pic" state="{{item.mediaState}}" src="{{item.mediaState === 'real' ? item.photoRefs[0] : ''}}" mode="aspectFit" placeholder-src="{{icons.profileRentalCamera}}" empty-label="暂无图片" failure-label="图片暂时无法加载" aria-label="发布设备图片" />
         <view class="ls-info">
           <view class="ls-name"><text class="ls-name__t">{{item.name}}</text><text class="pf-chip pf-chip--{{item.chip}}">{{item.statusText}}</text></view>
-          <text class="ls-price">{{item.price}}<text class="ls-dep">押金 {{item.deposit}}</text></text>
-          <text class="pf-k">{{item.statusCopy}}</text>
+          <text class="ls-price">{{item.priceValue}}<text class="ls-small">{{item.priceUnit}} · 押金 {{item.deposit}}</text></text>
+          <text class="ls-reason-line {{item.chip === 'o' ? 'is-warn' : ''}}">{{item.statusCopy}}</text>
+          <view class="ls-act">
+            <view wx:if="{{item.canView}}" class="pf-btn pf-btn--o ls-btn" data-id="{{item.assetId}}" bindtap="viewMaterial" role="button" aria-label="查看 {{item.name}} 资料">查看资料</view>
+            <view wx:if="{{item.canContinue}}" class="pf-btn pf-btn--p ls-btn" data-id="{{item.draftId}}" bindtap="continueDraft" role="button" aria-label="继续填写 {{item.name}}">继续填写</view>
+            <view wx:if="{{item.canEdit}}" class="pf-btn pf-btn--p ls-btn" data-asset="{{item.assetId}}" data-draft="{{item.draftId}}" bindtap="editListing" role="button" aria-label="修改 {{item.name}}">修改</view>
+          </view>
         </view>
-      </view>
-      <view class="ls-act">
-        <view wx:if="{{item.canView}}" class="pf-btn pf-btn--o" data-id="{{item.assetId}}" bindtap="viewMaterial" role="button">查看资料</view>
-        <view wx:if="{{item.canContinue}}" class="pf-btn pf-btn--p" data-id="{{item.draftId}}" bindtap="continueDraft" role="button">继续填写</view>
-        <view wx:if="{{item.canEdit}}" class="pf-btn pf-btn--p" data-asset="{{item.assetId}}" data-draft="{{item.draftId}}" bindtap="editListing" role="button">修改资料</view>
       </view>
     </view>
   </view>
@@ -29,8 +29,8 @@
     <view class="pf-gt-row"><text class="pf-gt">已提交</text><text class="pf-gt-row__aside">{{doneList.length}} 台</text></view>
     <view class="pf-cd">
       <view wx:for="{{doneList}}" wx:key="id" class="pf-row pf-tap ls-row" data-id="{{item.assetId}}" bindtap="viewMaterial" role="button">
-        <media-state class="ls-pic ls-pic--s" state="{{item.mediaState}}" src="{{item.mediaState === 'real' ? item.photoRefs[0] : ''}}" mode="aspectFill" placeholder-src="{{icons.profileRentalCamera}}" empty-label="暂无图片" failure-label="图片暂时无法加载" aria-label="发布设备图片" />
-        <view class="ls-info"><text class="ls-name__t">{{item.name}}</text><text class="pf-k">{{item.price}} · 押金 {{item.deposit}}</text></view>
+        <media-state class="ls-pic ls-pic--s" state="{{item.mediaState}}" src="{{item.mediaState === 'real' ? item.photoRefs[0] : ''}}" mode="aspectFit" placeholder-src="{{icons.profileRentalCamera}}" empty-label="暂无图片" failure-label="图片暂时无法加载" aria-label="发布设备图片" />
+        <view class="ls-info"><text class="ls-name__t ls-name__t--r">{{item.name}}</text><text class="ls-sub">{{item.price}} · 押金 {{item.deposit}}</text></view>
         <text class="ls-state ls-state--{{item.chip}}">{{item.statusText}}</text><image class="pf-arrow" src="{{icons.arrowRight}}" mode="aspectFit" />
       </view>
     </view>

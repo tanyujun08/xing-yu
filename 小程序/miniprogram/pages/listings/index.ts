@@ -8,7 +8,7 @@ import { publicationLocalDay } from '../../shared/presentation/api-publication-d
 
 type ListingView = {
   id: string; assetId: string; draftId: string; name: string; photoRefs: string[]; mediaState: 'real' | 'empty';
-  statusText: string; statusCopy: string; filterGroup: string; price: string; deposit: string; deliveryText: string; createdDate: string;
+  statusText: string; statusCopy: string; filterGroup: string; price: string; priceValue: string; priceUnit: string; deposit: string; deliveryText: string; createdDate: string;
   canContinue: boolean; canView: boolean; canEdit: boolean; chip: string; todo: boolean;
 };
 type OwnDetailView = {
@@ -63,7 +63,9 @@ async function toView(item: OwnRentalAssetItem,owner:string): Promise<ListingVie
     id: item.resource_id, assetId: item.asset_id ?? '', draftId: item.draft_id ?? item.editable_draft_id ?? '',
     name: item.display_name || item.product_name || '未命名设备', photoRefs, mediaState: photoRefs.length > 0 ? 'real' : 'empty',
     statusText: presentation.text, statusCopy: presentation.copy, filterGroup: presentation.group,
-    price: `${money(item.unit_price_fen)}${item.rental_unit === 'HOUR' ? '/小时' : '/天'}`, deposit: money(item.deposit_fen),
+    price: `${money(item.unit_price_fen)}${item.rental_unit === 'HOUR' ? '/小时' : '/天'}`,
+    priceValue: money(item.unit_price_fen),
+    priceUnit: item.rental_unit === 'HOUR' ? '/小时' : '/天', deposit: money(item.deposit_fen),
     deliveryText: item.delivery_methods.map((method) => ({ EXPRESS: '快递', RUNNER: '跑腿', MEET: '面交' } as Record<string, string>)[method] ?? method).join('、') || '未设置',
     createdDate: formatDate(item.updated_at), canContinue: enabled(item, 'CONTINUE_DRAFT'), canView: enabled(item, 'VIEW'),
     canEdit: enabled(item, 'OPEN_EDIT_DRAFT') || enabled(item, 'CREATE_EDIT_DRAFT'),

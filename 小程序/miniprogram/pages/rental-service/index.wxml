@@ -1,43 +1,38 @@
 <page-meta root-font-size="system" />
 <view class="pf-page">
   <page-header title="{{secondaryNavigationTitle || '出租服务'}}" background="#ffffff" inverse="{{false}}" bindback="onSecondaryNavigationBack" />
-
-  <view class="pf-sum">
-    <text class="pf-k">电子合同剩余</text>
-    <view class="pf-n"><text class="pf-n__v">{{stats[0].value || '—'}}</text><text class="pf-n__u">次</text></view>
-    <view class="pf-sum__f"><text>粉钻<text>{{diamondBalance}}</text></text><text class="pf-link" bindtap="toggleRecords" role="button" aria-expanded="{{showRecords}}">{{showRecords ? '收起购买记录' : '购买记录 ›'}}</text></view>
-  </view>
   <text wx:if="{{errorText}}" class="pf-fnote">{{errorText}}</text>
+
+  <view class="svc">
+    <view class="svc__h"><text class="svc__t">电子合同</text><text class="svc__bal">余额<text class="svc__b">{{stats[0].value || '—'}}</text>次</text></view>
+    <text class="svc__d">承租人签约时扣 1 次，用完后承租人无法签约</text>
+    <view wx:if="{{packages.length}}" class="sku">
+      <view wx:for="{{packages}}" wx:key="quantity" class="sku__i {{selectedQty === item.quantity ? 'is-on' : ''}}" data-quantity="{{item.quantity}}" bindtap="chooseSpec" role="radio" aria-checked="{{selectedQty === item.quantity}}" aria-label="{{item.quantity}} 次，{{item.priceText}}">
+        <text class="sku__q">{{item.quantity}} 次</text><text class="sku__p">{{item.priceText}}</text>
+      </view>
+    </view>
+    <text wx:else class="svc__d svc__gap">购买暂未开放，当前仅展示已有额度。</text>
+    <view wx:if="{{packages.length}}" class="svc__f">
+      <text class="svc__need">需要<block wx:for="{{packages}}" wx:key="quantity"><text wx:if="{{selectedQty === item.quantity}}" class="svc__b">{{item.priceText}}</text></block></text>
+      <view class="pf-btn pf-btn--p svc__buy" data-kind="contract" data-quantity="{{selectedQty}}" bindtap="buyPackage" role="button" aria-label="购买电子合同" aria-disabled="{{buying || !loggedIn}}">{{buying ? '购买中…' : '购买'}}</view>
+    </view>
+  </view>
+
+  <view class="pf-block">
+    <text class="pf-gt">即将上线</text>
+    <view class="pf-cd">
+      <view class="pf-row"><text class="pf-row__k pf-row__k--ink">人脸核身</text><text class="pf-row__v is-muted">敬请期待</text></view>
+      <view class="pf-row"><text class="pf-row__k pf-row__k--ink">风控报告</text><text class="pf-row__v is-muted">敬请期待</text></view>
+      <view class="pf-row"><text class="pf-row__k pf-row__k--ink">组合包</text><text class="pf-row__v is-muted">敬请期待</text></view>
+    </view>
+    <view class="svc__note"><text>可用粉钻 {{diamondBalance}} · </text><text class="pf-link" bindtap="toggleRecords" role="button" aria-expanded="{{showRecords}}">{{showRecords ? '收起购买记录' : '购买记录 ›'}}</text></view>
+  </view>
 
   <view wx:if="{{showRecords}}" class="pf-block">
     <text class="pf-gt">购买记录</text>
     <view class="pf-cd">
-      <view wx:for="{{records}}" wx:key="id" class="pf-row"><view style="flex:1;min-width:0"><text style="display:block">{{item.label}}</text><text class="pf-k">{{item.createdText}}</text></view><text style="font-variant-numeric:tabular-nums">{{item.quantityText}} · {{item.priceText}}</text></view>
+      <view wx:for="{{records}}" wx:key="id" class="pf-row"><view class="svc__rec"><text class="svc__rec-t">{{item.label}}</text><text class="pf-k">{{item.createdText}}</text></view><text class="pf-row__v">{{item.quantityText}} · {{item.priceText}}</text></view>
       <view wx:if="{{records.length === 0}}" class="pf-empty">暂无购买记录</view>
     </view>
-  </view>
-
-  <view class="pf-block">
-    <text class="pf-gt">电子合同</text>
-    <view class="pf-cd" style="padding:var(--xy-space-4)">
-      <text class="pf-k">承租方签署电子合同时按次扣减，有效期 365 天。</text>
-      <view wx:if="{{packages.length}}" style="display:flex;gap:var(--xy-space-3);margin-top:var(--xy-space-3)">
-        <view wx:for="{{packages}}" wx:key="quantity" class="spec {{selectedQty === item.quantity ? 'is-on' : ''}}" data-quantity="{{item.quantity}}" bindtap="chooseSpec" role="radio" aria-checked="{{selectedQty === item.quantity}}">
-          <text class="spec__q">{{item.quantity}} 次</text><text class="spec__p">{{item.priceText}}</text>
-        </view>
-      </view>
-      <view wx:else class="pf-empty" style="padding:var(--xy-space-4) 0 0">购买暂未开放，当前仅展示已有额度。</view>
-      <view wx:if="{{packages.length}}" class="xy-action-primary" style="margin-top:var(--xy-space-4)" data-kind="contract" data-quantity="{{selectedQty}}" bindtap="buyPackage" role="button" aria-disabled="{{buying || !loggedIn}}">{{buying ? '购买中…' : '立即购买'}}</view>
-    </view>
-  </view>
-
-  <view class="pf-block">
-    <text class="pf-gt">更多服务</text>
-    <view class="pf-cd">
-      <view class="pf-row"><text class="pf-row__k pf-row__k--ink">人脸核身</text><text class="pf-row__v is-muted">即将上线</text></view>
-      <view class="pf-row"><text class="pf-row__k pf-row__k--ink">风控报告</text><text class="pf-row__v is-muted">即将上线</text></view>
-      <view class="pf-row"><text class="pf-row__k pf-row__k--ink">组合包</text><text class="pf-row__v is-muted">即将上线</text></view>
-    </view>
-    <text class="pf-fnote">风控报告不影响出租，用于判断承租人的履约风险。</text>
   </view>
 </view>
