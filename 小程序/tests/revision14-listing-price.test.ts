@@ -11,11 +11,11 @@ describe('XY-20260903-001 revision 14 listing-price Figma contract', () => {
     const style = read('miniprogram/pages/listing-price/index.wxss');
 
     // 第 5 批改版：摘要卡 + 白色分组行；行高 56、输入占满整行、底栏次左主右
-    expect(view).toContain('class="pf-sum"');
-    expect(view).toContain('<text class="pf-gt">价格设置</text>');
+    expect(view).toContain('class="lp-pd"');
+    expect(view).toContain('<text class="pf-ch__t">出租条件</text>');
     expect(view).toContain("{{editable ? '待提交' : '只读'}}");
-    expect(view).toContain('开始时间');
-    expect(view).toContain('结束时间');
+    expect(view).toContain('可租开始');
+    expect(view).toContain('可租截止');
     expect(view).toContain('deliveryItems');
     expect(view).toContain("{{submitting ? '处理中…' : primaryActionText}}");
     expect(style).toMatch(/\.lp-input \{[^}]*height: var\(--xy-pf-row\)/u);

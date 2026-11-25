@@ -60,3 +60,10 @@
 .pf-foot > view:last-child { flex: 2; }
 .pf-foot > button:only-child { flex: 1; }
 .pf-foot > view:only-child { flex: 1; }
+/* 卡内标题（设计稿 v5 发布设备 / 设价上架）：卡片第一行，16/600，右侧灰字说明 */
+.pf-ch { display: flex; align-items: baseline; justify-content: space-between; gap: var(--xy-space-3); padding: var(--xy-space-3) var(--xy-space-4) var(--xy-space-2); }
+.pf-ch__t { font-size: var(--xy-text-section-title-size); font-weight: var(--xy-text-weight-semibold); line-height: var(--xy-text-section-title-line-height); }
+.pf-ch__a { color: var(--xy-color-text-muted); font-size: var(--xy-text-caption-size); }
+.pf-ch + .pf-row::before, .pf-ch + picker .pf-row::before { display: none; }
+/* 底栏次按钮固定 120 宽 */
+.pf-foot > .pf-foot__s { flex: 0 0 calc(var(--xy-space-6) * 5); }

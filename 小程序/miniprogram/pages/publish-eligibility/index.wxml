@@ -30,11 +30,11 @@
         <text class="pf-row__v {{s.soon ? 'is-muted' : ''}}">{{s.value}}</text>
       </view>
     </view>
-    <text class="pf-fnote">服务额度不是发布条件，但电子合同次数不足时，承租方无法签署合同，请及时补购。</text>
+    <text class="pf-fnote">电子合同用完后，承租人无法签约。</text>
   </view>
 
   <view class="xy-bottom-action pf-foot">
-    <view class="xy-action-secondary" bindtap="buyRentalService" role="button">购买服务</view>
+    <view class="xy-action-secondary pf-foot__s" bindtap="buyRentalService" role="button" aria-label="购买出租服务">购买服务</view>
     <view class="xy-action-primary" bindtap="publish" role="button" aria-label="{{primaryLabel}}">{{primaryLabel}}</view>
   </view>
 </view>

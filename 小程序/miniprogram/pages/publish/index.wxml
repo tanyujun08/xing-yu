@@ -5,203 +5,195 @@
   <status-view wx:if="{{!loggedIn}}" state="empty" title="登录后查看本人草稿" action-text="去登录" bindaction="openLogin" />
   <status-view wx:elif="{{loading}}" state="loading" title="正在读取草稿" />
   <status-view wx:elif="{{errorText && !draftId}}" state="error" title="草稿暂未完成操作" description="{{errorText}}" action-text="{{hasDraftTarget ? '重新读取草稿' : pendingCreate ? '重试原新建请求' : '重新新建草稿'}}" bindaction="handleErrorAction" />
-  <block wx:elif="{{!draftId}}">
-    <view class="pb-note"><text class="pb-note__k">第一步</text><text>先选择设备类型，再建立草稿填写设备资料；只有点击下方按钮才会创建草稿。</text></view>
-    <view class="pf-block">
-      <text class="pf-gt">选择设备</text>
-      <view class="pf-cd">
-        <picker mode="selector" range="{{typePickerOptions}}" range-key="name" value="{{typeIndex}}" disabled="{{submitting || pendingCreate || typeLoading || types.length === 0}}" bindchange="chooseType">
-          <view class="pf-row" role="button" aria-label="选择设备类型"><text class="pf-row__k pf-row__k--ink">设备类型</text><text class="pf-row__v {{type ? '' : 'is-muted'}}">{{type || (typeLoading ? '正在读取设备类型…' : '请选择')}}</text><image class="pf-arrow" src="{{icons.arrowRight}}" mode="aspectFit" /></view>
-        </picker>
-        <view class="pf-row"><text class="pf-row__k pf-row__k--ink">标准商品</text><text class="pf-row__v is-muted">{{type ? '建立草稿后选择' : '请先选择设备类型'}}</text></view>
-      </view>
-      <text wx:if="{{typeError}}" class="pf-fnote is-error pb-retry" role="button" aria-label="重新读取设备类型" bindtap="retryTypeOptions">{{typeError}}（点此重试）</text>
-      <text class="pf-fnote">类型选择不会保存数据；建立草稿后可继续选择商品。</text>
+  <view wx:elif="{{!draftId}}" class="publish-content publish-preflight">
+    <view class="pf-cd">
+      <view class="pf-ch"><text class="pf-ch__t">选择设备</text></view>
+      <picker mode="selector" range="{{typePickerOptions}}" range-key="name" value="{{typeIndex}}" disabled="{{submitting || pendingCreate || typeLoading || types.length === 0}}" bindchange="chooseType">
+        <view class="pf-row" role="button" aria-label="选择设备类型"><text class="pf-row__k">设备类型</text><text class="pf-row__v pb-v {{type ? '' : 'is-muted'}}">{{type || (typeLoading ? '正在读取…' : '请选择')}}</text><image class="pf-arrow" src="{{icons.arrowRight}}" mode="aspectFit" /></view>
+      </picker>
+      <view class="pf-row"><text class="pf-row__k">标准商品</text><text class="pf-row__v pb-v is-muted">{{type ? '下一步里选择' : '先选设备类型'}}</text><image class="pf-arrow" src="{{icons.arrowRight}}" mode="aspectFit" /></view>
     </view>
-    <view class="xy-bottom-action pf-foot"><button class="xy-action-primary publish-preflight-create" disabled="{{submitting}}" aria-disabled="{{submitting}}" bindtap="createDraft">{{submitting ? '正在确认草稿…' : pendingCreate ? '继续确认原新建请求' : '新建发布草稿，继续填写'}}</button></view>
-  </block>
+    <text wx:if="{{typeError}}" class="pf-fnote is-error pb-retry" role="button" aria-label="重新读取设备类型" bindtap="retryTypeOptions">{{typeError}}（点此重试）</text>
+    <text class="pf-fnote pb-after">只能发布平台在售的标准商品，资料可以随时存草稿。</text>
+    <view class="xy-bottom-action pf-foot"><button class="xy-action-primary publish-preflight-create" disabled="{{submitting}}" aria-disabled="{{submitting}}" bindtap="createDraft">{{submitting ? '正在确认草稿…' : pendingCreate ? '继续确认原新建请求' : '下一步，填写资料'}}</button></view>
+  </view>
 
   <block wx:if="{{draftId}}">
-    <view wx:if="{{mode === 'view'}}" class="pb-note"><text class="pb-note__k">只读</text><text>查看模式：资料只读，不能修改已保存商品。</text></view>
-    <view wx:if="{{showDraftNotice && draftNoticeText}}" class="pb-note"><text class="pb-note__k">草稿</text><text>{{draftNoticeText}}</text></view>
-    <view wx:if="{{errorText}}" class="pb-note is-error" role="alert"><text>{{errorText}}</text></view>
+    <view wx:if="{{mode === 'view'}}" class="pb-tip is-info"><image class="pb-tip__ic" src="/assets/figma-icons/publish-tip.svg" mode="aspectFit" /><text class="pb-tip__t">提交后只能查看，不能修改</text></view>
+    <view wx:if="{{errorText}}" class="pb-tip" role="alert"><image class="pb-tip__ic" src="/assets/figma-icons/publish-tip.svg" mode="aspectFit" /><text class="pb-tip__t">{{errorText}}</text></view>
+    <view wx:if="{{mode !== 'view' && missingFields.length > 0}}" class="pb-tip"><image class="pb-tip__ic" src="/assets/figma-icons/publish-tip.svg" mode="aspectFit" /><text class="pb-tip__t">还差 {{missingFields.length}} 项：<block wx:for="{{missingFields}}" wx:key="id">{{index > 0 ? '、' : ''}}{{item.label}}</block></text><text wx:if="{{missingMedia}}" class="pb-tip__go" role="button" aria-label="前往设备图片添加实拍" bindtap="jumpToMedia">去上传</text></view>
 
-    <view class="pf-block">
-      <text class="pf-gt">选择设备</text>
-      <view class="pf-cd">
-        <picker mode="selector" range="{{typePickerOptions}}" range-key="name" value="{{typeIndex}}" disabled="{{!editable || submitting || pendingSave || pendingSubmit || typeLoading || types.length === 0}}" bindchange="chooseType">
-          <view class="pf-row" role="button" aria-label="选择设备类型"><text class="pf-row__k pf-row__k--ink">设备类型</text><text class="pf-row__v {{type ? '' : 'is-muted'}}">{{type || (typeLoading ? '正在读取设备类型…' : '请选择')}}</text><image class="pf-arrow" src="{{icons.arrowRight}}" mode="aspectFit" /></view>
-        </picker>
-        <view class="pf-row pf-tap" bindtap="openProductSheet" role="button" aria-label="选择标准商品"><text class="pf-row__k pf-row__k--ink">标准商品</text><text class="pf-row__v {{!productTypeFilter || productLabel === '尚未选择商品' ? 'is-muted' : ''}}">{{productTypeFilter ? productLabel : '请先选择设备类型'}}</text><image class="pf-arrow" src="{{icons.arrowRight}}" mode="aspectFit" /></view>
+    <view class="pf-cd">
+      <picker wx:if="{{!productTypeFilter}}" mode="selector" range="{{typePickerOptions}}" range-key="name" value="{{typeIndex}}" disabled="{{!editable || submitting || pendingSave || pendingSubmit || typeLoading || types.length === 0}}" bindchange="chooseType">
+        <view class="pf-row" role="button" aria-label="选择设备类型"><text class="pf-row__k">设备类型</text><text class="pf-row__v pb-v is-muted">{{typeLoading ? '正在读取…' : '请选择'}}</text><image class="pf-arrow" src="{{icons.arrowRight}}" mode="aspectFit" /></view>
+      </picker>
+      <view wx:else class="pb-pd pf-tap" bindtap="openProductSheet" role="button" aria-label="选择标准商品">
+        <view class="pb-pd__pic"><image wx:if="{{productMedia.length > 0}}" class="pb-pd__img" src="{{productMedia[0].role === 'VIDEO' ? productMedia[0].poster : productMedia[0].url}}" mode="aspectFit" /><image wx:else class="pb-pd__ph" src="{{icons.profileRentalCamera}}" mode="aspectFit" /></view>
+        <view class="pb-pd__b"><text class="pb-pd__t {{productId ? '' : 'is-muted'}}">{{productId ? productLabel : '选择标准商品'}}</text><text class="pb-pd__s">{{type ? type + ' · 标准商品' : '先选设备类型'}}</text></view>
+        <image class="pf-arrow" src="{{icons.arrowRight}}" mode="aspectFit" />
       </view>
-      <text wx:if="{{typeError}}" class="pf-fnote is-error pb-retry" role="button" aria-label="重新读取设备类型" bindtap="retryTypeOptions">{{typeError}}（点此重试）</text>
-      <view wx:if="{{productMedia.length > 0}}" class="product-media">
-        <block wx:for="{{productMedia}}" wx:key="url">
-          <view wx:if="{{item.role === 'VIDEO'}}" style="display:inline-flex;flex-direction:column;vertical-align:top">
-            <video wx:if="{{videoFailures['catalog:' + item.url] !== item.playback && videoReloading['catalog:' + item.url] !== item.playback}}" class="product-media-item" src="{{item.playback}}" poster="{{item.poster}}" controls="true" data-kind="catalog" data-key="{{item.url}}" data-src="{{item.playback}}" data-epoch="{{mediaViewEpoch}}" binderror="onVideoMediaError" aria-label="标准商品视频" />
-            <view wx:else class="product-media-item" role="alert"><text>视频加载失败</text><button class="xy-button-reset xy-action-secondary xy-tap" data-kind="catalog" data-key="{{item.url}}" data-src="{{item.playback}}" data-epoch="{{mediaViewEpoch}}" catchtap="retryVideoMedia" disabled="{{videoReloading['catalog:' + item.url] === item.playback}}" aria-disabled="{{videoReloading['catalog:' + item.url] === item.playback}}" aria-label="重试标准商品视频">重试</button></view>
-            <text class="field-caption">视频封面</text>
-            <media-state class="product-media-item" style="display:block;overflow:hidden" density="thumbnail" state="real" src="{{item.poster}}" mode="aspectFill" alt="标准商品视频封面" retry-label="重试封面" data-kind="catalog" data-key="{{item.url}}" data-src="{{item.playback}}" data-poster="{{item.poster}}" data-epoch="{{mediaViewEpoch}}" binderror="onVideoMediaError" bindretry="retryVideoMedia" />
-          </view>
-          <media-state wx:else class="product-media-item" style="display:inline-flex;overflow:hidden" density="thumbnail" state="real" src="{{item.url}}" mode="aspectFill" failure-label="商品图片暂时无法加载" retry-label="重试" aria-label="标准商品图片" />
-        </block>
-      </view>
-      <text wx:if="{{productId}}" class="pf-fnote">已选「{{productLabel}}」，保存后平台按该标准商品校验；平台下架该商品时将无法提交。</text>
     </view>
+    <text wx:if="{{typeError}}" class="pf-fnote is-error pb-retry" role="button" aria-label="重新读取设备类型" bindtap="retryTypeOptions">{{typeError}}（点此重试）</text>
 
-    <view id="publish-media" class="pf-block">
-      <view class="pf-gt-row"><text class="pf-gt">设备实拍图</text><text class="pf-gt-row__aside">{{mediaItemsCount}}/20</text></view>
-      <view wx:if="{{missingMedia}}" class="pb-note is-error" role="alert"><text>审核需要至少一张处理完成的设备实拍图，视频不能代替图片。</text></view>
-      <view class="pf-cd pb-media">
-        <text wx:if="{{mediaNotice}}" class="pf-fnote">{{mediaNotice}}</text>
-      <view wx:if="{{hasPendingMedia && !uploadingMedia}}" class="pf-btn pf-btn--s" bindtap="recoverPendingMedia" role="button" aria-label="显式恢复原素材文件和原请求键">恢复原素材请求</view>
-      <view wx:if="{{hasPendingMedia}}" class="pf-btn pf-btn--s" bindtap="discardPendingMedia" role="button" aria-label="取消本次待确认素材并重新选择">取消本次素材处理</view>
-      <view wx:if="{{mediaItemsCount > mediaPreviewCount}}" class="pf-btn pf-btn--s" bindtap="loadDraftMedia" role="button" aria-label="加载已保存设备素材预览">{{uploadingMedia ? '加载中…' : '加载已保存素材预览'}}</view>
+    <view id="publish-media" class="pf-cd pb-media">
+      <view class="pf-ch"><text class="pf-ch__t">实拍图</text><text class="pf-ch__a">{{mediaItemsCount}}/20 · 第一张为封面</text></view>
+      <text wx:if="{{mediaNotice}}" class="pf-fnote">{{mediaNotice}}</text>
+      <view wx:if="{{hasPendingMedia}}" class="pb-links">
+        <text wx:if="{{!uploadingMedia}}" class="pf-link" bindtap="recoverPendingMedia" role="button" aria-label="显式恢复原素材文件和原请求键">恢复原素材请求</text>
+        <text class="pf-link" bindtap="discardPendingMedia" role="button" aria-label="取消本次待确认素材并重新选择">取消本次素材处理</text>
+      </view>
       <view class="xy-draft-media-grid">
-        <view wx:if="{{mode !== 'view' && mediaItemsCount < 20}}" class="xy-draft-media-tile xy-draft-media-add xy-hit-target xy-tap" data-kind="photo" aria-label="添加设备实拍图" bindtap="selectImage" role="button"><text class="xy-draft-media-symbol">添加</text><text class="xy-draft-media-label">添加图片</text><text class="xy-draft-media-count">{{mediaItemsCount}}/20</text></view>
+        <view wx:if="{{mode !== 'view' && mediaItemsCount < 20}}" class="xy-draft-media-tile pb-add xy-hit-target xy-tap" data-kind="photo" aria-label="添加设备实拍图" bindtap="selectImage" role="button"><image class="pb-add__ic" src="/assets/figma-icons/publish-camera.svg" mode="aspectFit" /><text class="pb-add__t">{{uploadingMedia ? '处理中' : '添加'}}</text></view>
         <view wx:for="{{photoPaths}}" wx:key="item" class="hero-card xy-draft-media-tile {{index === coverIndex ? 'is-cover' : ''}}" data-kind="photo" data-index="{{index}}" bindtap="previewMedia" role="button">
           <media-state class="hero-image" state="real" src="{{item}}" mode="aspectFill" placeholder-src="{{icons.deviceMark}}" empty-label="暂无设备图片" failure-label="设备图片暂时无法加载" retry-label="重试" aria-label="{{index === coverIndex ? '设备封面' : '设备实拍图'}}" />
           <text wx:if="{{index === coverIndex}}" class="media-badge">封面</text>
           <view wx:if="{{mode !== 'view' && index > 0}}" class="rule-option pb-chip" data-kind="photo" data-index="{{index}}" data-direction="-1" catchtap="moveMedia" role="button" aria-label="设备图片前移">前移</view>
           <view wx:if="{{mode !== 'view'}}" class="xy-media-remove" data-kind="photo" data-index="{{index}}" catchtap="deleteMedia" role="button" aria-label="删除这张草稿图片"><view class="xy-media-remove__mark" aria-hidden="true"><text class="xy-media-remove__glyph">×</text></view></view>
         </view>
-      </view>
-      <view wx:for="{{videoCards}}" wx:key="id" style="display:inline-flex;flex-direction:column;vertical-align:top">
-        <view class="hero-card xy-draft-media-tile">
-        <video wx:if="{{videoFailures['asset:' + item.id] !== item.url && videoReloading['asset:' + item.id] !== item.url}}" class="hero-image" src="{{item.url}}" poster="{{item.poster}}" controls="true" data-kind="asset" data-key="{{item.id}}" data-src="{{item.url}}" data-epoch="{{mediaViewEpoch}}" binderror="onVideoMediaError" aria-label="设备视频" />
-        <view wx:else class="hero-image" role="alert"><text>视频加载失败</text><button class="xy-button-reset xy-action-secondary xy-tap" data-kind="asset" data-key="{{item.id}}" data-src="{{item.url}}" data-epoch="{{mediaViewEpoch}}" catchtap="retryVideoMedia" disabled="{{videoReloading['asset:' + item.id] === item.url}}" aria-disabled="{{videoReloading['asset:' + item.id] === item.url}}" aria-label="重试设备视频">重试</button></view>
-        <view wx:if="{{mode !== 'view'}}" class="rule-option pb-chip" data-kind="video" data-index="{{index}}" catchtap="deleteMedia" role="button" aria-label="移除设备视频">移除视频</view>
+        <view wx:for="{{videoCards}}" wx:key="id" class="hero-card xy-draft-media-tile">
+          <video wx:if="{{videoFailures['asset:' + item.id] !== item.url && videoReloading['asset:' + item.id] !== item.url}}" class="hero-image" src="{{item.url}}" poster="{{item.poster}}" controls="true" data-kind="asset" data-key="{{item.id}}" data-src="{{item.url}}" data-epoch="{{mediaViewEpoch}}" binderror="onVideoMediaError" aria-label="设备视频" />
+          <view wx:else class="hero-image pb-vfail" role="alert"><text>视频加载失败</text><button class="xy-button-reset pf-link" data-kind="asset" data-key="{{item.id}}" data-src="{{item.url}}" data-epoch="{{mediaViewEpoch}}" catchtap="retryVideoMedia" disabled="{{videoReloading['asset:' + item.id] === item.url}}" aria-disabled="{{videoReloading['asset:' + item.id] === item.url}}" aria-label="重试设备视频">重试</button></view>
+          <text class="media-badge">视频</text>
+          <view wx:if="{{mode !== 'view'}}" class="xy-media-remove" data-kind="video" data-index="{{index}}" catchtap="deleteMedia" role="button" aria-label="移除设备视频"><view class="xy-media-remove__mark" aria-hidden="true"><text class="xy-media-remove__glyph">×</text></view></view>
         </view>
-        <text class="field-caption">视频封面</text>
-        <media-state class="product-media-item" style="display:block;overflow:hidden" density="thumbnail" state="real" src="{{item.poster}}" mode="aspectFill" alt="设备视频封面" retry-label="重试封面" data-kind="asset" data-key="{{item.id}}" data-src="{{item.url}}" data-poster="{{item.poster}}" data-epoch="{{mediaViewEpoch}}" binderror="onVideoMediaError" bindretry="retryVideoMedia" />
       </view>
-      <view wx:if="{{mode === 'view' && mediaItemsCount === 0}}" class="pf-empty"><text>暂无设备实拍图</text><text>添加 READY 图片后，第一张会自动作为封面。</text></view>
-        <view wx:if="{{mode !== 'view' && mediaItemsCount < 20}}" class="pf-link" data-kind="video" bindtap="selectImage" role="button" aria-label="添加设备视频">{{uploadingMedia ? '素材处理中…' : '添加视频 ›'}}</view>
-        <text class="pf-fnote">第一张图片自动作为封面；删除首图后，新的第一张自动接替。</text>
+      <view class="pb-links">
+        <text wx:if="{{mediaItemsCount > mediaPreviewCount}}" class="pf-link" bindtap="loadDraftMedia" role="button" aria-label="加载已保存设备素材预览">{{uploadingMedia ? '加载中…' : '显示已保存的 ' + mediaItemsCount + ' 项'}}</text>
+        <text wx:if="{{mode !== 'view' && mediaItemsCount < 20}}" class="pf-link" data-kind="video" bindtap="selectImage" role="button" aria-label="添加设备视频">添加视频 ›</text>
       </view>
+      <text wx:if="{{mode === 'view' && mediaItemsCount === 0}}" class="pf-fnote">暂无设备实拍图</text>
     </view>
 
-    <view class="pf-block">
-      <text class="pf-gt">设备资料</text>
-      <view class="pf-cd">
-        <view class="pf-row"><text class="pf-row__k pf-row__k--ink">设备名称</text><input maxlength="128" class="pb-input" data-field="displayName" value="{{displayName}}" placeholder="请输入设备名称" disabled="{{!editable || submitting || pendingSave || pendingSubmit}}" bindinput="input" /></view>
-        <view class="pf-row"><text class="pf-row__k pf-row__k--ink">成色描述</text><input maxlength="128" class="pb-input" data-field="condition" value="{{condition}}" placeholder="请描述实际成色" disabled="{{!editable || submitting || pendingSave || pendingSubmit}}" bindinput="input" /></view>
-        <picker mode="selector" range="{{identifierTypeOptions}}" range-key="label" disabled="{{!editable || submitting || pendingSave || pendingSubmit || identityLocked}}" bindchange="changeIdentifierType">
-          <view class="pf-row" role="button"><text class="pf-row__k pf-row__k--ink">设备标识类型</text><text class="pf-row__v {{identifierType ? '' : 'is-muted'}}">{{identifierType === 'IMEI' ? 'IMEI' : identifierType === 'MANUFACTURER_SERIAL' ? '厂家序列号' : '请选择'}}</text><image class="pf-arrow" src="{{icons.arrowRight}}" mode="aspectFit" /></view>
-        </picker>
-        <view class="pf-row"><text class="pf-row__k pf-row__k--ink">{{identifierLabel}}{{identityLocked ? '（已锁定）' : ''}}</text><input maxlength="128" class="pb-input" data-field="serialNumber" value="{{serialNumber}}" placeholder="请输入完整设备标识" disabled="{{!editable || submitting || pendingSave || pendingSubmit || identityLocked}}" bindinput="input" /></view>
-        <view class="pf-row pf-tap" data-sheet="details" aria-label="编辑设备说明与使用提示" bindtap="openSheet" role="button"><text class="pf-row__k pf-row__k--ink">说明与瑕疵</text><text class="pf-row__v {{notes || description ? '' : 'is-muted'}}">{{notes || description ? '已填写' : '选填'}}</text><image class="pf-arrow" src="{{icons.arrowRight}}" mode="aspectFit" /></view>
-      </view>
-      <text class="pf-fnote">如实描述成色，有助于减少归还时的争议。</text>
+    <view class="pf-cd">
+      <view class="pf-ch"><text class="pf-ch__t">出租条件</text></view>
+      <view class="pf-row pf-tap" data-sheet="pricing" aria-label="设置{{priceUnitLabel}}" bindtap="openSheet" role="button"><text class="pf-row__k">{{priceUnitLabel}}</text><text class="pf-row__v pb-v {{expectedRent ? '' : 'is-warn'}}">{{expectedRent ? '¥' + expectedRent + (priceUnitLabel === '日租金' ? ' /天' : ' /小时') : '待填写'}}</text><image class="pf-arrow" src="{{icons.arrowRight}}" mode="aspectFit" /></view>
+      <view class="pf-row pf-tap" data-sheet="pricing" aria-label="设置押金" bindtap="openSheet" role="button"><text class="pf-row__k">押金</text><text class="pf-row__v pb-v {{expectedDeposit ? '' : 'is-warn'}}">{{expectedDeposit ? '¥' + expectedDeposit : '待填写'}}</text><image class="pf-arrow" src="{{icons.arrowRight}}" mode="aspectFit" /></view>
+      <view class="pf-row pf-tap" data-sheet="pricing" aria-label="设置可租日期" bindtap="openSheet" role="button"><text class="pf-row__k">可租日期</text><text class="pf-row__v pb-v {{availabilityStart && availabilityEnd ? '' : 'is-warn'}}">{{availabilityStart && availabilityEnd ? availabilityStart + ' – ' + availabilityEnd : '待填写'}}</text><image class="pf-arrow" src="{{icons.arrowRight}}" mode="aspectFit" /></view>
+      <view class="pf-row pf-tap" data-sheet="pricing" aria-label="设置最短租期" bindtap="openSheet" role="button"><text class="pf-row__k">最短租期</text><text class="pf-row__v pb-v {{minimumUnits ? '' : 'is-warn'}}">{{minimumUnits ? minimumUnits + ' 天' : '待填写'}}</text><image class="pf-arrow" src="{{icons.arrowRight}}" mode="aspectFit" /></view>
     </view>
 
-    <view class="pf-block">
-      <text class="pf-gt">出租条件</text>
-      <view class="pf-cd">
-        <view class="pf-row pf-tap" data-sheet="pricing" aria-label="设置{{priceUnitLabel}}" bindtap="openSheet" role="button"><text class="pf-row__k pf-row__k--ink">{{priceUnitLabel}}</text><text class="pf-row__v {{expectedRent ? '' : 'is-warn'}}">{{expectedRent ? '¥' + expectedRent : '待填写'}}</text><image class="pf-arrow" src="{{icons.arrowRight}}" mode="aspectFit" /></view>
-        <view class="pf-row pf-tap" data-sheet="pricing" aria-label="设置期望押金" bindtap="openSheet" role="button"><text class="pf-row__k pf-row__k--ink">期望押金</text><text class="pf-row__v {{expectedDeposit ? '' : 'is-warn'}}">{{expectedDeposit ? '¥' + expectedDeposit : '待填写'}}</text><image class="pf-arrow" src="{{icons.arrowRight}}" mode="aspectFit" /></view>
-        <view class="pf-row pf-tap" data-sheet="pricing" aria-label="设置最低租期" bindtap="openSheet" role="button"><text class="pf-row__k pf-row__k--ink">最低租期</text><text class="pf-row__v {{minimumUnits ? '' : 'is-warn'}}">{{minimumUnits ? minimumUnits + ' 天' : '待填写'}}</text><image class="pf-arrow" src="{{icons.arrowRight}}" mode="aspectFit" /></view>
-        <view class="pf-row pf-tap" data-sheet="pricing" aria-label="设置可租档期" bindtap="openSheet" role="button"><text class="pf-row__k pf-row__k--ink">可租档期</text><text class="pf-row__v {{availabilityStart && availabilityEnd ? '' : 'is-warn'}}">{{availabilityStart && availabilityEnd ? availabilityStart + ' ～ ' + availabilityEnd : '待填写'}}</text><image class="pf-arrow" src="{{icons.arrowRight}}" mode="aspectFit" /></view>
-      </view>
-      <text class="pf-fnote">{{guidanceText}}</text>
+    <view class="pf-cd">
+      <view class="pf-ch"><text class="pf-ch__t">设备信息</text></view>
+      <view class="pf-row pf-tap" data-sheet="details" aria-label="编辑设备名称" bindtap="openSheet" role="button"><text class="pf-row__k">设备名称</text><text class="pf-row__v pb-v {{displayName ? '' : 'is-warn'}}">{{displayName || '待填写'}}</text><image class="pf-arrow" src="{{icons.arrowRight}}" mode="aspectFit" /></view>
+      <view class="pf-row pf-tap" data-sheet="details" aria-label="编辑成色" bindtap="openSheet" role="button"><text class="pf-row__k">成色</text><text class="pf-row__v pb-v {{condition ? '' : 'is-warn'}}">{{condition || '待填写'}}</text><image class="pf-arrow" src="{{icons.arrowRight}}" mode="aspectFit" /></view>
+      <view class="pf-row pf-tap" data-sheet="details" aria-label="编辑{{identifierLabel}}" bindtap="openSheet" role="button"><text class="pf-row__k">{{identifierType === 'IMEI' ? 'IMEI' : '序列号'}}</text><text class="pf-row__v pb-v {{serialNumber ? '' : 'is-warn'}}">{{serialNumber || '待填写'}}</text><image class="pf-arrow" src="{{icons.arrowRight}}" mode="aspectFit" /></view>
+      <view class="pf-row pf-tap" data-sheet="accessories" aria-label="编辑随附配件清单" bindtap="openSheet" role="button"><text class="pf-row__k">配件</text><text class="pf-row__v pb-v {{accessories ? '' : 'is-muted'}}">{{accessories || '选填'}}</text><image class="pf-arrow" src="{{icons.arrowRight}}" mode="aspectFit" /></view>
+      <view class="pf-row pf-tap" data-sheet="delivery" aria-label="编辑交付方式" bindtap="openSheet" role="button"><text class="pf-row__k">交付方式</text><text class="pf-row__v pb-v {{deliveryText === '尚未设置' ? 'is-warn' : ''}}">{{deliveryText === '尚未设置' ? '待填写' : deliveryText}}</text><image class="pf-arrow" src="{{icons.arrowRight}}" mode="aspectFit" /></view>
+      <view class="pf-row pf-tap" data-sheet="details" aria-label="编辑说明与瑕疵" bindtap="openSheet" role="button"><text class="pf-row__k">说明与瑕疵</text><text class="pf-row__v pb-v {{notes || description ? '' : 'is-muted'}}">{{notes || description ? '已填写' : '选填'}}</text><image class="pf-arrow" src="{{icons.arrowRight}}" mode="aspectFit" /></view>
+      <view class="pf-row"><text class="pf-row__k">购买凭证</text><text class="pf-row__v pb-v is-muted">选填，暂未开放</text></view>
     </view>
 
-    <view class="pf-block">
-      <text class="pf-gt">其它规则</text>
-      <view class="pf-cd">
-        <view class="pf-row pf-tap" data-sheet="delivery" aria-label="编辑交付方式" bindtap="openSheet" role="button"><text class="pf-row__k pf-row__k--ink">交付方式</text><text class="pf-row__v {{deliveryText === '尚未设置' ? 'is-warn' : ''}}">{{deliveryText}}</text><image class="pf-arrow" src="{{icons.arrowRight}}" mode="aspectFit" /></view>
-        <view class="pf-row pf-tap" data-sheet="accessories" aria-label="编辑随附配件清单" bindtap="openSheet" role="button"><text class="pf-row__k pf-row__k--ink">随附配件</text><text class="pf-row__v {{accessories ? '' : 'is-muted'}}">{{accessories || '选填'}}</text><image class="pf-arrow" src="{{icons.arrowRight}}" mode="aspectFit" /></view>
-        <view class="pf-row"><text class="pf-row__k pf-row__k--ink">购买凭证 / 发票</text><text class="pf-row__v is-muted">选填，暂未开放</text></view>
-      </view>
-    </view>
-
-    <view wx:if="{{missingFields.length > 0}}" class="pf-block">
-      <view class="pf-gt-row"><text class="pf-gt">提交前还需完善</text><text class="pf-gt-row__aside">{{missingFields.length}} 项</text></view>
-      <view class="pf-cd">
-        <view wx:for="{{missingFields}}" wx:key="id" class="pf-row"><text class="pf-row__k pf-row__k--ink">{{item.label}}</text><text class="pf-row__v is-warn">待完善</text></view>
-        <view wx:if="{{missingMedia}}" class="pf-row pf-tap" role="button" aria-label="前往设备图片添加实拍" bindtap="jumpToMedia"><text class="pf-row__k pf-row__k--ink">去添加实拍图</text><text class="pf-row__v" /><image class="pf-arrow" src="{{icons.arrowRight}}" mode="aspectFit" /></view>
-      </view>
-    </view>
-
-    <text class="pf-fnote">提交后由平台审核通过或驳回，不会替你改价；结果会在「我发布的设备」中更新。</text>
+    <text class="pf-fnote pb-after">{{showDraftNotice && draftNoticeText ? draftNoticeText + '。' : ''}}提交后由平台审核，结果在「我发布的设备」里查看。</text>
   </block>
 
   <view wx:if="{{draftId && !activeSheet}}" class="xy-bottom-action pf-foot">
-      <view wx:if="{{(editable && !pendingSubmit) || pendingSave}}" class="xy-action-secondary {{submitting ? 'is-disabled' : ''}}" aria-label="{{pendingSave ? '重试原保存' : '保存草稿'}}" aria-disabled="{{submitting}}" bindtap="saveDraft" role="button">{{submitting ? '保存中…' : pendingSave ? '重试原保存' : '保存草稿'}}</view>
-      <button class="xy-action-primary {{submitting || (mode === 'view' && !pendingSubmit) || !canSubmit ? 'is-disabled' : 'is-ready'}}" aria-label="{{pendingSubmit ? '重试原提交' : mode === 'view' ? '查看资料' : submitting ? '提交中' : mode === 'edit' ? '保存并重新审核' : '提交平台审核'}}" aria-disabled="{{submitting || (mode === 'view' && !pendingSubmit)}}" disabled="{{submitting || (mode === 'view' && !pendingSubmit)}}" bindtap="submit" role="button">{{submitting ? '提交中…' : pendingSubmit ? '重试原提交' : mode === 'view' ? '查看资料' : mode === 'edit' ? '保存并重新审核' : '提交平台审核'}}</button>
+      <view wx:if="{{(editable && !pendingSubmit) || pendingSave}}" class="xy-action-secondary pf-foot__s {{submitting ? 'is-disabled' : ''}}" aria-label="{{pendingSave ? '重试原保存' : '保存草稿'}}" aria-disabled="{{submitting}}" bindtap="saveDraft" role="button">{{submitting ? '保存中…' : pendingSave ? '重试原保存' : '存草稿'}}</view>
+      <button class="xy-action-primary {{submitting || (mode === 'view' && !pendingSubmit) || !canSubmit ? 'is-disabled' : 'is-ready'}}" aria-label="{{pendingSubmit ? '重试原提交' : mode === 'view' ? '查看资料' : submitting ? '提交中' : mode === 'edit' ? '保存并重新审核' : '提交平台审核'}}" aria-disabled="{{submitting || (mode === 'view' && !pendingSubmit)}}" disabled="{{submitting || (mode === 'view' && !pendingSubmit)}}" bindtap="submit" role="button">{{submitting ? '提交中…' : pendingSubmit ? '重试原提交' : mode === 'view' ? '查看资料' : mode === 'edit' ? '保存并重新审核' : '提交审核'}}</button>
   </view>
 
   <view wx:if="{{activeSheet}}" class="sheet-mask" bindtap="closeSheet" role="button" aria-label="关闭设置面板">
     <view class="publish-sheet" catchtap="stopSheetTap" role="dialog" aria-label="设备设置面板">
-        <view class="pb-sheet-head"><text class="pf-gt">{{activeSheet === 'product' ? '选择标准商品' : activeSheet === 'pricing' ? '租金与押金' : activeSheet === 'details' ? '说明与瑕疵' : activeSheet === 'delivery' ? '交付方式' : activeSheet === 'accessories' ? '随附配件' : '购买凭证 / 发票'}}</text><view class="pb-close" bindtap="closeSheet" role="button" aria-label="关闭">×</view></view>
+        <view class="pb-sheet-head"><text class="pb-sheet-title">{{activeSheet === 'product' ? '选择设备' : activeSheet === 'pricing' ? '租金与押金' : activeSheet === 'details' ? '设备资料' : activeSheet === 'delivery' ? '交付方式' : activeSheet === 'accessories' ? '随附配件' : '购买凭证'}}</text><view class="pb-close" bindtap="closeSheet" role="button" aria-label="关闭">×</view></view>
         <scroll-view class="sheet-scroll" scroll-y="true">
-          <block wx:if="{{activeSheet === 'pricing'}}">
-            <view class="pb-field"><text class="pb-label">{{priceUnitLabel}}（元）</text><view class="pb-box"><text>¥</text><input type="digit" maxlength="22" data-field="expectedRent" value="{{expectedRent}}" placeholder="请输入日租金" disabled="{{!editable || submitting || pendingSave || pendingSubmit}}" bindinput="input" /></view></view>
-            <view class="pb-field"><text class="pb-label">期望押金（元）</text><view class="pb-box"><text>¥</text><input type="digit" maxlength="22" data-field="expectedDeposit" value="{{expectedDeposit}}" placeholder="请输入押金" disabled="{{!editable || submitting || pendingSave || pendingSubmit}}" bindinput="input" /></view></view>
-            <view class="pb-field"><text class="pb-label">最低租期（天）</text><view class="pb-box"><input type="number" data-field="minimumUnits" value="{{minimumUnits}}" placeholder="请输入正整数天" disabled="{{!editable || submitting || pendingSave || pendingSubmit}}" bindinput="input" /></view></view>
-            <view class="pb-field"><text class="pb-label">参考价值（元）</text><view class="pb-box"><text>¥</text><input type="digit" data-field="referenceValue" value="{{referenceValue}}" placeholder="请输入设备参考价值" disabled="{{!editable || submitting || pendingSave || pendingSubmit}}" bindinput="input" /></view></view>
-            <view class="pb-field"><text class="pb-label">可租开始日</text><picker mode="date" value="{{availabilityStart}}" disabled="{{!editable || submitting || pendingSave || pendingSubmit}}" bindchange="changeStartDate"><view class="pb-box pb-box--tap"><text class="{{availabilityStart ? '' : 'is-muted'}}">{{availabilityStart || '请选择开始日'}}</text></view></picker></view>
-            <view class="pb-field"><text class="pb-label">可租截止日（含）</text><picker mode="date" value="{{availabilityEnd}}" disabled="{{!editable || submitting || pendingSave || pendingSubmit}}" bindchange="changeEndDate"><view class="pb-box pb-box--tap"><text class="{{availabilityEnd ? '' : 'is-muted'}}">{{availabilityEnd || '请选择截止日'}}</text></view></picker></view>
-            <text class="pf-fnote">{{guidanceText}}</text>
-          </block>
+          <view wx:if="{{activeSheet === 'pricing'}}" class="pb-stack">
+            <view class="pb-field"><text class="pb-label">{{priceUnitLabel}}</text><view class="pb-box"><text class="pb-pre">¥</text><input type="digit" maxlength="22" data-field="expectedRent" value="{{expectedRent}}" placeholder="0" placeholder-class="pb-ph" disabled="{{!editable || submitting || pendingSave || pendingSubmit}}" bindinput="input" /><text class="pb-unit">{{priceUnitLabel === '日租金' ? '元 / 天' : '元 / 小时'}}</text></view></view>
+            <view class="pb-field"><text class="pb-label">押金</text><view class="pb-box"><text class="pb-pre">¥</text><input type="digit" maxlength="22" data-field="expectedDeposit" value="{{expectedDeposit}}" placeholder="0" placeholder-class="pb-ph" disabled="{{!editable || submitting || pendingSave || pendingSubmit}}" bindinput="input" /><text class="pb-unit">元</text></view></view>
+            <view class="pb-two">
+              <view class="pb-field"><text class="pb-label">最短租期</text><view class="pb-box"><input type="number" data-field="minimumUnits" value="{{minimumUnits}}" placeholder="1" placeholder-class="pb-ph" disabled="{{!editable || submitting || pendingSave || pendingSubmit}}" bindinput="input" /><text class="pb-unit">天</text></view></view>
+              <view class="pb-field"><text class="pb-label">参考价值<text class="pb-opt-t">选填</text></text><view class="pb-box"><text class="pb-pre">¥</text><input type="digit" data-field="referenceValue" value="{{referenceValue}}" placeholder="0" placeholder-class="pb-ph" disabled="{{!editable || submitting || pendingSave || pendingSubmit}}" bindinput="input" /><text class="pb-unit">元</text></view></view>
+            </view>
+            <view class="pb-two">
+              <view class="pb-field"><text class="pb-label">可租开始</text><picker mode="date" value="{{availabilityStart}}" disabled="{{!editable || submitting || pendingSave || pendingSubmit}}" bindchange="changeStartDate"><view class="pb-box pb-box--tap"><text class="{{availabilityStart ? '' : 'pb-ph'}}">{{availabilityStart || '选择日期'}}</text></view></picker></view>
+              <view class="pb-field"><text class="pb-label">可租截止（含）</text><picker mode="date" value="{{availabilityEnd}}" disabled="{{!editable || submitting || pendingSave || pendingSubmit}}" bindchange="changeEndDate"><view class="pb-box pb-box--tap"><text class="{{availabilityEnd ? '' : 'pb-ph'}}">{{availabilityEnd || '选择日期'}}</text></view></picker></view>
+            </view>
+            <text wx:if="{{guidanceText}}" class="pf-fnote">{{guidanceText}}</text>
+          </view>
 
-          <block wx:if="{{activeSheet === 'details'}}">
-            <view class="pb-field"><text class="pb-label">瑕疵说明</text><textarea maxlength="2000" class="pb-area" data-field="notes" value="{{notes}}" placeholder="请如实填写划痕、使用痕迹或功能情况" disabled="{{!editable || submitting || pendingSave || pendingSubmit}}" bindinput="input"></textarea></view>
-            <view class="pb-field"><text class="pb-label">设备说明</text><textarea maxlength="4000" class="pb-area" data-field="description" value="{{description}}" placeholder="介绍设备适用场景、使用情况或租用须知" disabled="{{!editable || submitting || pendingSave || pendingSubmit}}" bindinput="input"></textarea></view>
-          </block>
+          <view wx:if="{{activeSheet === 'details'}}" class="pb-stack">
+            <view class="pb-field"><text class="pb-label">设备名称</text><view class="pb-box"><input maxlength="128" data-field="displayName" value="{{displayName}}" placeholder="请输入设备名称" placeholder-class="pb-ph" disabled="{{!editable || submitting || pendingSave || pendingSubmit}}" bindinput="input" /></view></view>
+            <view class="pb-field"><text class="pb-label">成色</text><view class="pb-box"><input maxlength="128" data-field="condition" value="{{condition}}" placeholder="例如：九成新" placeholder-class="pb-ph" disabled="{{!editable || submitting || pendingSave || pendingSubmit}}" bindinput="input" /></view></view>
+            <view class="pb-field"><text class="pb-label">{{identifierLabel}}{{identityLocked ? '（已锁定）' : ''}}</text>
+              <view class="pb-box"><picker class="pb-idtype" mode="selector" range="{{identifierTypeOptions}}" range-key="label" disabled="{{!editable || submitting || pendingSave || pendingSubmit || identityLocked}}" bindchange="changeIdentifierType"><text class="pb-idtype__t">{{identifierType === 'IMEI' ? 'IMEI' : identifierType === 'MANUFACTURER_SERIAL' ? '序列号' : '类型'}} ▾</text></picker><input maxlength="128" data-field="serialNumber" value="{{serialNumber}}" placeholder="请输入完整设备标识" placeholder-class="pb-ph" disabled="{{!editable || submitting || pendingSave || pendingSubmit || identityLocked}}" bindinput="input" /></view>
+            </view>
+            <view class="pb-field"><text class="pb-label">瑕疵说明<text class="pb-opt-t">选填</text></text><textarea maxlength="2000" class="pb-area" data-field="notes" value="{{notes}}" placeholder="划痕、使用痕迹或功能情况" placeholder-class="pb-ph" disabled="{{!editable || submitting || pendingSave || pendingSubmit}}" bindinput="input"></textarea></view>
+            <view class="pb-field"><text class="pb-label">设备说明<text class="pb-opt-t">选填</text></text><textarea maxlength="4000" class="pb-area" data-field="description" value="{{description}}" placeholder="适用场景、使用情况或租用须知" placeholder-class="pb-ph" disabled="{{!editable || submitting || pendingSave || pendingSubmit}}" bindinput="input"></textarea></view>
+            <text class="pf-fnote">如实描述成色，有助于减少归还时的争议。</text>
+          </view>
 
-          <block wx:if="{{activeSheet === 'accessories'}}">
-            <view class="pb-field"><text class="pb-label">随附配件</text><textarea maxlength="2000" class="pb-area" data-field="accessories" value="{{accessories}}" placeholder="例如：电池、充电器、肩带" disabled="{{!editable || submitting || pendingSave || pendingSubmit}}" bindinput="input"></textarea></view>
+          <view wx:if="{{activeSheet === 'accessories'}}" class="pb-stack">
+            <view class="pb-field"><text class="pb-label">随附配件</text><textarea maxlength="2000" class="pb-area" data-field="accessories" value="{{accessories}}" placeholder="例如：电池、充电器、肩带" placeholder-class="pb-ph" disabled="{{!editable || submitting || pendingSave || pendingSubmit}}" bindinput="input"></textarea></view>
             <text class="pf-fnote">请列出交付时会随设备一并提供的配件。</text>
-          </block>
+          </view>
 
-          <block wx:if="{{activeSheet === 'product'}}">
-            <text class="pf-fnote">只显示平台在售的标准商品；归档商品和未就绪的媒体不会出现在这里。</text>
+          <view wx:if="{{activeSheet === 'product'}}" class="pb-stack">
+            <view class="pb-group">
+              <picker mode="selector" range="{{typePickerOptions}}" range-key="name" value="{{typeIndex}}" disabled="{{!editable || submitting || pendingSave || pendingSubmit || typeLoading || types.length === 0}}" bindchange="chooseType">
+                <view class="pf-row" role="button" aria-label="选择设备类型"><text class="pf-row__k">设备类型</text><text class="pf-row__v pb-v {{type ? '' : 'is-muted'}}">{{type || (typeLoading ? '正在读取…' : '请选择')}}</text><image class="pf-arrow" src="{{icons.arrowRight}}" mode="aspectFit" /></view>
+              </picker>
+            </view>
+            <view wx:if="{{productMedia.length > 0}}" class="product-media">
+              <block wx:for="{{productMedia}}" wx:key="url">
+                <view wx:if="{{item.role === 'VIDEO'}}" class="product-media-item">
+                  <video wx:if="{{videoFailures['catalog:' + item.url] !== item.playback && videoReloading['catalog:' + item.url] !== item.playback}}" class="product-media-video" src="{{item.playback}}" poster="{{item.poster}}" controls="true" data-kind="catalog" data-key="{{item.url}}" data-src="{{item.playback}}" data-epoch="{{mediaViewEpoch}}" binderror="onVideoMediaError" aria-label="标准商品视频" />
+                  <view wx:else class="product-media-video pb-vfail" role="alert"><text>视频加载失败</text><button class="xy-button-reset pf-link" data-kind="catalog" data-key="{{item.url}}" data-src="{{item.playback}}" data-epoch="{{mediaViewEpoch}}" catchtap="retryVideoMedia" disabled="{{videoReloading['catalog:' + item.url] === item.playback}}" aria-disabled="{{videoReloading['catalog:' + item.url] === item.playback}}" aria-label="重试标准商品视频">重试</button></view>
+                </view>
+                <media-state wx:else class="product-media-item" style="display:inline-flex;overflow:hidden" density="thumbnail" state="real" src="{{item.url}}" mode="aspectFit" failure-label="商品图片暂时无法加载" retry-label="重试" aria-label="标准商品图片" />
+              </block>
+            </view>
             <view wx:if="{{catalogLoading}}" class="pf-empty">正在读取可选商品…</view>
             <view wx:elif="{{catalogError}}" class="pf-empty is-error pb-retry" role="button" aria-label="重新读取可选商品" bindtap="retryCatalog">{{catalogError}}（点此重试）</view>
+            <view wx:elif="{{!productTypeFilter}}" class="pf-empty">先选设备类型，再选标准商品。</view>
             <view wx:elif="{{productList.length === 0}}" class="pf-empty">{{catalogNotice || '平台暂无可选标准商品，请稍后再试。'}}</view>
-            <view wx:else class="pf-cd">
-              <view wx:for="{{productList}}" wx:key="id" class="pf-row pf-tap pb-pick {{productId === item.id ? 'is-selected' : ''}}" data-id="{{item.id}}" bindtap="selectProductFromSheet" role="button" aria-label="{{'选择' + item.label}}">
-                <view class="pb-opt"><text>{{item.label}}</text><text class="pf-k">{{item.detail}}</text></view>
-                <text wx:if="{{productId === item.id}}" class="pf-link">已选</text>
+            <view wx:else class="pb-group">
+              <view wx:for="{{productList}}" wx:key="id" class="pf-row pf-tap pb-opt2 {{productId === item.id ? 'is-on' : ''}}" data-id="{{item.id}}" bindtap="selectProductFromSheet" role="radio" aria-checked="{{productId === item.id}}" aria-label="{{'选择' + item.label}}">
+                <view class="pb-opt"><text class="pb-opt__t">{{item.label}}</text><text class="pb-opt__s">{{item.detail}}</text></view>
+                <view class="pb-rd {{productId === item.id ? 'is-on' : ''}}"></view>
               </view>
             </view>
-            <view wx:if="{{catalogHasMore && !catalogLoading}}" class="pf-link" bindtap="loadMoreCatalog" role="button">加载更多标准商品 ›</view>
-          </block>
+            <text wx:if="{{catalogHasMore && !catalogLoading}}" class="pf-link" bindtap="loadMoreCatalog" role="button">加载更多标准商品 ›</text>
+            <text class="pf-fnote">只能发布平台在售的标准商品。</text>
+          </view>
 
-          <block wx:if="{{activeSheet === 'proof'}}">
-            <text class="pf-fnote">购买凭证为选填的私密证明资料，最多 6 张，不作为公开设备实拍。</text>
+          <view wx:if="{{activeSheet === 'proof'}}" class="pb-stack">
+            <text class="pf-fnote">购买凭证为选填的私密证明资料，最多 6 张，不会公开展示。</text>
             <view class="xy-draft-media-grid">
-              <view wx:if="{{mode !== 'view' && proofPaths.length < 6}}" class="xy-draft-media-tile xy-draft-media-add xy-hit-target xy-tap" data-kind="proof" aria-label="购买凭证上传暂不可用" bindtap="unavailable" role="button"><text class="xy-draft-media-symbol">选填</text><text class="xy-draft-media-label">不影响提交</text><text class="xy-draft-media-count">{{proofPaths.length}}/6</text></view>
+              <view wx:if="{{mode !== 'view' && proofPaths.length < 6}}" class="xy-draft-media-tile pb-add xy-hit-target xy-tap" data-kind="proof" aria-label="购买凭证上传暂不可用" bindtap="unavailable" role="button"><image class="pb-add__ic" src="/assets/figma-icons/publish-camera.svg" mode="aspectFit" /><text class="pb-add__t">{{proofPaths.length}}/6</text></view>
               <view wx:for="{{proofPaths}}" wx:key="item" class="media-thumb xy-draft-media-tile" data-kind="proof" data-index="{{index}}" bindtap="previewMedia" role="button"><media-state class="media-thumb-media" state="real" src="{{item}}" mode="aspectFill" placeholder-src="{{icons.deviceMark}}" empty-label="暂无凭证图片" failure-label="凭证图片暂时无法加载" retry-label="重试" aria-label="购买凭证" /><view wx:if="{{mode !== 'view'}}" class="xy-media-remove" data-kind="proof" data-index="{{index}}" catchtap="deleteMedia" role="button" aria-label="删除这张购买凭证"><view class="xy-media-remove__mark" aria-hidden="true"><text class="xy-media-remove__glyph">×</text></view></view></view>
             </view>
-          </block>
+          </view>
 
-          <block wx:if="{{activeSheet === 'delivery'}}">
-            <text class="pf-fnote">发布时无需选择收货地址。保存草稿时会尝试记录微信实时位置；定位失败不影响发布。</text>
-            <text class="pb-label">支持的交付方式（至少选一项）</text>
+          <view wx:if="{{activeSheet === 'delivery'}}" class="pb-stack pb-stack--12">
+            <text class="pb-label">可多选，至少选一种</text>
+            <view wx:for="{{deliveries}}" wx:key="id" class="pb-dm {{item.selected ? 'is-on' : ''}}" data-delivery="{{item.id}}" aria-label="{{item.selected ? '取消选择' : '选择'}}{{item.label}}" bindtap="chooseDelivery" role="checkbox" aria-checked="{{item.selected}}">
+              <view class="pb-dm__ic"><image src="/assets/figma-icons/publish-{{item.id === 'runner' ? 'runner' : 'express'}}{{item.selected ? '-on' : ''}}.svg" mode="aspectFit" /></view>
+              <view class="pb-opt"><text class="pb-opt__t pb-opt__t--b">{{item.id === 'runner' ? '跑腿' : '快递'}}</text><text class="pb-opt__s">{{item.id === 'runner' ? '同城送达' : '寄出和寄回'}}</text></view>
+              <view class="pb-ck {{item.selected ? 'is-on' : ''}}"><image wx:if="{{item.selected}}" class="pb-ck__ic" src="{{icons.deliveryCheck}}" mode="aspectFit" aria-hidden="true" /></view>
+            </view>
             <block wx:for="{{deliveries}}" wx:key="id">
-              <view class="pf-cd">
-                <view class="pf-row pf-tap" data-delivery="{{item.id}}" aria-label="{{item.selected ? '取消选择' : '选择'}}{{item.label}}" bindtap="chooseDelivery" role="checkbox" aria-checked="{{item.selected}}"><view class="pb-dotbox"><view class="pb-check {{item.selected ? 'is-on' : ''}}"><image wx:if="{{item.selected}}" class="pb-check__ic" src="{{icons.deliveryCheck}}" mode="aspectFit" aria-hidden="true" /></view></view><text>{{item.label}}</text></view>
-                <block wx:if="{{item.selected && !splitMap[item.id]}}">
-                  <text class="pb-sub">运费由谁承担</text>
-                  <view class="pf-row pf-tap" data-delivery="{{item.id}}" data-payer="TENANT" bindtap="chooseRuleBoth" role="radio" aria-label="寄出和寄回运费承租方承担" aria-checked="{{item.outbound === 'TENANT' && item.return === 'TENANT'}}"><view class="pb-dotbox"><view class="pb-radio {{item.outbound === 'TENANT' && item.return === 'TENANT' ? 'is-on' : ''}}"></view></view><view class="pb-opt"><text>承租方承担</text><text class="pf-k">寄出、寄回运费都由承租方付</text></view></view>
-                  <view class="pf-row pf-tap" data-delivery="{{item.id}}" data-payer="LESSOR" bindtap="chooseRuleBoth" role="radio" aria-label="寄出和寄回运费出租方承担" aria-checked="{{item.outbound === 'LESSOR' && item.return === 'LESSOR'}}"><view class="pb-dotbox"><view class="pb-radio {{item.outbound === 'LESSOR' && item.return === 'LESSOR' ? 'is-on' : ''}}"></view></view><view class="pb-opt"><text>出租方承担</text><text class="pf-k">寄出、寄回运费都由我付</text></view></view>
-                  <view class="pf-row pf-tap" data-delivery="{{item.id}}" bindtap="toggleSplit" role="button"><text class="pf-link">寄出、寄回分开设置 ›</text></view>
-                </block>
-                <block wx:if="{{item.selected && splitMap[item.id]}}">
-                  <text class="pb-sub">寄出运费</text>
-                  <view class="pf-row pf-tap" data-delivery="{{item.id}}" data-leg="outbound" data-payer="TENANT" bindtap="chooseRule" role="radio" aria-label="寄出运费承租方承担" aria-checked="{{item.outbound === 'TENANT'}}"><view class="pb-dotbox"><view class="pb-radio {{item.outbound === 'TENANT' ? 'is-on' : ''}}"></view></view><view class="pb-opt"><text>承租方承担</text><text class="pf-k"></text></view></view>
-                  <view class="pf-row pf-tap" data-delivery="{{item.id}}" data-leg="outbound" data-payer="LESSOR" bindtap="chooseRule" role="radio" aria-label="寄出运费出租方承担" aria-checked="{{item.outbound === 'LESSOR'}}"><view class="pb-dotbox"><view class="pb-radio {{item.outbound === 'LESSOR' ? 'is-on' : ''}}"></view></view><view class="pb-opt"><text>出租方承担</text><text class="pf-k"></text></view></view>
-                  <text class="pb-sub">寄回运费</text>
-                  <view class="pf-row pf-tap" data-delivery="{{item.id}}" data-leg="return" data-payer="TENANT" bindtap="chooseRule" role="radio" aria-label="寄回运费承租方承担" aria-checked="{{item.return === 'TENANT'}}"><view class="pb-dotbox"><view class="pb-radio {{item.return === 'TENANT' ? 'is-on' : ''}}"></view></view><view class="pb-opt"><text>承租方承担</text><text class="pf-k"></text></view></view>
-                  <view class="pf-row pf-tap" data-delivery="{{item.id}}" data-leg="return" data-payer="LESSOR" bindtap="chooseRule" role="radio" aria-label="寄回运费出租方承担" aria-checked="{{item.return === 'LESSOR'}}"><view class="pb-dotbox"><view class="pb-radio {{item.return === 'LESSOR' ? 'is-on' : ''}}"></view></view><view class="pb-opt"><text>出租方承担</text><text class="pf-k"></text></view></view>
-                  <view class="pf-row pf-tap" data-delivery="{{item.id}}" bindtap="toggleSplit" role="button"><text class="pf-link">合并为统一设置 ›</text></view>
-                </block>
-              </view>
+              <block wx:if="{{item.selected && !splitMap[item.id]}}">
+                <text class="pb-label pb-label--gap">{{item.id === 'runner' ? '跑腿' : '快递'}}运费由谁承担（寄出和寄回）</text>
+                <view class="pb-group">
+                  <view class="pf-row pf-tap pb-opt2" data-delivery="{{item.id}}" data-payer="TENANT" bindtap="chooseRuleBoth" role="radio" aria-label="寄出和寄回运费承租方承担" aria-checked="{{item.outbound === 'TENANT' && item.return === 'TENANT'}}"><view class="pb-opt"><text class="pb-opt__t">承租方承担</text><text class="pb-opt__s">租客付运费</text></view><view class="pb-rd {{item.outbound === 'TENANT' && item.return === 'TENANT' ? 'is-on' : ''}}"></view></view>
+                  <view class="pf-row pf-tap pb-opt2" data-delivery="{{item.id}}" data-payer="LESSOR" bindtap="chooseRuleBoth" role="radio" aria-label="寄出和寄回运费出租方承担" aria-checked="{{item.outbound === 'LESSOR' && item.return === 'LESSOR'}}"><view class="pb-opt"><text class="pb-opt__t">我承担</text><text class="pb-opt__s">你付运费，租客更愿意下单</text></view><view class="pb-rd {{item.outbound === 'LESSOR' && item.return === 'LESSOR' ? 'is-on' : ''}}"></view></view>
+                </view>
+                <text class="pf-link" data-delivery="{{item.id}}" bindtap="toggleSplit" role="button">寄出、寄回分开设置 ›</text>
+              </block>
+              <block wx:if="{{item.selected && splitMap[item.id]}}">
+                <text class="pb-label pb-label--gap">{{item.id === 'runner' ? '跑腿' : '快递'}}寄出运费</text>
+                <view class="pb-group">
+                  <view class="pf-row pf-tap pb-opt2" data-delivery="{{item.id}}" data-leg="outbound" data-payer="TENANT" bindtap="chooseRule" role="radio" aria-label="寄出运费承租方承担" aria-checked="{{item.outbound === 'TENANT'}}"><view class="pb-opt"><text class="pb-opt__t">承租方承担</text><text class="pb-opt__s">租客付运费</text></view><view class="pb-rd {{item.outbound === 'TENANT' ? 'is-on' : ''}}"></view></view>
+                  <view class="pf-row pf-tap pb-opt2" data-delivery="{{item.id}}" data-leg="outbound" data-payer="LESSOR" bindtap="chooseRule" role="radio" aria-label="寄出运费出租方承担" aria-checked="{{item.outbound === 'LESSOR'}}"><view class="pb-opt"><text class="pb-opt__t">我承担</text><text class="pb-opt__s">你付运费</text></view><view class="pb-rd {{item.outbound === 'LESSOR' ? 'is-on' : ''}}"></view></view>
+                </view>
+                <text class="pb-label pb-label--gap">{{item.id === 'runner' ? '跑腿' : '快递'}}寄回运费</text>
+                <view class="pb-group">
+                  <view class="pf-row pf-tap pb-opt2" data-delivery="{{item.id}}" data-leg="return" data-payer="TENANT" bindtap="chooseRule" role="radio" aria-label="寄回运费承租方承担" aria-checked="{{item.return === 'TENANT'}}"><view class="pb-opt"><text class="pb-opt__t">承租方承担</text><text class="pb-opt__s">租客付运费</text></view><view class="pb-rd {{item.return === 'TENANT' ? 'is-on' : ''}}"></view></view>
+                  <view class="pf-row pf-tap pb-opt2" data-delivery="{{item.id}}" data-leg="return" data-payer="LESSOR" bindtap="chooseRule" role="radio" aria-label="寄回运费出租方承担" aria-checked="{{item.return === 'LESSOR'}}"><view class="pb-opt"><text class="pb-opt__t">我承担</text><text class="pb-opt__s">你付运费</text></view><view class="pb-rd {{item.return === 'LESSOR' ? 'is-on' : ''}}"></view></view>
+                </view>
+                <text class="pf-link" data-delivery="{{item.id}}" bindtap="toggleSplit" role="button">合并为统一设置 ›</text>
+              </block>
             </block>
-            <text class="pf-fnote">交付方式和费用承担规则会展示给承租方。</text>
-          </block>
+            <text class="pf-fnote">运费规则会展示给承租人。发布时无需填写收货地址。</text>
+          </view>
         </scroll-view>
         <view class="xy-bottom-action pf-foot sheet-actions"><view class="xy-action-primary" aria-label="确定设置" bindtap="confirmSheet" role="button">确定</view></view>
     </view>
