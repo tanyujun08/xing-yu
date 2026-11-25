@@ -25,7 +25,7 @@
 .pf-tap:active { opacity: var(--xy-opacity-pressed); }
 /* 行：左标签、右值、可选箭头 / 按钮；行内分割线从左内边距起 */
 .pf-row { position: relative; display: flex; align-items: center; gap: var(--xy-space-3); min-height: var(--xy-pf-row); padding: 0 var(--xy-space-4); box-sizing: border-box; }
-.pf-row + .pf-row::before, .pf-cd > * + picker .pf-row::before, .pf-cd > picker + .pf-row::before { position: absolute; top: 0; right: 0; left: var(--xy-space-4); border-top: 1rpx solid var(--xy-color-hairline); content: ''; }
+.pf-row + .pf-row::before, .pf-cd > .pf-row + picker .pf-row::before, .pf-cd > picker + picker .pf-row::before, .pf-cd > picker + .pf-row::before { position: absolute; top: 0; right: 0; left: var(--xy-space-4); border-top: 1rpx solid var(--xy-color-hairline); content: ''; }
 .pf-row:active { background: var(--xy-color-well); }
 .pf-row__k { flex: none; color: var(--xy-color-text-secondary); }
 .pf-row__k--ink { color: var(--xy-color-text-primary); }
