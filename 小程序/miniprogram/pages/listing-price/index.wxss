@@ -1,3 +1,4 @@
+.lp-val { display: flex; flex: 1; min-width: 0; align-items: center; justify-content: flex-end; gap: var(--xy-space-1); }
 .lp-input { flex: 1; min-width: 0; height: var(--xy-pf-row); text-align: right; font-size: var(--xy-row-text-size); font-variant-numeric: tabular-nums; }
 .lp-unit { flex: none; color: var(--xy-color-text-secondary); }
 .lp-error { padding: var(--xy-space-3) var(--xy-space-4); border-radius: var(--xy-pf-radius); background: var(--xy-color-key-warning-soft); color: var(--xy-color-key-warning); font-size: var(--xy-text-body-small-size); line-height: var(--xy-text-body-line-height); }

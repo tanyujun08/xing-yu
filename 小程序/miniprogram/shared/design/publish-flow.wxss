@@ -19,13 +19,13 @@
 .pf-n { display: flex; align-items: baseline; gap: var(--xy-space-1); }
 .pf-n__v { font-size: var(--xy-key-amount-size); font-weight: var(--xy-text-weight-bold); line-height: var(--xy-key-amount-line-height); font-variant-numeric: tabular-nums; }
 .pf-n__u { color: var(--xy-color-text-secondary); font-size: var(--xy-text-body-size); }
-.pf-sum__f { display: flex; flex-wrap: wrap; gap: var(--xy-space-4); margin-top: var(--xy-space-3); padding-top: var(--xy-space-3); border-top: 1rpx solid var(--xy-color-hairline); color: var(--xy-color-text-secondary); font-size: var(--xy-text-body-small-size); }
+.pf-sum__f { display: flex; flex-wrap: wrap; align-items: center; gap: var(--xy-space-4); margin-top: var(--xy-space-3); padding-top: var(--xy-space-3); border-top: 1rpx solid var(--xy-color-hairline); color: var(--xy-color-text-secondary); font-size: var(--xy-text-body-small-size); }
 .pf-sum__f text text { margin-left: var(--xy-space-1); color: var(--xy-color-text-primary); font-weight: var(--xy-text-weight-semibold); font-variant-numeric: tabular-nums; }
 .pf-sum__f .is-soon text { color: var(--xy-color-text-muted); font-weight: var(--xy-text-weight-regular); }
 .pf-tap:active { opacity: var(--xy-opacity-pressed); }
 /* 行：左标签、右值、可选箭头 / 按钮；行内分割线从左内边距起 */
 .pf-row { position: relative; display: flex; align-items: center; gap: var(--xy-space-3); min-height: var(--xy-pf-row); padding: 0 var(--xy-space-4); box-sizing: border-box; }
-.pf-row + .pf-row::before { position: absolute; top: 0; right: 0; left: var(--xy-space-4); border-top: 1rpx solid var(--xy-color-hairline); content: ''; }
+.pf-row + .pf-row::before, .pf-cd > * + picker .pf-row::before, .pf-cd > picker + .pf-row::before { position: absolute; top: 0; right: 0; left: var(--xy-space-4); border-top: 1rpx solid var(--xy-color-hairline); content: ''; }
 .pf-row:active { background: var(--xy-color-well); }
 .pf-row__k { flex: none; color: var(--xy-color-text-secondary); }
 .pf-row__k--ink { color: var(--xy-color-text-primary); }
@@ -56,6 +56,7 @@
 .pf-chip--b { background: var(--xy-color-info-light); color: var(--xy-color-info); }
 .pf-chip--n { background: var(--xy-color-well); color: var(--xy-color-text-secondary); }
 /* 底栏：次左（占 1）主右（占 2），高 44 */
-.pf-foot > view { flex: 1; }
+.pf-foot > view, .pf-foot > button { flex: 1; }
 .pf-foot > view:last-child { flex: 2; }
+.pf-foot > button:only-child { flex: 1; }
 .pf-foot > view:only-child { flex: 1; }
